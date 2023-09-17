@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "72037891846",
+    "project_id": "manavara-eac68",
+    "storage_bucket": "manavara-eac68.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:72037891846:android:b52add1335c234ed112887",
+        "android_client_info": {
+          "package_name": "com.bigbigdw.manavarasetting"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "72037891846-ukt8emjrmt79k3p8eafhfb3t6hfhvmlo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bigbigdw.manavarasetting",
+            "certificate_hash": "9bc58352ab0973c37d99afba825d7c16438bdcbb"
+          }
+        },
+        {
+          "client_id": "72037891846-bou6u5lu40mgitmcuaphsfhfkqbqe0rh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpYfr8XkgP6yF70CMlLBCE0YlwmJxTbO4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "72037891846-bou6u5lu40mgitmcuaphsfhfkqbqe0rh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
