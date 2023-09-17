@@ -1,4 +1,4 @@
-package com.bigbigdw.manavarasetting.firebase
+package com.bigbigdw.massmath.Firebase
 
 import com.bigbigdw.manavarasetting.firebase.DataFCMBody
 import com.bigbigdw.manavarasetting.firebase.FWorkManagerResult
@@ -6,8 +6,8 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface FirebaseService {
-    @Headers("Content-Type: application/json", "Authorization: key=AAAA2bUCIrA:APA91bFkYpkyMCvDxb58jMdPrO_rIZ8Po1u6B2xstSI0s2s7R1IG1G17OVm8_onR_IA02xeg2pdxkZntl1XClBqgfgCqNP772mo7bN6q5l0OMItjBIhqjBYHalKz4N_UxKXZef9pIYeS")
-    @POST("/v1/projects/manavara/messages:send")
+    @Headers("Content-Type: application/json", "Authorization: key=AAAAEMXK_wY:APA91bEzc06yCwN6L7odP9DCxTSmgzpbPzydvw4FeAzzRzSijtkeT5dNZj3TRZCmfe3UTZZFV_5VmRTIGyz5FKiPhJ44mbSrV2VegvnA6P_QPDpP2jwVUwrLC5ae-Jb-4_S7z3WjPaEK")
+    @POST("/fcm/send")
     fun postRetrofit(
         @Body body : DataFCMBody
     ): Call<FWorkManagerResult>

@@ -90,7 +90,7 @@ fun ScreenMain(viewModelFCM: ViewModelFCM) {
                 .height(22.dp))
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
-                onClick = {  },
+                onClick = { viewModelFCM.postFCMAlert(context) },
                 modifier = Modifier
                     .width(260.dp)
                     .height(56.dp),

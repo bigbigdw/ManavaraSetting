@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.bigbigdw.manavarasetting"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -77,4 +77,6 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.retrofit2:converter-scalars:2.6.4")
+
+    implementation("com.google.gms:google-services:4.4.0")
 }

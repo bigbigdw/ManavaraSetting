@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bigbigdw.manavarasetting.firebase.DataFCMBody
@@ -12,16 +11,10 @@ import com.bigbigdw.manavarasetting.firebase.DataFCMBodyData
 import com.bigbigdw.manavarasetting.firebase.DataFCMBodyNotification
 import com.bigbigdw.manavarasetting.firebase.FCM
 import com.bigbigdw.manavarasetting.firebase.FWorkManagerResult
-import com.bigbigdw.manavarasetting.firebase.FirebaseService
-import com.bigbigdw.manavarasetting.main.ActivityMain
 import com.bigbigdw.manavarasetting.main.event.EventFCM
 import com.bigbigdw.manavarasetting.main.event.StateFCM
-import com.google.android.gms.auth.api.identity.SignInClient
+import com.bigbigdw.massmath.Firebase.FirebaseService
 import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.SharingStarted
