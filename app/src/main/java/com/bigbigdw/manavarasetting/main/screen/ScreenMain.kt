@@ -15,10 +15,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
@@ -28,18 +34,24 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bigbigdw.manavarasetting.R
+import com.bigbigdw.manavarasetting.firebase.DataFCMBodyNotification
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelFCM
+import com.bigbigdw.moavara.theme.color000000
 import com.bigbigdw.moavara.theme.color1E1E20
+import com.bigbigdw.moavara.theme.color6E7686
 import com.bigbigdw.moavara.theme.color844DF3
 import com.bigbigdw.moavara.theme.colorEDE6FD
 import com.bigbigdw.moavara.theme.colorFFFFFF
 import com.bigbigdw.moavara.theme.pretendardvariable
 import com.bigbigdw.moavara.theme.textColorType2
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScreenMain(viewModelFCM: ViewModelFCM) {
 
     val context = LocalContext.current
+
+    val (getFCM, setFCM) = remember { mutableStateOf(DataFCMBodyNotification()) }
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -83,14 +95,14 @@ fun ScreenMain(viewModelFCM: ViewModelFCM) {
                 shape = RoundedCornerShape(50.dp)
 
             ) {
-                Text(text = "FCM 토큰 얻기", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+                Text(text = "FCM 토큰 얻기", textAlign = TextAlign.Center, color = colorFFFFFF, fontSize = 16.sp, fontFamily = pretendardvariable)
             }
             Spacer(modifier = Modifier
                 .fillMaxWidth()
                 .height(22.dp))
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
-                onClick = { viewModelFCM.postFCMAlert(context) },
+                onClick = { viewModelFCM.postFCMAlertTest(context) },
                 modifier = Modifier
                     .width(260.dp)
                     .height(56.dp),
@@ -98,6 +110,70 @@ fun ScreenMain(viewModelFCM: ViewModelFCM) {
 
             ) {
                 Text(text = "FCM 테스트", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+            }
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(16.dp))
+
+            TextField(
+                value = getFCM.title,
+                onValueChange = {
+                    setFCM(getFCM.copy(title = it))
+                },
+                label = { Text("FCM 제목 입력", color = colorFFFFFF) },
+                singleLine = true,
+                placeholder = { Text("FCM 제목 입력", color = colorFFFFFF) },
+                colors = TextFieldDefaults.textFieldColors(
+                    containerColor = Color(0),
+                    textColor = colorFFFFFF
+                ),
+                modifier = Modifier.width(260.dp)
+            )
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(16.dp))
+
+            TextField(
+                value = getFCM.body,
+                onValueChange = {
+                    setFCM(getFCM.copy(body = it))
+                },
+                label = { Text("FCM 바디 입력", color = colorFFFFFF) },
+                singleLine = true,
+                placeholder = { Text("FCM 바디 입력", color = colorFFFFFF) },
+                colors = TextFieldDefaults.textFieldColors(
+                    containerColor = Color(0),
+                    textColor = colorFFFFFF
+                ),
+                modifier = Modifier.width(260.dp)
+            )
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(22.dp))
+            Button(
+                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                onClick = { viewModelFCM.postFCMAlert(context = context, getFCM = getFCM) },
+                modifier = Modifier
+                    .width(260.dp)
+                    .height(56.dp),
+                shape = RoundedCornerShape(50.dp)
+
+            ) {
+                Text(text = "공지사항 등록", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+            }
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(22.dp))
+            Button(
+                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                onClick = {  },
+                modifier = Modifier
+                    .width(260.dp)
+                    .height(56.dp),
+                shape = RoundedCornerShape(50.dp)
+
+            ) {
+                Text(text = "네이버 시리즈 크롤링", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
             }
         }
 

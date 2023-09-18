@@ -12,8 +12,16 @@ class DataFCMBodyData(
     var data: String = "",
 )
 
-class DataFCMBodyNotification(
-    var title: String = "notification 타이틀",
-    var body: String = "notification message",
+data class DataFCMBodyNotification(
+    var title: String = "",
+    var body: String = "",
     var click_action : String = "",
+)
+
+data class FCMAlert (
+    var date: String = "",
+    var title: String = "",
+    var body: String = "",
+    var data : String = "",
+    var activity : String = "",
 )
