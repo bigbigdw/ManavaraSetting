@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.firebase.DataFCMBodyNotification
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelFCM
+import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMining
 import com.bigbigdw.moavara.theme.color000000
 import com.bigbigdw.moavara.theme.color1E1E20
 import com.bigbigdw.moavara.theme.color6E7686
@@ -47,7 +48,7 @@ import com.bigbigdw.moavara.theme.textColorType2
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScreenMain(viewModelFCM: ViewModelFCM) {
+fun ScreenMain(viewModelFCM: ViewModelFCM, viewModelMining: ViewModelMining) {
 
     val context = LocalContext.current
 
@@ -166,7 +167,9 @@ fun ScreenMain(viewModelFCM: ViewModelFCM) {
                 .height(22.dp))
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
-                onClick = {  },
+                onClick = {
+                    viewModelMining.miningNaverSeriesAll(context)
+                },
                 modifier = Modifier
                     .width(260.dp)
                     .height(56.dp),
