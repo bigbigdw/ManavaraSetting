@@ -1,4 +1,4 @@
-package com.bigbigdw.moavara.theme
+package com.bigbigdw.manavarasetting.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

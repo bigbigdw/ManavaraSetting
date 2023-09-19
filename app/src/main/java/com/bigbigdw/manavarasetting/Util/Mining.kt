@@ -1,0 +1,77 @@
+package com.bigbigdw.manavarasetting.Util
+
+import android.content.Context
+import android.util.Log
+import androidx.room.Room
+import com.bigbigdw.manavarasetting.main.model.BestItemData
+import com.bigbigdw.manavarasetting.room.DBBest
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
+import org.jsoup.select.Elements
+
+object Mining {
+
+    fun miningNaverSeriesAll(context : Context){
+
+        Thread {
+            try {
+                val doc: Document = Jsoup.connect("https://series.naver.com/comic/top100List.series?rankingTypeCode=HOURLY&categoryCode=ALL").post()
+                val naverSeries: Elements = doc.select(".comic_top_lst li")
+                val NaverRef: MutableMap<String?, Any> = HashMap()
+
+                val books = ArrayList<BestItemData>()
+
+                for (i in naverSeries.indices) {
+
+                    NaverRef["writerName"] = naverSeries[i].select(".comic_cont .info .ellipsis .author").first()?.text() ?: ""
+                    NaverRef["subject"] = naverSeries.select(".comic_cont h3 a")[i].text()
+                    NaverRef["bookImg"] = naverSeries.select("a img")[i].absUrl("src")
+                    NaverRef["bookCode"] = naverSeries.select(".comic_cont a")[i].absUrl("href").replace("https://series.naver.com/comic/detail.series?productNo=", "")
+                    NaverRef["info1"] = naverSeries.select(".comic_cont .info .score_num")[i].text()
+                    NaverRef["info2"] = naverSeries[i].select(".comic_cont .info .ellipsis")[1]?.text() ?: ""
+                    NaverRef["info3"] = naverSeries.select(".comic_cont .dsc")[i].text()
+                    NaverRef["number"] = i
+
+                    NaverRef["date"] = DBDate.dateMMDD()
+                    NaverRef["type"] = "Naver_Series"
+
+                    books.add(BestRef.setBookListDataBest(NaverRef))
+
+                    miningValue(NaverRef, i, "Naver_Series", "ALL")
+                }
+
+                val bestDaoToday = Room.databaseBuilder(
+                    context,
+                    DBBest::class.java,
+                    "Today_Naver_Series_ALL"
+                ).allowMainThreadQueries().build()
+
+                val bestDaoWeek = Room.databaseBuilder(
+                    context,
+                    DBBest::class.java,
+                    "Week_Naver_Series_ALL"
+                ).allowMainThreadQueries().build()
+
+                val bestDaoMonth = Room.databaseBuilder(
+                    context,
+                    DBBest::class.java,
+                    "Month_Naver_Series_ALL"
+                ).allowMainThreadQueries().build()
+
+                bestDaoToday.bestDao().initAll()
+                bestDaoWeek.bestDao().initAll()
+                bestDaoMonth.bestDao().initAll()
+
+
+            } catch (exception: Exception) {
+                Log.d("EXCEPTION!!!!", "NAVER TODAY")
+            }
+        }.start()
+    }
+
+    private fun miningValue(ref: MutableMap<String?, Any>, num: Int, platform: String, genre: String) {
+        BestRef.setBookCode(platform, genre, ref["bookCode"] as String).setValue(BestRef.setBookListDataBest(ref))
+        BestRef.setBookCode(platform, genre, ref["bookCode"] as String).child("number").child(DBDate.dateYYYY()).child(DBDate.dateMM()).child(DBDate.datedd()).setValue(BestRef.setBookListDataBestAnalyze(ref))
+        BestRef.setBestData(platform, num, genre).setValue(ref.getValue("bookCode"))
+    }
+}

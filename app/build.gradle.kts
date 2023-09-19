@@ -89,4 +89,6 @@ dependencies {
     implementation("androidx.room:room-runtime:2.5.2")
     annotationProcessor("androidx.room:room-compiler:2.5.2")
 
+    implementation("androidx.work:work-runtime-ktx:2.8.1")
+    implementation("com.google.guava:guava:28.0-android")
 }

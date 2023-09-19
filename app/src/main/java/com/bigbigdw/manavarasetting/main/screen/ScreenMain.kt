@@ -33,22 +33,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.firebase.DataFCMBodyNotification
+import com.bigbigdw.manavarasetting.Util.Mining
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelFCM
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMining
-import com.bigbigdw.moavara.theme.color000000
-import com.bigbigdw.moavara.theme.color1E1E20
-import com.bigbigdw.moavara.theme.color6E7686
-import com.bigbigdw.moavara.theme.color844DF3
-import com.bigbigdw.moavara.theme.colorEDE6FD
-import com.bigbigdw.moavara.theme.colorFFFFFF
-import com.bigbigdw.moavara.theme.pretendardvariable
-import com.bigbigdw.moavara.theme.textColorType2
+import com.bigbigdw.manavarasetting.ui.theme.color1E1E20
+import com.bigbigdw.manavarasetting.ui.theme.color844DF3
+import com.bigbigdw.manavarasetting.ui.theme.colorEDE6FD
+import com.bigbigdw.manavarasetting.ui.theme.colorFFFFFF
+import com.bigbigdw.manavarasetting.ui.theme.pretendardvariable
+import com.bigbigdw.manavarasetting.ui.theme.textColorType2
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScreenMain(viewModelFCM: ViewModelFCM, viewModelMining: ViewModelMining) {
+fun ScreenMain(
+    viewModelFCM: ViewModelFCM,
+    viewModelMining: ViewModelMining,
+    workManager: WorkManager
+) {
 
     val context = LocalContext.current
 
@@ -168,7 +172,7 @@ fun ScreenMain(viewModelFCM: ViewModelFCM, viewModelMining: ViewModelMining) {
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
                 onClick = {
-                    viewModelMining.miningNaverSeriesAll(context)
+                    Mining.miningNaverSeriesAll(context)
                 },
                 modifier = Modifier
                     .width(260.dp)
@@ -177,6 +181,48 @@ fun ScreenMain(viewModelFCM: ViewModelFCM, viewModelMining: ViewModelMining) {
 
             ) {
                 Text(text = "네이버 시리즈 크롤링", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+            }
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(22.dp))
+            Button(
+                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                onClick = { viewModelMining.doAutoMining(workManager = workManager) },
+                modifier = Modifier
+                    .width(260.dp)
+                    .height(56.dp),
+                shape = RoundedCornerShape(50.dp)
+
+            ) {
+                Text(text = "자동 크롤링 시작", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+            }
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(22.dp))
+            Button(
+                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                onClick = { viewModelMining.cancelAutoMining(workManager = workManager) },
+                modifier = Modifier
+                    .width(260.dp)
+                    .height(56.dp),
+                shape = RoundedCornerShape(50.dp)
+
+            ) {
+                Text(text = "자동 크롤링 정지", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+            }
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(22.dp))
+            Button(
+                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                onClick = { viewModelMining.checkWorkerStatus(workManager = workManager) },
+                modifier = Modifier
+                    .width(260.dp)
+                    .height(56.dp),
+                shape = RoundedCornerShape(50.dp)
+
+            ) {
+                Text(text = "Worker 체크", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
             }
         }
 

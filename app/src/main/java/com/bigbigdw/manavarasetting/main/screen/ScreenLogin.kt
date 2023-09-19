@@ -28,13 +28,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bigbigdw.manavarasetting.R
-import com.bigbigdw.moavara.theme.color1E1E20
-import com.bigbigdw.moavara.theme.color844DF3
-import com.bigbigdw.moavara.theme.colorA7ACB7
-import com.bigbigdw.moavara.theme.colorEDE6FD
-import com.bigbigdw.moavara.theme.colorFFFFFF
-import com.bigbigdw.moavara.theme.pretendardvariable
-import com.bigbigdw.moavara.theme.textColorType2
+import com.bigbigdw.manavarasetting.ui.theme.color1E1E20
+import com.bigbigdw.manavarasetting.ui.theme.color844DF3
+import com.bigbigdw.manavarasetting.ui.theme.colorA7ACB7
+import com.bigbigdw.manavarasetting.ui.theme.colorEDE6FD
+import com.bigbigdw.manavarasetting.ui.theme.colorFFFFFF
+import com.bigbigdw.manavarasetting.ui.theme.pretendardvariable
+import com.bigbigdw.manavarasetting.ui.theme.textColorType2
 
 @Composable
 fun ScreenLogin(doLogin : () -> Unit) {

@@ -1,25 +1,24 @@
 package com.bigbigdw.manavarasetting.main.viewModels
 
-import android.content.Context
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.Room
-import com.bigbigdw.manavarasetting.Util.BestRef
-import com.bigbigdw.manavarasetting.Util.DBDate
+import androidx.work.BackoffPolicy
+import androidx.work.Data
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequest
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import com.bigbigdw.manavarasetting.firebase.FirebaseWorkManager
 import com.bigbigdw.manavarasetting.main.event.EventMining
 import com.bigbigdw.manavarasetting.main.event.StateMining
-import com.bigbigdw.manavarasetting.main.model.BestItemData
-import com.bigbigdw.manavarasetting.room.DBBest
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.runningFold
 import kotlinx.coroutines.flow.stateIn
-import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
-import org.jsoup.select.Elements
+import kotlinx.coroutines.launch
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class ViewModelMining @Inject constructor() : ViewModel() {
@@ -42,70 +41,54 @@ class ViewModelMining @Inject constructor() : ViewModel() {
         }
     }
 
-    private fun miningValue(ref: MutableMap<String?, Any>, num: Int, platform: String, genre: String) {
-        BestRef.setBookCode(platform, genre, ref["bookCode"] as String).setValue(BestRef.setBookListDataBest(ref))
-        BestRef.setBookCode(platform, genre, ref["bookCode"] as String).child("number").child(DBDate.dateMMDD()).setValue(BestRef.setBookListDataBestAnalyze(ref))
-        BestRef.setBestData(platform, num, genre).setValue(ref.getValue("bookCode"))
+    fun fetchWorkmanager(){
+
     }
 
-    fun miningNaverSeriesAll(context : Context){
+    fun checkWorkerStatus(workManager: WorkManager){
+        val status = workManager.getWorkInfosByTag("ManavaraBest").get()
 
-        Thread {
-            try {
-                val doc: Document = Jsoup.connect("https://series.naver.com/comic/top100List.series?rankingTypeCode=HOURLY&categoryCode=ALL").post()
-                val naverSeries: Elements = doc.select(".comic_top_lst li")
-                val NaverRef: MutableMap<String?, Any> = HashMap()
-
-                val books = ArrayList<BestItemData>()
-
-                for (i in naverSeries.indices) {
-
-                    NaverRef["writerName"] = naverSeries[i].select(".comic_cont .info .ellipsis .author").first()?.text() ?: ""
-                    NaverRef["subject"] = naverSeries.select(".comic_cont h3 a")[i].text()
-                    NaverRef["bookImg"] = naverSeries.select("a img")[i].absUrl("src")
-                    NaverRef["bookCode"] = naverSeries.select(".comic_cont a")[i].absUrl("href").replace("https://series.naver.com/comic/detail.series?productNo=", "")
-                    NaverRef["info1"] = naverSeries.select(".comic_cont .info .score_num")[i].text()
-                    NaverRef["info2"] = naverSeries[i].select(".comic_cont .info .ellipsis")[1]?.text() ?: ""
-                    NaverRef["info3"] = naverSeries.select(".comic_cont .dsc")[i].text()
-                    NaverRef["number"] = i
-
-                    NaverRef["date"] = DBDate.dateMMDD()
-                    NaverRef["type"] = "Naver_Series"
-
-                    books.add(BestRef.setBookListDataBest(NaverRef))
-
-                    Log.d("!!!!!!!!", "Number = ${i} BookCode = ${NaverRef["bookCode"]} Subject = ${NaverRef["subject"]}")
-
-                    miningValue(NaverRef, i, "Naver_Series", "ALL")
-                }
-
-                val bestDaoToday = Room.databaseBuilder(
-                    context,
-                    DBBest::class.java,
-                    "Today_Naver_Series_ALL"
-                ).allowMainThreadQueries().build()
-
-                val bestDaoWeek = Room.databaseBuilder(
-                    context,
-                    DBBest::class.java,
-                    "Week_Naver_Series_ALL"
-                ).allowMainThreadQueries().build()
-
-                val bestDaoMonth = Room.databaseBuilder(
-                    context,
-                    DBBest::class.java,
-                    "Month_Naver_Series_ALL"
-                ).allowMainThreadQueries().build()
-
-                bestDaoToday.bestDao().initAll()
-                bestDaoWeek.bestDao().initAll()
-                bestDaoMonth.bestDao().initAll()
-
-
-            } catch (exception: Exception) {
-                Log.d("EXCEPTION!!!!", "NAVER TODAY")
-            }
-        }.start()
+        viewModelScope.launch {
+            _sideEffects.send(status[0].state.name)
+        }
     }
-    
+
+    fun doAutoMining(workManager: WorkManager){
+        val inputData = Data.Builder()
+            .putString(FirebaseWorkManager.TYPE, "BEST")
+            .build()
+
+        /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
+        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(15, TimeUnit.MINUTES)
+            .setBackoffCriteria(
+                BackoffPolicy.LINEAR,
+                PeriodicWorkRequest.MIN_PERIODIC_FLEX_MILLIS,
+                TimeUnit.MILLISECONDS
+            )
+            .addTag("ManavaraBest")
+            .setInputData(inputData)
+            .build()
+
+        workManager.enqueueUniquePeriodicWork(
+            "ManavaraBest",
+            ExistingPeriodicWorkPolicy.UPDATE,
+            workRequest
+        )
+
+        val status = workManager.getWorkInfosByTag("ManavaraBest").get()
+
+        viewModelScope.launch {
+            _sideEffects.send("크롤링 시작 == ${status[0].state.name}")
+        }
+    }
+
+    fun cancelAutoMining(workManager: WorkManager){
+        workManager.cancelAllWork()
+
+        val status = workManager.getWorkInfosByTag("ManavaraBest").get()
+
+        viewModelScope.launch {
+            _sideEffects.send("크롤링 중지 == ${status[0].state.name}")
+        }
+    }
 }

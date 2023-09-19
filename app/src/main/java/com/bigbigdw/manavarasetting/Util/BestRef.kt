@@ -14,7 +14,7 @@ object BestRef {
     }
 
     fun setBestData(platform: String, num: Int, genre: String): DatabaseReference {
-        return  setBestRef(platform, genre).child("Data").child(DBDate.dateMMDD()).child(num.toString())
+        return  setBestRef(platform, genre).child("Data").child(DBDate.dateYYYY()).child(DBDate.dateMM()).child(DBDate.datedd()).child(num.toString())
     }
 
     fun setBookListDataBestAnalyze(ref: MutableMap<String?, Any>): BestListAnalyze {
