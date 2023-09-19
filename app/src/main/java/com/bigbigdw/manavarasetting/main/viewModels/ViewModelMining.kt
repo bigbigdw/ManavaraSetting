@@ -43,9 +43,9 @@ class ViewModelMining @Inject constructor() : ViewModel() {
     }
 
     private fun miningValue(ref: MutableMap<String?, Any>, num: Int, platform: String, genre: String) {
-        val test = BestRef.setBookCode(platform, genre, ref["bookCode"] as String)
-        test.setValue(BestRef.setBookListDataBestAnalyze(ref))
-        BestRef.setBestData(platform, num, genre).setValue(BestRef.setBookListDataBest(ref))
+        BestRef.setBookCode(platform, genre, ref["bookCode"] as String).setValue(BestRef.setBookListDataBest(ref))
+        BestRef.setBookCode(platform, genre, ref["bookCode"] as String).child("number").child(DBDate.dateMMDD()).setValue(BestRef.setBookListDataBestAnalyze(ref))
+        BestRef.setBestData(platform, num, genre).setValue(ref.getValue("bookCode"))
     }
 
     fun miningNaverSeriesAll(context : Context){
@@ -63,19 +63,19 @@ class ViewModelMining @Inject constructor() : ViewModel() {
                     NaverRef["writerName"] = naverSeries[i].select(".comic_cont .info .ellipsis .author").first()?.text() ?: ""
                     NaverRef["subject"] = naverSeries.select(".comic_cont h3 a")[i].text()
                     NaverRef["bookImg"] = naverSeries.select("a img")[i].absUrl("src")
-                    NaverRef["bookCode"] = naverSeries.select("a")[i].absUrl("href").replace("https://series.naver.com/comic/detail.series?productNo=", "")
+                    NaverRef["bookCode"] = naverSeries.select(".comic_cont a")[i].absUrl("href").replace("https://series.naver.com/comic/detail.series?productNo=", "")
                     NaverRef["info1"] = naverSeries.select(".comic_cont .info .score_num")[i].text()
                     NaverRef["info2"] = naverSeries[i].select(".comic_cont .info .ellipsis")[1]?.text() ?: ""
                     NaverRef["info3"] = naverSeries.select(".comic_cont .dsc")[i].text()
-                    NaverRef["info4"] = ""
-                    NaverRef["info5"] = ""
-                    NaverRef["info6"] = ""
                     NaverRef["number"] = i
 
                     NaverRef["date"] = DBDate.dateMMDD()
                     NaverRef["type"] = "Naver_Series"
 
                     books.add(BestRef.setBookListDataBest(NaverRef))
+
+                    Log.d("!!!!!!!!", "Number = ${i} BookCode = ${NaverRef["bookCode"]} Subject = ${NaverRef["subject"]}")
+
                     miningValue(NaverRef, i, "Naver_Series", "ALL")
                 }
 
