@@ -6,6 +6,8 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.bigbigdw.manavarasetting.Util.DBDate
 import com.bigbigdw.manavarasetting.Util.Mining
+import com.bigbigdw.manavarasetting.Util.NaverSeriesGenre
+import com.bigbigdw.manavarasetting.Util.getNaverSeriesGenre
 import com.bigbigdw.massmath.Firebase.FirebaseService
 import com.google.firebase.database.FirebaseDatabase
 import retrofit2.Call
@@ -29,11 +31,13 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
     override fun doWork(): Result {
 
         if(inputData.getString(TYPE).equals("BEST")){
-//            Mining.runMining(applicationContext, "FANTASY")
-//            Mining.runMining(applicationContext, "ALL")
-//            Mining.runMining(applicationContext, "ROMANCE")
-//            Mining.runMining(applicationContext, "BL")
-            Mining.miningNaverSeriesAll(applicationContext)
+
+            for(j in NaverSeriesGenre){
+                for(i in 1..5){
+                    Mining.miningNaverSeriesAll(pageCount = i, genre = j)
+                }
+            }
+
             postFCM()
         } else if(inputData.getString(TYPE).equals("PICK")) {
 //            Mining.getMyPickMining(applicationContext)
@@ -88,10 +92,17 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
             ) {
                 if (response.isSuccessful) {
                     response.body()?.let { it ->
-                        Log.d("FCM", "성공");
+                        Log.d("FCM", "성공")
+
+                        for (j in NaverSeriesGenre) {
+                            Mining.uploadJsonArrayToStorage(
+                                platform = "NAVER_SERIES",
+                                genre = getNaverSeriesGenre(j)
+                            )
+                        }
                     }
                 } else {
-                    Log.d("FCM", "실패2");
+                    Log.d("FCM", "실패2")
                 }
             }
 

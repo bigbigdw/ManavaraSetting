@@ -1,5 +1,6 @@
 package com.bigbigdw.manavarasetting.main.screen
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -37,6 +38,10 @@ import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.firebase.DataFCMBodyNotification
 import com.bigbigdw.manavarasetting.Util.Mining
+import com.bigbigdw.manavarasetting.Util.Mining.uploadJsonArrayToStorage
+import com.bigbigdw.manavarasetting.Util.Mining.uploadJsonFile
+import com.bigbigdw.manavarasetting.Util.NaverSeriesGenre
+import com.bigbigdw.manavarasetting.Util.getNaverSeriesGenre
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelFCM
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMining
 import com.bigbigdw.manavarasetting.ui.theme.color1E1E20
@@ -70,6 +75,9 @@ fun ScreenMain(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(120.dp))
             Image(
                 painter = painterResource(id = R.mipmap.ic_launcher),
                 contentDescription = null,
@@ -172,7 +180,11 @@ fun ScreenMain(
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
                 onClick = {
-                    Mining.miningNaverSeriesAll(context)
+                    for(j in NaverSeriesGenre){
+                        for(i in 1..5){
+                            Mining.miningNaverSeriesAll(pageCount = i, genre = j)
+                        }
+                    }
                 },
                 modifier = Modifier
                     .width(260.dp)
@@ -224,6 +236,41 @@ fun ScreenMain(
             ) {
                 Text(text = "Worker 체크", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
             }
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(22.dp))
+            Button(
+                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                onClick = { uploadJsonFile() },
+                modifier = Modifier
+                    .width(260.dp)
+                    .height(56.dp),
+                shape = RoundedCornerShape(50.dp)
+
+            ) {
+                Text(text = "JSON 업로드", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+            }
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(22.dp))
+            Button(
+                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                onClick = {
+                    for (j in NaverSeriesGenre) {
+                        uploadJsonArrayToStorage(platform = "NAVER_SERIES", genre = getNaverSeriesGenre(j))
+                    }
+                },
+                modifier = Modifier
+                    .width(260.dp)
+                    .height(56.dp),
+                shape = RoundedCornerShape(50.dp)
+
+            ) {
+                Text(text = "JSON 배열 업로드", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+            }
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(120.dp))
         }
 
         Column(

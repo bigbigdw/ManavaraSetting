@@ -13,5 +13,31 @@ fun dateMMDDHHMM(): String {
     return format.format(currentTime).toString()
 }
 
+val NaverSeriesGenre = arrayListOf(
+    "ALL",
+    "99",
+    "93",
+    "90",
+    "88",
+    "107",
+)
+
+fun getNaverSeriesGenre(genre : String) : String {
+    if(genre == "ALL"){
+        return "ALL"
+    } else if(genre == "99"){
+        return "MELO"
+    } else if(genre == "93"){
+        return "DRAMA"
+    } else if(genre == "90"){
+        return "YOUNG"
+    } else if(genre == "88"){
+        return "ACTION"
+    }else if(genre == "107"){
+        return "BL"
+    } else {
+        return "없음"
+    }
+}
 
 

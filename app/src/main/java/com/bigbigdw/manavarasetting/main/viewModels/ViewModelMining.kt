@@ -11,6 +11,10 @@ import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.firebase.FirebaseWorkManager
 import com.bigbigdw.manavarasetting.main.event.EventMining
 import com.bigbigdw.manavarasetting.main.event.StateMining
+import com.bigbigdw.manavarasetting.main.model.BestItemData
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+import com.google.gson.Gson
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -18,6 +22,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.runningFold
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.io.ByteArrayInputStream
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -41,15 +46,17 @@ class ViewModelMining @Inject constructor() : ViewModel() {
         }
     }
 
-    fun fetchWorkmanager(){
-
-    }
-
     fun checkWorkerStatus(workManager: WorkManager){
         val status = workManager.getWorkInfosByTag("ManavaraBest").get()
 
         viewModelScope.launch {
-            _sideEffects.send(status[0].state.name)
+            _sideEffects.send(
+                if (status.isEmpty()) {
+                    "활성화 되지 않음"
+                } else {
+                    status[0].state.name
+                }
+            )
         }
     }
 
@@ -78,7 +85,13 @@ class ViewModelMining @Inject constructor() : ViewModel() {
         val status = workManager.getWorkInfosByTag("ManavaraBest").get()
 
         viewModelScope.launch {
-            _sideEffects.send("크롤링 시작 == ${status[0].state.name}")
+            _sideEffects.send(
+                if (status.isEmpty()) {
+                    "활성화 되지 않음"
+                } else {
+                    "크롤링 시작 == ${status[0].state.name}"
+                }
+            )
         }
     }
 
@@ -88,7 +101,13 @@ class ViewModelMining @Inject constructor() : ViewModel() {
         val status = workManager.getWorkInfosByTag("ManavaraBest").get()
 
         viewModelScope.launch {
-            _sideEffects.send("크롤링 중지 == ${status[0].state.name}")
+            _sideEffects.send(
+                if (status.isEmpty()) {
+                    "활성화 되지 않음"
+                } else {
+                    "크롤링 중지 == ${status[0].state.name}"
+                }
+            )
         }
     }
 }
