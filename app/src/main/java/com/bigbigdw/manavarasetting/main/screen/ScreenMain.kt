@@ -1,6 +1,5 @@
 package com.bigbigdw.manavarasetting.main.screen
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -267,6 +266,23 @@ fun ScreenMain(
 
             ) {
                 Text(text = "JSON 배열 업로드", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+            }
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(22.dp))
+            Button(
+                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                onClick = {
+                    viewModelMining.incrementCounter()
+
+                },
+                modifier = Modifier
+                    .width(260.dp)
+                    .height(56.dp),
+                shape = RoundedCornerShape(50.dp)
+
+            ) {
+                Text(text = "카운트", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
             }
             Spacer(modifier = Modifier
                 .fillMaxWidth()

@@ -1,5 +1,9 @@
 package com.bigbigdw.manavarasetting.main.viewModels
 
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.BackoffPolicy
@@ -8,13 +12,10 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import com.bigbigdw.manavarasetting.ManavaraSetting
 import com.bigbigdw.manavarasetting.firebase.FirebaseWorkManager
 import com.bigbigdw.manavarasetting.main.event.EventMining
 import com.bigbigdw.manavarasetting.main.event.StateMining
-import com.bigbigdw.manavarasetting.main.model.BestItemData
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
-import com.google.gson.Gson
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -22,11 +23,12 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.runningFold
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import java.io.ByteArrayInputStream
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class ViewModelMining @Inject constructor() : ViewModel() {
+
+    val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "MINING")
 
     private val events = Channel<EventMining>()
 
@@ -108,6 +110,13 @@ class ViewModelMining @Inject constructor() : ViewModel() {
                     "크롤링 중지 == ${status[0].state.name}"
                 }
             )
+        }
+    }
+
+    fun incrementCounter() {
+        viewModelScope.launch {
+            val text = "Sample"
+            ManavaraSetting.getInstance().getDataStore().setText(text)
         }
     }
 }

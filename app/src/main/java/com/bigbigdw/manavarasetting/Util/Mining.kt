@@ -37,7 +37,7 @@ object Mining {
                     NaverRef["info3"] = naverSeries.select(".comic_cont .dsc")[i].text()
                     NaverRef["number"] = (naverSeries.size * (pageCount - 1)) + i
 
-                    NaverRef["date"] = DBDate.dateMMDD()
+                    NaverRef["date"] = dateMMDD()
                     NaverRef["type"] = "NAVER_SERIES"
 
                     books.add(BestRef.setBookListDataBest(NaverRef))

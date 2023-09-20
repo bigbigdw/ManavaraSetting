@@ -1,5 +1,6 @@
 package com.bigbigdw.manavarasetting.main
 
+import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -17,10 +18,12 @@ class ActivityMain : ComponentActivity() {
 
     private val viewModelFCM: ViewModelFCM by viewModels()
     private val viewModelMining: ViewModelMining by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val workManager = WorkManager.getInstance(applicationContext)
+
 
         viewModelFCM.sideEffects
             .onEach { Toast.makeText(this@ActivityMain, it, Toast.LENGTH_SHORT).show() }
