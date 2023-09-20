@@ -1,4 +1,4 @@
-package com.bigbigdw.manavarasetting.Util
+package com.bigbigdw.manavarasetting.util
 
 import android.annotation.SuppressLint
 import android.icu.text.SimpleDateFormat

@@ -36,11 +36,11 @@ import androidx.compose.ui.unit.sp
 import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.firebase.DataFCMBodyNotification
-import com.bigbigdw.manavarasetting.Util.Mining
-import com.bigbigdw.manavarasetting.Util.Mining.uploadJsonArrayToStorage
-import com.bigbigdw.manavarasetting.Util.Mining.uploadJsonFile
-import com.bigbigdw.manavarasetting.Util.NaverSeriesGenre
-import com.bigbigdw.manavarasetting.Util.getNaverSeriesGenre
+import com.bigbigdw.manavarasetting.util.Mining
+import com.bigbigdw.manavarasetting.util.Mining.uploadJsonArrayToStorage
+import com.bigbigdw.manavarasetting.util.Mining.uploadJsonFile
+import com.bigbigdw.manavarasetting.util.NaverSeriesGenre
+import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelFCM
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMining
 import com.bigbigdw.manavarasetting.ui.theme.color1E1E20

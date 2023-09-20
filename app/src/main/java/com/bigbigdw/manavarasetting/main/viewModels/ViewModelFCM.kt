@@ -6,7 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bigbigdw.manavarasetting.Util.dateMMDDHHMM
+import com.bigbigdw.manavarasetting.util.dateMMDDHHMM
 import com.bigbigdw.manavarasetting.firebase.DataFCMBody
 import com.bigbigdw.manavarasetting.firebase.DataFCMBodyData
 import com.bigbigdw.manavarasetting.firebase.DataFCMBodyNotification

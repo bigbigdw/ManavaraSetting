@@ -1,4 +1,4 @@
-package com.bigbigdw.manavarasetting.Util
+package com.bigbigdw.manavarasetting.util
 
 import com.bigbigdw.manavarasetting.main.model.BestItemData
 import com.bigbigdw.manavarasetting.main.model.BestListAnalyze

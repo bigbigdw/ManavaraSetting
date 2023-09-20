@@ -1,7 +1,7 @@
-package com.bigbigdw.manavarasetting.Util
+package com.bigbigdw.manavarasetting.util
 
 import android.util.Log
-import com.bigbigdw.manavarasetting.Util.DBDate.dateMMDD
+import com.bigbigdw.manavarasetting.util.DBDate.dateMMDD
 import com.bigbigdw.manavarasetting.main.model.BestItemData
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

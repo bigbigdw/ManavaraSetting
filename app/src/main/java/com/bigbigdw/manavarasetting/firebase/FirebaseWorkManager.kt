@@ -4,10 +4,10 @@ import android.content.Context
 import android.util.Log
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.bigbigdw.manavarasetting.Util.DBDate
-import com.bigbigdw.manavarasetting.Util.Mining
-import com.bigbigdw.manavarasetting.Util.NaverSeriesGenre
-import com.bigbigdw.manavarasetting.Util.getNaverSeriesGenre
+import com.bigbigdw.manavarasetting.util.DBDate
+import com.bigbigdw.manavarasetting.util.Mining
+import com.bigbigdw.manavarasetting.util.NaverSeriesGenre
+import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
 import com.bigbigdw.massmath.Firebase.FirebaseService
 import com.google.firebase.database.FirebaseDatabase
 import retrofit2.Call
@@ -58,11 +58,11 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
         val fcmBody = DataFCMBody(
             "/topics/all",
             "high",
-            DataFCMBodyData("마나바라", "베스트 리스트가 갱신되었습니다"),
-            DataFCMBodyNotification(title = "마나바라", body = "${year}.${month}.${day} ${hour}:${min} 베스트 리스트가 갱신되었습니다", click_action= "best"),
+            DataFCMBodyData("마나바라 세팅", "베스트 리스트가 갱신되었습니다"),
+            DataFCMBodyNotification(title = "마나바라 세팅", body = "${year}.${month}.${day} ${hour}:${min} 베스트 리스트가 갱신되었습니다", click_action= "best"),
         )
 
-        miningAlert("마나바라", "${year}.${month}.${day} ${hour}:${min} 베스트 리스트가 갱신되었습니다", "ALERT")
+        miningAlert("마나바라 세팅", "${year}.${month}.${day} ${hour}:${min} 베스트 리스트가 갱신되었습니다", "ALERT")
 
 
 //        userDao = Room.databaseBuilder(
