@@ -16,7 +16,13 @@ data class BestItemData(
     @SerialName("number")
     var number: Int = 0,
     @SerialName("type")
-    var type: String = ""
+    var type: String = "",
+    @SerialName("info1")
+    var info1: String = "",
+    @SerialName("info2")
+    var info2: String = "",
+    @SerialName("info3")
+    var info3: String = ""
 )
 
 data class BestListAnalyze (

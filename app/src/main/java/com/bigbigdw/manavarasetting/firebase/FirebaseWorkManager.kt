@@ -95,7 +95,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                         Log.d("FCM", "성공")
 
                         for (j in NaverSeriesGenre) {
-                            Mining.uploadJsonArrayToStorage(
+                            Mining.uploadJsonArrayToStorageDay(
                                 platform = "NAVER_SERIES",
                                 genre = getNaverSeriesGenre(j)
                             )

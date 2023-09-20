@@ -3,6 +3,10 @@ package com.bigbigdw.manavarasetting.util
 import android.util.Log
 import com.bigbigdw.manavarasetting.util.DBDate.dateMMDD
 import com.bigbigdw.manavarasetting.main.model.BestItemData
+import com.bigbigdw.manavarasetting.util.DBDate.getCurrentWeekNumber
+import com.bigbigdw.manavarasetting.util.DBDate.getDayOfWeekAsNumber
+import com.bigbigdw.manavarasetting.util.DBDate.month
+import com.bigbigdw.manavarasetting.util.DBDate.year
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -10,10 +14,14 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.google.gson.Gson
 import com.google.gson.JsonArray
+import com.google.gson.JsonParser
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
 import java.io.ByteArrayInputStream
+import java.nio.charset.Charset
 
 object Mining {
     fun miningNaverSeriesAll(pageCount: Int, genre: String){
@@ -75,10 +83,77 @@ object Mining {
         }
     }
 
-    fun uploadJsonArrayToStorage(platform : String, genre: String) {
+    fun uploadJsonArrayToStorageWeek(platform : String, genre: String) {
         val storage = Firebase.storage
         val storageRef = storage.reference
-        val jsonArrayRef = storageRef.child("${platform}/${genre}/${dateMMDD()}.json") // 업로드 경로 및 파일 이름 설정
+
+        val jsonFileRef = storageRef.child("${platform}/${genre}/WEEK/${year()}_${month()}_${getCurrentWeekNumber()}.json") // 읽어올 JSON 파일의 경로
+
+        // JSON 파일을 다운로드
+        jsonFileRef.getBytes(1024 * 1024) // 원하는 파일 크기로 변경 가능
+            .addOnSuccessListener { bytes ->
+                val jsonString = String(bytes, Charset.forName("UTF-8"))
+                val weekArray = JsonParser().parse(jsonString).asJsonArray
+
+                // JSON 파일을 읽은 후 처리
+                makeWeekJson(platform = platform, genre = genre, jsonArray = weekArray)
+
+                // 이제 json 문자열을 파싱하거나 원하는 처리를 수행할 수 있습니다.
+            }
+
+            .addOnFailureListener { exception ->
+
+                val jsonArray = JsonArray()
+
+                for(i in 0..6){
+                    jsonArray.add("")
+                }
+
+                // 다운로드 실패 시 처리
+                makeWeekJson(platform = platform, genre = genre, jsonArray = jsonArray)
+            }
+    }
+
+    fun makeWeekJson(platform : String, genre: String, jsonArray : JsonArray)  {
+        val storage = Firebase.storage
+        val storageRef = storage.reference
+
+        val jsonArrayRef = storageRef.child("${platform}/${genre}/WEEK/${year()}_${month()}_${getCurrentWeekNumber()}.json")
+
+        val jsonFileRef = storageRef.child("${platform}/${genre}/DAY/${dateMMDD()}.json") // 읽어올 JSON 파일의 경로
+
+        // JSON 파일을 다운로드
+        val file = jsonFileRef.getBytes(1024 * 1024) // 원하는 파일 크기로 변경 가능
+
+        file.addOnSuccessListener { bytes ->
+            val jsonString = String(bytes, Charset.forName("UTF-8"))
+            val json = Json { ignoreUnknownKeys = true }
+            val itemList = json.decodeFromString<List<BestItemData>>(jsonString)
+            val itemJsonArray = JsonArray()
+
+            // JSON 배열 사용
+            for (item in itemList) {
+                itemJsonArray.add(convertBestItemData(item))
+            }
+
+            jsonArray.set(getDayOfWeekAsNumber() , itemJsonArray)
+
+            // JSON 배열을 바이트 배열로 변환
+            val jsonBytes = jsonArray.toString().toByteArray(Charsets.UTF_8)
+
+            // Firebase Storage에 JSON 배열 업로드
+            jsonArrayRef.putBytes(jsonBytes)
+                .addOnSuccessListener {
+                    // 업로드 성공 시 처리
+                    Log.d("!!!!!!MINING", "JSON 배열 업로드 성공!")
+                }
+        }
+    }
+
+    fun uploadJsonArrayToStorageDay(platform : String, genre: String) {
+        val storage = Firebase.storage
+        val storageRef = storage.reference
+        val jsonArrayRef = storageRef.child("${platform}/${genre}/DAY/${dateMMDD()}.json") // 업로드 경로 및 파일 이름 설정
 
         BestRef.setBestRef(platform, genre).child("DATA").addListenerForSingleValueEvent(object :
             ValueEventListener {
@@ -89,23 +164,18 @@ object Mining {
 
                     for (postSnapshot in dataSnapshot.children) {
                         val group: BestItemData? = postSnapshot.getValue(BestItemData::class.java)
-                        jsonArray.add(Gson().toJson(group))
+                        jsonArray.add(convertBestItemData(group ?: BestItemData()))
                     }
 
                     // JSON 배열을 바이트 배열로 변환
-                    val jsonBytes = ByteArrayInputStream(jsonArray.toString().toByteArray(Charsets.UTF_8))
+                    val jsonArrayByteArray = jsonArray.toString().toByteArray(Charsets.UTF_8)
 
                     // Firebase Storage에 JSON 배열 업로드
-                    jsonArrayRef.putStream(jsonBytes)
+                    jsonArrayRef.putBytes(jsonArrayByteArray)
                         .addOnSuccessListener {
                             // 업로드 성공 시 처리
                             Log.d("!!!!!!MINING", "JSON 배열 업로드 성공!")
                         }
-                        .addOnFailureListener {
-                            // 업로드 실패 시 처리
-                            Log.d("!!!!!!MINING", "JSON 배열 업로드 실패: ${it.message}")
-                        }
-
                 } else {
                     Log.d("!!!!!!MINING", "JSON 배열 업로드 실패")
                 }

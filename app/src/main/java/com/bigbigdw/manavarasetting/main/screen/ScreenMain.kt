@@ -37,7 +37,7 @@ import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.firebase.DataFCMBodyNotification
 import com.bigbigdw.manavarasetting.util.Mining
-import com.bigbigdw.manavarasetting.util.Mining.uploadJsonArrayToStorage
+import com.bigbigdw.manavarasetting.util.Mining.uploadJsonArrayToStorageDay
 import com.bigbigdw.manavarasetting.util.Mining.uploadJsonFile
 import com.bigbigdw.manavarasetting.util.NaverSeriesGenre
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
@@ -49,6 +49,9 @@ import com.bigbigdw.manavarasetting.ui.theme.colorEDE6FD
 import com.bigbigdw.manavarasetting.ui.theme.colorFFFFFF
 import com.bigbigdw.manavarasetting.ui.theme.pretendardvariable
 import com.bigbigdw.manavarasetting.ui.theme.textColorType2
+import com.bigbigdw.manavarasetting.util.Mining.makeWeekJson
+import com.bigbigdw.manavarasetting.util.Mining.uploadJsonArrayToStorageWeek
+import com.google.gson.JsonArray
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -256,7 +259,7 @@ fun ScreenMain(
                 colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
                 onClick = {
                     for (j in NaverSeriesGenre) {
-                        uploadJsonArrayToStorage(platform = "NAVER_SERIES", genre = getNaverSeriesGenre(j))
+                        uploadJsonArrayToStorageDay(platform = "NAVER_SERIES", genre = getNaverSeriesGenre(j))
                     }
                 },
                 modifier = Modifier
@@ -283,6 +286,50 @@ fun ScreenMain(
 
             ) {
                 Text(text = "카운트", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+            }
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(22.dp))
+            Button(
+                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                onClick = {
+                    for (j in NaverSeriesGenre) {
+
+                        val jsonArray = JsonArray()
+
+                        for(i in 0..6){
+                            jsonArray.add("")
+                        }
+
+
+                        makeWeekJson(platform = "NAVER_SERIES", genre = getNaverSeriesGenre(j), jsonArray = jsonArray)
+                    }
+                },
+                modifier = Modifier
+                    .width(260.dp)
+                    .height(56.dp),
+                shape = RoundedCornerShape(50.dp)
+
+            ) {
+                Text(text = "WEEK JSON 생성", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+            }
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(22.dp))
+            Button(
+                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                onClick = {
+                    for (j in NaverSeriesGenre) {
+                        uploadJsonArrayToStorageWeek(platform = "NAVER_SERIES", genre = getNaverSeriesGenre(j))
+                    }
+                },
+                modifier = Modifier
+                    .width(260.dp)
+                    .height(56.dp),
+                shape = RoundedCornerShape(50.dp)
+
+            ) {
+                Text(text = "WEEK JSON 기존 업데이트", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
             }
             Spacer(modifier = Modifier
                 .fillMaxWidth()

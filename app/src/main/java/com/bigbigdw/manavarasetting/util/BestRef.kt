@@ -37,7 +37,10 @@ object BestRef {
             ref["bookImg"] as String,
             ref["bookCode"] as String,
             ref["number"] as Int,
-            ref["type"] as String
+            ref["type"] as String,
+            ref["info1"] as String,
+            ref["info2"] as String,
+            ref["info3"] as String,
         )
     }
 }

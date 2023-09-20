@@ -2,6 +2,8 @@ package com.bigbigdw.manavarasetting.util
 
 import android.annotation.SuppressLint
 import android.icu.text.SimpleDateFormat
+import com.bigbigdw.manavarasetting.main.model.BestItemData
+import com.google.gson.JsonObject
 import java.util.Calendar
 import java.util.Date
 
@@ -38,6 +40,19 @@ fun getNaverSeriesGenre(genre : String) : String {
     } else {
         return "없음"
     }
+}
+
+fun convertBestItemData(bestItemData : BestItemData) : JsonObject {
+    val jsonObject = JsonObject()
+    jsonObject.addProperty("writer", bestItemData.writer)
+    jsonObject.addProperty("title", bestItemData.title)
+    jsonObject.addProperty("bookImg", bestItemData.bookImg)
+    jsonObject.addProperty("bookCode", bestItemData.bookCode)
+    jsonObject.addProperty("type", bestItemData.type)
+    jsonObject.addProperty("info1", bestItemData.type)
+    jsonObject.addProperty("info2", bestItemData.type)
+    jsonObject.addProperty("info3", bestItemData.type)
+    return jsonObject
 }
 
 
