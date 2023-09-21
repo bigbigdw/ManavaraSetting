@@ -204,7 +204,7 @@ fun uploadJsonArrayToStorageDay(platform : String, genre: String) {
     })
 }
 
-fun getTotalWeek(platform : String, genre: String) {
+fun calculateTrophy(platform : String, genre: String) {
     val storage = Firebase.storage
     val storageRef = storage.reference
     val todayFileRef = storageRef.child("${platform}/${genre}/DAY/${DBDate.dateMMDD()}.json")

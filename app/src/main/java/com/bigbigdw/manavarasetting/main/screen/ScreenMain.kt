@@ -47,7 +47,7 @@ import com.bigbigdw.manavarasetting.ui.theme.colorEDE6FD
 import com.bigbigdw.manavarasetting.ui.theme.colorFFFFFF
 import com.bigbigdw.manavarasetting.ui.theme.pretendardvariable
 import com.bigbigdw.manavarasetting.ui.theme.textColorType2
-import com.bigbigdw.manavarasetting.util.getTotalWeek
+import com.bigbigdw.manavarasetting.util.calculateTrophy
 import com.bigbigdw.manavarasetting.util.makeWeekJson
 import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageDay
 import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageWeek
@@ -388,7 +388,7 @@ fun ScreenMain(
                 colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
                 onClick = {
                     for (j in NaverSeriesGenre) {
-                        getTotalWeek(platform = "NAVER_SERIES", genre = getNaverSeriesGenre(j))
+                        calculateTrophy(platform = "NAVER_SERIES", genre = getNaverSeriesGenre(j))
                     }
                 },
                 modifier = Modifier
@@ -398,6 +398,54 @@ fun ScreenMain(
 
             ) {
                 Text(text = "트로피 정산", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+            }
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(22.dp))
+            Button(
+                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                onClick = {
+                    viewModelMining.doAutoMiningBestTrophy(workManager)
+                },
+                modifier = Modifier
+                    .width(260.dp)
+                    .height(56.dp),
+                shape = RoundedCornerShape(50.dp)
+
+            ) {
+                Text(text = "트로피 정산 자동화 시작", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+            }
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(22.dp))
+            Button(
+                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                onClick = {
+                    viewModelMining.cancelAutoMiningBestTrophy(workManager)
+                },
+                modifier = Modifier
+                    .width(260.dp)
+                    .height(56.dp),
+                shape = RoundedCornerShape(50.dp)
+
+            ) {
+                Text(text = "트로피 정산 자동화 취소", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+            }
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(22.dp))
+            Button(
+                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                onClick = {
+                    viewModelMining.cancelAutoMiningBestTrophy(workManager)
+                },
+                modifier = Modifier
+                    .width(260.dp)
+                    .height(56.dp),
+                shape = RoundedCornerShape(50.dp)
+
+            ) {
+                Text(text = "트로피 정산 WORKER 체크", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
             }
             Spacer(modifier = Modifier
                 .fillMaxWidth()

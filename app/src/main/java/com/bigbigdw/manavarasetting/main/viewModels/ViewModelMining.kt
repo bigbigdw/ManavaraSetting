@@ -178,6 +178,71 @@ class ViewModelMining @Inject constructor() : ViewModel() {
         }
     }
 
+    fun doAutoMiningBestTrophy(workManager: WorkManager){
+        val inputData = Data.Builder()
+            .putString(FirebaseWorkManager.TYPE, "BEST_TROPHY")
+            .build()
+
+        /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
+        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(1, TimeUnit.HOURS)
+            .setBackoffCriteria(
+                BackoffPolicy.LINEAR,
+                PeriodicWorkRequest.MIN_PERIODIC_FLEX_MILLIS,
+                TimeUnit.MILLISECONDS
+            )
+            .addTag("ManavaraBestTROPHY")
+            .setInputData(inputData)
+            .build()
+
+        workManager.enqueueUniquePeriodicWork(
+            "ManavaraBestTROPHY",
+            ExistingPeriodicWorkPolicy.UPDATE,
+            workRequest
+        )
+
+        val status = workManager.getWorkInfosByTag("ManavaraBestTROPHY").get()
+
+        viewModelScope.launch {
+            _sideEffects.send(
+                if (status.isEmpty()) {
+                    "활성화 되지 않음"
+                } else {
+                    "크롤링 시작 == ${status[0].state.name}"
+                }
+            )
+        }
+    }
+
+    fun cancelAutoMiningBestTrophy(workManager: WorkManager){
+        workManager.cancelAllWork()
+
+        val status = workManager.getWorkInfosByTag("ManavaraBestTROPHY").get()
+
+        viewModelScope.launch {
+            _sideEffects.send(
+                if (status.isEmpty()) {
+                    "활성화 되지 않음"
+                } else {
+                    "크롤링 중지 == ${status[0].state.name}"
+                }
+            )
+        }
+    }
+
+    fun checkWorkerStatusBestTROPHY(workManager: WorkManager){
+        val status = workManager.getWorkInfosByTag("ManavaraBestTROPHY").get()
+
+        viewModelScope.launch {
+            _sideEffects.send(
+                if (status.isEmpty()) {
+                    "활성화 되지 않음"
+                } else {
+                    status[0].state.name
+                }
+            )
+        }
+    }
+
     fun incrementCounter() {
         viewModelScope.launch {
             val text = "Sample"

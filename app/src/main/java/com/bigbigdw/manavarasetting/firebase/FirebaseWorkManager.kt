@@ -7,6 +7,7 @@ import androidx.work.WorkerParameters
 import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.Mining
 import com.bigbigdw.manavarasetting.util.NaverSeriesGenre
+import com.bigbigdw.manavarasetting.util.calculateTrophy
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
 import com.bigbigdw.manavarasetting.util.makeWeekJson
 import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageDay
@@ -34,22 +35,33 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
 
     override fun doWork(): Result {
 
-        if(inputData.getString(TYPE).equals("BEST")){
+        if (inputData.getString(TYPE).equals("BEST")) {
 
-            for(j in NaverSeriesGenre){
-                for(i in 1..5){
+            for (j in NaverSeriesGenre) {
+                for (i in 1..5) {
                     Mining.miningNaverSeriesAll(pageCount = i, genre = j)
                 }
             }
 
             postFCM(data = "베스트 리스트가 갱신되었습니다")
-        } else if(inputData.getString(TYPE).equals("BEST_JSON")) {
+        } else if (inputData.getString(TYPE).equals("BEST_JSON")) {
             for (j in NaverSeriesGenre) {
-                uploadJsonArrayToStorageDay(platform = "NAVER_SERIES", genre = getNaverSeriesGenre(j))
-                uploadJsonArrayToStorageWeek(platform = "NAVER_SERIES", genre = getNaverSeriesGenre(j))
+                uploadJsonArrayToStorageDay(
+                    platform = "NAVER_SERIES",
+                    genre = getNaverSeriesGenre(j)
+                )
+                uploadJsonArrayToStorageWeek(
+                    platform = "NAVER_SERIES",
+                    genre = getNaverSeriesGenre(j)
+                )
             }
             postFCM(data = "DAY JSON 생성이 완료되었습니다")
-        } else if(inputData.getString(TYPE).equals("PICK")) {
+        } else if (inputData.getString(TYPE).equals("BEST_TROPHY")) {
+            for (j in NaverSeriesGenre) {
+                calculateTrophy(platform = "NAVER_SERIES", genre = getNaverSeriesGenre(j))
+            }
+            postFCM(data = "트로피 정산이 완료되었습니다")
+        } else if (inputData.getString(TYPE).equals("PICK")) {
 //            Mining.getMyPickMining(applicationContext)
 //            postFCMPick(inputData.getString(UID).toString(), inputData.getString(USER).toString())
         }
