@@ -48,7 +48,7 @@ class ViewModelMining @Inject constructor() : ViewModel() {
         }
     }
 
-    fun checkWorkerStatus(workManager: WorkManager){
+    fun checkWorkerStatusBest(workManager: WorkManager){
         val status = workManager.getWorkInfosByTag("ManavaraBest").get()
 
         viewModelScope.launch {
@@ -62,7 +62,7 @@ class ViewModelMining @Inject constructor() : ViewModel() {
         }
     }
 
-    fun doAutoMining(workManager: WorkManager){
+    fun doAutoMiningBest(workManager: WorkManager){
         val inputData = Data.Builder()
             .putString(FirebaseWorkManager.TYPE, "BEST")
             .build()
@@ -97,10 +97,61 @@ class ViewModelMining @Inject constructor() : ViewModel() {
         }
     }
 
-    fun cancelAutoMining(workManager: WorkManager){
+    fun cancelAutoMiningBest(workManager: WorkManager){
         workManager.cancelAllWork()
 
         val status = workManager.getWorkInfosByTag("ManavaraBest").get()
+
+        viewModelScope.launch {
+            _sideEffects.send(
+                if (status.isEmpty()) {
+                    "활성화 되지 않음"
+                } else {
+                    "크롤링 중지 == ${status[0].state.name}"
+                }
+            )
+        }
+    }
+
+    fun doAutoMiningBestJSON(workManager: WorkManager){
+        val inputData = Data.Builder()
+            .putString(FirebaseWorkManager.TYPE, "BEST_JSON")
+            .build()
+
+        /* 반복 시간에 사용할 수 있는 가장 짧은 최소값은 15 */
+        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(30, TimeUnit.MINUTES)
+            .setBackoffCriteria(
+                BackoffPolicy.LINEAR,
+                PeriodicWorkRequest.MIN_PERIODIC_FLEX_MILLIS,
+                TimeUnit.MILLISECONDS
+            )
+            .addTag("ManavaraBestJSON")
+            .setInputData(inputData)
+            .build()
+
+        workManager.enqueueUniquePeriodicWork(
+            "ManavaraBestJSON",
+            ExistingPeriodicWorkPolicy.UPDATE,
+            workRequest
+        )
+
+        val status = workManager.getWorkInfosByTag("ManavaraBestJSON").get()
+
+        viewModelScope.launch {
+            _sideEffects.send(
+                if (status.isEmpty()) {
+                    "활성화 되지 않음"
+                } else {
+                    "크롤링 시작 == ${status[0].state.name}"
+                }
+            )
+        }
+    }
+
+    fun cancelAutoMiningBestJSON(workManager: WorkManager){
+        workManager.cancelAllWork()
+
+        val status = workManager.getWorkInfosByTag("ManavaraBestJSON").get()
 
         viewModelScope.launch {
             _sideEffects.send(

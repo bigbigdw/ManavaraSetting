@@ -37,8 +37,6 @@ import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.firebase.DataFCMBodyNotification
 import com.bigbigdw.manavarasetting.util.Mining
-import com.bigbigdw.manavarasetting.util.Mining.uploadJsonArrayToStorageDay
-import com.bigbigdw.manavarasetting.util.Mining.uploadJsonFile
 import com.bigbigdw.manavarasetting.util.NaverSeriesGenre
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelFCM
@@ -49,8 +47,10 @@ import com.bigbigdw.manavarasetting.ui.theme.colorEDE6FD
 import com.bigbigdw.manavarasetting.ui.theme.colorFFFFFF
 import com.bigbigdw.manavarasetting.ui.theme.pretendardvariable
 import com.bigbigdw.manavarasetting.ui.theme.textColorType2
-import com.bigbigdw.manavarasetting.util.Mining.makeWeekJson
-import com.bigbigdw.manavarasetting.util.Mining.uploadJsonArrayToStorageWeek
+import com.bigbigdw.manavarasetting.util.makeWeekJson
+import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageDay
+import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageWeek
+import com.bigbigdw.manavarasetting.util.uploadJsonFile
 import com.google.gson.JsonArray
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -201,7 +201,7 @@ fun ScreenMain(
                 .height(22.dp))
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
-                onClick = { viewModelMining.doAutoMining(workManager = workManager) },
+                onClick = { viewModelMining.doAutoMiningBest(workManager = workManager) },
                 modifier = Modifier
                     .width(260.dp)
                     .height(56.dp),
@@ -215,7 +215,7 @@ fun ScreenMain(
                 .height(22.dp))
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
-                onClick = { viewModelMining.cancelAutoMining(workManager = workManager) },
+                onClick = { viewModelMining.cancelAutoMiningBest(workManager = workManager) },
                 modifier = Modifier
                     .width(260.dp)
                     .height(56.dp),
@@ -229,7 +229,7 @@ fun ScreenMain(
                 .height(22.dp))
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
-                onClick = { viewModelMining.checkWorkerStatus(workManager = workManager) },
+                onClick = { viewModelMining.checkWorkerStatusBest(workManager = workManager) },
                 modifier = Modifier
                     .width(260.dp)
                     .height(56.dp),
@@ -301,7 +301,6 @@ fun ScreenMain(
                             jsonArray.add("")
                         }
 
-
                         makeWeekJson(platform = "NAVER_SERIES", genre = getNaverSeriesGenre(j), jsonArray = jsonArray)
                     }
                 },
@@ -330,6 +329,42 @@ fun ScreenMain(
 
             ) {
                 Text(text = "WEEK JSON 기존 업데이트", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+            }
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(22.dp))
+            Button(
+                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                onClick = {
+                    for (j in NaverSeriesGenre) {
+                        viewModelMining.doAutoMiningBestJSON(workManager = workManager)
+                    }
+                },
+                modifier = Modifier
+                    .width(260.dp)
+                    .height(56.dp),
+                shape = RoundedCornerShape(50.dp)
+
+            ) {
+                Text(text = "DAY JSON 자동 생성", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+            }
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(22.dp))
+            Button(
+                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                onClick = {
+                    for (j in NaverSeriesGenre) {
+                        viewModelMining.cancelAutoMiningBestJSON(workManager = workManager)
+                    }
+                },
+                modifier = Modifier
+                    .width(260.dp)
+                    .height(56.dp),
+                shape = RoundedCornerShape(50.dp)
+
+            ) {
+                Text(text = "DAY JSON 자동 생성 중지", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
             }
             Spacer(modifier = Modifier
                 .fillMaxWidth()

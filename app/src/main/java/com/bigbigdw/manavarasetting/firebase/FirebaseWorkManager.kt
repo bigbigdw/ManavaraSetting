@@ -8,8 +8,12 @@ import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.Mining
 import com.bigbigdw.manavarasetting.util.NaverSeriesGenre
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
+import com.bigbigdw.manavarasetting.util.makeWeekJson
+import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageDay
+import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageWeek
 import com.bigbigdw.massmath.Firebase.FirebaseService
 import com.google.firebase.database.FirebaseDatabase
+import com.google.gson.JsonArray
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Retrofit
@@ -38,7 +42,13 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                 }
             }
 
-            postFCM()
+            postFCM(data = "베스트 리스트가 갱신되었습니다")
+        } else if(inputData.getString(TYPE).equals("BEST_JSON")) {
+            for (j in NaverSeriesGenre) {
+                uploadJsonArrayToStorageDay(platform = "NAVER_SERIES", genre = getNaverSeriesGenre(j))
+                uploadJsonArrayToStorageWeek(platform = "NAVER_SERIES", genre = getNaverSeriesGenre(j))
+            }
+            postFCM(data = "DAY JSON 생성이 완료되었습니다")
         } else if(inputData.getString(TYPE).equals("PICK")) {
 //            Mining.getMyPickMining(applicationContext)
 //            postFCMPick(inputData.getString(UID).toString(), inputData.getString(USER).toString())
@@ -47,7 +57,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
         return Result.success()
     }
 
-    private fun postFCM() {
+    private fun postFCM(data : String) {
 
         val year = DBDate.dateMMDDHHMM().substring(0,4)
         val month = DBDate.dateMMDDHHMM().substring(4,6)
@@ -58,8 +68,8 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
         val fcmBody = DataFCMBody(
             "/topics/all",
             "high",
-            DataFCMBodyData("마나바라 세팅", "베스트 리스트가 갱신되었습니다"),
-            DataFCMBodyNotification(title = "마나바라 세팅", body = "${year}.${month}.${day} ${hour}:${min} 베스트 리스트가 갱신되었습니다", click_action= "best"),
+            DataFCMBodyData("마나바라 세팅", data),
+            DataFCMBodyNotification(title = "마나바라 세팅", body = "${year}.${month}.${day} ${hour}:${min} $data", click_action= "best"),
         )
 
         miningAlert("마나바라 세팅", "${year}.${month}.${day} ${hour}:${min} 베스트 리스트가 갱신되었습니다", "ALERT")
@@ -95,7 +105,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                         Log.d("FCM", "성공")
 
                         for (j in NaverSeriesGenre) {
-                            Mining.uploadJsonArrayToStorageDay(
+                           uploadJsonArrayToStorageDay(
                                 platform = "NAVER_SERIES",
                                 genre = getNaverSeriesGenre(j)
                             )

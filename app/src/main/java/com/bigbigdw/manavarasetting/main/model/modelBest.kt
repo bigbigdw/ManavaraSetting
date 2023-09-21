@@ -13,8 +13,8 @@ data class BestItemData(
     var bookImg: String = "",
     @SerialName("bookCode")
     var bookCode: String = "",
-    @SerialName("number")
-    var number: Int = 0,
+    @SerialName("current")
+    var current: Int = 0,
     @SerialName("type")
     var type: String = "",
     @SerialName("info1")
@@ -22,12 +22,12 @@ data class BestItemData(
     @SerialName("info2")
     var info2: String = "",
     @SerialName("info3")
-    var info3: String = ""
+    var info3: String = "",
+    @SerialName("total")
+    var total:  Int = 0,
 )
 
 data class BestListAnalyze (
     var number: Int = 0,
-    var date: String = "",
-    var numberDiff: Int = 0,
-    var trophyCount: Int = 0,
+    var info1: String = "",
 )
