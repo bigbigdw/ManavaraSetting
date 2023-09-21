@@ -2,7 +2,12 @@ package com.bigbigdw.manavarasetting.util
 
 import android.annotation.SuppressLint
 import android.icu.text.SimpleDateFormat
+import android.util.Log
 import com.bigbigdw.manavarasetting.main.model.BestItemData
+import com.bigbigdw.manavarasetting.main.model.BestListAnalyze
+import com.bigbigdw.manavarasetting.util.DBDate.datedd
+import com.bigbigdw.manavarasetting.util.DBDate.getDayOfWeekAsNumber
+import com.bigbigdw.manavarasetting.util.DBDate.getYesterdayDayOfWeek
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -56,14 +61,30 @@ fun getNaverSeriesGenre(genre : String) : String {
 
 fun convertBestItemData(bestItemData : BestItemData) : JsonObject {
     val jsonObject = JsonObject()
-    jsonObject.addProperty("writer", bestItemData.writer)
-    jsonObject.addProperty("title", bestItemData.title)
-    jsonObject.addProperty("bookImg", bestItemData.bookImg)
-    jsonObject.addProperty("bookCode", bestItemData.bookCode)
-    jsonObject.addProperty("type", bestItemData.type)
+        jsonObject.addProperty("writer", bestItemData.writer)
+        jsonObject.addProperty("title", bestItemData.title)
+        jsonObject.addProperty("bookImg", bestItemData.bookImg)
+        jsonObject.addProperty("bookCode", bestItemData.bookCode)
+        jsonObject.addProperty("type", bestItemData.type)
+        jsonObject.addProperty("info1", bestItemData.info1)
+        jsonObject.addProperty("info2", bestItemData.info2)
+        jsonObject.addProperty("info3", bestItemData.info3)
+        jsonObject.addProperty("current", bestItemData.current)
+        jsonObject.addProperty("total", bestItemData.total)
+        jsonObject.addProperty("totalCount", bestItemData.totalCount)
+        jsonObject.addProperty("totalWeek", bestItemData.totalWeek)
+        jsonObject.addProperty("totalWeekCount", bestItemData.totalWeekCount)
+        jsonObject.addProperty("totalMonth", bestItemData.totalMonth)
+        jsonObject.addProperty("totalMonthCount", bestItemData.totalMonthCount)
+    return jsonObject
+}
+
+fun convertBestItemDataAnalyze(bestItemData : BestItemData) : JsonObject {
+    val jsonObject = JsonObject()
+    jsonObject.addProperty("number", bestItemData.current)
     jsonObject.addProperty("info1", bestItemData.info1)
-    jsonObject.addProperty("info2", bestItemData.info2)
-    jsonObject.addProperty("info3", bestItemData.info3)
+    jsonObject.addProperty("total", bestItemData.total)
+    jsonObject.addProperty("totalCount", bestItemData.totalCount)
     return jsonObject
 }
 
@@ -148,11 +169,14 @@ fun makeWeekJson(platform : String, genre: String, jsonArray : JsonArray)  {
 }
 
 fun uploadJsonArrayToStorageDay(platform : String, genre: String) {
+
+    val route = BestRef.setBestRef(platform, genre).child("DAY")
     val storage = Firebase.storage
     val storageRef = storage.reference
     val jsonArrayRef = storageRef.child("${platform}/${genre}/DAY/${DBDate.dateMMDD()}.json")
+//    val jsonArrayRef = storageRef.child("${platform}/${genre}/DAY/${DBDate.dateYesterday()}.json")
 
-    BestRef.setBestRef(platform, genre).child("DAY").addListenerForSingleValueEvent(object :
+    route.addListenerForSingleValueEvent(object :
         ValueEventListener {
         override fun onDataChange(dataSnapshot: DataSnapshot) {
             if(dataSnapshot.exists()){
@@ -171,6 +195,8 @@ fun uploadJsonArrayToStorageDay(platform : String, genre: String) {
                     .addOnSuccessListener {
                         // 업로드 성공 시 처리
                     }
+            } else {
+                Log.d("HIHI", "FALSE")
             }
         }
 
@@ -178,13 +204,112 @@ fun uploadJsonArrayToStorageDay(platform : String, genre: String) {
     })
 }
 
-fun miningValue(ref: MutableMap<String?, Any>, num: Int, platform: String, genre: String) {
+fun getTotalWeek(platform : String, genre: String) {
+    val storage = Firebase.storage
+    val storageRef = storage.reference
+    val todayFileRef = storageRef.child("${platform}/${genre}/DAY/${DBDate.dateMMDD()}.json")
+    val yesterdayFileRef = storageRef.child("${platform}/${genre}/DAY/${DBDate.dateYesterday()}.json")
+
+    val todayFile = todayFileRef.getBytes(1024 * 1024)
+    val yesterdayFile = yesterdayFileRef.getBytes(1024 * 1024)
+
+    yesterdayFile.addOnSuccessListener { yesterdayBytes ->
+        val yesterdayJson = Json { ignoreUnknownKeys = true }
+        val yesterdayItemList = yesterdayJson.decodeFromString<List<BestItemData>>(String(yesterdayBytes, Charset.forName("UTF-8")))
+
+        val yesterDatItemMap = mutableMapOf<String, BestItemData>()
+
+        for (item in yesterdayItemList) {
+            yesterDatItemMap[item.bookCode] = item
+        }
+
+        todayFile.addOnSuccessListener { bytes ->
+            val jsonString = String(bytes, Charset.forName("UTF-8"))
+            val json = Json { ignoreUnknownKeys = true }
+            val itemList = json.decodeFromString<List<BestItemData>>(jsonString)
+
+            // JSON 배열 사용
+            for (item in itemList) {
+                if(yesterDatItemMap.containsKey(item.bookCode)){
+
+                    val total = yesterDatItemMap[item.bookCode]?.current ?: 0
+                    val totalCount = (yesterDatItemMap[item.bookCode]?.totalCount ?: 0)
+
+                    val totalWeek = if (getYesterdayDayOfWeek() == 7) {
+                        1
+                    } else {
+                        yesterDatItemMap[item.bookCode]?.totalWeek ?: 0
+                    }
+
+                    val totalWeekCount = if (getYesterdayDayOfWeek() == 7) {
+                        1
+                    } else {
+                        (yesterDatItemMap[item.bookCode]?.totalWeekCount ?: 0)
+                    }
+
+                    val totalMonth = if (datedd() == "01") {
+                        1
+                    } else {
+                        yesterDatItemMap[item.bookCode]?.totalMonth ?: 0
+                    }
+
+                    val totalMonthCount = if (getYesterdayDayOfWeek() == 7) {
+                        1
+                    } else {
+                        (yesterDatItemMap[item.bookCode]?.totalMonthCount ?: 0)
+                    }
+
+                    val bestListAnalyze = BestListAnalyze(
+                        number = item.current,
+                        info1 = item.info1,
+                        total = total + item.current,
+                        totalCount = totalCount + 1
+                    )
+
+                    val bestItemData = item.copy(
+                        total = total + item.current,
+                        totalCount = totalCount + 1,
+                        totalWeek = totalWeek + item.current,
+                        totalWeekCount = totalWeekCount + 1,
+                        totalMonth = totalMonth + item.current,
+                        totalMonthCount = totalMonthCount + 1
+                    )
+
+                    BestRef.setBookCode(platform, genre, item.bookCode).setValue(bestItemData)
+
+                    BestRef.setBestTrophy(platform, genre, item.bookCode).setValue(bestListAnalyze)
+                    BestRef.setBookWeeklyBest(platform, genre, item.bookCode).setValue(bestListAnalyze)
+                    BestRef.setBookMonthlyBest(platform, genre, item.bookCode).setValue(bestListAnalyze)
+                    BestRef.setBookWeeklyBestTotal(platform, genre, item.bookCode).setValue(bestListAnalyze)
+                    BestRef.setBookMonthlyBestTotal(platform, genre, item.bookCode).setValue(bestListAnalyze)
+                } else {
+                    Log.d("HIHIHI", "NOT HAS")
+                }
+            }
+
+            Log.d("HIHIHIHIHIHI", yesterDatItemMap.size.toString())
+        }
+    }
+
+}
+
+fun miningValue(ref: MutableMap<String?, Any>, num : Int, platform: String, genre: String) {
 
     BestRef.setBookCode(platform, genre, ref["bookCode"] as String).setValue(BestRef.setBookListDataBest(ref))
-    BestRef.setBookCodeData(platform, genre, ref["bookCode"] as String).setValue(BestRef.setBookListDataBestAnalyze(ref))
+    BestRef.setBestTrophy(platform, genre, ref["bookCode"] as String).setValue(BestRef.setBookListDataBestAnalyze(ref))
 
-    BestRef.setBestData(platform, num, genre).setValue(BestRef.setBookListDataBest(ref))
+    BestRef.setBookDailyBest(platform, num, genre).setValue(BestRef.setBookListDataBest(ref))
+
+    if (getDayOfWeekAsNumber() == 0) {
+        BestRef.setBestRef(platform = platform, genre = genre).child("TROPHY_WEEK").removeValue()
+    }
+
     BestRef.setBookWeeklyBest(platform, genre, ref["bookCode"] as String).setValue(BestRef.setBookListDataBestAnalyze(ref))
+//    BestRef.setBookWeeklyBestYesterday(platform, genre, ref["bookCode"] as String).setValue(BestRef.setBookListDataBestAnalyze(ref))
+
+    if (datedd() == "01") {
+        BestRef.setBestRef(platform = platform, genre = genre).child("TROPHY_MONTH").removeValue()
+    }
 
     BestRef.setBookMonthlyBest(platform, genre, ref["bookCode"] as String).setValue(BestRef.setBookListDataBestAnalyze(ref))
 

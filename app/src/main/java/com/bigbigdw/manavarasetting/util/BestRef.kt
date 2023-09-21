@@ -10,27 +10,39 @@ object BestRef {
     private val mRootRef = FirebaseDatabase.getInstance().reference
 
     fun setBookMonthlyBest(type: String, genre: String, bookCode: String): DatabaseReference {
-        return setBestRef(type, genre).child("MONTH").child(bookCode).child(DBDate.datedd())
+        return setBestRef(type, genre).child("TROPHY_MONTH").child(bookCode).child(DBDate.datedd())
+    }
+    fun setBookMonthlyBestTotal(type: String, genre: String, bookCode: String): DatabaseReference {
+        return setBestRef(type, genre).child("TROPHY_MONTH_TOTAL").child(bookCode)
     }
     fun setBookWeeklyBest(type: String, genre: String, bookCode: String): DatabaseReference {
-        return setBestRef(type, genre).child("WEEK").child(bookCode).child(DBDate.getDayOfWeekAsNumber().toString())
+        return setBestRef(type, genre).child("TROPHY_WEEK").child(bookCode).child(DBDate.getDayOfWeekAsNumber().toString())
     }
-    fun setBookCodeData(type: String, genre: String, bookCode: String): DatabaseReference {
+    fun setBookWeeklyBestTotal(type: String, genre: String, bookCode: String): DatabaseReference {
+        return setBestRef(type, genre).child("TROPHY_WEEK_TOTAL").child(bookCode)
+    }
+
+    fun setBookWeeklyBestYesterday(type: String, genre: String, bookCode: String): DatabaseReference {
+        return setBestRef(type, genre).child("TROPHY_WEEK").child(bookCode).child((DBDate.getDayOfWeekAsNumber() - 1).toString())
+    }
+
+    fun setBestTrophy(type: String, genre: String, bookCode: String): DatabaseReference {
         return setBestRef(type, genre).child("TROPHY").child(bookCode).child(DBDate.dateYYYY()).child(DBDate.dateMM()).child(DBDate.datedd())
+    }
+
+    fun setBookDailyBest(platform: String, num: Int, genre: String): DatabaseReference {
+        return  setBestRef(platform, genre).child("DAY").child(num.toString())
     }
 
     fun setBookCode(type: String, genre: String, bookCode: String): DatabaseReference {
         return setBestRef(type, genre).child("BOOKCODE").child(bookCode)
     }
 
-    fun setBestData(platform: String, num: Int, genre: String): DatabaseReference {
-        return  setBestRef(platform, genre).child("DAY").child(num.toString())
-    }
-
     fun setBookListDataBestAnalyze(ref: MutableMap<String?, Any>): BestListAnalyze {
         return BestListAnalyze(
             ref["current"] as Int,
             ref["info1"] as String,
+            ref["current"] as Int,
         )
     }
 

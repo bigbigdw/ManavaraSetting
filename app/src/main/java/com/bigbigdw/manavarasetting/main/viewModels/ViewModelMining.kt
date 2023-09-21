@@ -62,6 +62,20 @@ class ViewModelMining @Inject constructor() : ViewModel() {
         }
     }
 
+    fun checkWorkerStatusBestJSON(workManager: WorkManager){
+        val status = workManager.getWorkInfosByTag("ManavaraBestJSON").get()
+
+        viewModelScope.launch {
+            _sideEffects.send(
+                if (status.isEmpty()) {
+                    "활성화 되지 않음"
+                } else {
+                    status[0].state.name
+                }
+            )
+        }
+    }
+
     fun doAutoMiningBest(workManager: WorkManager){
         val inputData = Data.Builder()
             .putString(FirebaseWorkManager.TYPE, "BEST")

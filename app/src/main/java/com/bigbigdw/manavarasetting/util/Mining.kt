@@ -12,11 +12,9 @@ object Mining {
 
         Thread {
             try {
-                val doc: Document = Jsoup.connect("https://series.naver.com/comic/top100List.series?rankingTypeCode=DAILY&categoryCode=${genre}&page=${pageCount + 1}").post()
+                val doc: Document = Jsoup.connect("https://series.naver.com/comic/top100List.series?rankingTypeCode=DAILY&categoryCode=${genre}&page=${pageCount}").post()
                 val naverSeries: Elements = doc.select(".comic_top_lst li")
                 val NaverRef: MutableMap<String?, Any> = HashMap()
-
-                val books = ArrayList<BestItemData>()
 
                 for (i in naverSeries.indices) {
 
@@ -31,8 +29,6 @@ object Mining {
 
                     NaverRef["date"] = dateMMDD()
                     NaverRef["type"] = "NAVER_SERIES"
-
-                    books.add(BestRef.setBookListDataBest(NaverRef))
 
                     miningValue(NaverRef, (naverSeries.size * (pageCount - 1)) + i, "NAVER_SERIES", getNaverSeriesGenre(genre))
                 }

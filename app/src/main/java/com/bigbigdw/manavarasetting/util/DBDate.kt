@@ -33,6 +33,17 @@ object DBDate {
         return format.format(currentTime).toString()
     }
 
+    @SuppressLint("SimpleDateFormat")
+    fun dateYesterday(): String {
+        // 현재 날짜 가져오기
+        val currentDate = LocalDate.now()
+
+        // 어제 날짜 계산
+        val yesterday = currentDate.minusDays(1)
+
+        return yesterday.toString().replace("-","")
+    }
+
     @SuppressLint("SimpleDateFormat", "WeekBasedYear")
     fun dateMMDD(): String {
         val currentTime: Date = Calendar.getInstance().time
@@ -101,6 +112,13 @@ object DBDate {
         } else {
             dayOfWeek.value
         }
+    }
+
+    fun getYesterdayDayOfWeek(): Int {
+        val currentDate = LocalDate.now()
+        val yesterday = currentDate.minusDays(1)
+        val dayOfWeek = yesterday.dayOfWeek
+        return dayOfWeek.value // 요일을 숫자로 얻습니다. (1: 월요일, 2: 화요일, ..., 7: 일요일)
     }
 
 }

@@ -47,6 +47,7 @@ import com.bigbigdw.manavarasetting.ui.theme.colorEDE6FD
 import com.bigbigdw.manavarasetting.ui.theme.colorFFFFFF
 import com.bigbigdw.manavarasetting.ui.theme.pretendardvariable
 import com.bigbigdw.manavarasetting.ui.theme.textColorType2
+import com.bigbigdw.manavarasetting.util.getTotalWeek
 import com.bigbigdw.manavarasetting.util.makeWeekJson
 import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageDay
 import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageWeek
@@ -208,7 +209,7 @@ fun ScreenMain(
                 shape = RoundedCornerShape(50.dp)
 
             ) {
-                Text(text = "자동 크롤링 시작", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+                Text(text = "BEST 크롤링 시작", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
             }
             Spacer(modifier = Modifier
                 .fillMaxWidth()
@@ -222,7 +223,7 @@ fun ScreenMain(
                 shape = RoundedCornerShape(50.dp)
 
             ) {
-                Text(text = "자동 크롤링 정지", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+                Text(text = "BEST 크롤링 정지", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
             }
             Spacer(modifier = Modifier
                 .fillMaxWidth()
@@ -236,7 +237,7 @@ fun ScreenMain(
                 shape = RoundedCornerShape(50.dp)
 
             ) {
-                Text(text = "Worker 체크", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+                Text(text = "BEST Worker 체크", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
             }
             Spacer(modifier = Modifier
                 .fillMaxWidth()
@@ -268,7 +269,7 @@ fun ScreenMain(
                 shape = RoundedCornerShape(50.dp)
 
             ) {
-                Text(text = "JSON 배열 업로드", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+                Text(text = "DAY JSON 생성", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
             }
             Spacer(modifier = Modifier
                 .fillMaxWidth()
@@ -365,6 +366,38 @@ fun ScreenMain(
 
             ) {
                 Text(text = "DAY JSON 자동 생성 중지", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+            }
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(22.dp))
+            Button(
+                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                onClick = { viewModelMining.checkWorkerStatusBestJSON(workManager = workManager) },
+                modifier = Modifier
+                    .width(260.dp)
+                    .height(56.dp),
+                shape = RoundedCornerShape(50.dp)
+
+            ) {
+                Text(text = "JSON Worker 체크", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+            }
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(22.dp))
+            Button(
+                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                onClick = {
+                    for (j in NaverSeriesGenre) {
+                        getTotalWeek(platform = "NAVER_SERIES", genre = getNaverSeriesGenre(j))
+                    }
+                },
+                modifier = Modifier
+                    .width(260.dp)
+                    .height(56.dp),
+                shape = RoundedCornerShape(50.dp)
+
+            ) {
+                Text(text = "트로피 정산", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
             }
             Spacer(modifier = Modifier
                 .fillMaxWidth()

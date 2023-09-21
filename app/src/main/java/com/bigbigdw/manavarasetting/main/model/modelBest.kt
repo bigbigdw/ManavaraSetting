@@ -24,10 +24,21 @@ data class BestItemData(
     @SerialName("info3")
     var info3: String = "",
     @SerialName("total")
-    var total:  Int = 0,
+    var total:  Int = 1,
+    @SerialName("totalCount")
+    var totalCount:  Int = 1,
+    @SerialName("totalWeek")
+    var totalWeek:  Int = 1,
+    @SerialName("totalWeekCount")
+    var totalWeekCount:  Int = 1,
+    @SerialName("totalMonth")
+    var totalMonth:  Int = 1,
+    @SerialName("totalMonthCount")
+    var totalMonthCount:  Int = 1,
 )
-
 data class BestListAnalyze (
     var number: Int = 0,
     var info1: String = "",
+    var total:  Int = 1,
+    var totalCount:  Int = 1,
 )
