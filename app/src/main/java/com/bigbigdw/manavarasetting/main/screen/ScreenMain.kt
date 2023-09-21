@@ -39,7 +39,6 @@ import com.bigbigdw.manavarasetting.firebase.DataFCMBodyNotification
 import com.bigbigdw.manavarasetting.util.Mining
 import com.bigbigdw.manavarasetting.util.NaverSeriesGenre
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
-import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMining
 import com.bigbigdw.manavarasetting.ui.theme.color1E1E20
 import com.bigbigdw.manavarasetting.ui.theme.color844DF3
 import com.bigbigdw.manavarasetting.ui.theme.colorEDE6FD
@@ -49,17 +48,20 @@ import com.bigbigdw.manavarasetting.ui.theme.textColorType2
 import com.bigbigdw.manavarasetting.util.FCM.getFCMToken
 import com.bigbigdw.manavarasetting.util.FCM.postFCMAlert
 import com.bigbigdw.manavarasetting.util.FCM.postFCMAlertTest
+import com.bigbigdw.manavarasetting.util.PeriodicWorker.cancelWorker
+import com.bigbigdw.manavarasetting.util.PeriodicWorker.checkWorker
+import com.bigbigdw.manavarasetting.util.PeriodicWorker.doWorker
 import com.bigbigdw.manavarasetting.util.calculateTrophy
 import com.bigbigdw.manavarasetting.util.makeWeekJson
 import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageDay
 import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageWeek
 import com.bigbigdw.manavarasetting.util.uploadJsonFile
 import com.google.gson.JsonArray
+import java.util.concurrent.TimeUnit
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScreenMain(
-    viewModelMining: ViewModelMining,
     workManager: WorkManager
 ) {
 
@@ -79,9 +81,11 @@ fun ScreenMain(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(120.dp))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(120.dp)
+            )
             Image(
                 painter = painterResource(id = R.mipmap.ic_launcher),
                 contentDescription = null,
@@ -89,9 +93,11 @@ fun ScreenMain(
                     .width(72.dp)
                     .height(72.dp)
             )
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(8.dp))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(8.dp)
+            )
             Text(
                 text = "MANAVARASETTING",
                 fontSize = 24.sp,
@@ -100,9 +106,11 @@ fun ScreenMain(
                 fontFamily = pretendardvariable,
                 fontWeight = FontWeight(weight = 100)
             )
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(22.dp))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(22.dp)
+            )
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
                 onClick = { getFCMToken(context) },
@@ -112,11 +120,19 @@ fun ScreenMain(
                 shape = RoundedCornerShape(50.dp)
 
             ) {
-                Text(text = "FCM 토큰 얻기", textAlign = TextAlign.Center, color = colorFFFFFF, fontSize = 16.sp, fontFamily = pretendardvariable)
+                Text(
+                    text = "FCM 토큰 얻기",
+                    textAlign = TextAlign.Center,
+                    color = colorFFFFFF,
+                    fontSize = 16.sp,
+                    fontFamily = pretendardvariable
+                )
             }
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(22.dp))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(22.dp)
+            )
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
                 onClick = { postFCMAlertTest(context) },
@@ -126,11 +142,19 @@ fun ScreenMain(
                 shape = RoundedCornerShape(50.dp)
 
             ) {
-                Text(text = "FCM 테스트", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+                Text(
+                    text = "FCM 테스트",
+                    textAlign = TextAlign.Center,
+                    color = colorEDE6FD,
+                    fontSize = 16.sp,
+                    fontFamily = pretendardvariable
+                )
             }
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(16.dp))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(16.dp)
+            )
 
             TextField(
                 value = getFCM.title,
@@ -146,9 +170,11 @@ fun ScreenMain(
                 ),
                 modifier = Modifier.width(260.dp)
             )
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(16.dp))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(16.dp)
+            )
 
             TextField(
                 value = getFCM.body,
@@ -164,9 +190,11 @@ fun ScreenMain(
                 ),
                 modifier = Modifier.width(260.dp)
             )
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(22.dp))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(22.dp)
+            )
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
                 onClick = { postFCMAlert(context = context, getFCM = getFCM) },
@@ -176,16 +204,24 @@ fun ScreenMain(
                 shape = RoundedCornerShape(50.dp)
 
             ) {
-                Text(text = "공지사항 등록", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+                Text(
+                    text = "공지사항 등록",
+                    textAlign = TextAlign.Center,
+                    color = colorEDE6FD,
+                    fontSize = 16.sp,
+                    fontFamily = pretendardvariable
+                )
             }
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(22.dp))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(22.dp)
+            )
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
                 onClick = {
-                    for(j in NaverSeriesGenre){
-                        for(i in 1..5){
+                    for (j in NaverSeriesGenre) {
+                        for (i in 1..5) {
                             Mining.miningNaverSeriesAll(pageCount = i, genre = j)
                         }
                     }
@@ -196,53 +232,99 @@ fun ScreenMain(
                 shape = RoundedCornerShape(50.dp)
 
             ) {
-                Text(text = "네이버 시리즈 크롤링", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+                Text(
+                    text = "네이버 시리즈 크롤링",
+                    textAlign = TextAlign.Center,
+                    color = colorEDE6FD,
+                    fontSize = 16.sp,
+                    fontFamily = pretendardvariable
+                )
             }
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(22.dp))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(22.dp)
+            )
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
-                onClick = { viewModelMining.doAutoMiningBest(workManager = workManager) },
+                onClick = {
+                    doWorker(
+                        workManager = workManager,
+                        context = context,
+                        repeatInterval = 3,
+                        timeMill = TimeUnit.HOURS,
+                        tag = "BEST"
+                    )
+                },
                 modifier = Modifier
                     .width(260.dp)
                     .height(56.dp),
                 shape = RoundedCornerShape(50.dp)
 
             ) {
-                Text(text = "BEST 크롤링 시작", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+                Text(
+                    text = "BEST 크롤링 시작",
+                    textAlign = TextAlign.Center,
+                    color = colorEDE6FD,
+                    fontSize = 16.sp,
+                    fontFamily = pretendardvariable
+                )
             }
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(22.dp))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(22.dp)
+            )
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
-                onClick = { viewModelMining.cancelAutoMiningBest(workManager = workManager) },
+                onClick = { cancelWorker(workManager = workManager, context = context, "BEST") },
                 modifier = Modifier
                     .width(260.dp)
                     .height(56.dp),
                 shape = RoundedCornerShape(50.dp)
 
             ) {
-                Text(text = "BEST 크롤링 정지", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+                Text(
+                    text = "BEST 크롤링 정지",
+                    textAlign = TextAlign.Center,
+                    color = colorEDE6FD,
+                    fontSize = 16.sp,
+                    fontFamily = pretendardvariable
+                )
             }
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(22.dp))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(22.dp)
+            )
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
-                onClick = { viewModelMining.checkWorkerStatusBest(workManager = workManager) },
+                onClick = {
+                    checkWorker(
+                        workManager = workManager,
+                        context = context,
+                        tag = "BEST"
+                    )
+                },
                 modifier = Modifier
                     .width(260.dp)
                     .height(56.dp),
                 shape = RoundedCornerShape(50.dp)
 
             ) {
-                Text(text = "BEST Worker 체크", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+                Text(
+                    text = "BEST Worker 체크",
+                    textAlign = TextAlign.Center,
+                    color = colorEDE6FD,
+                    fontSize = 16.sp,
+                    fontFamily = pretendardvariable
+                )
             }
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(22.dp))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(22.dp)
+            )
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
                 onClick = { uploadJsonFile() },
@@ -252,16 +334,27 @@ fun ScreenMain(
                 shape = RoundedCornerShape(50.dp)
 
             ) {
-                Text(text = "JSON 업로드", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+                Text(
+                    text = "JSON 업로드",
+                    textAlign = TextAlign.Center,
+                    color = colorEDE6FD,
+                    fontSize = 16.sp,
+                    fontFamily = pretendardvariable
+                )
             }
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(22.dp))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(22.dp)
+            )
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
                 onClick = {
                     for (j in NaverSeriesGenre) {
-                        uploadJsonArrayToStorageDay(platform = "NAVER_SERIES", genre = getNaverSeriesGenre(j))
+                        uploadJsonArrayToStorageDay(
+                            platform = "NAVER_SERIES",
+                            genre = getNaverSeriesGenre(j)
+                        )
                     }
                 },
                 modifier = Modifier
@@ -270,15 +363,22 @@ fun ScreenMain(
                 shape = RoundedCornerShape(50.dp)
 
             ) {
-                Text(text = "DAY JSON 생성", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+                Text(
+                    text = "DAY JSON 생성",
+                    textAlign = TextAlign.Center,
+                    color = colorEDE6FD,
+                    fontSize = 16.sp,
+                    fontFamily = pretendardvariable
+                )
             }
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(22.dp))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(22.dp)
+            )
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
                 onClick = {
-                    viewModelMining.incrementCounter()
 
                 },
                 modifier = Modifier
@@ -287,11 +387,19 @@ fun ScreenMain(
                 shape = RoundedCornerShape(50.dp)
 
             ) {
-                Text(text = "카운트", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+                Text(
+                    text = "카운트",
+                    textAlign = TextAlign.Center,
+                    color = colorEDE6FD,
+                    fontSize = 16.sp,
+                    fontFamily = pretendardvariable
+                )
             }
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(22.dp))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(22.dp)
+            )
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
                 onClick = {
@@ -299,11 +407,15 @@ fun ScreenMain(
 
                         val jsonArray = JsonArray()
 
-                        for(i in 0..6){
+                        for (i in 0..6) {
                             jsonArray.add("")
                         }
 
-                        makeWeekJson(platform = "NAVER_SERIES", genre = getNaverSeriesGenre(j), jsonArray = jsonArray)
+                        makeWeekJson(
+                            platform = "NAVER_SERIES",
+                            genre = getNaverSeriesGenre(j),
+                            jsonArray = jsonArray
+                        )
                     }
                 },
                 modifier = Modifier
@@ -312,16 +424,27 @@ fun ScreenMain(
                 shape = RoundedCornerShape(50.dp)
 
             ) {
-                Text(text = "WEEK JSON 생성", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+                Text(
+                    text = "WEEK JSON 생성",
+                    textAlign = TextAlign.Center,
+                    color = colorEDE6FD,
+                    fontSize = 16.sp,
+                    fontFamily = pretendardvariable
+                )
             }
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(22.dp))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(22.dp)
+            )
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
                 onClick = {
                     for (j in NaverSeriesGenre) {
-                        uploadJsonArrayToStorageWeek(platform = "NAVER_SERIES", genre = getNaverSeriesGenre(j))
+                        uploadJsonArrayToStorageWeek(
+                            platform = "NAVER_SERIES",
+                            genre = getNaverSeriesGenre(j)
+                        )
                     }
                 },
                 modifier = Modifier
@@ -330,16 +453,30 @@ fun ScreenMain(
                 shape = RoundedCornerShape(50.dp)
 
             ) {
-                Text(text = "WEEK JSON 기존 업데이트", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+                Text(
+                    text = "WEEK JSON 기존 업데이트",
+                    textAlign = TextAlign.Center,
+                    color = colorEDE6FD,
+                    fontSize = 16.sp,
+                    fontFamily = pretendardvariable
+                )
             }
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(22.dp))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(22.dp)
+            )
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
                 onClick = {
                     for (j in NaverSeriesGenre) {
-                        viewModelMining.doAutoMiningBestJSON(workManager = workManager)
+                        doWorker(
+                            workManager = workManager,
+                            context = context,
+                            repeatInterval = 6,
+                            timeMill = TimeUnit.HOURS,
+                            tag = "BEST_JSON"
+                        )
                     }
                 },
                 modifier = Modifier
@@ -348,16 +485,28 @@ fun ScreenMain(
                 shape = RoundedCornerShape(50.dp)
 
             ) {
-                Text(text = "DAY JSON 자동 생성", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+                Text(
+                    text = "DAY JSON 자동 생성",
+                    textAlign = TextAlign.Center,
+                    color = colorEDE6FD,
+                    fontSize = 16.sp,
+                    fontFamily = pretendardvariable
+                )
             }
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(22.dp))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(22.dp)
+            )
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
                 onClick = {
                     for (j in NaverSeriesGenre) {
-                        viewModelMining.cancelAutoMiningBestJSON(workManager = workManager)
+                        cancelWorker(
+                            workManager = workManager,
+                            context = context,
+                            tag = "BEST_JSON"
+                        )
                     }
                 },
                 modifier = Modifier
@@ -366,25 +515,47 @@ fun ScreenMain(
                 shape = RoundedCornerShape(50.dp)
 
             ) {
-                Text(text = "DAY JSON 자동 생성 중지", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+                Text(
+                    text = "DAY JSON 자동 생성 중지",
+                    textAlign = TextAlign.Center,
+                    color = colorEDE6FD,
+                    fontSize = 16.sp,
+                    fontFamily = pretendardvariable
+                )
             }
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(22.dp))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(22.dp)
+            )
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
-                onClick = { viewModelMining.checkWorkerStatusBestJSON(workManager = workManager) },
+                onClick = {
+                    checkWorker(
+                        workManager = workManager,
+                        context = context,
+                        tag = "BEST_JSON"
+                    )
+                },
                 modifier = Modifier
                     .width(260.dp)
                     .height(56.dp),
                 shape = RoundedCornerShape(50.dp)
 
             ) {
-                Text(text = "JSON Worker 체크", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+                Text(
+                    text = "JSON Worker 체크",
+                    textAlign = TextAlign.Center,
+                    color = colorEDE6FD,
+                    fontSize = 16.sp,
+                    fontFamily = pretendardvariable
+                )
             }
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(22.dp))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(22.dp)
+            )
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
                 onClick = {
@@ -398,15 +569,29 @@ fun ScreenMain(
                 shape = RoundedCornerShape(50.dp)
 
             ) {
-                Text(text = "트로피 정산", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+                Text(
+                    text = "트로피 정산",
+                    textAlign = TextAlign.Center,
+                    color = colorEDE6FD,
+                    fontSize = 16.sp,
+                    fontFamily = pretendardvariable
+                )
             }
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(22.dp))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(22.dp)
+            )
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
                 onClick = {
-                    viewModelMining.doAutoMiningBestTrophy(workManager)
+                    doWorker(
+                        workManager = workManager,
+                        context = context,
+                        repeatInterval = 3,
+                        timeMill = TimeUnit.HOURS,
+                        tag = "BEST_TROPHY"
+                    )
                 },
                 modifier = Modifier
                     .width(260.dp)
@@ -414,15 +599,27 @@ fun ScreenMain(
                 shape = RoundedCornerShape(50.dp)
 
             ) {
-                Text(text = "트로피 정산 자동화 시작", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+                Text(
+                    text = "트로피 정산 자동화 시작",
+                    textAlign = TextAlign.Center,
+                    color = colorEDE6FD,
+                    fontSize = 16.sp,
+                    fontFamily = pretendardvariable
+                )
             }
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(22.dp))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(22.dp)
+            )
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
                 onClick = {
-                    viewModelMining.cancelAutoMiningBestTrophy(workManager)
+                    cancelWorker(
+                        workManager = workManager,
+                        context = context,
+                        tag = "BEST_TROPHY"
+                    )
                 },
                 modifier = Modifier
                     .width(260.dp)
@@ -430,15 +627,27 @@ fun ScreenMain(
                 shape = RoundedCornerShape(50.dp)
 
             ) {
-                Text(text = "트로피 정산 자동화 취소", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+                Text(
+                    text = "트로피 정산 자동화 취소",
+                    textAlign = TextAlign.Center,
+                    color = colorEDE6FD,
+                    fontSize = 16.sp,
+                    fontFamily = pretendardvariable
+                )
             }
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(22.dp))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(22.dp)
+            )
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
                 onClick = {
-                    viewModelMining.cancelAutoMiningBestTrophy(workManager)
+                    checkWorker(
+                        workManager = workManager,
+                        context = context,
+                        tag = "BEST_TROPHY"
+                    )
                 },
                 modifier = Modifier
                     .width(260.dp)
@@ -446,11 +655,19 @@ fun ScreenMain(
                 shape = RoundedCornerShape(50.dp)
 
             ) {
-                Text(text = "트로피 정산 WORKER 체크", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+                Text(
+                    text = "트로피 정산 WORKER 체크",
+                    textAlign = TextAlign.Center,
+                    color = colorEDE6FD,
+                    fontSize = 16.sp,
+                    fontFamily = pretendardvariable
+                )
             }
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(120.dp))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(120.dp)
+            )
         }
 
         Column(
@@ -465,9 +682,11 @@ fun ScreenMain(
                 color = textColorType2,
                 fontFamily = pretendardvariable
             )
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(8.dp))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(8.dp)
+            )
             Text(
                 text = "BIGBIGDW",
                 fontSize = 12.sp,
@@ -475,9 +694,11 @@ fun ScreenMain(
                 color = textColorType2,
                 fontFamily = pretendardvariable
             )
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(60.dp))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(60.dp)
+            )
         }
     }
 }
