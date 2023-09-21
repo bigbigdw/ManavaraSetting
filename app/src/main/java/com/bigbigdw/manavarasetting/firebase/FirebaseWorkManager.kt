@@ -64,6 +64,8 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
         } else if (inputData.getString(TYPE).equals("PICK")) {
 //            Mining.getMyPickMining(applicationContext)
 //            postFCMPick(inputData.getString(UID).toString(), inputData.getString(USER).toString())
+        }  else if (inputData.getString(TYPE).equals("TEST")) {
+            postFCM(data = "위젯 테스트")
         }
 
         return Result.success()

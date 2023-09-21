@@ -1,7 +1,9 @@
 package com.bigbigdw.manavarasetting.widget
 
 import android.content.Context
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.glance.Button
@@ -18,13 +20,16 @@ import androidx.glance.background
 import androidx.glance.currentState
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Column
+import androidx.glance.layout.Row
 import androidx.glance.layout.fillMaxSize
+import androidx.glance.layout.padding
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
-import com.bigbigdw.manavarasetting.ManavaraSetting
-import kotlinx.coroutines.flow.first
+import androidx.work.WorkManager
+import com.bigbigdw.manavarasetting.util.FCM.postFCMAlertTest
+import com.bigbigdw.manavarasetting.util.PeriodicWorker
 
 class AdminWidget: GlanceAppWidgetReceiver() {
     override val glanceAppWidget: GlanceAppWidget
@@ -38,29 +43,57 @@ object CounterWidget: GlanceAppWidget() {
     override suspend fun provideGlance(context: Context, id: GlanceId) {
 
         provideContent {
-            // create your AppWidget here
-            val count = currentState(key = countKey) ?: 0
+
+            val workManager = WorkManager.getInstance(context)
+
             Column(
-                modifier = GlanceModifier
-                    .fillMaxSize()
-                    .background(Color.DarkGray),
-                verticalAlignment = Alignment.Vertical.CenterVertically,
-                horizontalAlignment = Alignment.Horizontal.CenterHorizontally
+                modifier = GlanceModifier.fillMaxSize(),
+                verticalAlignment = Alignment.Top,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = count.toString(),
-                    style = TextStyle(
-                        fontWeight = FontWeight.Medium,
-                        color = ColorProvider(Color.White),
-                        fontSize = 26.sp
+                Text(text = "Where to?", modifier = GlanceModifier.padding(12.dp))
+                Row(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Button(
+                        text = "Home",
+                        onClick = { postFCMAlertTest(context = context) }
                     )
-                )
-                Button(
-                    text = "Inc",
-                    onClick = actionRunCallback(IncrementActionCallback::class.java)
-                )
+                    Button(
+                        text = "Work",
+                        onClick = { PeriodicWorker.doAutoTest(workManager) }
+                    )
+                    Button(
+                        text = "Work2",
+                        onClick = { PeriodicWorker.cancelAutoMiningTEST(workManager) }
+                    )
+                }
             }
         }
+    }
+}
+
+@Composable
+fun test(){
+    // create your AppWidget here
+    val count = currentState(key = CounterWidget.countKey) ?: 0
+    Column(
+        modifier = GlanceModifier
+            .fillMaxSize()
+            .background(Color.DarkGray),
+        verticalAlignment = Alignment.Vertical.CenterVertically,
+        horizontalAlignment = Alignment.Horizontal.CenterHorizontally
+    ) {
+        Text(
+            text = count.toString(),
+            style = TextStyle(
+                fontWeight = FontWeight.Medium,
+                color = ColorProvider(Color.White),
+                fontSize = 26.sp
+            )
+        )
+        Button(
+            text = "Inc",
+            onClick = actionRunCallback(IncrementActionCallback::class.java)
+        )
     }
 }
 

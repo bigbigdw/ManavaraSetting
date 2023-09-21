@@ -39,7 +39,6 @@ import com.bigbigdw.manavarasetting.firebase.DataFCMBodyNotification
 import com.bigbigdw.manavarasetting.util.Mining
 import com.bigbigdw.manavarasetting.util.NaverSeriesGenre
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
-import com.bigbigdw.manavarasetting.main.viewModels.ViewModelFCM
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMining
 import com.bigbigdw.manavarasetting.ui.theme.color1E1E20
 import com.bigbigdw.manavarasetting.ui.theme.color844DF3
@@ -47,6 +46,9 @@ import com.bigbigdw.manavarasetting.ui.theme.colorEDE6FD
 import com.bigbigdw.manavarasetting.ui.theme.colorFFFFFF
 import com.bigbigdw.manavarasetting.ui.theme.pretendardvariable
 import com.bigbigdw.manavarasetting.ui.theme.textColorType2
+import com.bigbigdw.manavarasetting.util.FCM.getFCMToken
+import com.bigbigdw.manavarasetting.util.FCM.postFCMAlert
+import com.bigbigdw.manavarasetting.util.FCM.postFCMAlertTest
 import com.bigbigdw.manavarasetting.util.calculateTrophy
 import com.bigbigdw.manavarasetting.util.makeWeekJson
 import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageDay
@@ -57,7 +59,6 @@ import com.google.gson.JsonArray
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScreenMain(
-    viewModelFCM: ViewModelFCM,
     viewModelMining: ViewModelMining,
     workManager: WorkManager
 ) {
@@ -104,7 +105,7 @@ fun ScreenMain(
                 .height(22.dp))
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
-                onClick = { viewModelFCM.getFCMToken(context) },
+                onClick = { getFCMToken(context) },
                 modifier = Modifier
                     .width(260.dp)
                     .height(56.dp),
@@ -118,7 +119,7 @@ fun ScreenMain(
                 .height(22.dp))
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
-                onClick = { viewModelFCM.postFCMAlertTest(context) },
+                onClick = { postFCMAlertTest(context) },
                 modifier = Modifier
                     .width(260.dp)
                     .height(56.dp),
@@ -168,7 +169,7 @@ fun ScreenMain(
                 .height(22.dp))
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
-                onClick = { viewModelFCM.postFCMAlert(context = context, getFCM = getFCM) },
+                onClick = { postFCMAlert(context = context, getFCM = getFCM) },
                 modifier = Modifier
                     .width(260.dp)
                     .height(56.dp),

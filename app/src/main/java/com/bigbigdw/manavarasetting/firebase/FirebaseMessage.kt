@@ -2,8 +2,6 @@ package com.bigbigdw.manavarasetting.firebase
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -12,9 +10,8 @@ import com.bigbigdw.manavarasetting.R
 
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import org.json.JSONObject
 
-class FCM : FirebaseMessagingService() {
+class FirebaseMessage : FirebaseMessagingService() {
 
     var notificationManager: NotificationManager? = null
     var notificationBuilder: NotificationCompat.Builder? = null
