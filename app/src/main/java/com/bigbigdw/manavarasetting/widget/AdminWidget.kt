@@ -20,16 +20,17 @@ import androidx.glance.background
 import androidx.glance.currentState
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Column
-import androidx.glance.layout.Row
 import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.padding
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
+import androidx.glance.layout.Spacer
 import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.util.FCM.postFCMAlertTest
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
+import java.util.concurrent.TimeUnit
 
 class AdminWidget: GlanceAppWidgetReceiver() {
     override val glanceAppWidget: GlanceAppWidget
@@ -52,20 +53,26 @@ object CounterWidget: GlanceAppWidget() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(text = "Where to?", modifier = GlanceModifier.padding(12.dp))
-                Row(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Button(
-                        text = "Home",
-                        onClick = { postFCMAlertTest(context = context) }
-                    )
-                    Button(
-                        text = "Work",
-                        onClick = { PeriodicWorker.doAutoTest(workManager) }
-                    )
-                    Button(
-                        text = "Work2",
-                        onClick = { PeriodicWorker.cancelAutoMiningTEST(workManager) }
-                    )
-                }
+                Spacer(modifier = GlanceModifier.padding(0.dp, 12.dp, 0.dp, 0.dp))
+                Button(
+                    text = "postFCMAlertTest",
+                    onClick = { postFCMAlertTest(context = context) }
+                )
+                Spacer(modifier = GlanceModifier.padding(0.dp, 12.dp, 0.dp, 0.dp))
+                Button(
+                    text = "doWorker",
+                    onClick = { PeriodicWorker.doWorker(workManager = workManager, context = context, tag = "TEST", repeatInterval = 15, timeMill = TimeUnit.MINUTES) }
+                )
+                Spacer(modifier = GlanceModifier.padding(0.dp, 12.dp, 0.dp, 0.dp))
+                Button(
+                    text = "cancelWorker",
+                    onClick = { PeriodicWorker.cancelWorker(workManager = workManager, context = context, tag = "TEST") }
+                )
+                Spacer(modifier = GlanceModifier.padding(0.dp, 12.dp, 0.dp, 0.dp))
+                Button(
+                    text = "checkWorker",
+                    onClick = { PeriodicWorker.checkWorker(workManager = workManager, context = context, tag = "TEST") }
+                )
             }
         }
     }
