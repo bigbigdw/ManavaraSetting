@@ -20,8 +20,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,15 +38,14 @@ import androidx.compose.ui.unit.sp
 import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.firebase.DataFCMBodyNotification
+import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager
 import com.bigbigdw.manavarasetting.util.Mining
 import com.bigbigdw.manavarasetting.util.NaverSeriesGenre
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
 import com.bigbigdw.manavarasetting.ui.theme.color1E1E20
-import com.bigbigdw.manavarasetting.ui.theme.color844DF3
 import com.bigbigdw.manavarasetting.ui.theme.colorEDE6FD
 import com.bigbigdw.manavarasetting.ui.theme.colorFFFFFF
 import com.bigbigdw.manavarasetting.ui.theme.pretendardvariable
-import com.bigbigdw.manavarasetting.ui.theme.textColorType2
 import com.bigbigdw.manavarasetting.util.FCM.getFCMToken
 import com.bigbigdw.manavarasetting.util.FCM.postFCMAlert
 import com.bigbigdw.manavarasetting.util.FCM.postFCMAlertTest
@@ -57,6 +58,7 @@ import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageDay
 import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageWeek
 import com.bigbigdw.manavarasetting.util.uploadJsonFile
 import com.google.gson.JsonArray
+import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -66,6 +68,11 @@ fun ScreenMain(
 ) {
 
     val context = LocalContext.current
+
+    val dataStore = DataStoreManager(context)
+    val test = dataStore.getTest.collectAsState(initial = "")
+
+    val scope = rememberCoroutineScope()
 
     val (getFCM, setFCM) = remember { mutableStateOf(DataFCMBodyNotification()) }
 
@@ -740,43 +747,63 @@ fun ScreenMain(
                     fontFamily = pretendardvariable
                 )
             }
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(22.dp)
+            )
+            Button(
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Gray),
+                onClick = {
+                    scope.launch {
+                        dataStore.setTest("BBBBBB")
+                    }
+                },
+                modifier = Modifier
+                    .width(260.dp)
+                    .height(56.dp),
+                shape = RoundedCornerShape(50.dp)
 
+            ) {
+                Text(
+                    text = "DATASTORE : ${test.value}",
+                    textAlign = TextAlign.Center,
+                    color = colorEDE6FD,
+                    fontSize = 16.sp,
+                    fontFamily = pretendardvariable
+                )
+            }
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(22.dp)
+            )
+            Button(
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Gray),
+                onClick = {
+                    scope.launch {
+                        dataStore.setTest("AAAAA")
+                    }
+                },
+                modifier = Modifier
+                    .width(260.dp)
+                    .height(56.dp),
+                shape = RoundedCornerShape(50.dp)
+
+            ) {
+                Text(
+                    text = "DATASTORE : ${test.value}",
+                    textAlign = TextAlign.Center,
+                    color = colorEDE6FD,
+                    fontSize = 16.sp,
+                    fontFamily = pretendardvariable
+                )
+            }
 
             Spacer(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(120.dp)
-            )
-        }
-
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Bottom,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = "By 김대우",
-                fontSize = 12.sp,
-                textAlign = TextAlign.Center,
-                color = textColorType2,
-                fontFamily = pretendardvariable
-            )
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(8.dp)
-            )
-            Text(
-                text = "BIGBIGDW",
-                fontSize = 12.sp,
-                textAlign = TextAlign.Center,
-                color = textColorType2,
-                fontFamily = pretendardvariable
-            )
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(60.dp)
             )
         }
     }

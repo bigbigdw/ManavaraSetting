@@ -1,7 +1,9 @@
 package com.bigbigdw.manavarasetting.widget
 
 import android.content.Context
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,7 +31,11 @@ import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
+import androidx.glance.Button
+import androidx.glance.layout.size
 import androidx.work.WorkManager
+import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager
+import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.TESTKEY
 import com.bigbigdw.manavarasetting.util.FCM.postFCMAlertTest
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import com.bigbigdw.manavarasetting.widget.ManavaraSettingWidget.paramWorkerInterval
@@ -56,80 +62,110 @@ object ManavaraSettingWidget : GlanceAppWidget() {
     val paramWorkerInterval = ActionParameters.Key<Long>("WOKER_INTERVAL")
     val paramWorkerTimeMill = ActionParameters.Key<TimeUnit>("WOKER_TIMEMILL")
 
+    val test = stringPreferencesKey("TEST")
+
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         provideContent {
-
-            val worker = currentState(key = ManavaraSettingWidget.worker) ?: "활성화 되지 않음"
-
-            Column(
-                modifier = GlanceModifier.fillMaxSize(),
-                verticalAlignment = Alignment.Top,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(text = "Where to?", modifier = GlanceModifier.padding(12.dp))
-
-                Spacer(modifier = GlanceModifier.padding(0.dp, 0.dp, 0.dp, 12.dp))
-
-                Button(
-                    modifier = GlanceModifier.background(color = Color.Red),
-                    text = "postFCMAlertTest",
-                    onClick = { postFCMAlertTest(context = context) }
-                )
-                Spacer(modifier = GlanceModifier.padding(0.dp, 0.dp, 0.dp, 12.dp))
-                Button(
-                    modifier = GlanceModifier.background(color = Color.Red),
-                    text = "doWorker",
-                    onClick = actionRunCallback(
-                        callbackClass = WidgetCallback::class.java,
-                        parameters = actionParametersOf(paramWorkerStatus to "DO", paramWorkerTag to "TEST", paramWorkerInterval to 30, paramWorkerTimeMill to TimeUnit.MINUTES)
-                    )
-                )
-                Spacer(modifier = GlanceModifier.padding(0.dp, 0.dp, 0.dp, 12.dp))
-                Button(
-                    modifier = GlanceModifier.background(color = Color.Red),
-                    text = "cancelWorker",
-                    onClick = actionRunCallback(
-                        callbackClass = WidgetCallback::class.java,
-                        parameters = actionParametersOf(paramWorkerStatus to "CANCEL", paramWorkerTag to "TEST")
-                    )
-                )
-
-                Spacer(modifier = GlanceModifier.padding(0.dp, 0.dp, 0.dp, 12.dp))
-                Button(
-                    modifier = GlanceModifier.background(color = Color.Red),
-                    text = "TEST",
-                    onClick = actionRunCallback(
-                        callbackClass = WidgetCallback::class.java,
-                        parameters = actionParametersOf(paramWorkerStatus to "CANCEL", paramWorkerTag to "TEST")
-                    )
-                )
-
-
-                Column(
-                    modifier = GlanceModifier.fillMaxSize(),
-                    verticalAlignment = Alignment.Top,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Spacer(modifier = GlanceModifier.padding(0.dp, 0.dp, 0.dp, 12.dp))
-                    Button(
-                        modifier = GlanceModifier.background(color = Color.Red),
-                        text = "checkWorker : $worker",
-                        onClick = actionRunCallback(
-                            callbackClass = WidgetCallback::class.java,
-                            parameters = actionParametersOf(paramWorkerStatus to "HAHA")
-                        )
-                    )
-                }
-
-            }
+            ScreenWidget(context = context)
         }
+    }
+}
+
+@Composable
+fun ScreenWidget(context: Context) {
+
+    val dataStore = DataStoreManager(context)
+
+    val worker = currentState(key = ManavaraSettingWidget.worker) ?: "활성화 되지 않음"
+    val test = dataStore.getTest.collectAsState(initial = "")
+
+    Column(
+        modifier = GlanceModifier.fillMaxSize(),
+        verticalAlignment = Alignment.Top,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Where to?",
+            modifier = GlanceModifier.padding(12.dp)
+        )
+        Spacer(modifier = GlanceModifier.size(12.dp))
+        Button(
+            modifier = GlanceModifier.background(color = Color.Red),
+            text = "postFCMAlertTest",
+            onClick = { postFCMAlertTest(context = context) }
+        )
+        Spacer(modifier = GlanceModifier.size(12.dp))
+        Button(
+            modifier = GlanceModifier.background(color = Color.Red),
+            text = "doWorker",
+            onClick = actionRunCallback(
+                callbackClass = WidgetCallback::class.java,
+                parameters = actionParametersOf(
+                    paramWorkerStatus to "DO",
+                    paramWorkerTag to "TEST",
+                    paramWorkerInterval to 30,
+                    paramWorkerTimeMill to TimeUnit.MINUTES
+                )
+            )
+        )
+        Spacer(modifier = GlanceModifier.size(12.dp))
+        Button(
+            modifier = GlanceModifier.background(color = Color.Red),
+            text = "cancelWorker",
+            onClick = actionRunCallback(
+                callbackClass = WidgetCallback::class.java,
+                parameters = actionParametersOf(
+                    paramWorkerStatus to "CANCEL",
+                    paramWorkerTag to "TEST"
+                )
+            )
+        )
+
+        Spacer(modifier = GlanceModifier.size(12.dp))
+        Button(
+            modifier = GlanceModifier.background(color = Color.Red),
+            text = "TEST",
+            onClick = actionRunCallback(
+                callbackClass = WidgetCallback::class.java,
+                parameters = actionParametersOf(
+                    paramWorkerStatus to "CANCEL",
+                    paramWorkerTag to "TEST"
+                )
+            )
+        )
+
+
+        Column(
+            modifier = GlanceModifier.fillMaxSize(),
+            verticalAlignment = Alignment.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(modifier = GlanceModifier.size(12.dp))
+            Button(
+                modifier = GlanceModifier.background(color = Color.Red),
+                text = "checkWorker : $worker",
+                onClick = actionRunCallback(
+                    callbackClass = WidgetCallback::class.java,
+                    parameters = actionParametersOf(paramWorkerStatus to "HAHA")
+                )
+            )
+            Spacer(modifier = GlanceModifier.size(12.dp))
+            Button(
+                modifier = GlanceModifier.background(color = Color.Red),
+                text = "TEST : ${test.value}",
+                onClick = actionRunCallback(
+                    callbackClass = WidgetUpdate::class.java,
+                )
+            )
+        }
+
     }
 }
 
 @Composable
 fun test() {
     // create your AppWidget here
-    val count = currentState(key = ManavaraSettingWidget.countKey) ?: 0
+    val count = currentState(key = TESTKEY) ?: 0
     Column(
         modifier = GlanceModifier
             .fillMaxSize()
@@ -149,6 +185,16 @@ fun test() {
             text = "Inc",
             onClick = actionRunCallback(IncrementActionCallback::class.java)
         )
+    }
+}
+
+class WidgetUpdate : ActionCallback {
+    override suspend fun onAction(
+        context: Context,
+        glanceId: GlanceId,
+        parameters: ActionParameters
+    ) {
+        ManavaraSettingWidget.update(context, glanceId)
     }
 }
 
@@ -179,7 +225,7 @@ class WidgetCallback : ActionCallback {
 
             }
 
-            if(parameters[paramWorkerTag] != null){
+            if (parameters[paramWorkerTag] != null) {
                 val status = withContext(Dispatchers.IO) {
                     workManager.getWorkInfosByTag("TEST").get()
                 }

@@ -35,8 +35,6 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
 
     override fun doWork(): Result {
 
-        Log.d("HIHIHIHI", "DO_WORK")
-
         if (inputData.getString(TYPE).equals("BEST")) {
 
             for (j in NaverSeriesGenre) {

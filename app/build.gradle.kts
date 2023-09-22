@@ -101,4 +101,8 @@ dependencies {
     implementation("androidx.datastore:datastore:1.0.0")
 
     implementation("org.json:json:20210307")
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
 }
