@@ -112,7 +112,7 @@ fun ScreenMain(
                     .height(22.dp)
             )
             Button(
-                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
                 onClick = { getFCMToken(context) },
                 modifier = Modifier
                     .width(260.dp)
@@ -134,7 +134,7 @@ fun ScreenMain(
                     .height(22.dp)
             )
             Button(
-                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
                 onClick = { postFCMAlertTest(context) },
                 modifier = Modifier
                     .width(260.dp)
@@ -196,7 +196,7 @@ fun ScreenMain(
                     .height(22.dp)
             )
             Button(
-                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
                 onClick = { postFCMAlert(context = context, getFCM = getFCM) },
                 modifier = Modifier
                     .width(260.dp)
@@ -218,7 +218,7 @@ fun ScreenMain(
                     .height(22.dp)
             )
             Button(
-                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Blue),
                 onClick = {
                     for (j in NaverSeriesGenre) {
                         for (i in 1..5) {
@@ -246,14 +246,13 @@ fun ScreenMain(
                     .height(22.dp)
             )
             Button(
-                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Blue),
                 onClick = {
                     doWorker(
                         workManager = workManager,
-                        context = context,
                         repeatInterval = 3,
-                        timeMill = TimeUnit.HOURS,
-                        tag = "BEST"
+                        tag = "BEST",
+                        timeMill = TimeUnit.HOURS
                     )
                 },
                 modifier = Modifier
@@ -276,8 +275,8 @@ fun ScreenMain(
                     .height(22.dp)
             )
             Button(
-                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
-                onClick = { cancelWorker(workManager = workManager, context = context, "BEST") },
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Blue),
+                onClick = { cancelWorker(workManager = workManager,  tag = "BEST") },
                 modifier = Modifier
                     .width(260.dp)
                     .height(56.dp),
@@ -298,7 +297,7 @@ fun ScreenMain(
                     .height(22.dp)
             )
             Button(
-                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Blue),
                 onClick = {
                     checkWorker(
                         workManager = workManager,
@@ -326,7 +325,7 @@ fun ScreenMain(
                     .height(22.dp)
             )
             Button(
-                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Green),
                 onClick = { uploadJsonFile() },
                 modifier = Modifier
                     .width(260.dp)
@@ -348,7 +347,7 @@ fun ScreenMain(
                     .height(22.dp)
             )
             Button(
-                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Green),
                 onClick = {
                     for (j in NaverSeriesGenre) {
                         uploadJsonArrayToStorageDay(
@@ -377,7 +376,7 @@ fun ScreenMain(
                     .height(22.dp)
             )
             Button(
-                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Gray),
                 onClick = {
 
                 },
@@ -401,7 +400,7 @@ fun ScreenMain(
                     .height(22.dp)
             )
             Button(
-                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Green),
                 onClick = {
                     for (j in NaverSeriesGenre) {
 
@@ -438,7 +437,7 @@ fun ScreenMain(
                     .height(22.dp)
             )
             Button(
-                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Green),
                 onClick = {
                     for (j in NaverSeriesGenre) {
                         uploadJsonArrayToStorageWeek(
@@ -467,17 +466,14 @@ fun ScreenMain(
                     .height(22.dp)
             )
             Button(
-                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Green),
                 onClick = {
-                    for (j in NaverSeriesGenre) {
-                        doWorker(
-                            workManager = workManager,
-                            context = context,
-                            repeatInterval = 6,
-                            timeMill = TimeUnit.HOURS,
-                            tag = "BEST_JSON"
-                        )
-                    }
+                    doWorker(
+                        workManager = workManager,
+                        repeatInterval = 6,
+                        tag = "BEST_JSON",
+                        timeMill = TimeUnit.HOURS
+                    )
                 },
                 modifier = Modifier
                     .width(260.dp)
@@ -499,12 +495,11 @@ fun ScreenMain(
                     .height(22.dp)
             )
             Button(
-                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Green),
                 onClick = {
                     for (j in NaverSeriesGenre) {
                         cancelWorker(
                             workManager = workManager,
-                            context = context,
                             tag = "BEST_JSON"
                         )
                     }
@@ -529,7 +524,7 @@ fun ScreenMain(
                     .height(22.dp)
             )
             Button(
-                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Green),
                 onClick = {
                     checkWorker(
                         workManager = workManager,
@@ -557,7 +552,7 @@ fun ScreenMain(
                     .height(22.dp)
             )
             Button(
-                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Magenta),
                 onClick = {
                     for (j in NaverSeriesGenre) {
                         calculateTrophy(platform = "NAVER_SERIES", genre = getNaverSeriesGenre(j))
@@ -583,14 +578,13 @@ fun ScreenMain(
                     .height(22.dp)
             )
             Button(
-                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Magenta),
                 onClick = {
                     doWorker(
                         workManager = workManager,
-                        context = context,
                         repeatInterval = 3,
-                        timeMill = TimeUnit.HOURS,
-                        tag = "BEST_TROPHY"
+                        tag = "BEST_TROPHY",
+                        timeMill = TimeUnit.HOURS
                     )
                 },
                 modifier = Modifier
@@ -613,11 +607,10 @@ fun ScreenMain(
                     .height(22.dp)
             )
             Button(
-                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Magenta),
                 onClick = {
                     cancelWorker(
                         workManager = workManager,
-                        context = context,
                         tag = "BEST_TROPHY"
                     )
                 },
@@ -641,7 +634,7 @@ fun ScreenMain(
                     .height(22.dp)
             )
             Button(
-                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Magenta),
                 onClick = {
                     checkWorker(
                         workManager = workManager,
@@ -663,6 +656,92 @@ fun ScreenMain(
                     fontFamily = pretendardvariable
                 )
             }
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(22.dp)
+            )
+            Button(
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Gray),
+                onClick = {
+                    doWorker(
+                        workManager = workManager,
+                        repeatInterval = 20,
+                        tag = "TEST",
+                        timeMill = TimeUnit.MINUTES
+                    )
+                },
+                modifier = Modifier
+                    .width(260.dp)
+                    .height(56.dp),
+                shape = RoundedCornerShape(50.dp)
+
+            ) {
+                Text(
+                    text = "테스트 시작",
+                    textAlign = TextAlign.Center,
+                    color = colorEDE6FD,
+                    fontSize = 16.sp,
+                    fontFamily = pretendardvariable
+                )
+            }
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(22.dp)
+            )
+            Button(
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Gray),
+                onClick = {
+                    cancelWorker(
+                        workManager = workManager,
+                        tag = "TEST"
+                    )
+                },
+                modifier = Modifier
+                    .width(260.dp)
+                    .height(56.dp),
+                shape = RoundedCornerShape(50.dp)
+
+            ) {
+                Text(
+                    text = "테스트 취소",
+                    textAlign = TextAlign.Center,
+                    color = colorEDE6FD,
+                    fontSize = 16.sp,
+                    fontFamily = pretendardvariable
+                )
+            }
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(22.dp)
+            )
+            Button(
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Gray),
+                onClick = {
+                    checkWorker(
+                        workManager = workManager,
+                        context = context,
+                        tag = "TEST"
+                    )
+                },
+                modifier = Modifier
+                    .width(260.dp)
+                    .height(56.dp),
+                shape = RoundedCornerShape(50.dp)
+
+            ) {
+                Text(
+                    text = "테스트 확인",
+                    textAlign = TextAlign.Center,
+                    color = colorEDE6FD,
+                    fontSize = 16.sp,
+                    fontFamily = pretendardvariable
+                )
+            }
+
+
             Spacer(
                 modifier = Modifier
                     .fillMaxWidth()
