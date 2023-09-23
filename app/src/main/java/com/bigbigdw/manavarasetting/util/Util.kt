@@ -326,40 +326,46 @@ fun setDataStore(message: String, context: Context){
     val dataStore = DataStoreManager(context)
     val mRootRef = FirebaseDatabase.getInstance().reference.child("WORKER")
 
+    val year = DBDate.dateMMDDHHMM().substring(0,4)
+    val month = DBDate.dateMMDDHHMM().substring(4,6)
+    val day = DBDate.dateMMDDHHMM().substring(6,8)
+    val hour = DBDate.dateMMDDHHMM().substring(8,10)
+    val min = DBDate.dateMMDDHHMM().substring(10,12)
+
     var currentUser :  FirebaseUser? = null
     currentUser = Firebase.auth.currentUser
 
     if(message.contains("테스트")){
         CoroutineScope(Dispatchers.IO).launch {
-            dataStore.setDataStoreString(key = DataStoreManager.TEST_TIME, str = "${FCM.year}.${FCM.month}.${FCM.day} ${FCM.hour}:${FCM.min}")
+            dataStore.setDataStoreString(key = DataStoreManager.TEST_TIME, str = "${year}.${month}.${day} ${hour}:${min}")
         }
 
-        mRootRef.child("TEST_TIME").setValue("${FCM.year}.${FCM.month}.${FCM.day} ${FCM.hour}:${FCM.min}")
-        mRootRef.child("TEST_UID").setValue(currentUser?.uid ?: "NONE")
+        mRootRef.child("WORKER_TEST").setValue("${year}.${month}.${day} ${hour}:${min}")
+        mRootRef.child("UID_TEST").setValue(currentUser?.uid ?: "NONE")
 
     } else if(message.contains("트로피 정산이 완료되었습니다")){
         CoroutineScope(Dispatchers.IO).launch {
-            dataStore.setDataStoreString(key = DataStoreManager.TROPHYWORKER_TIME, str = "${FCM.year}.${FCM.month}.${FCM.day} ${FCM.hour}:${FCM.min}")
+            dataStore.setDataStoreString(key = DataStoreManager.TROPHYWORKER_TIME, str = "${year}.${month}.${day} ${hour}:${min}")
         }
 
-        mRootRef.child("TROPHYWORKER_TIME").setValue("${FCM.year}.${FCM.month}.${FCM.day} ${FCM.hour}:${FCM.min}")
-        mRootRef.child("TROPHYWORKER_UID").setValue(currentUser?.uid ?: "NONE")
+        mRootRef.child("WORKER_TROPHY").setValue("${year}.${month}.${day} ${hour}:${min}")
+        mRootRef.child("UID_TROPHY").setValue(currentUser?.uid ?: "NONE")
 
     } else if(message.contains("DAY JSON 생성이 완료되었습니다")){
         CoroutineScope(Dispatchers.IO).launch {
-            dataStore.setDataStoreString(key = DataStoreManager.JSONWORKER_TIME, str = "${FCM.year}.${FCM.month}.${FCM.day} ${FCM.hour}:${FCM.min}")
+            dataStore.setDataStoreString(key = DataStoreManager.JSONWORKER_TIME, str = "${year}.${month}.${day} ${hour}:${min}")
         }
 
-        mRootRef.child("JSONWORKER_TIME").setValue("${FCM.year}.${FCM.month}.${FCM.day} ${FCM.hour}:${FCM.min}")
-        mRootRef.child("JSONWORKER_UID").setValue(currentUser?.uid ?: "NONE")
+        mRootRef.child("WORKER_JSON").setValue("${year}.${month}.${day} ${hour}:${min}")
+        mRootRef.child("UID_JSON").setValue(currentUser?.uid ?: "NONE")
 
     } else if(message.contains("베스트 리스트가 갱신되었습니다")){
         CoroutineScope(Dispatchers.IO).launch {
-            dataStore.setDataStoreString(key = DataStoreManager.BESTWORKER_TIME, str = "${FCM.year}.${FCM.month}.${FCM.day} ${FCM.hour}:${FCM.min}")
+            dataStore.setDataStoreString(key = DataStoreManager.BESTWORKER_TIME, str = "${year}.${month}.${day} ${hour}:${min}")
         }
 
-        mRootRef.child("BESTWORKER_TIME").setValue("${FCM.year}.${FCM.month}.${FCM.day} ${FCM.hour}:${FCM.min}")
-        mRootRef.child("BESTWORKER_UID").setValue(currentUser?.uid ?: "NONE")
+        mRootRef.child("WORKER_BEST").setValue("${year}.${month}.${day} ${hour}:${min}")
+        mRootRef.child("UID_BEST").setValue(currentUser?.uid ?: "NONE")
     }
 }
 

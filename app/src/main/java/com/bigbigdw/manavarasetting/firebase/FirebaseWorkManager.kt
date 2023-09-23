@@ -31,11 +31,6 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
     Worker(context, workerParams) {
 
     val dataStore = DataStoreManager(context)
-    val year = DBDate.dateMMDDHHMM().substring(0,4)
-    val month = DBDate.dateMMDDHHMM().substring(4,6)
-    val day = DBDate.dateMMDDHHMM().substring(6,8)
-    val hour = DBDate.dateMMDDHHMM().substring(8,10)
-    val min = DBDate.dateMMDDHHMM().substring(10,12)
 
     companion object {
         const val TYPE = "type"
@@ -45,6 +40,12 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
 
     override fun doWork(): Result {
 
+        val year = DBDate.dateMMDDHHMM().substring(0,4)
+        val month = DBDate.dateMMDDHHMM().substring(4,6)
+        val day = DBDate.dateMMDDHHMM().substring(6,8)
+        val hour = DBDate.dateMMDDHHMM().substring(8,10)
+        val min = DBDate.dateMMDDHHMM().substring(10,12)
+
         if (inputData.getString(TYPE).equals("BEST")) {
 
             for (j in NaverSeriesGenre) {
@@ -53,7 +54,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                 }
             }
 
-            postFCM(data = "베스트 리스트가 갱신되었습니다")
+            postFCM(data = "베스트 리스트가 갱신되었습니다", time = "${year}.${month}.${day} ${hour}:${min}")
 
             CoroutineScope(Dispatchers.IO).launch {
                 dataStore.setDataStoreString(key = DataStoreManager.BESTWORKER_TIME, str = "${year}.${month}.${day} ${hour}:${min}")
@@ -72,7 +73,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                 )
             }
 
-            postFCM(data = "DAY JSON 생성이 완료되었습니다")
+            postFCM(data = "DAY JSON 생성이 완료되었습니다", time = "${year}.${month}.${day} ${hour}:${min}")
 
             CoroutineScope(Dispatchers.IO).launch {
                 dataStore.setDataStoreString(key = DataStoreManager.JSONWORKER_TIME, str = "${year}.${month}.${day} ${hour}:${min}")
@@ -84,13 +85,13 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                 calculateTrophy(platform = "NAVER_SERIES", genre = getNaverSeriesGenre(j))
             }
 
-            postFCM(data = "트로피 정산이 완료되었습니다")
+            postFCM(data = "트로피 정산이 완료되었습니다", time = "${year}.${month}.${day} ${hour}:${min}")
 
             CoroutineScope(Dispatchers.IO).launch {
                 dataStore.setDataStoreString(key = DataStoreManager.TROPHYWORKER_TIME, str = "${year}.${month}.${day} ${hour}:${min}")
             }
         } else if (inputData.getString(TYPE).equals("TEST")) {
-            postFCM(data = "테스트")
+            postFCM(data = "테스트", time = "${year}.${month}.${day} ${hour}:${min}")
 
             CoroutineScope(Dispatchers.IO).launch {
                 dataStore.setDataStoreString(key = DataStoreManager.TEST_TIME, str = "${year}.${month}.${day} ${hour}:${min}")
@@ -100,22 +101,16 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
         return Result.success()
     }
 
-    private fun postFCM(data : String) {
-
-        val year = DBDate.dateMMDDHHMM().substring(0,4)
-        val month = DBDate.dateMMDDHHMM().substring(4,6)
-        val day = DBDate.dateMMDDHHMM().substring(6,8)
-        val hour = DBDate.dateMMDDHHMM().substring(8,10)
-        val min = DBDate.dateMMDDHHMM().substring(10,12)
+    private fun postFCM(data : String, time : String) {
 
         val fcmBody = DataFCMBody(
             "/topics/all",
             "high",
             DataFCMBodyData("마나바라 세팅", data),
-            DataFCMBodyNotification(title = "마나바라 세팅", body = "${year}.${month}.${day} ${hour}:${min} $data", click_action= "best"),
+            DataFCMBodyNotification(title = "마나바라 세팅", body = "$time $data", click_action= "best"),
         )
 
-        miningAlert("마나바라 세팅", "${year}.${month}.${day} ${hour}:${min} $data", "ALERT")
+        miningAlert("마나바라 세팅", "$time $data", "ALERT")
 
         setDataStore(message = data, context = applicationContext)
 
@@ -154,45 +149,4 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                 )
             )
     }
-
-//    private fun setDataStore(message: String){
-//        val dataStore = DataStoreManager(applicationContext)
-//        val mRootRef = FirebaseDatabase.getInstance().reference.child("WORKER")
-//
-//        var currentUser :  FirebaseUser? = null
-//        currentUser = Firebase.auth.currentUser
-//
-//        if(message.contains("테스트")){
-//            CoroutineScope(Dispatchers.IO).launch {
-//                dataStore.setDataStoreString(key = DataStoreManager.TEST_TIME, str = "${year}.${month}.${day} ${hour}:${min}")
-//            }
-//
-//            mRootRef.child("TEST_TIME").setValue("${year}.${month}.${day} ${hour}:${min}")
-//            mRootRef.child("TEST_UID").setValue(currentUser?.uid ?: "NONE")
-//
-//        } else if(message.contains("트로피 정산이 완료되었습니다")){
-//            CoroutineScope(Dispatchers.IO).launch {
-//                dataStore.setDataStoreString(key = DataStoreManager.TROPHYWORKER_TIME, str = "${year}.${month}.${day} ${hour}:${min}")
-//            }
-//
-//            mRootRef.child("TROPHYWORKER_TIME").setValue("${year}.${month}.${day} ${hour}:${min}")
-//            mRootRef.child("TROPHYWORKER_UID").setValue(currentUser?.uid ?: "NONE")
-//
-//        } else if(message.contains("DAY JSON 생성이 완료되었습니다")){
-//            CoroutineScope(Dispatchers.IO).launch {
-//                dataStore.setDataStoreString(key = DataStoreManager.JSONWORKER_TIME, str = "${year}.${month}.${day} ${hour}:${min}")
-//            }
-//
-//            mRootRef.child("JSONWORKER_TIME").setValue("${year}.${month}.${day} ${hour}:${min}")
-//            mRootRef.child("JSONWORKER_UID").setValue(currentUser?.uid ?: "NONE")
-//
-//        } else if(message.contains("베스트 리스트가 갱신되었습니다")){
-//            CoroutineScope(Dispatchers.IO).launch {
-//                dataStore.setDataStoreString(key = DataStoreManager.BESTWORKER_TIME, str = "${year}.${month}.${day} ${hour}:${min}")
-//            }
-//
-//            mRootRef.child("BESTWORKER_TIME").setValue("${year}.${month}.${day} ${hour}:${min}")
-//            mRootRef.child("BESTWORKER_UID").setValue(currentUser?.uid ?: "NONE")
-//        }
-//    }
 }

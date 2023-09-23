@@ -254,10 +254,10 @@ class WidgetUpdate : ActionCallback {
 
                     val dataStore = DataStoreManager(context)
 
-                    val TESTTIME: String? = dataSnapshot.child("TEST_TIME").getValue(String::class.java)
-                    val BESTWORKERTIME: String? = dataSnapshot.child("BESTWORKER_TIME").getValue(String::class.java)
-                    val JSONWORKERTIME: String? = dataSnapshot.child("JSONWORKER_TIME").getValue(String::class.java)
-                    val TROPHYWORKERTIME: String? = dataSnapshot.child("TROPHYWORKER_TIME").getValue(String::class.java)
+                    val TESTTIME: String? = dataSnapshot.child("WORKER_TEST").getValue(String::class.java)
+                    val BESTWORKERTIME: String? = dataSnapshot.child("WORKER_BEST").getValue(String::class.java)
+                    val JSONWORKERTIME: String? = dataSnapshot.child("WORKER_JSON").getValue(String::class.java)
+                    val TROPHYWORKERTIME: String? = dataSnapshot.child("WORKER_TROPHY").getValue(String::class.java)
 
                     CoroutineScope(Dispatchers.IO).launch {
                         dataStore.setDataStoreString(TEST_TIME, TESTTIME ?: "")
