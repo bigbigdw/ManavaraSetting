@@ -107,7 +107,7 @@ fun ScreenWidget(context: Context) {
         Button(
             modifier = GlanceModifier.background(color = Color.Red),
             text = "postFCMAlertTest",
-            onClick = { postFCMAlertTest(context = context) }
+            onClick = { postFCMAlertTest(context = context, message = "테스트") }
         )
         Spacer(modifier = GlanceModifier.size(12.dp))
 
@@ -120,7 +120,7 @@ fun ScreenWidget(context: Context) {
             Spacer(modifier = GlanceModifier.size(12.dp))
             Button(
                 modifier = GlanceModifier.background(color = Color.Red),
-                text = "TEST : ${TEST_TIME.value}",
+                text = "TEST_TIME : ${TEST_TIME.value}",
                 onClick = actionRunCallback(
                     callbackClass = WidgetUpdate::class.java,
                 )
@@ -128,7 +128,7 @@ fun ScreenWidget(context: Context) {
             Spacer(modifier = GlanceModifier.size(12.dp))
             Button(
                 modifier = GlanceModifier.background(color = Color.Red),
-                text = "TEST : ${BESTWORKER_TIME.value}",
+                text = "BESTWORKER_TIME : ${BESTWORKER_TIME.value}",
                 onClick = actionRunCallback(
                     callbackClass = WidgetUpdate::class.java,
                 )
@@ -136,7 +136,7 @@ fun ScreenWidget(context: Context) {
             Spacer(modifier = GlanceModifier.size(12.dp))
             Button(
                 modifier = GlanceModifier.background(color = Color.Red),
-                text = "TEST : ${JSONWORKER_TIME.value}",
+                text = "JSONWORKER_TIME : ${JSONWORKER_TIME.value}",
                 onClick = actionRunCallback(
                     callbackClass = WidgetUpdate::class.java,
                 )
@@ -144,7 +144,7 @@ fun ScreenWidget(context: Context) {
             Spacer(modifier = GlanceModifier.size(12.dp))
             Button(
                 modifier = GlanceModifier.background(color = Color.Red),
-                text = "TEST : ${TROPHYWORKER_TIME.value}",
+                text = "TROPHYWORKER_TIME : ${TROPHYWORKER_TIME.value}",
                 onClick = actionRunCallback(
                     callbackClass = WidgetUpdate::class.java,
                 )
@@ -254,13 +254,13 @@ class WidgetUpdate : ActionCallback {
 
                     val dataStore = DataStoreManager(context)
 
-                    val TEST_TIME: String? = dataSnapshot.child("TEST_TIME").getValue(String::class.java)
+                    val TESTTIME: String? = dataSnapshot.child("TEST_TIME").getValue(String::class.java)
                     val BESTWORKERTIME: String? = dataSnapshot.child("BESTWORKER_TIME").getValue(String::class.java)
                     val JSONWORKERTIME: String? = dataSnapshot.child("JSONWORKER_TIME").getValue(String::class.java)
                     val TROPHYWORKERTIME: String? = dataSnapshot.child("TROPHYWORKER_TIME").getValue(String::class.java)
 
                     CoroutineScope(Dispatchers.IO).launch {
-                        dataStore.setDataStoreString(TESTKEY, TEST_TIME ?: "")
+                        dataStore.setDataStoreString(TEST_TIME, TESTTIME ?: "")
                         dataStore.setDataStoreString(BESTWORKER_TIME, BESTWORKERTIME ?: "")
                         dataStore.setDataStoreString(JSONWORKER_TIME, JSONWORKERTIME ?: "")
                         dataStore.setDataStoreString(TROPHYWORKER_TIME, TROPHYWORKERTIME ?: "")

@@ -12,7 +12,11 @@ import com.bigbigdw.manavarasetting.firebase.FWorkManagerResult
 import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager
 import com.bigbigdw.massmath.Firebase.FirebaseService
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,13 +27,13 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object FCM {
-    fun postFCMAlertTest(context: Context) {
 
-        val year = DBDate.dateMMDDHHMM().substring(0,4)
-        val month = DBDate.dateMMDDHHMM().substring(4,6)
-        val day = DBDate.dateMMDDHHMM().substring(6,8)
-        val hour = DBDate.dateMMDDHHMM().substring(8,10)
-        val min = DBDate.dateMMDDHHMM().substring(10,12)
+    val year = DBDate.dateMMDDHHMM().substring(0,4)
+    val month = DBDate.dateMMDDHHMM().substring(4,6)
+    val day = DBDate.dateMMDDHHMM().substring(6,8)
+    val hour = DBDate.dateMMDDHHMM().substring(8,10)
+    val min = DBDate.dateMMDDHHMM().substring(10,12)
+    fun postFCMAlertTest(context: Context, message : String) {
 
         val fcmBody = DataFCMBody(
             "/topics/all",
@@ -37,14 +41,16 @@ object FCM {
             DataFCMBodyData("ALERT_ALL", ""),
             DataFCMBodyNotification(
                 "공지사항",
-                "${year}.${month}.${day} ${hour}:${min} 위젯 테스트",
+                "${year}.${month}.${day} ${hour}:${min} $message",
                 ""
             ),
         )
 
         postFCM(context = context, fcmBody = fcmBody)
 
-        miningAlert(title = "공지사항", message = "${year}.${month}.${day} ${hour}:${min} 위젯 테스트")
+        setDataStore(context = context, message = message)
+
+        miningAlert(title = "공지사항", message = "${year}.${month}.${day} ${hour}:${min} $message")
     }
 
     private fun miningAlert(
@@ -122,6 +128,50 @@ object FCM {
         )
 
         postFCM(context = context, fcmBody = fcmBody)
+
+        setDataStore(context = context, message = getFCM.body)
+
         miningAlert(title = getFCM.title, message = getFCM.body)
     }
+
+//    private fun setDataStore(message: String, context: Context){
+//        val dataStore = DataStoreManager(context)
+//        val mRootRef = FirebaseDatabase.getInstance().reference.child("WORKER")
+//
+//        var currentUser :  FirebaseUser? = null
+//        currentUser = Firebase.auth.currentUser
+//
+//        if(message.contains("테스트")){
+//            CoroutineScope(Dispatchers.IO).launch {
+//                dataStore.setDataStoreString(key = DataStoreManager.TEST_TIME, str = "${year}.${month}.${day} ${hour}:${min}")
+//            }
+//
+//            mRootRef.child("TEST_TIME").setValue("${year}.${month}.${day} ${hour}:${min}")
+//            mRootRef.child("TEST_UID").setValue(currentUser?.uid ?: "NONE")
+//
+//        } else if(message.contains("트로피 정산이 완료되었습니다")){
+//            CoroutineScope(Dispatchers.IO).launch {
+//                dataStore.setDataStoreString(key = DataStoreManager.TROPHYWORKER_TIME, str = "${year}.${month}.${day} ${hour}:${min}")
+//            }
+//
+//            mRootRef.child("TROPHYWORKER_TIME").setValue("${year}.${month}.${day} ${hour}:${min}")
+//            mRootRef.child("TROPHYWORKER_UID").setValue(currentUser?.uid ?: "NONE")
+//
+//        } else if(message.contains("DAY JSON 생성이 완료되었습니다")){
+//            CoroutineScope(Dispatchers.IO).launch {
+//                dataStore.setDataStoreString(key = DataStoreManager.JSONWORKER_TIME, str = "${year}.${month}.${day} ${hour}:${min}")
+//            }
+//
+//            mRootRef.child("JSONWORKER_TIME").setValue("${year}.${month}.${day} ${hour}:${min}")
+//            mRootRef.child("JSONWORKER_UID").setValue(currentUser?.uid ?: "NONE")
+//
+//        } else if(message.contains("베스트 리스트가 갱신되었습니다")){
+//            CoroutineScope(Dispatchers.IO).launch {
+//                dataStore.setDataStoreString(key = DataStoreManager.BESTWORKER_TIME, str = "${year}.${month}.${day} ${hour}:${min}")
+//            }
+//
+//            mRootRef.child("BESTWORKER_TIME").setValue("${year}.${month}.${day} ${hour}:${min}")
+//            mRootRef.child("BESTWORKER_UID").setValue(currentUser?.uid ?: "NONE")
+//        }
+//    }
 }

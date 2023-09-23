@@ -10,8 +10,11 @@ import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager
 import com.bigbigdw.manavarasetting.util.DBDate.datedd
 import com.bigbigdw.manavarasetting.util.DBDate.getDayOfWeekAsNumber
 import com.bigbigdw.manavarasetting.util.DBDate.getYesterdayDayOfWeek
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -317,6 +320,47 @@ fun miningValue(ref: MutableMap<String?, Any>, num : Int, platform: String, genr
 
     BestRef.setBookMonthlyBest(platform, genre, ref["bookCode"] as String).setValue(BestRef.setBookListDataBestAnalyze(ref))
 
+}
+
+fun setDataStore(message: String, context: Context){
+    val dataStore = DataStoreManager(context)
+    val mRootRef = FirebaseDatabase.getInstance().reference.child("WORKER")
+
+    var currentUser :  FirebaseUser? = null
+    currentUser = Firebase.auth.currentUser
+
+    if(message.contains("테스트")){
+        CoroutineScope(Dispatchers.IO).launch {
+            dataStore.setDataStoreString(key = DataStoreManager.TEST_TIME, str = "${FCM.year}.${FCM.month}.${FCM.day} ${FCM.hour}:${FCM.min}")
+        }
+
+        mRootRef.child("TEST_TIME").setValue("${FCM.year}.${FCM.month}.${FCM.day} ${FCM.hour}:${FCM.min}")
+        mRootRef.child("TEST_UID").setValue(currentUser?.uid ?: "NONE")
+
+    } else if(message.contains("트로피 정산이 완료되었습니다")){
+        CoroutineScope(Dispatchers.IO).launch {
+            dataStore.setDataStoreString(key = DataStoreManager.TROPHYWORKER_TIME, str = "${FCM.year}.${FCM.month}.${FCM.day} ${FCM.hour}:${FCM.min}")
+        }
+
+        mRootRef.child("TROPHYWORKER_TIME").setValue("${FCM.year}.${FCM.month}.${FCM.day} ${FCM.hour}:${FCM.min}")
+        mRootRef.child("TROPHYWORKER_UID").setValue(currentUser?.uid ?: "NONE")
+
+    } else if(message.contains("DAY JSON 생성이 완료되었습니다")){
+        CoroutineScope(Dispatchers.IO).launch {
+            dataStore.setDataStoreString(key = DataStoreManager.JSONWORKER_TIME, str = "${FCM.year}.${FCM.month}.${FCM.day} ${FCM.hour}:${FCM.min}")
+        }
+
+        mRootRef.child("JSONWORKER_TIME").setValue("${FCM.year}.${FCM.month}.${FCM.day} ${FCM.hour}:${FCM.min}")
+        mRootRef.child("JSONWORKER_UID").setValue(currentUser?.uid ?: "NONE")
+
+    } else if(message.contains("베스트 리스트가 갱신되었습니다")){
+        CoroutineScope(Dispatchers.IO).launch {
+            dataStore.setDataStoreString(key = DataStoreManager.BESTWORKER_TIME, str = "${FCM.year}.${FCM.month}.${FCM.day} ${FCM.hour}:${FCM.min}")
+        }
+
+        mRootRef.child("BESTWORKER_TIME").setValue("${FCM.year}.${FCM.month}.${FCM.day} ${FCM.hour}:${FCM.min}")
+        mRootRef.child("BESTWORKER_UID").setValue(currentUser?.uid ?: "NONE")
+    }
 }
 
 

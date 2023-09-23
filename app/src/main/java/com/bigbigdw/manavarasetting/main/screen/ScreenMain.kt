@@ -145,7 +145,7 @@ fun ScreenMain(
             )
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
-                onClick = { postFCMAlertTest(context) },
+                onClick = { postFCMAlertTest(context = context, message = "테스트") },
                 modifier = Modifier
                     .width(260.dp)
                     .height(56.dp),
@@ -207,7 +207,9 @@ fun ScreenMain(
             )
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
-                onClick = { postFCMAlert(context = context, getFCM = getFCM) },
+                onClick = {
+                    postFCMAlert(context = context, getFCM = getFCM)
+                },
                 modifier = Modifier
                     .width(260.dp)
                     .height(56.dp),
@@ -235,6 +237,7 @@ fun ScreenMain(
                             Mining.miningNaverSeriesAll(pageCount = i, genre = j)
                         }
                     }
+                    postFCMAlertTest(context = context, message = "베스트 리스트가 갱신되었습니다")
                 },
                 modifier = Modifier
                     .width(260.dp)
@@ -345,7 +348,7 @@ fun ScreenMain(
                 Text(
                     text = "JSON 업로드",
                     textAlign = TextAlign.Center,
-                    color = colorEDE6FD,
+                    color = Color.Black,
                     fontSize = 16.sp,
                     fontFamily = pretendardvariable
                 )
@@ -364,6 +367,7 @@ fun ScreenMain(
                             genre = getNaverSeriesGenre(j)
                         )
                     }
+                    postFCMAlertTest(context = context, message = "DAY JSON 생성이 완료되었습니다")
                 },
                 modifier = Modifier
                     .width(260.dp)
@@ -374,7 +378,7 @@ fun ScreenMain(
                 Text(
                     text = "DAY JSON 생성",
                     textAlign = TextAlign.Center,
-                    color = colorEDE6FD,
+                    color = Color.Black,
                     fontSize = 16.sp,
                     fontFamily = pretendardvariable
                 )
@@ -435,7 +439,7 @@ fun ScreenMain(
                 Text(
                     text = "WEEK JSON 생성",
                     textAlign = TextAlign.Center,
-                    color = colorEDE6FD,
+                    color = Color.Black,
                     fontSize = 16.sp,
                     fontFamily = pretendardvariable
                 )
@@ -464,7 +468,7 @@ fun ScreenMain(
                 Text(
                     text = "WEEK JSON 기존 업데이트",
                     textAlign = TextAlign.Center,
-                    color = colorEDE6FD,
+                    color = Color.Black,
                     fontSize = 16.sp,
                     fontFamily = pretendardvariable
                 )
@@ -493,7 +497,7 @@ fun ScreenMain(
                 Text(
                     text = "DAY JSON 자동 생성",
                     textAlign = TextAlign.Center,
-                    color = colorEDE6FD,
+                    color = Color.Black,
                     fontSize = 16.sp,
                     fontFamily = pretendardvariable
                 )
@@ -522,7 +526,7 @@ fun ScreenMain(
                 Text(
                     text = "DAY JSON 자동 생성 중지",
                     textAlign = TextAlign.Center,
-                    color = colorEDE6FD,
+                    color = Color.Black,
                     fontSize = 16.sp,
                     fontFamily = pretendardvariable
                 )
@@ -549,7 +553,7 @@ fun ScreenMain(
                 Text(
                     text = "JSON Worker 체크",
                     textAlign = TextAlign.Center,
-                    color = colorEDE6FD,
+                    color = Color.Black,
                     fontSize = 16.sp,
                     fontFamily = pretendardvariable
                 )
@@ -565,6 +569,7 @@ fun ScreenMain(
                     for (j in NaverSeriesGenre) {
                         calculateTrophy(platform = "NAVER_SERIES", genre = getNaverSeriesGenre(j))
                     }
+                    postFCMAlertTest(context = context, message = "트로피 정산이 완료되었습니다")
                 },
                 modifier = Modifier
                     .width(260.dp)
