@@ -48,6 +48,8 @@ import com.bigbigdw.manavarasetting.ui.theme.color1E1E20
 import com.bigbigdw.manavarasetting.ui.theme.colorEDE6FD
 import com.bigbigdw.manavarasetting.ui.theme.colorFFFFFF
 import com.bigbigdw.manavarasetting.ui.theme.pretendardvariable
+import com.bigbigdw.manavarasetting.util.BestRef
+import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.FCM.getFCMToken
 import com.bigbigdw.manavarasetting.util.FCM.postFCMAlert
 import com.bigbigdw.manavarasetting.util.FCM.postFCMAlertTest
@@ -233,6 +235,15 @@ fun ScreenMain(
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Blue),
                 onClick = {
                     for (j in NaverSeriesGenre) {
+
+                        if (DBDate.getDayOfWeekAsNumber() == 0) {
+                            BestRef.setBestRef(platform = "NAVER_SERIES", genre = j).child("TROPHY_WEEK").removeValue()
+                        }
+
+                        if (DBDate.datedd() == "01") {
+                            BestRef.setBestRef(platform = "NAVER_SERIES", genre = j).child("TROPHY_MONTH").removeValue()
+                        }
+
                         for (i in 1..5) {
                             Mining.miningNaverSeriesAll(pageCount = i, genre = j)
                         }
@@ -595,7 +606,7 @@ fun ScreenMain(
                 onClick = {
                     doWorker(
                         workManager = workManager,
-                        repeatInterval = 3,
+                        repeatInterval = 9,
                         tag = "BEST_TROPHY",
                         timeMill = TimeUnit.HOURS
                     )
@@ -678,7 +689,7 @@ fun ScreenMain(
                 onClick = {
                     doWorker(
                         workManager = workManager,
-                        repeatInterval = 20,
+                        repeatInterval = 15,
                         tag = "TEST",
                         timeMill = TimeUnit.MINUTES
                     )

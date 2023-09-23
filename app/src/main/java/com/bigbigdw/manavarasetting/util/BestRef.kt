@@ -38,6 +38,10 @@ object BestRef {
         return mRootRef.child("BOOK").child(type).child(genre).child(bookCode)
     }
 
+    fun setBestData(platform: String, num: Int, genre: String): DatabaseReference {
+        return mRootRef.child("DATA").child(platform).child(genre).child(num.toString())
+    }
+
     fun setBookListDataBestAnalyze(ref: MutableMap<String?, Any>): BestListAnalyze {
         return BestListAnalyze(
             ref["current"] as Int,

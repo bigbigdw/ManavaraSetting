@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager
+import com.bigbigdw.manavarasetting.util.BestRef
 import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.Mining
 import com.bigbigdw.manavarasetting.util.NaverSeriesGenre
@@ -14,10 +15,7 @@ import com.bigbigdw.manavarasetting.util.setDataStore
 import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageDay
 import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageWeek
 import com.bigbigdw.massmath.Firebase.FirebaseService
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -49,6 +47,16 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
         if (inputData.getString(TYPE).equals("BEST")) {
 
             for (j in NaverSeriesGenre) {
+
+                if (DBDate.getDayOfWeekAsNumber() == 0) {
+                    BestRef.setBestRef(platform = "NAVER_SERIES", genre = j).child("TROPHY_WEEK").removeValue()
+                }
+
+                if (DBDate.datedd() == "01") {
+                    BestRef.setBestRef(platform = "NAVER_SERIES", genre = j).child("TROPHY_MONTH").removeValue()
+                }
+
+
                 for (i in 1..5) {
                     Mining.miningNaverSeriesAll(pageCount = i, genre = j)
                 }
@@ -56,9 +64,6 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
 
             postFCM(data = "베스트 리스트가 갱신되었습니다", time = "${year}.${month}.${day} ${hour}:${min}")
 
-            CoroutineScope(Dispatchers.IO).launch {
-                dataStore.setDataStoreString(key = DataStoreManager.BESTWORKER_TIME, str = "${year}.${month}.${day} ${hour}:${min}")
-            }
         } else if (inputData.getString(TYPE).equals("BEST_JSON")) {
             for (j in NaverSeriesGenre) {
 
@@ -75,10 +80,6 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
 
             postFCM(data = "DAY JSON 생성이 완료되었습니다", time = "${year}.${month}.${day} ${hour}:${min}")
 
-            CoroutineScope(Dispatchers.IO).launch {
-                dataStore.setDataStoreString(key = DataStoreManager.JSONWORKER_TIME, str = "${year}.${month}.${day} ${hour}:${min}")
-            }
-
         } else if (inputData.getString(TYPE).equals("BEST_TROPHY")) {
 
             for (j in NaverSeriesGenre) {
@@ -87,15 +88,9 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
 
             postFCM(data = "트로피 정산이 완료되었습니다", time = "${year}.${month}.${day} ${hour}:${min}")
 
-            CoroutineScope(Dispatchers.IO).launch {
-                dataStore.setDataStoreString(key = DataStoreManager.TROPHYWORKER_TIME, str = "${year}.${month}.${day} ${hour}:${min}")
-            }
         } else if (inputData.getString(TYPE).equals("TEST")) {
             postFCM(data = "테스트", time = "${year}.${month}.${day} ${hour}:${min}")
 
-            CoroutineScope(Dispatchers.IO).launch {
-                dataStore.setDataStoreString(key = DataStoreManager.TEST_TIME, str = "${year}.${month}.${day} ${hour}:${min}")
-            }
         }
 
         return Result.success()

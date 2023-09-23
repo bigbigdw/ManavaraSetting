@@ -237,6 +237,8 @@ fun calculateTrophy(platform : String, genre: String) {
             val json = Json { ignoreUnknownKeys = true }
             val itemList = json.decodeFromString<List<BestItemData>>(jsonString)
 
+            val jsonArray = JsonArray()
+
             // JSON 배열 사용
             for (item in itemList) {
                 if(yesterDatItemMap.containsKey(item.bookCode)){
@@ -291,10 +293,21 @@ fun calculateTrophy(platform : String, genre: String) {
                     BestRef.setBookMonthlyBest(platform, genre, item.bookCode).setValue(bestListAnalyze)
                     BestRef.setBookWeeklyBestTotal(platform, genre, item.bookCode).setValue(bestListAnalyze)
                     BestRef.setBookMonthlyBestTotal(platform, genre, item.bookCode).setValue(bestListAnalyze)
+
+                    jsonArray.add(convertBestItemData(bestItemData))
+
                 } else {
                     Log.d("HIHIHI", "NOT HAS")
                 }
             }
+
+            val jsonArrayByteArray = jsonArray.toString().toByteArray(Charsets.UTF_8)
+
+            todayFileRef.putBytes(jsonArrayByteArray)
+                .addOnSuccessListener {
+                    // 업로드 성공 시 처리
+                }
+
         }
     }
 
@@ -304,22 +317,11 @@ fun miningValue(ref: MutableMap<String?, Any>, num : Int, platform: String, genr
 
     BestRef.setBookCode(platform, genre, ref["bookCode"] as String).setValue(BestRef.setBookListDataBest(ref))
     BestRef.setBestTrophy(platform, genre, ref["bookCode"] as String).setValue(BestRef.setBookListDataBestAnalyze(ref))
-
-    BestRef.setBookDailyBest(platform, num, genre).setValue(BestRef.setBookListDataBest(ref))
-
-    if (getDayOfWeekAsNumber() == 0) {
-        BestRef.setBestRef(platform = platform, genre = genre).child("TROPHY_WEEK").removeValue()
-    }
-
     BestRef.setBookWeeklyBest(platform, genre, ref["bookCode"] as String).setValue(BestRef.setBookListDataBestAnalyze(ref))
-//    BestRef.setBookWeeklyBestYesterday(platform, genre, ref["bookCode"] as String).setValue(BestRef.setBookListDataBestAnalyze(ref))
-
-    if (datedd() == "01") {
-        BestRef.setBestRef(platform = platform, genre = genre).child("TROPHY_MONTH").removeValue()
-    }
-
     BestRef.setBookMonthlyBest(platform, genre, ref["bookCode"] as String).setValue(BestRef.setBookListDataBestAnalyze(ref))
 
+    BestRef.setBookDailyBest(platform, num, genre).setValue(BestRef.setBookListDataBest(ref))
+    BestRef.setBestData(platform, num, genre).setValue(BestRef.setBookListDataBest(ref))
 }
 
 fun setDataStore(message: String, context: Context){
@@ -336,33 +338,21 @@ fun setDataStore(message: String, context: Context){
     currentUser = Firebase.auth.currentUser
 
     if(message.contains("테스트")){
-        CoroutineScope(Dispatchers.IO).launch {
-            dataStore.setDataStoreString(key = DataStoreManager.TEST_TIME, str = "${year}.${month}.${day} ${hour}:${min}")
-        }
 
         mRootRef.child("WORKER_TEST").setValue("${year}.${month}.${day} ${hour}:${min}")
         mRootRef.child("UID_TEST").setValue(currentUser?.uid ?: "NONE")
 
     } else if(message.contains("트로피 정산이 완료되었습니다")){
-        CoroutineScope(Dispatchers.IO).launch {
-            dataStore.setDataStoreString(key = DataStoreManager.TROPHYWORKER_TIME, str = "${year}.${month}.${day} ${hour}:${min}")
-        }
 
         mRootRef.child("WORKER_TROPHY").setValue("${year}.${month}.${day} ${hour}:${min}")
         mRootRef.child("UID_TROPHY").setValue(currentUser?.uid ?: "NONE")
 
     } else if(message.contains("DAY JSON 생성이 완료되었습니다")){
-        CoroutineScope(Dispatchers.IO).launch {
-            dataStore.setDataStoreString(key = DataStoreManager.JSONWORKER_TIME, str = "${year}.${month}.${day} ${hour}:${min}")
-        }
 
         mRootRef.child("WORKER_JSON").setValue("${year}.${month}.${day} ${hour}:${min}")
         mRootRef.child("UID_JSON").setValue(currentUser?.uid ?: "NONE")
 
     } else if(message.contains("베스트 리스트가 갱신되었습니다")){
-        CoroutineScope(Dispatchers.IO).launch {
-            dataStore.setDataStoreString(key = DataStoreManager.BESTWORKER_TIME, str = "${year}.${month}.${day} ${hour}:${min}")
-        }
 
         mRootRef.child("WORKER_BEST").setValue("${year}.${month}.${day} ${hour}:${min}")
         mRootRef.child("UID_BEST").setValue(currentUser?.uid ?: "NONE")
