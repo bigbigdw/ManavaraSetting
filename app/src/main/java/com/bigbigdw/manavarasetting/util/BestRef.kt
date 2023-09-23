@@ -35,7 +35,7 @@ object BestRef {
     }
 
     fun setBookCode(type: String, genre: String, bookCode: String): DatabaseReference {
-        return setBestRef(type, genre).child("BOOKCODE").child(bookCode)
+        return mRootRef.child("BOOK").child(type).child(genre).child(bookCode)
     }
 
     fun setBookListDataBestAnalyze(ref: MutableMap<String?, Any>): BestListAnalyze {

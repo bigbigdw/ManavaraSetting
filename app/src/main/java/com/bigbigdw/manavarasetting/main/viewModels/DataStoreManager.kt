@@ -14,18 +14,30 @@ class DataStoreManager(private val context: Context) {
     companion object {
         private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("MANAVARASETTING")
         val TESTKEY = stringPreferencesKey("TEST")
+
+        val BESTWORKER_TIME = stringPreferencesKey("BESTWORKER_TIME")
+        val BESTWORKER_STATUS = stringPreferencesKey("BESTWORKER_STATUS")
+
+        val JSONWORKER_TIME = stringPreferencesKey("JSONWORKER_TIME")
+        val JSONWORKER_STATUS = stringPreferencesKey("JSONWORKER_STATUS")
+
+        val TROPHYWORKER_TIME = stringPreferencesKey("TROPHYWORKER_TIME")
+        val TROPHYWORKER_STATUS = stringPreferencesKey("TROPHYWORKER_STATUS")
+
+        val TEST_TIME = stringPreferencesKey("TEST_TIME")
+        val TEST_STATUS = stringPreferencesKey("TEST_STATUS")
     }
 
-    // to get the email
-    val getTest: Flow<String?> = context.dataStore.data
-        .map { preferences ->
-            preferences[TESTKEY] ?: ""
-        }
+    fun getDataStoreString(key : Preferences.Key<String>): Flow<String?> {
+        return context.dataStore.data
+            .map { preferences ->
+                preferences[key] ?: ""
+            }
+    }
 
-    // to save the email
-    suspend fun setTest(str: String) {
+    suspend fun setDataStoreString(key : Preferences.Key<String>, str: String) {
         context.dataStore.edit { preferences ->
-            preferences[TESTKEY] = str
+            preferences[key] = str
         }
     }
 

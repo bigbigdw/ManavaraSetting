@@ -1,7 +1,7 @@
 package com.bigbigdw.manavarasetting.widget
 
 import android.content.Context
-import androidx.compose.material3.ButtonDefaults
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.graphics.Color
@@ -31,18 +31,28 @@ import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
-import androidx.glance.Button
 import androidx.glance.layout.size
 import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager
+import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.BESTWORKER_TIME
+import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.JSONWORKER_TIME
 import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.TESTKEY
+import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.TEST_TIME
+import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.TROPHYWORKER_TIME
 import com.bigbigdw.manavarasetting.util.FCM.postFCMAlertTest
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import com.bigbigdw.manavarasetting.widget.ManavaraSettingWidget.paramWorkerInterval
 import com.bigbigdw.manavarasetting.widget.ManavaraSettingWidget.paramWorkerStatus
 import com.bigbigdw.manavarasetting.widget.ManavaraSettingWidget.paramWorkerTag
 import com.bigbigdw.manavarasetting.widget.ManavaraSettingWidget.paramWorkerTimeMill
+import com.bigbigdw.manavarasetting.widget.ManavaraSettingWidget.worker
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
 
@@ -77,7 +87,12 @@ fun ScreenWidget(context: Context) {
     val dataStore = DataStoreManager(context)
 
     val worker = currentState(key = ManavaraSettingWidget.worker) ?: "활성화 되지 않음"
-    val test = dataStore.getTest.collectAsState(initial = "")
+    val test = dataStore.getDataStoreString(TESTKEY).collectAsState(initial = "")
+
+    val TEST_TIME = dataStore.getDataStoreString(TEST_TIME).collectAsState(initial = "")
+    val BESTWORKER_TIME = dataStore.getDataStoreString(BESTWORKER_TIME).collectAsState(initial = "")
+    val JSONWORKER_TIME = dataStore.getDataStoreString(JSONWORKER_TIME).collectAsState(initial = "")
+    val TROPHYWORKER_TIME = dataStore.getDataStoreString(TROPHYWORKER_TIME).collectAsState(initial = "")
 
     Column(
         modifier = GlanceModifier.fillMaxSize(),
@@ -95,6 +110,84 @@ fun ScreenWidget(context: Context) {
             onClick = { postFCMAlertTest(context = context) }
         )
         Spacer(modifier = GlanceModifier.size(12.dp))
+
+        Column(
+            modifier = GlanceModifier.fillMaxSize(),
+            verticalAlignment = Alignment.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            Spacer(modifier = GlanceModifier.size(12.dp))
+            Button(
+                modifier = GlanceModifier.background(color = Color.Red),
+                text = "TEST : ${TEST_TIME.value}",
+                onClick = actionRunCallback(
+                    callbackClass = WidgetUpdate::class.java,
+                )
+            )
+            Spacer(modifier = GlanceModifier.size(12.dp))
+            Button(
+                modifier = GlanceModifier.background(color = Color.Red),
+                text = "TEST : ${BESTWORKER_TIME.value}",
+                onClick = actionRunCallback(
+                    callbackClass = WidgetUpdate::class.java,
+                )
+            )
+            Spacer(modifier = GlanceModifier.size(12.dp))
+            Button(
+                modifier = GlanceModifier.background(color = Color.Red),
+                text = "TEST : ${JSONWORKER_TIME.value}",
+                onClick = actionRunCallback(
+                    callbackClass = WidgetUpdate::class.java,
+                )
+            )
+            Spacer(modifier = GlanceModifier.size(12.dp))
+            Button(
+                modifier = GlanceModifier.background(color = Color.Red),
+                text = "TEST : ${TROPHYWORKER_TIME.value}",
+                onClick = actionRunCallback(
+                    callbackClass = WidgetUpdate::class.java,
+                )
+            )
+        }
+
+    }
+}
+
+@Composable
+fun test() {
+    // create your AppWidget here
+    val count = currentState(key = TESTKEY) ?: 0
+    Column(
+        modifier = GlanceModifier
+            .fillMaxSize()
+            .background(Color.DarkGray),
+        verticalAlignment = Alignment.Vertical.CenterVertically,
+        horizontalAlignment = Alignment.Horizontal.CenterHorizontally
+    ) {
+        Text(
+            text = count.toString(),
+            style = TextStyle(
+                fontWeight = FontWeight.Medium,
+                color = ColorProvider(Color.White),
+                fontSize = 26.sp
+            )
+        )
+        Button(
+            text = "Inc",
+            onClick = actionRunCallback(IncrementActionCallback::class.java)
+        )
+    }
+}
+
+@Composable
+fun test2(){
+    Column(
+        modifier = GlanceModifier.fillMaxSize(),
+        verticalAlignment = Alignment.Top,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
         Button(
             modifier = GlanceModifier.background(color = Color.Red),
             text = "doWorker",
@@ -133,57 +226,14 @@ fun ScreenWidget(context: Context) {
                 )
             )
         )
-
-
-        Column(
-            modifier = GlanceModifier.fillMaxSize(),
-            verticalAlignment = Alignment.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Spacer(modifier = GlanceModifier.size(12.dp))
-            Button(
-                modifier = GlanceModifier.background(color = Color.Red),
-                text = "checkWorker : $worker",
-                onClick = actionRunCallback(
-                    callbackClass = WidgetCallback::class.java,
-                    parameters = actionParametersOf(paramWorkerStatus to "HAHA")
-                )
-            )
-            Spacer(modifier = GlanceModifier.size(12.dp))
-            Button(
-                modifier = GlanceModifier.background(color = Color.Red),
-                text = "TEST : ${test.value}",
-                onClick = actionRunCallback(
-                    callbackClass = WidgetUpdate::class.java,
-                )
-            )
-        }
-
-    }
-}
-
-@Composable
-fun test() {
-    // create your AppWidget here
-    val count = currentState(key = TESTKEY) ?: 0
-    Column(
-        modifier = GlanceModifier
-            .fillMaxSize()
-            .background(Color.DarkGray),
-        verticalAlignment = Alignment.Vertical.CenterVertically,
-        horizontalAlignment = Alignment.Horizontal.CenterHorizontally
-    ) {
-        Text(
-            text = count.toString(),
-            style = TextStyle(
-                fontWeight = FontWeight.Medium,
-                color = ColorProvider(Color.White),
-                fontSize = 26.sp
-            )
-        )
+        Spacer(modifier = GlanceModifier.size(12.dp))
         Button(
-            text = "Inc",
-            onClick = actionRunCallback(IncrementActionCallback::class.java)
+            modifier = GlanceModifier.background(color = Color.Red),
+            text = "checkWorker : $worker",
+            onClick = actionRunCallback(
+                callbackClass = WidgetCallback::class.java,
+                parameters = actionParametersOf(paramWorkerStatus to "HAHA")
+            )
         )
     }
 }
@@ -194,7 +244,36 @@ class WidgetUpdate : ActionCallback {
         glanceId: GlanceId,
         parameters: ActionParameters
     ) {
-        ManavaraSettingWidget.update(context, glanceId)
+
+        val mRootRef = FirebaseDatabase.getInstance().reference.child("WORKER")
+
+        mRootRef.addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if(dataSnapshot.exists()){
+
+                    val dataStore = DataStoreManager(context)
+
+                    val TEST_TIME: String? = dataSnapshot.child("TEST_TIME").getValue(String::class.java)
+                    val BESTWORKERTIME: String? = dataSnapshot.child("BESTWORKER_TIME").getValue(String::class.java)
+                    val JSONWORKERTIME: String? = dataSnapshot.child("JSONWORKER_TIME").getValue(String::class.java)
+                    val TROPHYWORKERTIME: String? = dataSnapshot.child("TROPHYWORKER_TIME").getValue(String::class.java)
+
+                    CoroutineScope(Dispatchers.IO).launch {
+                        dataStore.setDataStoreString(TESTKEY, TEST_TIME ?: "")
+                        dataStore.setDataStoreString(BESTWORKER_TIME, BESTWORKERTIME ?: "")
+                        dataStore.setDataStoreString(JSONWORKER_TIME, JSONWORKERTIME ?: "")
+                        dataStore.setDataStoreString(TROPHYWORKER_TIME, TROPHYWORKERTIME ?: "")
+                        ManavaraSettingWidget.update(context, glanceId)
+                    }
+
+                } else {
+                    Log.d("HIHI", "FALSE")
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
     }
 }
 

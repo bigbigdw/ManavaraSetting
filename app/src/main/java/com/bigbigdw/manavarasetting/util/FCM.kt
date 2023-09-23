@@ -9,10 +9,14 @@ import com.bigbigdw.manavarasetting.firebase.DataFCMBodyData
 import com.bigbigdw.manavarasetting.firebase.DataFCMBodyNotification
 import com.bigbigdw.manavarasetting.firebase.FCMAlert
 import com.bigbigdw.manavarasetting.firebase.FWorkManagerResult
+import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager
 import com.bigbigdw.massmath.Firebase.FirebaseService
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.messaging.FirebaseMessaging
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Retrofit
@@ -21,19 +25,26 @@ import retrofit2.converter.gson.GsonConverterFactory
 object FCM {
     fun postFCMAlertTest(context: Context) {
 
+        val year = DBDate.dateMMDDHHMM().substring(0,4)
+        val month = DBDate.dateMMDDHHMM().substring(4,6)
+        val day = DBDate.dateMMDDHHMM().substring(6,8)
+        val hour = DBDate.dateMMDDHHMM().substring(8,10)
+        val min = DBDate.dateMMDDHHMM().substring(10,12)
+
         val fcmBody = DataFCMBody(
             "/topics/all",
             "high",
             DataFCMBodyData("ALERT_ALL", ""),
             DataFCMBodyNotification(
                 "공지사항",
-                "공지사항이라능",
+                "${year}.${month}.${day} ${hour}:${min} 위젯 테스트",
                 ""
             ),
         )
 
         postFCM(context = context, fcmBody = fcmBody)
-        miningAlert(title = "공지사항", message = "공지사항이라능")
+
+        miningAlert(title = "공지사항", message = "${year}.${month}.${day} ${hour}:${min} 위젯 테스트")
     }
 
     private fun miningAlert(

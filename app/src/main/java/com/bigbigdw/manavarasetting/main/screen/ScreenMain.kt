@@ -39,6 +39,8 @@ import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.firebase.DataFCMBodyNotification
 import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager
+import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.TESTKEY
+import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.TEST_TIME
 import com.bigbigdw.manavarasetting.util.Mining
 import com.bigbigdw.manavarasetting.util.NaverSeriesGenre
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
@@ -70,7 +72,8 @@ fun ScreenMain(
     val context = LocalContext.current
 
     val dataStore = DataStoreManager(context)
-    val test = dataStore.getTest.collectAsState(initial = "")
+    val test = dataStore.getDataStoreString(TESTKEY).collectAsState(initial = "")
+    val testTime = dataStore.getDataStoreString(TEST_TIME).collectAsState(initial = "")
 
     val scope = rememberCoroutineScope()
 
@@ -308,7 +311,6 @@ fun ScreenMain(
                 onClick = {
                     checkWorker(
                         workManager = workManager,
-                        context = context,
                         tag = "BEST"
                     )
                 },
@@ -535,7 +537,6 @@ fun ScreenMain(
                 onClick = {
                     checkWorker(
                         workManager = workManager,
-                        context = context,
                         tag = "BEST_JSON"
                     )
                 },
@@ -645,7 +646,6 @@ fun ScreenMain(
                 onClick = {
                     checkWorker(
                         workManager = workManager,
-                        context = context,
                         tag = "BEST_TROPHY"
                     )
                 },
@@ -729,7 +729,6 @@ fun ScreenMain(
                 onClick = {
                     checkWorker(
                         workManager = workManager,
-                        context = context,
                         tag = "TEST"
                     )
                 },
@@ -756,7 +755,7 @@ fun ScreenMain(
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Gray),
                 onClick = {
                     scope.launch {
-                        dataStore.setTest("BBBBBB")
+                        dataStore.setDataStoreString(key = TESTKEY, str = "BBBBBB")
                     }
                 },
                 modifier = Modifier
@@ -782,7 +781,7 @@ fun ScreenMain(
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Gray),
                 onClick = {
                     scope.launch {
-                        dataStore.setTest("AAAAA")
+                        dataStore.setDataStoreString(key = TESTKEY,str = "AAAAA")
                     }
                 },
                 modifier = Modifier
@@ -793,6 +792,28 @@ fun ScreenMain(
             ) {
                 Text(
                     text = "DATASTORE : ${test.value}",
+                    textAlign = TextAlign.Center,
+                    color = colorEDE6FD,
+                    fontSize = 16.sp,
+                    fontFamily = pretendardvariable
+                )
+            }
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(22.dp)
+            )
+            Button(
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Gray),
+                onClick = {},
+                modifier = Modifier
+                    .width(260.dp)
+                    .height(56.dp),
+                shape = RoundedCornerShape(50.dp)
+
+            ) {
+                Text(
+                    text = "DATASTORE : ${testTime.value}",
                     textAlign = TextAlign.Center,
                     color = colorEDE6FD,
                     fontSize = 16.sp,

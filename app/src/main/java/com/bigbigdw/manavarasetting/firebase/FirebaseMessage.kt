@@ -7,9 +7,14 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.bigbigdw.manavarasetting.R
+import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager
+import com.google.firebase.database.FirebaseDatabase
 
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class FirebaseMessage : FirebaseMessagingService() {
 
@@ -25,11 +30,49 @@ class FirebaseMessage : FirebaseMessagingService() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
 
+        val title = remoteMessage.notification?.title ?: ""
+        val message = remoteMessage.notification?.body ?: ""
+
         if (remoteMessage.notification != null) {
             showNotification(
-                title = remoteMessage.notification?.title ?: "",
-                message = remoteMessage.notification?.body ?: "",
+                title = title,
+                message = message,
             )
+            setDataStore(message = message)
+        }
+    }
+
+    private fun setDataStore(message: String){
+        val dataStore = DataStoreManager(applicationContext)
+        val mRootRef = FirebaseDatabase.getInstance().reference.child("WORKER")
+
+        if(message.contains("위젯 테스트")){
+            CoroutineScope(Dispatchers.IO).launch {
+                dataStore.setDataStoreString(key = DataStoreManager.TEST_TIME, str = message.replace(" 위젯 테스트",""))
+            }
+
+            mRootRef.child("TEST_TIME").setValue(message.replace(" 위젯 테스트",""))
+
+        } else if(message.contains(" 트로피 정산이 완료되었습니다")){
+            CoroutineScope(Dispatchers.IO).launch {
+                dataStore.setDataStoreString(key = DataStoreManager.TROPHYWORKER_TIME, str = message.replace(" 트로피 정산이 완료되었습니다",""))
+            }
+
+            mRootRef.child("TROPHYWORKER_TIME").setValue(message.replace(" 트로피 정산이 완료되었습니다",""))
+
+        } else if(message.contains(" DAY JSON 생성이 완료되었습니다")){
+            CoroutineScope(Dispatchers.IO).launch {
+                dataStore.setDataStoreString(key = DataStoreManager.JSONWORKER_TIME, str = message.replace(" DAY JSON 생성이 완료되었습니다",""))
+            }
+
+            mRootRef.child("JSONWORKER_TIME").setValue(message.replace(" DAY JSON 생성이 완료되었습니다",""))
+
+        } else if(message.contains(" 베스트 리스트가 갱신되었습니다")){
+            CoroutineScope(Dispatchers.IO).launch {
+                dataStore.setDataStoreString(key = DataStoreManager.BESTWORKER_TIME, str = message.replace(" 베스트 리스트가 갱신되었습니다",""))
+            }
+
+            mRootRef.child("BESTWORKER_TIME").setValue(message.replace(" 베스트 리스트가 갱신되었습니다",""))
         }
     }
 
