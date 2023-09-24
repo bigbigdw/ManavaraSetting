@@ -3,10 +3,9 @@ package com.bigbigdw.manavarasetting.main
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.lifecycle.ViewModelProvider
 import androidx.work.WorkManager
-import com.bigbigdw.manavarasetting.main.screen.ScreenMain
-import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager
+import com.bigbigdw.manavarasetting.main.screen.BackOnPressed
+import com.bigbigdw.manavarasetting.main.screen.MainScreenView
 
 class ActivityMain : ComponentActivity() {
 
@@ -16,9 +15,9 @@ class ActivityMain : ComponentActivity() {
         val workManager = WorkManager.getInstance(applicationContext)
 
         setContent {
-            ScreenMain(
-                workManager = workManager
-            )
+//            ScreenMain(workManager = workManager)
+            MainScreenView()
+            BackOnPressed()
         }
     }
 }

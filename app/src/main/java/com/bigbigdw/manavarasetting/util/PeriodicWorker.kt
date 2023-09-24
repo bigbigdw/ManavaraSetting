@@ -22,6 +22,7 @@ object PeriodicWorker {
                 Constraints.Builder()
                     .setRequiredNetworkType(NetworkType.CONNECTED)
                     .setRequiresDeviceIdle(false)
+                    .setRequiresCharging(false)
                     .build()
             )
             .build()
