@@ -83,8 +83,8 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                                 testTrophy = TROPHYWORKERTIME ?: "",
                                 statusTest = PeriodicWorker.checkWorker(workManager = workManager, tag = "TEST"),
                                 statusBet = PeriodicWorker.checkWorker(workManager = workManager, tag = "BEST"),
-                                statusJson = PeriodicWorker.checkWorker(workManager = workManager, tag = "JSON"),
-                                statusTrophy = PeriodicWorker.checkWorker(workManager = workManager, tag = "TROPHY"),
+                                statusJson = PeriodicWorker.checkWorker(workManager = workManager, tag = "BEST_JSON"),
+                                statusTrophy = PeriodicWorker.checkWorker(workManager = workManager, tag = "BEST_TROPHY"),
                             )
                         )
                     }

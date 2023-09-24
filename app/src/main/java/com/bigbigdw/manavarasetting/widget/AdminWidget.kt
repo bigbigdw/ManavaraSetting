@@ -2,6 +2,7 @@ package com.bigbigdw.manavarasetting.widget
 
 import android.content.Context
 import android.util.Log
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.graphics.Color
@@ -9,6 +10,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.glance.Button
+import androidx.glance.ButtonColors
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.Image
@@ -82,26 +85,32 @@ object ManavaraSettingWidget : GlanceAppWidget() {
 }
 
 @Composable
-fun ScreenWidget(context: Context){
+fun ScreenWidget(context: Context) {
 
     val dataStore = DataStoreManager(context)
 
     val TEST_TIME = dataStore.getDataStoreString(TEST_TIME).collectAsState(initial = "")
     val BESTWORKER_TIME = dataStore.getDataStoreString(BESTWORKER_TIME).collectAsState(initial = "")
     val JSONWORKER_TIME = dataStore.getDataStoreString(JSONWORKER_TIME).collectAsState(initial = "")
-    val TROPHYWORKER_TIME = dataStore.getDataStoreString(TROPHYWORKER_TIME).collectAsState(initial = "")
+    val TROPHYWORKER_TIME =
+        dataStore.getDataStoreString(TROPHYWORKER_TIME).collectAsState(initial = "")
 
     Column(
-        modifier = GlanceModifier.fillMaxSize().background(color = colorB3000000).padding(16.dp).clickable {
-            actionRunCallback(callbackClass = WidgetUpdate::class.java,)
-        },
+        modifier = GlanceModifier
+            .fillMaxSize()
+            .background(color = colorB3000000)
+            .padding(16.dp)
+            .clickable(actionRunCallback(callbackClass = WidgetUpdate::class.java)),
         verticalAlignment = Alignment.Top,
         horizontalAlignment = Alignment.Start,
     ) {
 
         Spacer(modifier = GlanceModifier.size(12.dp))
 
-        Row(horizontalAlignment = Alignment.CenterHorizontally, verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
 
             Image(
                 modifier = GlanceModifier.size(28.dp),
@@ -198,14 +207,18 @@ class WidgetUpdate : ActionCallback {
         mRootRef.addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if(dataSnapshot.exists()){
+                if (dataSnapshot.exists()) {
 
                     val dataStore = DataStoreManager(context)
 
-                    val TESTTIME: String? = dataSnapshot.child("WORKER_TEST").getValue(String::class.java)
-                    val BESTWORKERTIME: String? = dataSnapshot.child("WORKER_BEST").getValue(String::class.java)
-                    val JSONWORKERTIME: String? = dataSnapshot.child("WORKER_JSON").getValue(String::class.java)
-                    val TROPHYWORKERTIME: String? = dataSnapshot.child("WORKER_TROPHY").getValue(String::class.java)
+                    val TESTTIME: String? =
+                        dataSnapshot.child("WORKER_TEST").getValue(String::class.java)
+                    val BESTWORKERTIME: String? =
+                        dataSnapshot.child("WORKER_BEST").getValue(String::class.java)
+                    val JSONWORKERTIME: String? =
+                        dataSnapshot.child("WORKER_JSON").getValue(String::class.java)
+                    val TROPHYWORKERTIME: String? =
+                        dataSnapshot.child("WORKER_TROPHY").getValue(String::class.java)
 
                     CoroutineScope(Dispatchers.IO).launch {
                         dataStore.setDataStoreString(TEST_TIME, TESTTIME ?: "")
