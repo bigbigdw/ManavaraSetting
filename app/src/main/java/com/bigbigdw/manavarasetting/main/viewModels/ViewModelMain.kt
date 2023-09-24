@@ -4,8 +4,10 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.main.event.EventMain
 import com.bigbigdw.manavarasetting.main.event.StateMain
+import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -40,15 +42,19 @@ class ViewModelMain @Inject constructor() : ViewModel() {
             is EventMain.GetDataStore -> {
                 current.copy(
                     timeTest = event.timeTest,
-                    bestTest = event.bestTest,
-                    jsonTest = event.jsonTest,
-                    trophyTest = event.trophyTest
+                    testBest = event.testBest,
+                    testJson = event.testJson,
+                    testTrophy = event.testTrophy,
+                    statusTest = event.statusTest,
+                    statusBest = event.statusBet,
+                    statusJson = event.statusJson,
+                    statusTrophy = event.statusTrophy,
                 )
             }
         }
     }
 
-    fun getDataStoreStatus(context : Context){
+    fun getDataStoreStatus(context : Context, workManager: WorkManager){
         val mRootRef = FirebaseDatabase.getInstance().reference.child("WORKER")
 
         mRootRef.addListenerForSingleValueEvent(object :
@@ -72,9 +78,13 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                         events.send(
                             EventMain.GetDataStore(
                                 timeTest = TESTTIME ?: "",
-                                bestTest = BESTWORKERTIME ?: "",
-                                jsonTest = JSONWORKERTIME ?: "",
-                                trophyTest = TROPHYWORKERTIME ?: ""
+                                testBest = BESTWORKERTIME ?: "",
+                                testJson = JSONWORKERTIME ?: "",
+                                testTrophy = TROPHYWORKERTIME ?: "",
+                                statusTest = PeriodicWorker.checkWorker(workManager = workManager, tag = "TEST"),
+                                statusBet = PeriodicWorker.checkWorker(workManager = workManager, tag = "BEST"),
+                                statusJson = PeriodicWorker.checkWorker(workManager = workManager, tag = "JSON"),
+                                statusTrophy = PeriodicWorker.checkWorker(workManager = workManager, tag = "TROPHY"),
                             )
                         )
                     }

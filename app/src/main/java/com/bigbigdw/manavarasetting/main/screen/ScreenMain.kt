@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -34,6 +35,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -95,8 +97,13 @@ fun ScreenMain(workManager: WorkManager, viewModelMain: ViewModelMain) {
             Modifier
                 .padding(it)
                 .background(color = color1E1E20)
-                .fillMaxSize()){
-            NavigationGraph(navController = navController, workManager = workManager, viewModelMain = viewModelMain)
+                .fillMaxSize()
+        ) {
+            NavigationGraph(
+                navController = navController,
+                workManager = workManager,
+                viewModelMain = viewModelMain
+            )
         }
     }
 
@@ -146,9 +153,11 @@ fun MainTopBar() {
                 .clickable { }
         )
 
-        Spacer(modifier = Modifier
-            .wrapContentWidth()
-            .width(16.dp))
+        Spacer(
+            modifier = Modifier
+                .wrapContentWidth()
+                .width(16.dp)
+        )
 
         Image(
             painter = painterResource(id = R.drawable.ic_launcher),
@@ -191,7 +200,14 @@ fun BottomNavScreen(navController: NavHostController, currentRoute: String?) {
                             .height(26.dp)
                     )
                 },
-                label = { Text( text = item.title, fontSize = 13.sp, fontFamily = pretendardvariable, color = color1e4394 ) },
+                label = {
+                    Text(
+                        text = item.title,
+                        fontSize = 13.sp,
+                        fontFamily = pretendardvariable,
+                        color = color1e4394
+                    )
+                },
                 selected = currentRoute == item.screenRoute,
                 selectedContentColor = color1e4394,
                 unselectedContentColor = color555b68,
@@ -217,9 +233,11 @@ fun NavigationGraph(
     workManager: WorkManager,
     viewModelMain: ViewModelMain
 ) {
-    val context = LocalContext.current
 
-    NavHost(navController = navController, startDestination = ScreemBottomItem.SETTING.screenRoute) {
+    NavHost(
+        navController = navController,
+        startDestination = ScreemBottomItem.SETTING.screenRoute
+    ) {
         composable(ScreemBottomItem.SETTING.screenRoute) {
             ScreenMainSetting(workManager = workManager, viewModelMain = viewModelMain)
         }
@@ -243,7 +261,7 @@ fun ScreenMainSetting(workManager: WorkManager, viewModelMain: ViewModelMain) {
 
     val context = LocalContext.current
 
-    viewModelMain.getDataStoreStatus(context = context)
+    viewModelMain.getDataStoreStatus(context = context, workManager = workManager)
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -260,141 +278,45 @@ fun ScreenMainSetting(workManager: WorkManager, viewModelMain: ViewModelMain) {
 
             MainHeader(image = R.drawable.ic_launcher, title = "세팅바라 현황")
 
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(22.dp)
+            ItemMainSetting(
+                image = R.drawable.icon_setting_gr,
+                titleWorker = "테스트 WORKER : ",
+                valueWorker = viewModelMain.state.collectAsState().value.statusTest,
+                statusTitle = "테스트 갱신시간 : ",
+                valueStatus = viewModelMain.state.collectAsState().value.timeTest,
             )
-            Button(
-                colors = ButtonDefaults.buttonColors(containerColor = color20459e),
-                onClick = {
-                    PeriodicWorker.doWorker(
-                        workManager = workManager,
-                        repeatInterval = 15,
-                        tag = "TEST",
-                        timeMill = TimeUnit.MINUTES
-                    )
-                },
-                modifier = Modifier
-                    .width(260.dp)
-                    .height(56.dp),
-                shape = RoundedCornerShape(50.dp)
 
-            ) {
-                Text(
-                    text = "테스트 시작",
-                    textAlign = TextAlign.Center,
-                    color = colorEDE6FD,
-                    fontSize = 16.sp,
-                    fontFamily = pretendardvariable
-                )
-            }
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(22.dp)
+            Spacer(modifier = Modifier.size(24.dp))
+
+            ItemMainSetting(
+                image = R.drawable.icon_best_gr,
+                titleWorker = "베스트 WORKER : ",
+                valueWorker = viewModelMain.state.collectAsState().value.statusBest,
+                statusTitle = "베스트 갱신시간 : ",
+                valueStatus = viewModelMain.state.collectAsState().value.testBest,
             )
-            Button(
-                colors = ButtonDefaults.buttonColors(containerColor = color20459e),
-                onClick = {
-                    PeriodicWorker.cancelWorker(
-                        workManager = workManager,
-                        tag = "TEST"
-                    )
-                },
-                modifier = Modifier
-                    .width(260.dp)
-                    .height(56.dp),
-                shape = RoundedCornerShape(50.dp)
 
-            ) {
-                Text(
-                    text = "테스트 취소",
-                    textAlign = TextAlign.Center,
-                    color = colorEDE6FD,
-                    fontSize = 16.sp,
-                    fontFamily = pretendardvariable
-                )
-            }
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(22.dp)
+            Spacer(modifier = Modifier.size(24.dp))
+
+            ItemMainSetting(
+                image = R.drawable.icon_json_gr,
+                titleWorker = "JSON WORKER : ",
+                valueWorker = viewModelMain.state.collectAsState().value.statusJson,
+                statusTitle = "JSON 갱신시간 : ",
+                valueStatus = viewModelMain.state.collectAsState().value.testJson,
             )
-            Button(
-                colors = ButtonDefaults.buttonColors(containerColor = color20459e),
-                onClick = {
-                    PeriodicWorker.checkWorker(
-                        workManager = workManager,
-                        tag = "TEST"
-                    )
-                },
-                modifier = Modifier
-                    .width(260.dp)
-                    .height(56.dp),
-                shape = RoundedCornerShape(50.dp)
 
-            ) {
-                Text(
-                    text = "테스트 확인",
-                    textAlign = TextAlign.Center,
-                    color = colorEDE6FD,
-                    fontSize = 16.sp,
-                    fontFamily = pretendardvariable
-                )
-            }
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(22.dp)
+            Spacer(modifier = Modifier.size(24.dp))
+
+            ItemMainSetting(
+                image = R.drawable.icon_trophy_gr,
+                titleWorker = "트로피 WORKER : ",
+                valueWorker = viewModelMain.state.collectAsState().value.statusTrophy,
+                statusTitle = "트로피 갱신시간 : ",
+                valueStatus = viewModelMain.state.collectAsState().value.testTrophy,
             )
-            Button(
-                colors = ButtonDefaults.buttonColors(containerColor = color20459e),
-                onClick = { FCM.getFCMToken(context) },
-                modifier = Modifier
-                    .width(260.dp)
-                    .height(56.dp),
-                shape = RoundedCornerShape(50.dp)
 
-            ) {
-                Text(
-                    text = "FCM 토큰 얻기",
-                    textAlign = TextAlign.Center,
-                    color = colorFFFFFF,
-                    fontSize = 16.sp,
-                    fontFamily = pretendardvariable
-                )
-            }
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(22.dp)
-            )
-            Button(
-                colors = ButtonDefaults.buttonColors(containerColor = color20459e),
-                onClick = { FCM.postFCMAlertTest(context = context, message = "테스트") },
-                modifier = Modifier
-                    .width(260.dp)
-                    .height(56.dp),
-                shape = RoundedCornerShape(50.dp)
-
-            ) {
-                Text(
-                    text = "FCM 테스트",
-                    textAlign = TextAlign.Center,
-                    color = colorEDE6FD,
-                    fontSize = 16.sp,
-                    fontFamily = pretendardvariable
-                )
-            }
-
-
-
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(120.dp)
-            )
+            Spacer(modifier = Modifier.size(120.dp))
         }
     }
 }
@@ -424,11 +346,12 @@ fun ScreenMainFCM(workManager: WorkManager) {
                     .fillMaxWidth()
                     .height(80.dp)
             )
-            Card(modifier = Modifier
-                .wrapContentSize(),
+            Card(
+                modifier = Modifier
+                    .wrapContentSize(),
                 backgroundColor = colordcdcdd,
                 shape = RoundedCornerShape(50.dp, 50.dp, 50.dp, 50.dp)
-            ){
+            ) {
                 Box(
                     modifier = Modifier
                         .height(90.dp)
@@ -660,17 +583,18 @@ fun ScreenMainFCM(workManager: WorkManager) {
 }
 
 @Composable
-fun MainHeader(image : Int, title : String){
+fun MainHeader(image: Int, title: String) {
     Spacer(
         modifier = Modifier
             .fillMaxWidth()
             .height(80.dp)
     )
-    Card(modifier = Modifier
-        .wrapContentSize(),
+    Card(
+        modifier = Modifier
+            .wrapContentSize(),
         backgroundColor = colordcdcdd,
         shape = RoundedCornerShape(50.dp, 50.dp, 50.dp, 50.dp)
-    ){
+    ) {
         Box(
             modifier = Modifier
                 .height(90.dp)
@@ -701,4 +625,81 @@ fun MainHeader(image : Int, title : String){
         fontFamily = pretendardvariable,
         fontWeight = FontWeight(weight = 100)
     )
+    Spacer(modifier = Modifier.size(22.dp))
+}
+
+@Composable
+fun ItemMainSetting(
+    image: Int,
+    titleWorker: String,
+    valueWorker: String,
+    statusTitle: String,
+    valueStatus: String
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(24.dp, 0.dp),
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Image(
+            contentScale = ContentScale.FillWidth,
+            painter = painterResource(id = image),
+            contentDescription = null,
+            modifier = Modifier
+                .height(16.dp)
+                .width(16.dp)
+        )
+        Spacer(modifier = Modifier.size(4.dp))
+        Text(
+            text = titleWorker,
+            fontSize = 18.sp,
+            textAlign = TextAlign.Center,
+            color = color000000,
+            fontFamily = pretendardvariable,
+            fontWeight = FontWeight(weight = 100)
+        )
+        Text(
+            text = valueWorker,
+            fontSize = 18.sp,
+            textAlign = TextAlign.Center,
+            color = color20459e,
+            fontFamily = pretendardvariable,
+            fontWeight = FontWeight(weight = 100)
+        )
+    }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(24.dp, 0.dp),
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Image(
+            contentScale = ContentScale.FillWidth,
+            painter = painterResource(id = image),
+            contentDescription = null,
+            modifier = Modifier
+                .height(16.dp)
+                .width(16.dp)
+        )
+        Spacer(modifier = Modifier.size(4.dp))
+        Text(
+            text = statusTitle,
+            fontSize = 18.sp,
+            textAlign = TextAlign.Center,
+            color = color000000,
+            fontFamily = pretendardvariable,
+            fontWeight = FontWeight(weight = 100)
+        )
+        Text(
+            text = valueStatus,
+            fontSize = 18.sp,
+            textAlign = TextAlign.Center,
+            color = color20459e,
+            fontFamily = pretendardvariable,
+            fontWeight = FontWeight(weight = 100)
+        )
+    }
 }
