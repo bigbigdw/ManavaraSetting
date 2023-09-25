@@ -19,13 +19,13 @@ class ActivityMain : ComponentActivity() {
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         val workManager = WorkManager.getInstance(applicationContext)
 
         setContent {
             val widthSizeClass = calculateWindowSizeClass(this).widthSizeClass
-            ScreenMain(workManager = workManager, viewModelMain = viewModelMain, widthSizeClass = widthSizeClass)
+
+            ScreenMain(workManager = workManager, viewModelMain = viewModelMain, widthSizeClass = widthSizeClass, window = window)
             BackOnPressed()
         }
     }

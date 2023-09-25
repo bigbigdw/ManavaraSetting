@@ -8,10 +8,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -33,6 +36,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
@@ -45,7 +49,9 @@ import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.firebase.DataFCMBodyNotification
 import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager
+import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color1E1E20
+import com.bigbigdw.manavarasetting.ui.theme.color20459e
 import com.bigbigdw.manavarasetting.ui.theme.colorA7ACB7
 import com.bigbigdw.manavarasetting.ui.theme.colorEDE6FD
 import com.bigbigdw.manavarasetting.ui.theme.colorFFFFFF
@@ -138,3 +144,145 @@ fun ScreenTest() {
     }
 }
 
+@Composable
+fun ItemMainSetting(
+    image: Int,
+    titleWorker: String,
+    valueWorker: String,
+    statusTitle: String,
+    valueStatus: String
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(24.dp, 0.dp),
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Image(
+            contentScale = ContentScale.FillWidth,
+            painter = painterResource(id = image),
+            contentDescription = null,
+            modifier = Modifier
+                .height(16.dp)
+                .width(16.dp)
+        )
+        Spacer(modifier = Modifier.size(4.dp))
+        Text(
+            text = titleWorker,
+            fontSize = 18.sp,
+            textAlign = TextAlign.Center,
+            color = color000000,
+            fontFamily = pretendardvariable,
+            fontWeight = FontWeight(weight = 100)
+        )
+        Text(
+            text = valueWorker,
+            fontSize = 18.sp,
+            textAlign = TextAlign.Center,
+            color = color20459e,
+            fontFamily = pretendardvariable,
+            fontWeight = FontWeight(weight = 100)
+        )
+    }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(24.dp, 0.dp),
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Image(
+            contentScale = ContentScale.FillWidth,
+            painter = painterResource(id = image),
+            contentDescription = null,
+            modifier = Modifier
+                .height(16.dp)
+                .width(16.dp)
+        )
+        Spacer(modifier = Modifier.size(4.dp))
+        Text(
+            text = statusTitle,
+            fontSize = 18.sp,
+            textAlign = TextAlign.Center,
+            color = color000000,
+            fontFamily = pretendardvariable,
+            fontWeight = FontWeight(weight = 100)
+        )
+        Text(
+            text = valueStatus,
+            fontSize = 18.sp,
+            textAlign = TextAlign.Center,
+            color = color20459e,
+            fontFamily = pretendardvariable,
+            fontWeight = FontWeight(weight = 100)
+        )
+    }
+}
+
+@Composable
+fun BtnMobile(func : ()->Unit, btnText : String){
+    Spacer(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(22.dp)
+    )
+    Button(
+        colors = ButtonDefaults.buttonColors(containerColor = color20459e),
+        onClick = func,
+        modifier = Modifier
+            .width(260.dp)
+            .height(56.dp),
+        shape = RoundedCornerShape(50.dp)
+
+    ) {
+        Text(
+            text = btnText,
+            textAlign = TextAlign.Center,
+            color = colorEDE6FD,
+            fontSize = 16.sp,
+            fontFamily = pretendardvariable
+        )
+    }
+}
+
+@Composable
+fun ItemMainSettingSingle(
+    image: Int,
+    titleWorker: String,
+    valueWorker: String,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(24.dp, 0.dp),
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Image(
+            contentScale = ContentScale.FillWidth,
+            painter = painterResource(id = image),
+            contentDescription = null,
+            modifier = Modifier
+                .height(16.dp)
+                .width(16.dp)
+        )
+        Spacer(modifier = Modifier.size(4.dp))
+        Text(
+            text = titleWorker,
+            fontSize = 18.sp,
+            textAlign = TextAlign.Center,
+            color = color000000,
+            fontFamily = pretendardvariable,
+            fontWeight = FontWeight(weight = 100)
+        )
+        Text(
+            text = valueWorker,
+            fontSize = 18.sp,
+            textAlign = TextAlign.Center,
+            color = color20459e,
+            fontFamily = pretendardvariable,
+            fontWeight = FontWeight(weight = 100)
+        )
+    }
+}

@@ -1,5 +1,6 @@
 package com.bigbigdw.manavarasetting.main.screen
 
+import android.view.Window
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,9 +24,9 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.NavigationRail
+import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -40,6 +41,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.view.WindowCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -51,30 +53,26 @@ import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color1E1E20
 import com.bigbigdw.manavarasetting.ui.theme.color1e4394
-import com.bigbigdw.manavarasetting.ui.theme.color20459e
 import com.bigbigdw.manavarasetting.ui.theme.color555b68
-import com.bigbigdw.manavarasetting.ui.theme.colorEDE6FD
 import com.bigbigdw.manavarasetting.ui.theme.colordcdcdd
 import com.bigbigdw.manavarasetting.ui.theme.pretendardvariable
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ScreenMain(
     workManager: WorkManager,
     viewModelMain: ViewModelMain,
-    widthSizeClass: WindowWidthSizeClass
+    widthSizeClass: WindowWidthSizeClass,
+    window: Window
 ) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    val modalSheetState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden,
-        confirmValueChange = { it != ModalBottomSheetValue.HalfExpanded },
-        skipHalfExpanded = false
-    )
-
     val isExpandedScreen = widthSizeClass == WindowWidthSizeClass.Expanded
+
+    if(isExpandedScreen){
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+    }
 
     if(!isExpandedScreen){
         ScreenMainMobile(
@@ -85,20 +83,36 @@ fun ScreenMain(
             isExpandedScreen = isExpandedScreen
         )
     } else {
-
-        Row{
-            TableAppNavRail(currentRoute = currentRoute ?: "", navController = navController)
-            NavigationGraph(
-                navController = navController,
-                workManager = workManager,
-                viewModelMain = viewModelMain,
-                isExpandedScreen = isExpandedScreen
-            )
-        }
+        ScreenMainTablet(
+            navController = navController,
+            currentRoute = currentRoute,
+            workManager = workManager,
+            viewModelMain = viewModelMain,
+            isExpandedScreen = isExpandedScreen
+        )
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ScreenMainTablet(
+    currentRoute : String?,
+    navController: NavHostController,
+    workManager: WorkManager,
+    viewModelMain: ViewModelMain,
+    isExpandedScreen: Boolean
+) {
+    Row{
+        TableAppNavRail(currentRoute = currentRoute ?: "", navController = navController)
+        NavigationGraph(
+            navController = navController,
+            workManager = workManager,
+            viewModelMain = viewModelMain,
+            isExpandedScreen = isExpandedScreen
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun ScreenMainMobile(
     navController: NavHostController,
@@ -107,6 +121,13 @@ fun ScreenMainMobile(
     viewModelMain: ViewModelMain,
     isExpandedScreen: Boolean
 ){
+
+    val modalSheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+        confirmValueChange = { it != ModalBottomSheetValue.HalfExpanded },
+        skipHalfExpanded = false
+    )
+
     Scaffold(
 //        topBar = { MainTopBar() },
         bottomBar = { BottomNavScreen(navController = navController, currentRoute = currentRoute) }
@@ -323,144 +344,71 @@ fun MainHeader(image: Int, title: String) {
 }
 
 @Composable
-fun ItemMainSetting(
-    image: Int,
-    titleWorker: String,
-    valueWorker: String,
-    statusTitle: String,
-    valueStatus: String
+fun TableAppNavRail(
+    currentRoute: String,
+    navController: NavHostController
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(24.dp, 0.dp),
-        horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Image(
-            contentScale = ContentScale.FillWidth,
-            painter = painterResource(id = image),
-            contentDescription = null,
-            modifier = Modifier
-                .height(16.dp)
-                .width(16.dp)
-        )
-        Spacer(modifier = Modifier.size(4.dp))
-        Text(
-            text = titleWorker,
-            fontSize = 18.sp,
-            textAlign = TextAlign.Center,
-            color = color000000,
-            fontFamily = pretendardvariable,
-            fontWeight = FontWeight(weight = 100)
-        )
-        Text(
-            text = valueWorker,
-            fontSize = 18.sp,
-            textAlign = TextAlign.Center,
-            color = color20459e,
-            fontFamily = pretendardvariable,
-            fontWeight = FontWeight(weight = 100)
-        )
-    }
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(24.dp, 0.dp),
-        horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Image(
-            contentScale = ContentScale.FillWidth,
-            painter = painterResource(id = image),
-            contentDescription = null,
-            modifier = Modifier
-                .height(16.dp)
-                .width(16.dp)
-        )
-        Spacer(modifier = Modifier.size(4.dp))
-        Text(
-            text = statusTitle,
-            fontSize = 18.sp,
-            textAlign = TextAlign.Center,
-            color = color000000,
-            fontFamily = pretendardvariable,
-            fontWeight = FontWeight(weight = 100)
-        )
-        Text(
-            text = valueStatus,
-            fontSize = 18.sp,
-            textAlign = TextAlign.Center,
-            color = color20459e,
-            fontFamily = pretendardvariable,
-            fontWeight = FontWeight(weight = 100)
-        )
-    }
-}
 
-@Composable
-fun BtnMobile(func : ()->Unit, btnText : String){
-    Spacer(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(22.dp)
+    val items = listOf(
+        ScreemBottomItem.SETTING,
+        ScreemBottomItem.FCM,
+        ScreemBottomItem.BEST,
+        ScreemBottomItem.JSON,
+        ScreemBottomItem.TROPHY,
     )
-    Button(
-        colors = ButtonDefaults.buttonColors(containerColor = color20459e),
-        onClick = func,
-        modifier = Modifier
-            .width(260.dp)
-            .height(56.dp),
-        shape = RoundedCornerShape(50.dp)
 
+    NavigationRail(
+        header = {
+            Image(
+                contentScale = ContentScale.FillWidth,
+                painter = painterResource(id = R.drawable.ic_launcher),
+                contentDescription = null,
+                modifier = Modifier
+                    .height(48.dp)
+                    .width(48.dp)
+            )
+        },
+        modifier = Modifier.background(color = color1E1E20)
     ) {
-        Text(
-            text = btnText,
-            textAlign = TextAlign.Center,
-            color = colorEDE6FD,
-            fontSize = 16.sp,
-            fontFamily = pretendardvariable
-        )
-    }
-}
+        Spacer(Modifier.weight(1f))
 
-@Composable
-fun ItemMainSettingSingle(
-    image: Int,
-    titleWorker: String,
-    valueWorker: String,
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(24.dp, 0.dp),
-        horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Image(
-            contentScale = ContentScale.FillWidth,
-            painter = painterResource(id = image),
-            contentDescription = null,
-            modifier = Modifier
-                .height(16.dp)
-                .width(16.dp)
-        )
-        Spacer(modifier = Modifier.size(4.dp))
-        Text(
-            text = titleWorker,
-            fontSize = 18.sp,
-            textAlign = TextAlign.Center,
-            color = color000000,
-            fontFamily = pretendardvariable,
-            fontWeight = FontWeight(weight = 100)
-        )
-        Text(
-            text = valueWorker,
-            fontSize = 18.sp,
-            textAlign = TextAlign.Center,
-            color = color20459e,
-            fontFamily = pretendardvariable,
-            fontWeight = FontWeight(weight = 100)
-        )
+        items.forEach { item ->
+            NavigationRailItem(
+                selected = currentRoute == item.screenRoute,
+                onClick = {
+                    navController.navigate(item.screenRoute) {
+                        navController.graph.startDestinationRoute?.let {
+                            popUpTo(it) { saveState = true }
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+                icon = {
+                    androidx.compose.material3.Icon(
+                        painter = if (currentRoute == item.screenRoute) {
+                            painterResource(id = item.iconOn)
+                        } else {
+                            painterResource(id = item.iconOff)
+                        },
+                        contentDescription = item.title,
+                        modifier = Modifier
+                            .width(26.dp)
+                            .height(26.dp)
+                    )
+                },
+                label = {
+                    Text(
+                        text = item.title,
+                        fontSize = 13.sp,
+                        fontFamily = pretendardvariable,
+                        color = color1e4394
+                    )
+                },
+                alwaysShowLabel = false
+            )
+        }
+
+        Spacer(Modifier.weight(1f))
     }
 }
