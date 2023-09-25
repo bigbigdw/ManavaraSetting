@@ -1,7 +1,10 @@
 package com.bigbigdw.manavarasetting.main.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,16 +14,24 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Card
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bigbigdw.manavarasetting.R
+import com.bigbigdw.manavarasetting.main.model.MainSettingLine
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color21c2ec
 import com.bigbigdw.manavarasetting.ui.theme.color31c3ae
@@ -32,9 +43,11 @@ import com.bigbigdw.manavarasetting.ui.theme.color7c81ff
 import com.bigbigdw.manavarasetting.ui.theme.color8e8e8e
 import com.bigbigdw.manavarasetting.ui.theme.color998df9
 import com.bigbigdw.manavarasetting.ui.theme.colorabd436
+import com.bigbigdw.manavarasetting.ui.theme.colore9e9e9
 import com.bigbigdw.manavarasetting.ui.theme.colorea927c
 import com.bigbigdw.manavarasetting.ui.theme.colorf17fa0
 import com.bigbigdw.manavarasetting.ui.theme.colorf6f6f6
+import com.bigbigdw.manavarasetting.ui.theme.colorf7f7f7
 
 @Composable
 fun ScreenSettingTabletContents(setMenu: (String) -> Unit, getMenu: String){
@@ -49,7 +62,7 @@ fun ScreenSettingTabletContents(setMenu: (String) -> Unit, getMenu: String){
             .semantics { contentDescription = "Overview Screen" },
     ) {
 
-        Spacer(modifier = Modifier.size(8.dp))
+        Spacer(modifier = Modifier.size(16.dp))
 
         Text(
             modifier = Modifier.padding(16.dp, 0.dp, 0.dp, 0.dp),
@@ -59,7 +72,7 @@ fun ScreenSettingTabletContents(setMenu: (String) -> Unit, getMenu: String){
             fontWeight = FontWeight(weight = 700)
         )
 
-        Spacer(modifier = Modifier.size(8.dp))
+        Spacer(modifier = Modifier.size(16.dp))
 
         ItemMainSettingSingleTablet(
             containerColor = color52a9ff,
@@ -70,7 +83,7 @@ fun ScreenSettingTabletContents(setMenu: (String) -> Unit, getMenu: String){
             getMenu = getMenu
         )
 
-        tabletBorderLine()
+        TabletBorderLine()
 
         ItemMainSettingSingleTablet(
             containerColor = color4ad7cf,
@@ -108,7 +121,7 @@ fun ScreenSettingTabletContents(setMenu: (String) -> Unit, getMenu: String){
             getMenu = getMenu
         )
 
-        tabletBorderLine()
+        TabletBorderLine()
 
         ItemMainSettingSingleTablet(
             containerColor = colorabd436,
@@ -128,7 +141,7 @@ fun ScreenSettingTabletContents(setMenu: (String) -> Unit, getMenu: String){
             getMenu = getMenu
         )
 
-        tabletBorderLine()
+        TabletBorderLine()
 
         ItemMainSettingSingleTablet(
             containerColor = color21c2ec,
@@ -166,7 +179,7 @@ fun ScreenSettingTabletContents(setMenu: (String) -> Unit, getMenu: String){
             getMenu = getMenu
         )
 
-        tabletBorderLine()
+        TabletBorderLine()
 
         ItemMainSettingSingleTablet(
             containerColor = color52a9ff,
@@ -190,31 +203,217 @@ fun ScreenSettingTabletContents(setMenu: (String) -> Unit, getMenu: String){
 }
 
 @Composable
-fun ScreenTablet(title: String) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = colorf6f6f6)
-            .padding(8.dp, 0.dp)
-            .verticalScroll(rememberScrollState())
-            .semantics { contentDescription = "Overview Screen" },
+fun ScreenTablet(
+    title: String,
+    lineTest: List<MainSettingLine>,
+    lineBest: List<MainSettingLine>,
+    lineJson: List<MainSettingLine>,
+    lineTrophy: List<MainSettingLine>,
+) {
+
+    Box(
+        modifier = Modifier.fillMaxSize().background(color = Color.Red)
     ) {
-        Spacer(modifier = Modifier.size(8.dp))
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = colorf6f6f6)
+                .verticalScroll(rememberScrollState())
+                .semantics { contentDescription = "Overview Screen" },
+        ) {
 
-        Text(
-            modifier = Modifier.padding(16.dp, 0.dp, 0.dp, 0.dp),
-            text = title,
-            fontSize = 24.sp,
-            color = color000000,
-            fontWeight = FontWeight(weight = 700)
-        )
+            Spacer(modifier = Modifier.size(16.dp))
 
-        Spacer(modifier = Modifier.size(8.dp))
+            Text(
+                modifier = Modifier.padding(24.dp, 0.dp, 0.dp, 0.dp),
+                text = title,
+                fontSize = 24.sp,
+                color = color000000,
+                fontWeight = FontWeight(weight = 700)
+            )
+
+            Spacer(modifier = Modifier.size(16.dp))
+
+            if(title == "세팅바라 현황"){
+                ContentsSetting(
+                    lineTest = lineTest,
+                    lineBest = lineBest,
+                    lineJson = lineJson,
+                    lineTrophy = lineTrophy
+                )
+            }
+        }
     }
 }
 
 @Composable
-fun tabletBorderLine(){
+fun ContentsSetting(
+    lineTest: List<MainSettingLine>,
+    lineBest: List<MainSettingLine>,
+    lineJson: List<MainSettingLine>,
+    lineTrophy: List<MainSettingLine>
+) {
+    Button(
+        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+        onClick = { },
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(44.dp),
+        shape = RoundedCornerShape(50.dp),
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "WORKER 최신화",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    Button(
+        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+        onClick = { },
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(44.dp),
+        shape = RoundedCornerShape(50.dp),
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "FCM 카운트 최신화",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    Text(
+        modifier = Modifier.padding(32.dp, 8.dp),
+        text = "테스트 현황",
+        fontSize = 16.sp,
+        color = color8e8e8e,
+        fontWeight = FontWeight(weight = 700)
+    )
+
+    TabletContentWrap(
+        radius = 10,
+        content = {
+            lineTest.forEachIndexed { index, item ->
+                ItemMainTabletContent(
+                    title = item.title,
+                    value = item.value,
+                    isLast = lineTrophy.size - 1 == index
+                )
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    Text(
+        modifier = Modifier.padding(32.dp, 8.dp),
+        text = "베스트 현황",
+        fontSize = 16.sp,
+        color = color8e8e8e,
+        fontWeight = FontWeight(weight = 700)
+    )
+
+    TabletContentWrap(
+        radius = 10,
+        content = {
+            lineBest.forEachIndexed { index, item ->
+                ItemMainTabletContent(
+                    title = item.title,
+                    value = item.value,
+                    isLast = lineTrophy.size - 1 == index
+                )
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    Text(
+        modifier = Modifier.padding(32.dp, 8.dp),
+        text = "JSON 현황",
+        fontSize = 16.sp,
+        color = color8e8e8e,
+        fontWeight = FontWeight(weight = 700)
+    )
+
+    TabletContentWrap(
+        radius = 10,
+        content = {
+            lineJson.forEachIndexed { index, item ->
+                ItemMainTabletContent(
+                    title = item.title,
+                    value = item.value,
+                    isLast = lineTrophy.size - 1 == index
+                )
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    Text(
+        modifier = Modifier.padding(32.dp, 8.dp),
+        text = "트로피 현황",
+        fontSize = 16.sp,
+        color = color8e8e8e,
+        fontWeight = FontWeight(weight = 700)
+    )
+
+    TabletContentWrap(
+        radius = 10,
+        content = {
+            lineTrophy.forEachIndexed { index, item ->
+                ItemMainTabletContent(
+                    title = item.title,
+                    value = item.value,
+                    isLast = lineTrophy.size - 1 == index
+                )
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(60.dp))
+}
+@Composable
+fun TabletContentWrap(radius : Int, content : @Composable () -> Unit){
+    Card(
+        modifier = Modifier
+            .fillMaxSize(),
+        backgroundColor = Color.White,
+        shape = RoundedCornerShape(percent = radius),
+        elevation = 0.dp
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(24.dp, 4.dp)
+        ) {
+            content()
+        }
+    }
+}
+
+@Composable
+fun TabletBorderLine(){
     Spacer(modifier = Modifier.size(8.dp))
     Spacer(modifier = Modifier
         .fillMaxWidth()

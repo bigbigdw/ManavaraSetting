@@ -257,6 +257,58 @@ fun ItemMainSettingSingle(
 }
 
 @Composable
+fun ItemMainTabletContent(
+    title: String,
+    value: String,
+    isLast: Boolean
+) {
+
+    Column {
+        Button(
+            colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+            contentPadding = PaddingValues(
+                start = 12.dp,
+                top = 6.dp,
+                end = 12.dp,
+                bottom = 6.dp,
+            ),
+            onClick = {},
+            content = {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+
+                    Text(
+                        text = title,
+                        fontSize = 18.sp,
+                        textAlign = TextAlign.Center,
+                        color = color000000,
+                        fontWeight = FontWeight(weight = 400)
+                    )
+                    Text(
+                        text = value,
+                        fontSize = 18.sp,
+                        textAlign = TextAlign.Center,
+                        color = color20459e,
+                    )
+                }
+            })
+
+        if(!isLast){
+            Spacer(modifier = Modifier.size(2.dp))
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(color = colore9e9e9))
+            Spacer(modifier = Modifier.size(2.dp))
+        }
+    }
+}
+
+@Composable
 fun ItemMainSettingSingleTablet(
     containerColor: Color,
     image: Int,

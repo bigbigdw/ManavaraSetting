@@ -61,7 +61,13 @@ fun ScreenMainSetting(
                     .fillMaxHeight()
                     .background(color = colorf6f6f6))
 
-                ScreenTablet(title = getMenu)
+                ScreenTablet(
+                    title = getMenu,
+                    lineTest = lineTest,
+                    lineBest = lineBest,
+                    lineJson = lineJson,
+                    lineTrophy = lineTrophy
+                )
 
             } else {
                 ScreenSettingMobileContents(

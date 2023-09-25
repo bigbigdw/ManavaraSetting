@@ -10,6 +10,7 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
@@ -56,8 +57,16 @@ fun ManavaraSettingTheme(
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
+
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
+            val statusBarColor = if (darkTheme) {
+                Color.Black  // 다크 모드일 때 빨간색으로 설정
+            } else {
+//                colorScheme.primary // 다크 모드가 아닐 때 기본 색상 사용
+                Color.White
+            }
+
+            window.statusBarColor = statusBarColor.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
     }
