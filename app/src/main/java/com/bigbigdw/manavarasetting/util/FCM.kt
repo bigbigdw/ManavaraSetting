@@ -10,6 +10,7 @@ import com.bigbigdw.manavarasetting.firebase.DataFCMBodyNotification
 import com.bigbigdw.manavarasetting.firebase.FCMAlert
 import com.bigbigdw.manavarasetting.firebase.FWorkManagerResult
 import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager
+import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.FCM_TOKEN
 import com.bigbigdw.massmath.Firebase.FirebaseService
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
@@ -111,6 +112,12 @@ object FCM {
             // Log and toast
 
             Toast.makeText(context, token, Toast.LENGTH_SHORT).show()
+
+            val dataStore = DataStoreManager(context)
+
+            CoroutineScope(Dispatchers.IO).launch {
+                dataStore.setDataStoreString(key = FCM_TOKEN, str = token)
+            }
         })
     }
 

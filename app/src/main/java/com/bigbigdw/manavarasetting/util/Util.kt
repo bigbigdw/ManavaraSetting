@@ -8,7 +8,6 @@ import com.bigbigdw.manavarasetting.main.model.BestItemData
 import com.bigbigdw.manavarasetting.main.model.BestListAnalyze
 import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager
 import com.bigbigdw.manavarasetting.util.DBDate.datedd
-import com.bigbigdw.manavarasetting.util.DBDate.getDayOfWeekAsNumber
 import com.bigbigdw.manavarasetting.util.DBDate.getYesterdayDayOfWeek
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -22,9 +21,6 @@ import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import java.io.ByteArrayInputStream
@@ -297,7 +293,7 @@ fun calculateTrophy(platform : String, genre: String) {
                     jsonArray.add(convertBestItemData(bestItemData))
 
                 } else {
-                    Log.d("HIHIHI", "NOT HAS")
+                    jsonArray.add(convertBestItemData(item))
                 }
             }
 
@@ -305,7 +301,9 @@ fun calculateTrophy(platform : String, genre: String) {
 
             todayFileRef.putBytes(jsonArrayByteArray)
                 .addOnSuccessListener {
-                    // 업로드 성공 시 처리
+                    Log.d("HIHI-TROPHY", "성공")
+                }.addOnFailureListener {
+                    Log.d("HIHI-TROPHY", "실패 $it")
                 }
 
         }

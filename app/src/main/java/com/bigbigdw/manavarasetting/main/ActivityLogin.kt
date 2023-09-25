@@ -53,6 +53,7 @@ class ActivityLogin : ComponentActivity() {
                     .setServerClientId(getString(R.string.default_web_client_id))
                     .setFilterByAuthorizedAccounts(false)
                     .build())
+            .setAutoSelectEnabled(true)
             .build()
 
         setContent {

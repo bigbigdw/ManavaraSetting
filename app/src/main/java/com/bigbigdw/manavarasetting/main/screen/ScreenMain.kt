@@ -60,6 +60,7 @@ import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.firebase.DataFCMBodyNotification
 import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager
+import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.FCM_TOKEN
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color1E1E20
@@ -72,8 +73,18 @@ import com.bigbigdw.manavarasetting.ui.theme.colorFFFFFF
 import com.bigbigdw.manavarasetting.ui.theme.colordcdcdd
 import com.bigbigdw.manavarasetting.ui.theme.colorf7f7f7
 import com.bigbigdw.manavarasetting.ui.theme.pretendardvariable
+import com.bigbigdw.manavarasetting.util.BestRef
+import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.FCM
+import com.bigbigdw.manavarasetting.util.Mining
+import com.bigbigdw.manavarasetting.util.NaverSeriesGenre
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
+import com.bigbigdw.manavarasetting.util.calculateTrophy
+import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
+import com.bigbigdw.manavarasetting.util.makeWeekJson
+import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageDay
+import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageWeek
+import com.google.gson.JsonArray
 import java.util.concurrent.TimeUnit
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
@@ -245,13 +256,13 @@ fun NavigationGraph(
             ScreenMainFCM(workManager = workManager)
         }
         composable(ScreemBottomItem.BEST.screenRoute) {
-            Test(workManager = workManager)
+            ScreenMainBest(workManager = workManager)
         }
         composable(ScreemBottomItem.JSON.screenRoute) {
-            ScreenTest()
+            ScreenMainJson(workManager = workManager)
         }
         composable(ScreemBottomItem.TROPHY.screenRoute) {
-            ScreenTest()
+            ScreenMainTrophy(workManager = workManager)
         }
     }
 }
@@ -341,60 +352,17 @@ fun ScreenMainFCM(workManager: WorkManager) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(80.dp)
-            )
-            Card(
-                modifier = Modifier
-                    .wrapContentSize(),
-                backgroundColor = colordcdcdd,
-                shape = RoundedCornerShape(50.dp, 50.dp, 50.dp, 50.dp)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .height(90.dp)
-                        .width(90.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Image(
-                        contentScale = ContentScale.FillWidth,
-                        painter = painterResource(id = R.drawable.icon_fcm),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .height(72.dp)
-                            .width(72.dp)
-                    )
-                }
-            }
 
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(8.dp)
-            )
-            Text(
-                text = "FCM 현황",
-                fontSize = 24.sp,
-                textAlign = TextAlign.Center,
-                color = color000000,
-                fontFamily = pretendardvariable,
-                fontWeight = FontWeight(weight = 100)
-            )
+            MainHeader(image = R.drawable.icon_fcm, title = "FCM 현황")
 
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(16.dp)
-            )
+            Spacer(modifier = Modifier.size(16.dp))
 
             TextField(
                 value = getFCM.title,
                 onValueChange = {
                     setFCM(getFCM.copy(title = it))
                 },
-                label = { Text("FCM 제목 입력", color = color898989) },
+                label = { Text("푸시 알림 제목", color = color898989) },
                 singleLine = true,
                 colors = TextFieldDefaults.textFieldColors(
                     containerColor = Color(0),
@@ -402,17 +370,15 @@ fun ScreenMainFCM(workManager: WorkManager) {
                 ),
                 modifier = Modifier.width(260.dp)
             )
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(16.dp)
-            )
+
+            Spacer(modifier = Modifier.size(16.dp))
+
             TextField(
                 value = getFCM.body,
                 onValueChange = {
                     setFCM(getFCM.copy(body = it))
                 },
-                label = { Text("FCM 바디 입력", color = color898989) },
+                label = { Text("푸시 알림 내용", color = color898989) },
                 singleLine = true,
                 colors = TextFieldDefaults.textFieldColors(
                     containerColor = Color(0),
@@ -420,39 +386,31 @@ fun ScreenMainFCM(workManager: WorkManager) {
                 ),
                 modifier = Modifier.width(260.dp)
             )
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(22.dp)
-            )
-            Button(
-                colors = ButtonDefaults.buttonColors(containerColor = color20459e),
-                onClick = {
-                    FCM.postFCMAlert(context = context, getFCM = getFCM)
+
+            BtnMobile(func = { FCM.postFCMAlert(context = context, getFCM = getFCM) }, btnText = "공지사항 등록")
+
+            Spacer(modifier = Modifier.size(16.dp))
+
+            TextField(
+                value = dataStore.getDataStoreString(FCM_TOKEN).collectAsState(initial = "").value ?: "",
+                onValueChange = {
+                    setFCM(getFCM.copy(title = it))
                 },
-                modifier = Modifier
-                    .width(260.dp)
-                    .height(56.dp),
-                shape = RoundedCornerShape(50.dp)
-
-            ) {
-                Text(
-                    text = "공지사항 등록",
-                    textAlign = TextAlign.Center,
-                    color = colorEDE6FD,
-                    fontSize = 16.sp,
-                    fontFamily = pretendardvariable
-                )
-            }
-
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(22.dp)
+                label = { Text("FCM 토큰", color = color898989) },
+                singleLine = true,
+                colors = TextFieldDefaults.textFieldColors(
+                    containerColor = Color(0),
+                    textColor = color000000
+                ),
+                modifier = Modifier.width(260.dp)
             )
-            Button(
-                colors = ButtonDefaults.buttonColors(containerColor = color20459e),
-                onClick = {
+
+            BtnMobile(func = { FCM.getFCMToken(context) }, btnText = "FCM 토큰 얻기")
+
+            BtnMobile(func = { FCM.postFCMAlertTest(context = context, message = "테스트") }, btnText = "푸시 알림 테스트")
+
+            BtnMobile(
+                func = {
                     PeriodicWorker.doWorker(
                         workManager = workManager,
                         repeatInterval = 15,
@@ -460,118 +418,28 @@ fun ScreenMainFCM(workManager: WorkManager) {
                         timeMill = TimeUnit.MINUTES
                     )
                 },
-                modifier = Modifier
-                    .width(260.dp)
-                    .height(56.dp),
-                shape = RoundedCornerShape(50.dp)
-
-            ) {
-                Text(
-                    text = "테스트 시작",
-                    textAlign = TextAlign.Center,
-                    color = colorEDE6FD,
-                    fontSize = 16.sp,
-                    fontFamily = pretendardvariable
-                )
-            }
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(22.dp)
+                btnText = "테스트 WORKER 시작"
             )
-            Button(
-                colors = ButtonDefaults.buttonColors(containerColor = color20459e),
-                onClick = {
+
+            BtnMobile(
+                func = {
                     PeriodicWorker.cancelWorker(
                         workManager = workManager,
                         tag = "TEST"
                     )
                 },
-                modifier = Modifier
-                    .width(260.dp)
-                    .height(56.dp),
-                shape = RoundedCornerShape(50.dp)
-
-            ) {
-                Text(
-                    text = "테스트 취소",
-                    textAlign = TextAlign.Center,
-                    color = colorEDE6FD,
-                    fontSize = 16.sp,
-                    fontFamily = pretendardvariable
-                )
-            }
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(22.dp)
+                btnText = "테스트 WORKER 취소"
             )
-            Button(
-                colors = ButtonDefaults.buttonColors(containerColor = color20459e),
-                onClick = {
+
+            BtnMobile(
+                func = {
                     PeriodicWorker.checkWorker(
                         workManager = workManager,
                         tag = "TEST"
                     )
                 },
-                modifier = Modifier
-                    .width(260.dp)
-                    .height(56.dp),
-                shape = RoundedCornerShape(50.dp)
-
-            ) {
-                Text(
-                    text = "테스트 확인",
-                    textAlign = TextAlign.Center,
-                    color = colorEDE6FD,
-                    fontSize = 16.sp,
-                    fontFamily = pretendardvariable
-                )
-            }
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(22.dp)
+                btnText = "테스트 WORKER 확인"
             )
-            Button(
-                colors = ButtonDefaults.buttonColors(containerColor = color20459e),
-                onClick = { FCM.getFCMToken(context) },
-                modifier = Modifier
-                    .width(260.dp)
-                    .height(56.dp),
-                shape = RoundedCornerShape(50.dp)
-
-            ) {
-                Text(
-                    text = "FCM 토큰 얻기",
-                    textAlign = TextAlign.Center,
-                    color = colorFFFFFF,
-                    fontSize = 16.sp,
-                    fontFamily = pretendardvariable
-                )
-            }
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(22.dp)
-            )
-            Button(
-                colors = ButtonDefaults.buttonColors(containerColor = color20459e),
-                onClick = { FCM.postFCMAlertTest(context = context, message = "테스트") },
-                modifier = Modifier
-                    .width(260.dp)
-                    .height(56.dp),
-                shape = RoundedCornerShape(50.dp)
-
-            ) {
-                Text(
-                    text = "FCM 테스트",
-                    textAlign = TextAlign.Center,
-                    color = colorEDE6FD,
-                    fontSize = 16.sp,
-                    fontFamily = pretendardvariable
-                )
-            }
 
             Spacer(
                 modifier = Modifier
@@ -701,5 +569,286 @@ fun ItemMainSetting(
             fontFamily = pretendardvariable,
             fontWeight = FontWeight(weight = 100)
         )
+    }
+}
+
+@Composable
+fun BtnMobile(func : ()->Unit, btnText : String){
+    Spacer(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(22.dp)
+    )
+    Button(
+        colors = ButtonDefaults.buttonColors(containerColor = color20459e),
+        onClick = func,
+        modifier = Modifier
+            .width(260.dp)
+            .height(56.dp),
+        shape = RoundedCornerShape(50.dp)
+
+    ) {
+        Text(
+            text = btnText,
+            textAlign = TextAlign.Center,
+            color = colorEDE6FD,
+            fontSize = 16.sp,
+            fontFamily = pretendardvariable
+        )
+    }
+}
+
+@Composable
+fun ScreenMainJson(workManager: WorkManager) {
+    val context = LocalContext.current
+
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = colorf7f7f7)
+                .verticalScroll(rememberScrollState())
+                .semantics { contentDescription = "Overview Screen" },
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            MainHeader(image = R.drawable.icon_json, title = "베스트 JSON 현황")
+
+            BtnMobile(
+                func = {
+                    for (j in NaverSeriesGenre) {
+                        uploadJsonArrayToStorageDay(
+                            platform = "NAVER_SERIES",
+                            genre = getNaverSeriesGenre(j)
+                        )
+                    }
+                    FCM.postFCMAlertTest(context = context, message = "DAY JSON 생성이 완료되었습니다")
+                },
+                btnText = "JSON DAY 생성"
+            )
+
+            BtnMobile(
+                func = {
+                    for (j in NaverSeriesGenre) {
+
+                        val jsonArray = JsonArray()
+
+                        for (i in 0..6) {
+                            jsonArray.add("")
+                        }
+
+                        makeWeekJson(
+                            platform = "NAVER_SERIES",
+                            genre = getNaverSeriesGenre(j),
+                            jsonArray = jsonArray
+                        )
+                    }
+                },
+                btnText = "JSON WEEK 생성"
+            )
+
+            BtnMobile(
+                func = {
+                    for (j in NaverSeriesGenre) {
+                        uploadJsonArrayToStorageWeek(
+                            platform = "NAVER_SERIES",
+                            genre = getNaverSeriesGenre(j)
+                        )
+                    }
+                },
+                btnText = "JSON WEEK 업데이트"
+            )
+
+            BtnMobile(
+                func = {
+                    PeriodicWorker.doWorker(
+                        workManager = workManager,
+                        repeatInterval = 6,
+                        tag = "BEST_JSON",
+                        timeMill = TimeUnit.HOURS
+                    )
+                },
+                btnText = "JSON WORKER 시작"
+            )
+
+            BtnMobile(
+                func = {
+                    for (j in NaverSeriesGenre) {
+                        PeriodicWorker.cancelWorker(
+                            workManager = workManager,
+                            tag = "BEST_JSON"
+                        )
+                    }
+                },
+                btnText = "JSON WORKER 취소"
+            )
+
+            BtnMobile(
+                func = {
+                    PeriodicWorker.checkWorker(
+                        workManager = workManager,
+                        tag = "BEST_JSON"
+                    )
+                },
+                btnText = "JSON WORKER 확인"
+            )
+
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(120.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun ScreenMainTrophy(workManager: WorkManager) {
+    val context = LocalContext.current
+
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = colorf7f7f7)
+                .verticalScroll(rememberScrollState())
+                .semantics { contentDescription = "Overview Screen" },
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            MainHeader(image = R.drawable.icon_trophy, title = "트로피 갱신 현황")
+
+            BtnMobile(
+                func = {
+                    for (j in NaverSeriesGenre) {
+                        calculateTrophy(platform = "NAVER_SERIES", genre = getNaverSeriesGenre(j))
+                    }
+                    FCM.postFCMAlertTest(context = context, message = "트로피 정산이 완료되었습니다")
+                },
+                btnText = "트로피 정산"
+            )
+
+            BtnMobile(
+                func = {
+                    PeriodicWorker.doWorker(
+                        workManager = workManager,
+                        repeatInterval = 9,
+                        tag = "BEST_TROPHY",
+                        timeMill = TimeUnit.HOURS
+                    )
+                },
+                btnText = "트로피 정산 WORKER 시작"
+            )
+
+            BtnMobile(
+                func = {
+                    PeriodicWorker.cancelWorker(
+                        workManager = workManager,
+                        tag = "BEST_TROPHY"
+                    )
+                },
+                btnText = "트로피 정산 WORKER 취소"
+            )
+
+            BtnMobile(
+                func = {
+                    PeriodicWorker.checkWorker(
+                        workManager = workManager,
+                        tag = "BEST_TROPHY"
+                    )
+                },
+                btnText = "트로피 정산 WORKER 확인"
+            )
+
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(120.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun ScreenMainBest(workManager: WorkManager) {
+    val context = LocalContext.current
+
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = colorf7f7f7)
+                .verticalScroll(rememberScrollState())
+                .semantics { contentDescription = "Overview Screen" },
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            MainHeader(image = R.drawable.icon_best, title = "베스트 리스트 현황")
+
+            BtnMobile(
+                func = {
+                    for (j in NaverSeriesGenre) {
+
+                        if (DBDate.getDayOfWeekAsNumber() == 0) {
+                            BestRef.setBestRef(platform = "NAVER_SERIES", genre = j).child("TROPHY_WEEK").removeValue()
+                        }
+
+                        if (DBDate.datedd() == "01") {
+                            BestRef.setBestRef(platform = "NAVER_SERIES", genre = j).child("TROPHY_MONTH").removeValue()
+                        }
+
+                        for (i in 1..5) {
+                            Mining.miningNaverSeriesAll(pageCount = i, genre = j)
+                        }
+                    }
+                    FCM.postFCMAlertTest(context = context, message = "베스트 리스트가 갱신되었습니다")
+                },
+                btnText = "베스트 리스트 갱신"
+            )
+
+            BtnMobile(
+                func = {
+                    PeriodicWorker.doWorker(
+                        workManager = workManager,
+                        repeatInterval = 3,
+                        tag = "BEST",
+                        timeMill = TimeUnit.HOURS
+                    )
+                },
+                btnText = "베스트 WORKER 시작"
+            )
+
+            BtnMobile(
+                func = {
+                    PeriodicWorker.cancelWorker(workManager = workManager,  tag = "BEST")
+                },
+                btnText = "베스트 WORKER 취소"
+            )
+
+            BtnMobile(
+                func = {
+                    PeriodicWorker.checkWorker(
+                        workManager = workManager,
+                        tag = "BEST"
+                    )
+                },
+                btnText = "베스트 WORKER 확인"
+            )
+
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(120.dp)
+            )
+        }
     }
 }

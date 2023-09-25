@@ -14,18 +14,12 @@ class DataStoreManager(private val context: Context) {
     companion object {
         private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("MANAVARASETTING")
         val TESTKEY = stringPreferencesKey("TEST")
-
         val BESTWORKER_TIME = stringPreferencesKey("BESTWORKER_TIME")
-        val BESTWORKER_STATUS = stringPreferencesKey("BESTWORKER_STATUS")
-
         val JSONWORKER_TIME = stringPreferencesKey("JSONWORKER_TIME")
-        val JSONWORKER_STATUS = stringPreferencesKey("JSONWORKER_STATUS")
-
         val TROPHYWORKER_TIME = stringPreferencesKey("TROPHYWORKER_TIME")
-        val TROPHYWORKER_STATUS = stringPreferencesKey("TROPHYWORKER_STATUS")
-
         val TEST_TIME = stringPreferencesKey("TEST_TIME")
-        val TEST_STATUS = stringPreferencesKey("TEST_STATUS")
+
+        val FCM_TOKEN = stringPreferencesKey("FCM_TOKEN")
     }
 
     fun getDataStoreString(key : Preferences.Key<String>): Flow<String?> {
