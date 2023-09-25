@@ -69,7 +69,6 @@ import com.bigbigdw.manavarasetting.ui.theme.color20459e
 import com.bigbigdw.manavarasetting.ui.theme.color555b68
 import com.bigbigdw.manavarasetting.ui.theme.color898989
 import com.bigbigdw.manavarasetting.ui.theme.colorEDE6FD
-import com.bigbigdw.manavarasetting.ui.theme.colorFFFFFF
 import com.bigbigdw.manavarasetting.ui.theme.colordcdcdd
 import com.bigbigdw.manavarasetting.ui.theme.colorf7f7f7
 import com.bigbigdw.manavarasetting.ui.theme.pretendardvariable
@@ -253,16 +252,16 @@ fun NavigationGraph(
             ScreenMainSetting(workManager = workManager, viewModelMain = viewModelMain)
         }
         composable(ScreemBottomItem.FCM.screenRoute) {
-            ScreenMainFCM(workManager = workManager)
+            ScreenMainFCM(workManager = workManager, viewModelMain = viewModelMain)
         }
         composable(ScreemBottomItem.BEST.screenRoute) {
-            ScreenMainBest(workManager = workManager)
+            ScreenMainBest(workManager = workManager, viewModelMain = viewModelMain)
         }
         composable(ScreemBottomItem.JSON.screenRoute) {
-            ScreenMainJson(workManager = workManager)
+            ScreenMainJson(workManager = workManager, viewModelMain = viewModelMain)
         }
         composable(ScreemBottomItem.TROPHY.screenRoute) {
-            ScreenMainTrophy(workManager = workManager)
+            ScreenMainTrophy(workManager = workManager, viewModelMain = viewModelMain)
         }
     }
 }
@@ -273,6 +272,7 @@ fun ScreenMainSetting(workManager: WorkManager, viewModelMain: ViewModelMain) {
     val context = LocalContext.current
 
     viewModelMain.getDataStoreStatus(context = context, workManager = workManager)
+    viewModelMain.getDataStoreFCMCount(context = context)
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -297,6 +297,20 @@ fun ScreenMainSetting(workManager: WorkManager, viewModelMain: ViewModelMain) {
                 valueStatus = viewModelMain.state.collectAsState().value.timeTest,
             )
 
+            ItemMainSetting(
+                image = R.drawable.icon_setting_gr,
+                titleWorker = "테스트 호출 횟수 : ",
+                valueWorker = viewModelMain.state.collectAsState().value.countTest,
+                statusTitle = "테스트 금일 호출 횟수 : ",
+                valueStatus = viewModelMain.state.collectAsState().value.countTodayTest,
+            )
+
+            ItemMainSettingSingle(
+                image = R.drawable.icon_setting_gr,
+                titleWorker = "테스트 호출 주기 : ",
+                valueWorker = viewModelMain.state.collectAsState().value.timeMillTest,
+            )
+
             Spacer(modifier = Modifier.size(24.dp))
 
             ItemMainSetting(
@@ -305,6 +319,18 @@ fun ScreenMainSetting(workManager: WorkManager, viewModelMain: ViewModelMain) {
                 valueWorker = viewModelMain.state.collectAsState().value.statusBest,
                 statusTitle = "베스트 갱신시간 : ",
                 valueStatus = viewModelMain.state.collectAsState().value.testBest,
+            )
+            ItemMainSetting(
+                image = R.drawable.icon_best_gr,
+                titleWorker = "베스트 호출 횟수 : ",
+                valueWorker = viewModelMain.state.collectAsState().value.countBest,
+                statusTitle = "베스트 금일 호출 횟수 : ",
+                valueStatus = viewModelMain.state.collectAsState().value.countTodayBest,
+            )
+            ItemMainSettingSingle(
+                image = R.drawable.icon_best_gr,
+                titleWorker = "베스트 호출 주기 : ",
+                valueWorker = viewModelMain.state.collectAsState().value.timeMillBest,
             )
 
             Spacer(modifier = Modifier.size(24.dp))
@@ -316,6 +342,18 @@ fun ScreenMainSetting(workManager: WorkManager, viewModelMain: ViewModelMain) {
                 statusTitle = "JSON 갱신시간 : ",
                 valueStatus = viewModelMain.state.collectAsState().value.testJson,
             )
+            ItemMainSetting(
+                image = R.drawable.icon_json_gr,
+                titleWorker = "JSON 호출 횟수 : ",
+                valueWorker = viewModelMain.state.collectAsState().value.countJson,
+                statusTitle = "JSON 금일 호출 횟수 : ",
+                valueStatus = viewModelMain.state.collectAsState().value.countTodayJson,
+            )
+            ItemMainSettingSingle(
+                image = R.drawable.icon_json_gr,
+                titleWorker = "JSON 호출 주기 : ",
+                valueWorker = viewModelMain.state.collectAsState().value.timeMillJson,
+            )
 
             Spacer(modifier = Modifier.size(24.dp))
 
@@ -326,6 +364,18 @@ fun ScreenMainSetting(workManager: WorkManager, viewModelMain: ViewModelMain) {
                 statusTitle = "트로피 갱신시간 : ",
                 valueStatus = viewModelMain.state.collectAsState().value.testTrophy,
             )
+            ItemMainSetting(
+                image = R.drawable.icon_trophy_gr,
+                titleWorker = "트로피 호출 횟수 : ",
+                valueWorker = viewModelMain.state.collectAsState().value.countTrophy,
+                statusTitle = "트로피 금일 호출 횟수 : ",
+                valueStatus = viewModelMain.state.collectAsState().value.countTodayTrophy,
+            )
+            ItemMainSettingSingle(
+                image = R.drawable.icon_json_gr,
+                titleWorker = "트로피 호출 주기 : ",
+                valueWorker = viewModelMain.state.collectAsState().value.timeMillTrophy,
+            )
 
             Spacer(modifier = Modifier.size(120.dp))
         }
@@ -334,7 +384,7 @@ fun ScreenMainSetting(workManager: WorkManager, viewModelMain: ViewModelMain) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScreenMainFCM(workManager: WorkManager) {
+fun ScreenMainFCM(workManager: WorkManager, viewModelMain: ViewModelMain) {
     val context = LocalContext.current
 
     val dataStore = DataStoreManager(context)
@@ -356,6 +406,28 @@ fun ScreenMainFCM(workManager: WorkManager) {
             MainHeader(image = R.drawable.icon_fcm, title = "FCM 현황")
 
             Spacer(modifier = Modifier.size(16.dp))
+
+            ItemMainSetting(
+                image = R.drawable.icon_setting_gr,
+                titleWorker = "테스트 WORKER : ",
+                valueWorker = viewModelMain.state.collectAsState().value.statusTest,
+                statusTitle = "테스트 갱신시간 : ",
+                valueStatus = viewModelMain.state.collectAsState().value.timeTest,
+            )
+
+            ItemMainSetting(
+                image = R.drawable.icon_setting_gr,
+                titleWorker = "테스트 호출 횟수 : ",
+                valueWorker = viewModelMain.state.collectAsState().value.countTest,
+                statusTitle = "테스트 금일 호출 횟수 : ",
+                valueStatus = viewModelMain.state.collectAsState().value.countTodayTest,
+            )
+
+            ItemMainSettingSingle(
+                image = R.drawable.icon_setting_gr,
+                titleWorker = "테스트 호출 주기 : ",
+                valueWorker = viewModelMain.state.collectAsState().value.timeMillTest,
+            )
 
             TextField(
                 value = getFCM.title,
@@ -599,7 +671,7 @@ fun BtnMobile(func : ()->Unit, btnText : String){
 }
 
 @Composable
-fun ScreenMainJson(workManager: WorkManager) {
+fun ScreenMainJson(workManager: WorkManager, viewModelMain: ViewModelMain) {
     val context = LocalContext.current
 
     Box(
@@ -616,6 +688,26 @@ fun ScreenMainJson(workManager: WorkManager) {
         ) {
 
             MainHeader(image = R.drawable.icon_json, title = "베스트 JSON 현황")
+
+            ItemMainSetting(
+                image = R.drawable.icon_json_gr,
+                titleWorker = "JSON WORKER : ",
+                valueWorker = viewModelMain.state.collectAsState().value.statusJson,
+                statusTitle = "JSON 갱신시간 : ",
+                valueStatus = viewModelMain.state.collectAsState().value.testJson,
+            )
+            ItemMainSetting(
+                image = R.drawable.icon_json_gr,
+                titleWorker = "JSON 호출 횟수 : ",
+                valueWorker = viewModelMain.state.collectAsState().value.countJson,
+                statusTitle = "JSON 금일 호출 횟수 : ",
+                valueStatus = viewModelMain.state.collectAsState().value.countTodayJson,
+            )
+            ItemMainSettingSingle(
+                image = R.drawable.icon_json_gr,
+                titleWorker = "JSON 호출 주기 : ",
+                valueWorker = viewModelMain.state.collectAsState().value.timeMillJson,
+            )
 
             BtnMobile(
                 func = {
@@ -706,7 +798,7 @@ fun ScreenMainJson(workManager: WorkManager) {
 }
 
 @Composable
-fun ScreenMainTrophy(workManager: WorkManager) {
+fun ScreenMainTrophy(workManager: WorkManager, viewModelMain: ViewModelMain) {
     val context = LocalContext.current
 
     Box(
@@ -723,6 +815,26 @@ fun ScreenMainTrophy(workManager: WorkManager) {
         ) {
 
             MainHeader(image = R.drawable.icon_trophy, title = "트로피 갱신 현황")
+
+            ItemMainSetting(
+                image = R.drawable.icon_trophy_gr,
+                titleWorker = "트로피 WORKER : ",
+                valueWorker = viewModelMain.state.collectAsState().value.statusTrophy,
+                statusTitle = "트로피 갱신시간 : ",
+                valueStatus = viewModelMain.state.collectAsState().value.testTrophy,
+            )
+            ItemMainSetting(
+                image = R.drawable.icon_trophy_gr,
+                titleWorker = "트로피 호출 횟수 : ",
+                valueWorker = viewModelMain.state.collectAsState().value.countTrophy,
+                statusTitle = "트로피 금일 호출 횟수 : ",
+                valueStatus = viewModelMain.state.collectAsState().value.countTodayTrophy,
+            )
+            ItemMainSettingSingle(
+                image = R.drawable.icon_json_gr,
+                titleWorker = "트로피 호출 주기 : ",
+                valueWorker = viewModelMain.state.collectAsState().value.timeMillTrophy,
+            )
 
             BtnMobile(
                 func = {
@@ -776,7 +888,7 @@ fun ScreenMainTrophy(workManager: WorkManager) {
 }
 
 @Composable
-fun ScreenMainBest(workManager: WorkManager) {
+fun ScreenMainBest(workManager: WorkManager, viewModelMain: ViewModelMain) {
     val context = LocalContext.current
 
     Box(
@@ -793,6 +905,26 @@ fun ScreenMainBest(workManager: WorkManager) {
         ) {
 
             MainHeader(image = R.drawable.icon_best, title = "베스트 리스트 현황")
+
+            ItemMainSetting(
+                image = R.drawable.icon_best_gr,
+                titleWorker = "베스트 WORKER : ",
+                valueWorker = viewModelMain.state.collectAsState().value.statusBest,
+                statusTitle = "베스트 갱신시간 : ",
+                valueStatus = viewModelMain.state.collectAsState().value.testBest,
+            )
+            ItemMainSetting(
+                image = R.drawable.icon_best_gr,
+                titleWorker = "베스트 호출 횟수 : ",
+                valueWorker = viewModelMain.state.collectAsState().value.countBest,
+                statusTitle = "베스트 금일 호출 횟수 : ",
+                valueStatus = viewModelMain.state.collectAsState().value.countTodayBest,
+            )
+            ItemMainSettingSingle(
+                image = R.drawable.icon_best_gr,
+                titleWorker = "베스트 호출 주기 : ",
+                valueWorker = viewModelMain.state.collectAsState().value.timeMillBest,
+            )
 
             BtnMobile(
                 func = {
@@ -850,5 +982,46 @@ fun ScreenMainBest(workManager: WorkManager) {
                     .height(120.dp)
             )
         }
+    }
+}
+
+@Composable
+fun ItemMainSettingSingle(
+    image: Int,
+    titleWorker: String,
+    valueWorker: String,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(24.dp, 0.dp),
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Image(
+            contentScale = ContentScale.FillWidth,
+            painter = painterResource(id = image),
+            contentDescription = null,
+            modifier = Modifier
+                .height(16.dp)
+                .width(16.dp)
+        )
+        Spacer(modifier = Modifier.size(4.dp))
+        Text(
+            text = titleWorker,
+            fontSize = 18.sp,
+            textAlign = TextAlign.Center,
+            color = color000000,
+            fontFamily = pretendardvariable,
+            fontWeight = FontWeight(weight = 100)
+        )
+        Text(
+            text = valueWorker,
+            fontSize = 18.sp,
+            textAlign = TextAlign.Center,
+            color = color20459e,
+            fontFamily = pretendardvariable,
+            fontWeight = FontWeight(weight = 100)
+        )
     }
 }

@@ -35,15 +35,28 @@ import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
 import androidx.glance.layout.size
+import androidx.glance.layout.wrapContentSize
+import androidx.lifecycle.viewModelScope
 import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
+import com.bigbigdw.manavarasetting.firebase.FCMAlert
+import com.bigbigdw.manavarasetting.main.event.EventMain
 import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager
 import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.BESTWORKER_TIME
+import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.FCM_COUNT_BEST
+import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.FCM_COUNT_BEST_TODAY
+import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.FCM_COUNT_JSON
+import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.FCM_COUNT_JSON_TODAY
+import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.FCM_COUNT_TEST
+import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.FCM_COUNT_TEST_TODAY
+import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.FCM_COUNT_TROPHY
+import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.FCM_COUNT_TROPHY_TODAY
 import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.JSONWORKER_TIME
 import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.TEST_TIME
 import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.TROPHYWORKER_TIME
 import com.bigbigdw.manavarasetting.ui.theme.color4186e1
 import com.bigbigdw.manavarasetting.ui.theme.colorB3000000
+import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import com.bigbigdw.manavarasetting.widget.ManavaraSettingWidget.paramWorkerInterval
 import com.bigbigdw.manavarasetting.widget.ManavaraSettingWidget.paramWorkerStatus
@@ -92,8 +105,19 @@ fun ScreenWidget(context: Context) {
     val TEST_TIME = dataStore.getDataStoreString(TEST_TIME).collectAsState(initial = "")
     val BESTWORKER_TIME = dataStore.getDataStoreString(BESTWORKER_TIME).collectAsState(initial = "")
     val JSONWORKER_TIME = dataStore.getDataStoreString(JSONWORKER_TIME).collectAsState(initial = "")
-    val TROPHYWORKER_TIME =
-        dataStore.getDataStoreString(TROPHYWORKER_TIME).collectAsState(initial = "")
+    val TROPHYWORKER_TIME = dataStore.getDataStoreString(TROPHYWORKER_TIME).collectAsState(initial = "")
+
+    val FCM_COUNT_TEST = dataStore.getDataStoreString(FCM_COUNT_TEST).collectAsState(initial = "")
+    val FCM_COUNT_TEST_TODAY = dataStore.getDataStoreString(FCM_COUNT_TEST_TODAY).collectAsState(initial = "")
+
+    val FCM_COUNT_BEST = dataStore.getDataStoreString(FCM_COUNT_BEST).collectAsState(initial = "")
+    val FCM_COUNT_BEST_TODAY = dataStore.getDataStoreString(FCM_COUNT_BEST_TODAY).collectAsState(initial = "")
+
+    val FCM_COUNT_JSON = dataStore.getDataStoreString(FCM_COUNT_JSON).collectAsState(initial = "")
+    val FCM_COUNT_JSON_TODAY = dataStore.getDataStoreString(FCM_COUNT_JSON_TODAY).collectAsState(initial = "")
+
+    val FCM_COUNT_TROPHY = dataStore.getDataStoreString(FCM_COUNT_TROPHY).collectAsState(initial = "")
+    val FCM_COUNT_TROPHY_TODAY = dataStore.getDataStoreString(FCM_COUNT_TROPHY_TODAY).collectAsState(initial = "")
 
     Column(
         modifier = GlanceModifier
@@ -131,29 +155,118 @@ fun ScreenWidget(context: Context) {
 
         Spacer(modifier = GlanceModifier.size(8.dp))
 
-        ItemMainSetting(
-            image = R.drawable.icon_setting_wht,
-            titleWorker = "테스트 WORKER : ",
-            valueWorker = TEST_TIME.value ?: "알 수 없음",
-        )
+        Column(
+            modifier = GlanceModifier
+                .wrapContentSize()
+                .padding(8.dp)
+                .clickable(actionRunCallback(callbackClass = WidgetUpdate::class.java)),
+            verticalAlignment = Alignment.Top,
+            horizontalAlignment = Alignment.Start,
+        ) {
+            ItemMainSetting(
+                image = R.drawable.icon_setting_wht,
+                titleWorker = "테스트 WORKER : ",
+                valueWorker = TEST_TIME.value ?: "알 수 없음",
+            )
 
-        ItemMainSetting(
-            image = R.drawable.icon_best_wht,
-            titleWorker = "베스트 WORKER : ",
-            valueWorker = BESTWORKER_TIME.value ?: "알 수 없음",
-        )
+            ItemMainSetting(
+                image = R.drawable.icon_setting_wht,
+                titleWorker = "테스트 호출 횟수 : ",
+                valueWorker = FCM_COUNT_TEST.value ?: "알 수 없음",
+            )
 
-        ItemMainSetting(
-            image = R.drawable.icon_json_wht,
-            titleWorker = "JSON WORKER : ",
-            valueWorker = JSONWORKER_TIME.value ?: "알 수 없음",
-        )
+            ItemMainSetting(
+                image = R.drawable.icon_setting_wht,
+                titleWorker = "테스트 금일 호출 횟수 : ",
+                valueWorker = FCM_COUNT_TEST_TODAY.value ?: "알 수 없음",
+            )
 
-        ItemMainSetting(
-            image = R.drawable.icon_trophy_wht,
-            titleWorker = "트로피 WORKER : ",
-            valueWorker = TROPHYWORKER_TIME.value ?: "알 수 없음",
-        )
+        }
+
+        Column(
+            modifier = GlanceModifier
+                .wrapContentSize()
+                .padding(8.dp)
+                .clickable(actionRunCallback(callbackClass = WidgetUpdate::class.java)),
+            verticalAlignment = Alignment.Top,
+            horizontalAlignment = Alignment.Start,
+        ) {
+            ItemMainSetting(
+                image = R.drawable.icon_best_wht,
+                titleWorker = "베스트 WORKER : ",
+                valueWorker = BESTWORKER_TIME.value ?: "알 수 없음",
+            )
+
+            ItemMainSetting(
+                image = R.drawable.icon_best_wht,
+                titleWorker = "베스트 호출 횟수 : ",
+                valueWorker = FCM_COUNT_BEST.value ?: "알 수 없음",
+            )
+
+            ItemMainSetting(
+                image = R.drawable.icon_best_wht,
+                titleWorker = "베스트 금일 호출 횟수 : ",
+                valueWorker = FCM_COUNT_BEST_TODAY.value ?: "알 수 없음",
+            )
+
+        }
+
+        Column(
+            modifier = GlanceModifier
+                .wrapContentSize()
+                .padding(8.dp)
+                .clickable(actionRunCallback(callbackClass = WidgetUpdate::class.java)),
+            verticalAlignment = Alignment.Top,
+            horizontalAlignment = Alignment.Start,
+        ) {
+            ItemMainSetting(
+                image = R.drawable.icon_json_wht,
+                titleWorker = "JSON WORKER : ",
+                valueWorker = JSONWORKER_TIME.value ?: "알 수 없음",
+            )
+
+            ItemMainSetting(
+                image = R.drawable.icon_json_wht,
+                titleWorker = "JSON 호출 횟수 : ",
+                valueWorker = FCM_COUNT_JSON.value ?: "알 수 없음",
+            )
+
+            ItemMainSetting(
+                image = R.drawable.icon_json_wht,
+                titleWorker = "JSON 금일 호출 횟수 : ",
+                valueWorker = FCM_COUNT_JSON_TODAY.value ?: "알 수 없음",
+            )
+
+        }
+
+        Column(
+            modifier = GlanceModifier
+                .wrapContentSize()
+                .padding(8.dp)
+                .clickable(actionRunCallback(callbackClass = WidgetUpdate::class.java)),
+            verticalAlignment = Alignment.Top,
+            horizontalAlignment = Alignment.Start,
+        ) {
+            ItemMainSetting(
+                image = R.drawable.icon_trophy_wht,
+                titleWorker = "트로피 WORKER : ",
+                valueWorker = TROPHYWORKER_TIME.value ?: "알 수 없음",
+            )
+
+            ItemMainSetting(
+                image = R.drawable.icon_trophy_wht,
+                titleWorker = "트로피 호출 횟수 : ",
+                valueWorker = FCM_COUNT_TROPHY.value ?: "알 수 없음",
+            )
+
+            ItemMainSetting(
+                image = R.drawable.icon_trophy_wht,
+                titleWorker = "트로피 금일 호출 횟수 : ",
+                valueWorker = FCM_COUNT_TROPHY_TODAY.value ?: "알 수 없음",
+            )
+
+            Spacer(modifier = GlanceModifier.size(8.dp))
+        }
     }
 }
 
@@ -202,30 +315,100 @@ class WidgetUpdate : ActionCallback {
         parameters: ActionParameters
     ) {
 
-        val mRootRef = FirebaseDatabase.getInstance().reference.child("WORKER")
+        val workerRef = FirebaseDatabase.getInstance().reference.child("WORKER")
 
-        mRootRef.addListenerForSingleValueEvent(object :
+        workerRef.addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
 
                     val dataStore = DataStoreManager(context)
 
-                    val TESTTIME: String? =
-                        dataSnapshot.child("WORKER_TEST").getValue(String::class.java)
-                    val BESTWORKERTIME: String? =
-                        dataSnapshot.child("WORKER_BEST").getValue(String::class.java)
-                    val JSONWORKERTIME: String? =
-                        dataSnapshot.child("WORKER_JSON").getValue(String::class.java)
-                    val TROPHYWORKERTIME: String? =
-                        dataSnapshot.child("WORKER_TROPHY").getValue(String::class.java)
+                    val workerTest: String? = dataSnapshot.child("WORKER_TEST").getValue(String::class.java)
+                    val workerBest: String? = dataSnapshot.child("WORKER_BEST").getValue(String::class.java)
+                    val workerJson: String? = dataSnapshot.child("WORKER_JSON").getValue(String::class.java)
+                    val workerTrophy: String? = dataSnapshot.child("WORKER_TROPHY").getValue(String::class.java)
 
                     CoroutineScope(Dispatchers.IO).launch {
-                        dataStore.setDataStoreString(TEST_TIME, TESTTIME ?: "")
-                        dataStore.setDataStoreString(BESTWORKER_TIME, BESTWORKERTIME ?: "")
-                        dataStore.setDataStoreString(JSONWORKER_TIME, JSONWORKERTIME ?: "")
-                        dataStore.setDataStoreString(TROPHYWORKER_TIME, TROPHYWORKERTIME ?: "")
+                        dataStore.setDataStoreString(TEST_TIME, workerTest ?: "")
+                        dataStore.setDataStoreString(BESTWORKER_TIME, workerBest ?: "")
+                        dataStore.setDataStoreString(JSONWORKER_TIME, workerJson ?: "")
+                        dataStore.setDataStoreString(TROPHYWORKER_TIME, workerTrophy ?: "")
                         ManavaraSettingWidget.update(context, glanceId)
+                    }
+
+                } else {
+                    Log.d("HIHI", "FALSE")
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
+
+        val mRootRef = FirebaseDatabase.getInstance().reference.child("MESSAGE").child("ALERT")
+
+        val year = DBDate.dateMMDDHHMM().substring(0,4)
+        val month = DBDate.dateMMDDHHMM().substring(4,6)
+        val day = DBDate.dateMMDDHHMM().substring(6,8)
+
+        var numFcm = 0
+        var numFcmToday = 0
+        var numBest = 0
+        var numBestToday = 0
+        var numJson = 0
+        var numJsonToday = 0
+        var numTrophy = 0
+        var numTrophyToday = 0
+
+        val dataStore = DataStoreManager(context)
+
+        mRootRef.addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if(dataSnapshot.exists()){
+
+                    for(item in dataSnapshot.children){
+                        val fcm: FCMAlert? = dataSnapshot.child(item.key ?: "").getValue(FCMAlert::class.java)
+
+                        if(fcm?.body?.contains("테스트") == true){
+                            numFcm += 1
+
+                            if(fcm.body.contains("${year}.${month}.${day}")){
+                                numFcmToday += 1
+                            }
+                        } else if (fcm?.body?.contains("베스트 리스트가 갱신되었습니다") == true) {
+                            numBest += 1
+
+                            if (fcm.body.contains("${year}.${month}.${day}")) {
+                                numBestToday += 1
+                            }
+                        } else if (fcm?.body?.contains("DAY JSON 생성이 완료되었습니다") == true) {
+                            numJson += 1
+
+                            if (fcm.body.contains("${year}.${month}.${day}")) {
+                                numJsonToday += 1
+                            }
+                        } else if (fcm?.body?.contains("트로피 정산이 완료되었습니다") == true) {
+                            numTrophy += 1
+
+                            if (fcm.body.contains("${year}.${month}.${day}")) {
+                                numTrophyToday += 1
+                            }
+                        } else {
+                            Log.d("HIHIHIHI", "item = $item")
+                        }
+
+                    }
+
+                    CoroutineScope(Dispatchers.IO).launch {
+                        dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_TEST, numFcm.toString())
+                        dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_TEST_TODAY, numFcmToday.toString())
+                        dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_BEST, numBest.toString())
+                        dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_BEST_TODAY, numBestToday.toString())
+                        dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_JSON, numJson.toString())
+                        dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_JSON_TODAY, numJsonToday.toString())
+                        dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_TROPHY, numTrophy.toString())
+                        dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_TROPHY_TODAY, numTrophyToday.toString())
                     }
 
                 } else {

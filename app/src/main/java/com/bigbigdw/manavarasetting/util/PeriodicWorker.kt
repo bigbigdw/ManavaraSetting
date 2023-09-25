@@ -7,6 +7,7 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.firebase.FirebaseWorkManager
+import com.google.firebase.database.FirebaseDatabase
 import java.util.concurrent.TimeUnit
 
 object PeriodicWorker {
@@ -32,6 +33,18 @@ object PeriodicWorker {
             ExistingPeriodicWorkPolicy.UPDATE,
             workRequest
         )
+
+        val mRootRef = FirebaseDatabase.getInstance().reference.child("WORKER")
+
+        val time = repeatInterval.toString()
+
+        val unit = if(timeMill == TimeUnit.HOURS){
+            "시간"
+        } else {
+            "분"
+        }
+
+        mRootRef.child("TIMEMILL_${tag}").setValue("${time}${unit} 마다")
 
     }
 
