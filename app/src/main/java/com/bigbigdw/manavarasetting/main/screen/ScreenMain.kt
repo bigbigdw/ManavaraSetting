@@ -405,8 +405,6 @@ fun ScreenMainFCM(workManager: WorkManager, viewModelMain: ViewModelMain) {
 
             MainHeader(image = R.drawable.icon_fcm, title = "FCM 현황")
 
-            Spacer(modifier = Modifier.size(16.dp))
-
             ItemMainSetting(
                 image = R.drawable.icon_setting_gr,
                 titleWorker = "테스트 WORKER : ",

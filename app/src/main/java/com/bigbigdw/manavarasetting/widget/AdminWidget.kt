@@ -158,8 +158,7 @@ fun ScreenWidget(context: Context) {
         Column(
             modifier = GlanceModifier
                 .wrapContentSize()
-                .padding(8.dp)
-                .clickable(actionRunCallback(callbackClass = WidgetUpdate::class.java)),
+                .padding(8.dp),
             verticalAlignment = Alignment.Top,
             horizontalAlignment = Alignment.Start,
         ) {
@@ -186,8 +185,7 @@ fun ScreenWidget(context: Context) {
         Column(
             modifier = GlanceModifier
                 .wrapContentSize()
-                .padding(8.dp)
-                .clickable(actionRunCallback(callbackClass = WidgetUpdate::class.java)),
+                .padding(8.dp),
             verticalAlignment = Alignment.Top,
             horizontalAlignment = Alignment.Start,
         ) {
@@ -214,8 +212,7 @@ fun ScreenWidget(context: Context) {
         Column(
             modifier = GlanceModifier
                 .wrapContentSize()
-                .padding(8.dp)
-                .clickable(actionRunCallback(callbackClass = WidgetUpdate::class.java)),
+                .padding(8.dp),
             verticalAlignment = Alignment.Top,
             horizontalAlignment = Alignment.Start,
         ) {
@@ -242,8 +239,7 @@ fun ScreenWidget(context: Context) {
         Column(
             modifier = GlanceModifier
                 .wrapContentSize()
-                .padding(8.dp)
-                .clickable(actionRunCallback(callbackClass = WidgetUpdate::class.java)),
+                .padding(8.dp),
             verticalAlignment = Alignment.Top,
             horizontalAlignment = Alignment.Start,
         ) {
