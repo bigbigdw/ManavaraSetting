@@ -372,7 +372,7 @@ fun ScreenMainSetting(workManager: WorkManager, viewModelMain: ViewModelMain) {
                 valueStatus = viewModelMain.state.collectAsState().value.countTodayTrophy,
             )
             ItemMainSettingSingle(
-                image = R.drawable.icon_json_gr,
+                image = R.drawable.icon_trophy_gr,
                 titleWorker = "트로피 호출 주기 : ",
                 valueWorker = viewModelMain.state.collectAsState().value.timeMillTrophy,
             )
@@ -831,7 +831,7 @@ fun ScreenMainTrophy(workManager: WorkManager, viewModelMain: ViewModelMain) {
                 valueStatus = viewModelMain.state.collectAsState().value.countTodayTrophy,
             )
             ItemMainSettingSingle(
-                image = R.drawable.icon_json_gr,
+                image = R.drawable.icon_trophy_gr,
                 titleWorker = "트로피 호출 주기 : ",
                 valueWorker = viewModelMain.state.collectAsState().value.timeMillTrophy,
             )

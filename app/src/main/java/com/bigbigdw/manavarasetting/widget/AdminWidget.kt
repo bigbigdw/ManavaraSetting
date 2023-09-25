@@ -315,110 +315,118 @@ class WidgetUpdate : ActionCallback {
         parameters: ActionParameters
     ) {
 
-        val workerRef = FirebaseDatabase.getInstance().reference.child("WORKER")
+        updateWorker(context = context, update = ManavaraSettingWidget.update(context, glanceId))
 
-        workerRef.addListenerForSingleValueEvent(object :
-            ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if (dataSnapshot.exists()) {
-
-                    val dataStore = DataStoreManager(context)
-
-                    val workerTest: String? = dataSnapshot.child("WORKER_TEST").getValue(String::class.java)
-                    val workerBest: String? = dataSnapshot.child("WORKER_BEST").getValue(String::class.java)
-                    val workerJson: String? = dataSnapshot.child("WORKER_JSON").getValue(String::class.java)
-                    val workerTrophy: String? = dataSnapshot.child("WORKER_TROPHY").getValue(String::class.java)
-
-                    CoroutineScope(Dispatchers.IO).launch {
-                        dataStore.setDataStoreString(TEST_TIME, workerTest ?: "")
-                        dataStore.setDataStoreString(BESTWORKER_TIME, workerBest ?: "")
-                        dataStore.setDataStoreString(JSONWORKER_TIME, workerJson ?: "")
-                        dataStore.setDataStoreString(TROPHYWORKER_TIME, workerTrophy ?: "")
-                        ManavaraSettingWidget.update(context, glanceId)
-                    }
-
-                } else {
-                    Log.d("HIHI", "FALSE")
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
-
-        val mRootRef = FirebaseDatabase.getInstance().reference.child("MESSAGE").child("ALERT")
-
-        val year = DBDate.dateMMDDHHMM().substring(0,4)
-        val month = DBDate.dateMMDDHHMM().substring(4,6)
-        val day = DBDate.dateMMDDHHMM().substring(6,8)
-
-        var numFcm = 0
-        var numFcmToday = 0
-        var numBest = 0
-        var numBestToday = 0
-        var numJson = 0
-        var numJsonToday = 0
-        var numTrophy = 0
-        var numTrophyToday = 0
-
-        val dataStore = DataStoreManager(context)
-
-        mRootRef.addListenerForSingleValueEvent(object :
-            ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if(dataSnapshot.exists()){
-
-                    for(item in dataSnapshot.children){
-                        val fcm: FCMAlert? = dataSnapshot.child(item.key ?: "").getValue(FCMAlert::class.java)
-
-                        if(fcm?.body?.contains("테스트") == true){
-                            numFcm += 1
-
-                            if(fcm.body.contains("${year}.${month}.${day}")){
-                                numFcmToday += 1
-                            }
-                        } else if (fcm?.body?.contains("베스트 리스트가 갱신되었습니다") == true) {
-                            numBest += 1
-
-                            if (fcm.body.contains("${year}.${month}.${day}")) {
-                                numBestToday += 1
-                            }
-                        } else if (fcm?.body?.contains("DAY JSON 생성이 완료되었습니다") == true) {
-                            numJson += 1
-
-                            if (fcm.body.contains("${year}.${month}.${day}")) {
-                                numJsonToday += 1
-                            }
-                        } else if (fcm?.body?.contains("트로피 정산이 완료되었습니다") == true) {
-                            numTrophy += 1
-
-                            if (fcm.body.contains("${year}.${month}.${day}")) {
-                                numTrophyToday += 1
-                            }
-                        } else {
-                            Log.d("HIHIHIHI", "item = $item")
-                        }
-
-                    }
-
-                    CoroutineScope(Dispatchers.IO).launch {
-                        dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_TEST, numFcm.toString())
-                        dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_TEST_TODAY, numFcmToday.toString())
-                        dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_BEST, numBest.toString())
-                        dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_BEST_TODAY, numBestToday.toString())
-                        dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_JSON, numJson.toString())
-                        dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_JSON_TODAY, numJsonToday.toString())
-                        dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_TROPHY, numTrophy.toString())
-                        dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_TROPHY_TODAY, numTrophyToday.toString())
-                    }
-
-                } else {
-                    Log.d("HIHI", "FALSE")
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
+        updateFcmCount(context = context, update = ManavaraSettingWidget.update(context, glanceId))
     }
+}
+
+fun updateFcmCount(context: Context, update : Unit){
+    val mRootRef = FirebaseDatabase.getInstance().reference.child("MESSAGE").child("ALERT")
+
+    val year = DBDate.dateMMDDHHMM().substring(0,4)
+    val month = DBDate.dateMMDDHHMM().substring(4,6)
+    val day = DBDate.dateMMDDHHMM().substring(6,8)
+
+    var numFcm = 0
+    var numFcmToday = 0
+    var numBest = 0
+    var numBestToday = 0
+    var numJson = 0
+    var numJsonToday = 0
+    var numTrophy = 0
+    var numTrophyToday = 0
+
+    val dataStore = DataStoreManager(context)
+
+    mRootRef.addListenerForSingleValueEvent(object :
+        ValueEventListener {
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            if(dataSnapshot.exists()){
+
+                for(item in dataSnapshot.children){
+                    val fcm: FCMAlert? = dataSnapshot.child(item.key ?: "").getValue(FCMAlert::class.java)
+
+                    if(fcm?.body?.contains("테스트") == true){
+                        numFcm += 1
+
+                        if(fcm.body.contains("${year}.${month}.${day}")){
+                            numFcmToday += 1
+                        }
+                    } else if (fcm?.body?.contains("베스트 리스트가 갱신되었습니다") == true) {
+                        numBest += 1
+
+                        if (fcm.body.contains("${year}.${month}.${day}")) {
+                            numBestToday += 1
+                        }
+                    } else if (fcm?.body?.contains("DAY JSON 생성이 완료되었습니다") == true) {
+                        numJson += 1
+
+                        if (fcm.body.contains("${year}.${month}.${day}")) {
+                            numJsonToday += 1
+                        }
+                    } else if (fcm?.body?.contains("트로피 정산이 완료되었습니다") == true) {
+                        numTrophy += 1
+
+                        if (fcm.body.contains("${year}.${month}.${day}")) {
+                            numTrophyToday += 1
+                        }
+                    } else {
+                        Log.d("HIHIHIHI", "item = $item")
+                    }
+
+                }
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    dataStore.setDataStoreString(FCM_COUNT_TEST, numFcm.toString())
+                    dataStore.setDataStoreString(FCM_COUNT_TEST_TODAY, numFcmToday.toString())
+                    dataStore.setDataStoreString(FCM_COUNT_BEST, numBest.toString())
+                    dataStore.setDataStoreString(FCM_COUNT_BEST_TODAY, numBestToday.toString())
+                    dataStore.setDataStoreString(FCM_COUNT_JSON, numJson.toString())
+                    dataStore.setDataStoreString(FCM_COUNT_JSON_TODAY, numJsonToday.toString())
+                    dataStore.setDataStoreString(FCM_COUNT_TROPHY, numTrophy.toString())
+                    dataStore.setDataStoreString(FCM_COUNT_TROPHY_TODAY, numTrophyToday.toString())
+                    update
+                }
+
+            } else {
+                Log.d("HIHI", "FALSE")
+            }
+        }
+
+        override fun onCancelled(databaseError: DatabaseError) {}
+    })
+}
+fun updateWorker(context: Context, update : Unit){
+    val workerRef = FirebaseDatabase.getInstance().reference.child("WORKER")
+
+    workerRef.addListenerForSingleValueEvent(object :
+        ValueEventListener {
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            if (dataSnapshot.exists()) {
+
+                val dataStore = DataStoreManager(context)
+
+                val workerTest: String? = dataSnapshot.child("WORKER_TEST").getValue(String::class.java)
+                val workerBest: String? = dataSnapshot.child("WORKER_BEST").getValue(String::class.java)
+                val workerJson: String? = dataSnapshot.child("WORKER_JSON").getValue(String::class.java)
+                val workerTrophy: String? = dataSnapshot.child("WORKER_TROPHY").getValue(String::class.java)
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    dataStore.setDataStoreString(TEST_TIME, workerTest ?: "")
+                    dataStore.setDataStoreString(BESTWORKER_TIME, workerBest ?: "")
+                    dataStore.setDataStoreString(JSONWORKER_TIME, workerJson ?: "")
+                    dataStore.setDataStoreString(TROPHYWORKER_TIME, workerTrophy ?: "")
+                    update
+                }
+
+            } else {
+                Log.d("HIHI", "FALSE")
+            }
+        }
+
+        override fun onCancelled(databaseError: DatabaseError) {}
+    })
 }
 
 class WidgetCallback : ActionCallback {
