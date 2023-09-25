@@ -7,7 +7,11 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.firebase.FirebaseWorkManager
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.ktx.Firebase
 import java.util.concurrent.TimeUnit
 
 object PeriodicWorker {
@@ -28,24 +32,30 @@ object PeriodicWorker {
             )
             .build()
 
-        workManager.enqueueUniquePeriodicWork(
-            tag,
-            ExistingPeriodicWorkPolicy.UPDATE,
-            workRequest
-        )
+        var currentUser :  FirebaseUser? = null
+        val auth: FirebaseAuth = Firebase.auth
 
-        val mRootRef = FirebaseDatabase.getInstance().reference.child("WORKER")
+        currentUser = auth.currentUser
 
-        val time = repeatInterval.toString()
+        if(currentUser?.uid == "A8uh2QkVQaV3Q3rE8SgBNKzV6VH2"){
+            workManager.enqueueUniquePeriodicWork(
+                tag,
+                ExistingPeriodicWorkPolicy.UPDATE,
+                workRequest
+            )
 
-        val unit = if(timeMill == TimeUnit.HOURS){
-            "시간"
-        } else {
-            "분"
+            val mRootRef = FirebaseDatabase.getInstance().reference.child("WORKER")
+
+            val time = repeatInterval.toString()
+
+            val unit = if(timeMill == TimeUnit.HOURS){
+                "시간"
+            } else {
+                "분"
+            }
+
+            mRootRef.child("TIMEMILL_${tag}").setValue("${time}${unit} 마다")
         }
-
-        mRootRef.child("TIMEMILL_${tag}").setValue("${time}${unit} 마다")
-
     }
 
     fun cancelWorker(workManager: WorkManager, tag : String){

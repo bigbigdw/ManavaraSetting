@@ -110,4 +110,6 @@ dependencies {
     implementation("androidx.compose.material:material")
     implementation("com.google.android.material:material:1.11.0-alpha03")
 
+    implementation("androidx.window:window")
+    implementation("androidx.compose.material3:material3-window-size-class")
 }

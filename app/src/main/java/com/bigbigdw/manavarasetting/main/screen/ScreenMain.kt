@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,15 +15,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
-import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Button
@@ -32,21 +28,14 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -58,37 +47,23 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
-import com.bigbigdw.manavarasetting.firebase.DataFCMBodyNotification
-import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager
-import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.FCM_TOKEN
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color1E1E20
 import com.bigbigdw.manavarasetting.ui.theme.color1e4394
 import com.bigbigdw.manavarasetting.ui.theme.color20459e
 import com.bigbigdw.manavarasetting.ui.theme.color555b68
-import com.bigbigdw.manavarasetting.ui.theme.color898989
 import com.bigbigdw.manavarasetting.ui.theme.colorEDE6FD
 import com.bigbigdw.manavarasetting.ui.theme.colordcdcdd
-import com.bigbigdw.manavarasetting.ui.theme.colorf7f7f7
 import com.bigbigdw.manavarasetting.ui.theme.pretendardvariable
-import com.bigbigdw.manavarasetting.util.BestRef
-import com.bigbigdw.manavarasetting.util.DBDate
-import com.bigbigdw.manavarasetting.util.FCM
-import com.bigbigdw.manavarasetting.util.Mining
-import com.bigbigdw.manavarasetting.util.NaverSeriesGenre
-import com.bigbigdw.manavarasetting.util.PeriodicWorker
-import com.bigbigdw.manavarasetting.util.calculateTrophy
-import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
-import com.bigbigdw.manavarasetting.util.makeWeekJson
-import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageDay
-import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageWeek
-import com.google.gson.JsonArray
-import java.util.concurrent.TimeUnit
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ScreenMain(workManager: WorkManager, viewModelMain: ViewModelMain) {
+fun ScreenMain(
+    workManager: WorkManager,
+    viewModelMain: ViewModelMain,
+    widthSizeClass: WindowWidthSizeClass
+) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -99,6 +74,39 @@ fun ScreenMain(workManager: WorkManager, viewModelMain: ViewModelMain) {
         skipHalfExpanded = false
     )
 
+    val isExpandedScreen = widthSizeClass == WindowWidthSizeClass.Expanded
+
+    if(!isExpandedScreen){
+        ScreenMainMobile(
+            navController = navController,
+            currentRoute = currentRoute,
+            workManager = workManager,
+            viewModelMain = viewModelMain,
+            isExpandedScreen = isExpandedScreen
+        )
+    } else {
+
+        Row{
+            TableAppNavRail(currentRoute = currentRoute ?: "", navController = navController)
+            NavigationGraph(
+                navController = navController,
+                workManager = workManager,
+                viewModelMain = viewModelMain,
+                isExpandedScreen = isExpandedScreen
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ScreenMainMobile(
+    navController: NavHostController,
+    currentRoute: String?,
+    workManager: WorkManager,
+    viewModelMain: ViewModelMain,
+    isExpandedScreen: Boolean
+){
     Scaffold(
 //        topBar = { MainTopBar() },
         bottomBar = { BottomNavScreen(navController = navController, currentRoute = currentRoute) }
@@ -112,22 +120,23 @@ fun ScreenMain(workManager: WorkManager, viewModelMain: ViewModelMain) {
             NavigationGraph(
                 navController = navController,
                 workManager = workManager,
-                viewModelMain = viewModelMain
+                viewModelMain = viewModelMain,
+                isExpandedScreen = isExpandedScreen
             )
         }
     }
 
-    ModalBottomSheetLayout(
-        sheetState = modalSheetState,
-        sheetElevation = 50.dp,
-        sheetShape = RoundedCornerShape(
-            topStart = 25.dp,
-            topEnd = 25.dp
-        ),
-        sheetContent = {
-            ScreenTest()
-        },
-    ) {}
+//    ModalBottomSheetLayout(
+//        sheetState = modalSheetState,
+//        sheetElevation = 50.dp,
+//        sheetShape = RoundedCornerShape(
+//            topStart = 25.dp,
+//            topEnd = 25.dp
+//        ),
+//        sheetContent = {
+//            ScreenTest()
+//        },
+//    ) {}
 }
 
 @Composable
@@ -241,7 +250,8 @@ fun BottomNavScreen(navController: NavHostController, currentRoute: String?) {
 fun NavigationGraph(
     navController: NavHostController,
     workManager: WorkManager,
-    viewModelMain: ViewModelMain
+    viewModelMain: ViewModelMain,
+    isExpandedScreen: Boolean
 ) {
 
     NavHost(
@@ -249,273 +259,19 @@ fun NavigationGraph(
         startDestination = ScreemBottomItem.SETTING.screenRoute
     ) {
         composable(ScreemBottomItem.SETTING.screenRoute) {
-            ScreenMainSetting(workManager = workManager, viewModelMain = viewModelMain)
+            ScreenMainSetting(workManager = workManager, viewModelMain = viewModelMain, isExpandedScreen = isExpandedScreen)
         }
         composable(ScreemBottomItem.FCM.screenRoute) {
-            ScreenMainFCM(workManager = workManager, viewModelMain = viewModelMain)
+            ScreenMainFCM(workManager = workManager, viewModelMain = viewModelMain, isExpandedScreen = isExpandedScreen)
         }
         composable(ScreemBottomItem.BEST.screenRoute) {
-            ScreenMainBest(workManager = workManager, viewModelMain = viewModelMain)
+            ScreenMainBest(workManager = workManager, viewModelMain = viewModelMain, isExpandedScreen = isExpandedScreen)
         }
         composable(ScreemBottomItem.JSON.screenRoute) {
-            ScreenMainJson(workManager = workManager, viewModelMain = viewModelMain)
+            ScreenMainJson(workManager = workManager, viewModelMain = viewModelMain, isExpandedScreen = isExpandedScreen)
         }
         composable(ScreemBottomItem.TROPHY.screenRoute) {
-            ScreenMainTrophy(workManager = workManager, viewModelMain = viewModelMain)
-        }
-    }
-}
-
-@Composable
-fun ScreenMainSetting(workManager: WorkManager, viewModelMain: ViewModelMain) {
-
-    val context = LocalContext.current
-
-    viewModelMain.getDataStoreStatus(context = context, workManager = workManager)
-    viewModelMain.getDataStoreFCMCount(context = context)
-
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = colorf7f7f7)
-                .verticalScroll(rememberScrollState())
-                .semantics { contentDescription = "Overview Screen" },
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
-            MainHeader(image = R.drawable.ic_launcher, title = "세팅바라 현황")
-
-            ItemMainSetting(
-                image = R.drawable.icon_setting_gr,
-                titleWorker = "테스트 WORKER : ",
-                valueWorker = viewModelMain.state.collectAsState().value.statusTest,
-                statusTitle = "테스트 갱신시간 : ",
-                valueStatus = viewModelMain.state.collectAsState().value.timeTest,
-            )
-
-            ItemMainSetting(
-                image = R.drawable.icon_setting_gr,
-                titleWorker = "테스트 호출 횟수 : ",
-                valueWorker = viewModelMain.state.collectAsState().value.countTest,
-                statusTitle = "테스트 금일 호출 횟수 : ",
-                valueStatus = viewModelMain.state.collectAsState().value.countTodayTest,
-            )
-
-            ItemMainSettingSingle(
-                image = R.drawable.icon_setting_gr,
-                titleWorker = "테스트 호출 주기 : ",
-                valueWorker = viewModelMain.state.collectAsState().value.timeMillTest,
-            )
-
-            Spacer(modifier = Modifier.size(24.dp))
-
-            ItemMainSetting(
-                image = R.drawable.icon_best_gr,
-                titleWorker = "베스트 WORKER : ",
-                valueWorker = viewModelMain.state.collectAsState().value.statusBest,
-                statusTitle = "베스트 갱신시간 : ",
-                valueStatus = viewModelMain.state.collectAsState().value.testBest,
-            )
-            ItemMainSetting(
-                image = R.drawable.icon_best_gr,
-                titleWorker = "베스트 호출 횟수 : ",
-                valueWorker = viewModelMain.state.collectAsState().value.countBest,
-                statusTitle = "베스트 금일 호출 횟수 : ",
-                valueStatus = viewModelMain.state.collectAsState().value.countTodayBest,
-            )
-            ItemMainSettingSingle(
-                image = R.drawable.icon_best_gr,
-                titleWorker = "베스트 호출 주기 : ",
-                valueWorker = viewModelMain.state.collectAsState().value.timeMillBest,
-            )
-
-            Spacer(modifier = Modifier.size(24.dp))
-
-            ItemMainSetting(
-                image = R.drawable.icon_json_gr,
-                titleWorker = "JSON WORKER : ",
-                valueWorker = viewModelMain.state.collectAsState().value.statusJson,
-                statusTitle = "JSON 갱신시간 : ",
-                valueStatus = viewModelMain.state.collectAsState().value.testJson,
-            )
-            ItemMainSetting(
-                image = R.drawable.icon_json_gr,
-                titleWorker = "JSON 호출 횟수 : ",
-                valueWorker = viewModelMain.state.collectAsState().value.countJson,
-                statusTitle = "JSON 금일 호출 횟수 : ",
-                valueStatus = viewModelMain.state.collectAsState().value.countTodayJson,
-            )
-            ItemMainSettingSingle(
-                image = R.drawable.icon_json_gr,
-                titleWorker = "JSON 호출 주기 : ",
-                valueWorker = viewModelMain.state.collectAsState().value.timeMillJson,
-            )
-
-            Spacer(modifier = Modifier.size(24.dp))
-
-            ItemMainSetting(
-                image = R.drawable.icon_trophy_gr,
-                titleWorker = "트로피 WORKER : ",
-                valueWorker = viewModelMain.state.collectAsState().value.statusTrophy,
-                statusTitle = "트로피 갱신시간 : ",
-                valueStatus = viewModelMain.state.collectAsState().value.testTrophy,
-            )
-            ItemMainSetting(
-                image = R.drawable.icon_trophy_gr,
-                titleWorker = "트로피 호출 횟수 : ",
-                valueWorker = viewModelMain.state.collectAsState().value.countTrophy,
-                statusTitle = "트로피 금일 호출 횟수 : ",
-                valueStatus = viewModelMain.state.collectAsState().value.countTodayTrophy,
-            )
-            ItemMainSettingSingle(
-                image = R.drawable.icon_trophy_gr,
-                titleWorker = "트로피 호출 주기 : ",
-                valueWorker = viewModelMain.state.collectAsState().value.timeMillTrophy,
-            )
-
-            Spacer(modifier = Modifier.size(120.dp))
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun ScreenMainFCM(workManager: WorkManager, viewModelMain: ViewModelMain) {
-    val context = LocalContext.current
-
-    val dataStore = DataStoreManager(context)
-    val (getFCM, setFCM) = remember { mutableStateOf(DataFCMBodyNotification()) }
-
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = colorf7f7f7)
-                .verticalScroll(rememberScrollState())
-                .semantics { contentDescription = "Overview Screen" },
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
-            MainHeader(image = R.drawable.icon_fcm, title = "FCM 현황")
-
-            ItemMainSetting(
-                image = R.drawable.icon_setting_gr,
-                titleWorker = "테스트 WORKER : ",
-                valueWorker = viewModelMain.state.collectAsState().value.statusTest,
-                statusTitle = "테스트 갱신시간 : ",
-                valueStatus = viewModelMain.state.collectAsState().value.timeTest,
-            )
-
-            ItemMainSetting(
-                image = R.drawable.icon_setting_gr,
-                titleWorker = "테스트 호출 횟수 : ",
-                valueWorker = viewModelMain.state.collectAsState().value.countTest,
-                statusTitle = "테스트 금일 호출 횟수 : ",
-                valueStatus = viewModelMain.state.collectAsState().value.countTodayTest,
-            )
-
-            ItemMainSettingSingle(
-                image = R.drawable.icon_setting_gr,
-                titleWorker = "테스트 호출 주기 : ",
-                valueWorker = viewModelMain.state.collectAsState().value.timeMillTest,
-            )
-
-            TextField(
-                value = getFCM.title,
-                onValueChange = {
-                    setFCM(getFCM.copy(title = it))
-                },
-                label = { Text("푸시 알림 제목", color = color898989) },
-                singleLine = true,
-                colors = TextFieldDefaults.textFieldColors(
-                    containerColor = Color(0),
-                    textColor = color000000
-                ),
-                modifier = Modifier.width(260.dp)
-            )
-
-            Spacer(modifier = Modifier.size(16.dp))
-
-            TextField(
-                value = getFCM.body,
-                onValueChange = {
-                    setFCM(getFCM.copy(body = it))
-                },
-                label = { Text("푸시 알림 내용", color = color898989) },
-                singleLine = true,
-                colors = TextFieldDefaults.textFieldColors(
-                    containerColor = Color(0),
-                    textColor = color000000
-                ),
-                modifier = Modifier.width(260.dp)
-            )
-
-            BtnMobile(func = { FCM.postFCMAlert(context = context, getFCM = getFCM) }, btnText = "공지사항 등록")
-
-            Spacer(modifier = Modifier.size(16.dp))
-
-            TextField(
-                value = dataStore.getDataStoreString(FCM_TOKEN).collectAsState(initial = "").value ?: "",
-                onValueChange = {
-                    setFCM(getFCM.copy(title = it))
-                },
-                label = { Text("FCM 토큰", color = color898989) },
-                singleLine = true,
-                colors = TextFieldDefaults.textFieldColors(
-                    containerColor = Color(0),
-                    textColor = color000000
-                ),
-                modifier = Modifier.width(260.dp)
-            )
-
-            BtnMobile(func = { FCM.getFCMToken(context) }, btnText = "FCM 토큰 얻기")
-
-            BtnMobile(func = { FCM.postFCMAlertTest(context = context, message = "테스트") }, btnText = "푸시 알림 테스트")
-
-            BtnMobile(
-                func = {
-                    PeriodicWorker.doWorker(
-                        workManager = workManager,
-                        repeatInterval = 15,
-                        tag = "TEST",
-                        timeMill = TimeUnit.MINUTES
-                    )
-                },
-                btnText = "테스트 WORKER 시작"
-            )
-
-            BtnMobile(
-                func = {
-                    PeriodicWorker.cancelWorker(
-                        workManager = workManager,
-                        tag = "TEST"
-                    )
-                },
-                btnText = "테스트 WORKER 취소"
-            )
-
-            BtnMobile(
-                func = {
-                    PeriodicWorker.checkWorker(
-                        workManager = workManager,
-                        tag = "TEST"
-                    )
-                },
-                btnText = "테스트 WORKER 확인"
-            )
-
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(120.dp)
-            )
+            ScreenMainTrophy(workManager = workManager, viewModelMain = viewModelMain, isExpandedScreen = isExpandedScreen)
         }
     }
 }
@@ -665,321 +421,6 @@ fun BtnMobile(func : ()->Unit, btnText : String){
             fontSize = 16.sp,
             fontFamily = pretendardvariable
         )
-    }
-}
-
-@Composable
-fun ScreenMainJson(workManager: WorkManager, viewModelMain: ViewModelMain) {
-    val context = LocalContext.current
-
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = colorf7f7f7)
-                .verticalScroll(rememberScrollState())
-                .semantics { contentDescription = "Overview Screen" },
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
-            MainHeader(image = R.drawable.icon_json, title = "베스트 JSON 현황")
-
-            ItemMainSetting(
-                image = R.drawable.icon_json_gr,
-                titleWorker = "JSON WORKER : ",
-                valueWorker = viewModelMain.state.collectAsState().value.statusJson,
-                statusTitle = "JSON 갱신시간 : ",
-                valueStatus = viewModelMain.state.collectAsState().value.testJson,
-            )
-            ItemMainSetting(
-                image = R.drawable.icon_json_gr,
-                titleWorker = "JSON 호출 횟수 : ",
-                valueWorker = viewModelMain.state.collectAsState().value.countJson,
-                statusTitle = "JSON 금일 호출 횟수 : ",
-                valueStatus = viewModelMain.state.collectAsState().value.countTodayJson,
-            )
-            ItemMainSettingSingle(
-                image = R.drawable.icon_json_gr,
-                titleWorker = "JSON 호출 주기 : ",
-                valueWorker = viewModelMain.state.collectAsState().value.timeMillJson,
-            )
-
-            BtnMobile(
-                func = {
-                    for (j in NaverSeriesGenre) {
-                        uploadJsonArrayToStorageDay(
-                            platform = "NAVER_SERIES",
-                            genre = getNaverSeriesGenre(j)
-                        )
-                    }
-                    FCM.postFCMAlertTest(context = context, message = "DAY JSON 생성이 완료되었습니다")
-                },
-                btnText = "JSON DAY 생성"
-            )
-
-            BtnMobile(
-                func = {
-                    for (j in NaverSeriesGenre) {
-
-                        val jsonArray = JsonArray()
-
-                        for (i in 0..6) {
-                            jsonArray.add("")
-                        }
-
-                        makeWeekJson(
-                            platform = "NAVER_SERIES",
-                            genre = getNaverSeriesGenre(j),
-                            jsonArray = jsonArray
-                        )
-                    }
-                },
-                btnText = "JSON WEEK 생성"
-            )
-
-            BtnMobile(
-                func = {
-                    for (j in NaverSeriesGenre) {
-                        uploadJsonArrayToStorageWeek(
-                            platform = "NAVER_SERIES",
-                            genre = getNaverSeriesGenre(j)
-                        )
-                    }
-                },
-                btnText = "JSON WEEK 업데이트"
-            )
-
-            BtnMobile(
-                func = {
-                    PeriodicWorker.doWorker(
-                        workManager = workManager,
-                        repeatInterval = 6,
-                        tag = "BEST_JSON",
-                        timeMill = TimeUnit.HOURS
-                    )
-                },
-                btnText = "JSON WORKER 시작"
-            )
-
-            BtnMobile(
-                func = {
-                    for (j in NaverSeriesGenre) {
-                        PeriodicWorker.cancelWorker(
-                            workManager = workManager,
-                            tag = "BEST_JSON"
-                        )
-                    }
-                },
-                btnText = "JSON WORKER 취소"
-            )
-
-            BtnMobile(
-                func = {
-                    PeriodicWorker.checkWorker(
-                        workManager = workManager,
-                        tag = "BEST_JSON"
-                    )
-                },
-                btnText = "JSON WORKER 확인"
-            )
-
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(120.dp)
-            )
-        }
-    }
-}
-
-@Composable
-fun ScreenMainTrophy(workManager: WorkManager, viewModelMain: ViewModelMain) {
-    val context = LocalContext.current
-
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = colorf7f7f7)
-                .verticalScroll(rememberScrollState())
-                .semantics { contentDescription = "Overview Screen" },
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
-            MainHeader(image = R.drawable.icon_trophy, title = "트로피 갱신 현황")
-
-            ItemMainSetting(
-                image = R.drawable.icon_trophy_gr,
-                titleWorker = "트로피 WORKER : ",
-                valueWorker = viewModelMain.state.collectAsState().value.statusTrophy,
-                statusTitle = "트로피 갱신시간 : ",
-                valueStatus = viewModelMain.state.collectAsState().value.testTrophy,
-            )
-            ItemMainSetting(
-                image = R.drawable.icon_trophy_gr,
-                titleWorker = "트로피 호출 횟수 : ",
-                valueWorker = viewModelMain.state.collectAsState().value.countTrophy,
-                statusTitle = "트로피 금일 호출 횟수 : ",
-                valueStatus = viewModelMain.state.collectAsState().value.countTodayTrophy,
-            )
-            ItemMainSettingSingle(
-                image = R.drawable.icon_trophy_gr,
-                titleWorker = "트로피 호출 주기 : ",
-                valueWorker = viewModelMain.state.collectAsState().value.timeMillTrophy,
-            )
-
-            BtnMobile(
-                func = {
-                    for (j in NaverSeriesGenre) {
-                        calculateTrophy(platform = "NAVER_SERIES", genre = getNaverSeriesGenre(j))
-                    }
-                    FCM.postFCMAlertTest(context = context, message = "트로피 정산이 완료되었습니다")
-                },
-                btnText = "트로피 정산"
-            )
-
-            BtnMobile(
-                func = {
-                    PeriodicWorker.doWorker(
-                        workManager = workManager,
-                        repeatInterval = 9,
-                        tag = "BEST_TROPHY",
-                        timeMill = TimeUnit.HOURS
-                    )
-                },
-                btnText = "트로피 정산 WORKER 시작"
-            )
-
-            BtnMobile(
-                func = {
-                    PeriodicWorker.cancelWorker(
-                        workManager = workManager,
-                        tag = "BEST_TROPHY"
-                    )
-                },
-                btnText = "트로피 정산 WORKER 취소"
-            )
-
-            BtnMobile(
-                func = {
-                    PeriodicWorker.checkWorker(
-                        workManager = workManager,
-                        tag = "BEST_TROPHY"
-                    )
-                },
-                btnText = "트로피 정산 WORKER 확인"
-            )
-
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(120.dp)
-            )
-        }
-    }
-}
-
-@Composable
-fun ScreenMainBest(workManager: WorkManager, viewModelMain: ViewModelMain) {
-    val context = LocalContext.current
-
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = colorf7f7f7)
-                .verticalScroll(rememberScrollState())
-                .semantics { contentDescription = "Overview Screen" },
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
-            MainHeader(image = R.drawable.icon_best, title = "베스트 리스트 현황")
-
-            ItemMainSetting(
-                image = R.drawable.icon_best_gr,
-                titleWorker = "베스트 WORKER : ",
-                valueWorker = viewModelMain.state.collectAsState().value.statusBest,
-                statusTitle = "베스트 갱신시간 : ",
-                valueStatus = viewModelMain.state.collectAsState().value.testBest,
-            )
-            ItemMainSetting(
-                image = R.drawable.icon_best_gr,
-                titleWorker = "베스트 호출 횟수 : ",
-                valueWorker = viewModelMain.state.collectAsState().value.countBest,
-                statusTitle = "베스트 금일 호출 횟수 : ",
-                valueStatus = viewModelMain.state.collectAsState().value.countTodayBest,
-            )
-            ItemMainSettingSingle(
-                image = R.drawable.icon_best_gr,
-                titleWorker = "베스트 호출 주기 : ",
-                valueWorker = viewModelMain.state.collectAsState().value.timeMillBest,
-            )
-
-            BtnMobile(
-                func = {
-                    for (j in NaverSeriesGenre) {
-
-                        if (DBDate.getDayOfWeekAsNumber() == 0) {
-                            BestRef.setBestRef(platform = "NAVER_SERIES", genre = j).child("TROPHY_WEEK").removeValue()
-                        }
-
-                        if (DBDate.datedd() == "01") {
-                            BestRef.setBestRef(platform = "NAVER_SERIES", genre = j).child("TROPHY_MONTH").removeValue()
-                        }
-
-                        for (i in 1..5) {
-                            Mining.miningNaverSeriesAll(pageCount = i, genre = j)
-                        }
-                    }
-                    FCM.postFCMAlertTest(context = context, message = "베스트 리스트가 갱신되었습니다")
-                },
-                btnText = "베스트 리스트 갱신"
-            )
-
-            BtnMobile(
-                func = {
-                    PeriodicWorker.doWorker(
-                        workManager = workManager,
-                        repeatInterval = 3,
-                        tag = "BEST",
-                        timeMill = TimeUnit.HOURS
-                    )
-                },
-                btnText = "베스트 WORKER 시작"
-            )
-
-            BtnMobile(
-                func = {
-                    PeriodicWorker.cancelWorker(workManager = workManager,  tag = "BEST")
-                },
-                btnText = "베스트 WORKER 취소"
-            )
-
-            BtnMobile(
-                func = {
-                    PeriodicWorker.checkWorker(
-                        workManager = workManager,
-                        tag = "BEST"
-                    )
-                },
-                btnText = "베스트 WORKER 확인"
-            )
-
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(120.dp)
-            )
-        }
     }
 }
 
