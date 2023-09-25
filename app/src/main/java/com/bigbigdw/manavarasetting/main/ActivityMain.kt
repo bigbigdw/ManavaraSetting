@@ -25,7 +25,6 @@ class ActivityMain : ComponentActivity() {
             val widthSizeClass = calculateWindowSizeClass(this).widthSizeClass
 
             ScreenMain(
-                workManager = workManager,
                 viewModelMain = viewModelMain,
                 widthSizeClass = widthSizeClass
             )

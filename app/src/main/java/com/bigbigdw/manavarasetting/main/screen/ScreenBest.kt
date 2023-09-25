@@ -55,21 +55,21 @@ fun ScreenMainBest(
 
             ItemMainSetting(
                 image = R.drawable.icon_best_gr,
-                titleWorker = "베스트 WORKER : ",
+                titleWorker = "WORKER : ",
                 valueWorker = viewModelMain.state.collectAsState().value.statusBest,
-                statusTitle = "베스트 갱신시간 : ",
+                statusTitle = "갱신시간 : ",
                 valueStatus = viewModelMain.state.collectAsState().value.testBest,
             )
             ItemMainSetting(
                 image = R.drawable.icon_best_gr,
-                titleWorker = "베스트 호출 횟수 : ",
+                titleWorker = "호출 횟수 : ",
                 valueWorker = viewModelMain.state.collectAsState().value.countBest,
-                statusTitle = "베스트 금일 호출 횟수 : ",
+                statusTitle = "금일 호출 횟수 : ",
                 valueStatus = viewModelMain.state.collectAsState().value.countTodayBest,
             )
             ItemMainSettingSingle(
                 image = R.drawable.icon_best_gr,
-                titleWorker = "베스트 호출 주기 : ",
+                titleWorker = "호출 주기 : ",
                 valueWorker = viewModelMain.state.collectAsState().value.timeMillBest,
             )
 

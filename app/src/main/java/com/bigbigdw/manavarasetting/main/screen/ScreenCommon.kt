@@ -8,6 +8,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,7 +18,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -42,12 +45,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.ui.theme.color000000
-import com.bigbigdw.manavarasetting.ui.theme.color02BC77
 import com.bigbigdw.manavarasetting.ui.theme.color20459e
+import com.bigbigdw.manavarasetting.ui.theme.color8e8e8e
 import com.bigbigdw.manavarasetting.ui.theme.colorA7ACB7
 import com.bigbigdw.manavarasetting.ui.theme.colorEDE6FD
-import com.bigbigdw.manavarasetting.ui.theme.colorFDFDFD
-import com.bigbigdw.manavarasetting.ui.theme.colordcdcdd
+import com.bigbigdw.manavarasetting.ui.theme.colore9e9e9
+import com.bigbigdw.manavarasetting.ui.theme.colorf6f6f6
 import com.bigbigdw.manavarasetting.ui.theme.colorf7f7f7
 
 @Composable
@@ -128,6 +131,30 @@ fun ScreenTest() {
 }
 
 @Composable
+fun ScreenTablet(title: String) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = colorf6f6f6)
+            .padding(8.dp, 0.dp)
+            .verticalScroll(rememberScrollState())
+            .semantics { contentDescription = "Overview Screen" },
+    ) {
+        Spacer(modifier = Modifier.size(8.dp))
+
+        Text(
+            modifier = Modifier.padding(16.dp, 0.dp, 0.dp, 0.dp),
+            text = title,
+            fontSize = 24.sp,
+            color = color000000,
+            fontWeight = FontWeight(weight = 700)
+        )
+
+        Spacer(modifier = Modifier.size(8.dp))
+    }
+}
+
+@Composable
 fun ItemMainSetting(
     image: Int,
     titleWorker: String,
@@ -156,14 +183,12 @@ fun ItemMainSetting(
             fontSize = 18.sp,
             textAlign = TextAlign.Center,
             color = color000000,
-            fontWeight = FontWeight(weight = 100)
         )
         Text(
             text = valueWorker,
             fontSize = 18.sp,
             textAlign = TextAlign.Center,
             color = color20459e,
-            fontWeight = FontWeight(weight = 100)
         )
     }
     Row(
@@ -186,14 +211,12 @@ fun ItemMainSetting(
             text = statusTitle,
             fontSize = 18.sp,
             textAlign = TextAlign.Center,
-            fontWeight = FontWeight(weight = 100)
         )
         Text(
             text = valueStatus,
             fontSize = 18.sp,
             textAlign = TextAlign.Center,
             color = color20459e,
-            fontWeight = FontWeight(weight = 100)
         )
     }
 }
@@ -250,32 +273,49 @@ fun ItemMainSettingSingle(
             fontSize = 18.sp,
             textAlign = TextAlign.Center,
             color = color000000,
-            fontWeight = FontWeight(weight = 100)
         )
         Text(
             text = valueWorker,
             fontSize = 18.sp,
             textAlign = TextAlign.Center,
             color = color20459e,
-            fontWeight = FontWeight(weight = 100)
         )
     }
 }
 
 @Composable
 fun ItemMainSettingSingleTablet(
+    containerColor: Color,
     image: Int,
     title: String,
-    body: String
+    body: String,
+    setMenu: (String) -> Unit,
+    getMenu: String,
 ) {
 
     Button(
-        colors = ButtonDefaults.buttonColors(containerColor = colorf7f7f7),
-        shape = RoundedCornerShape(0),
-        onClick = { /*TODO*/ },
+        colors = ButtonDefaults.buttonColors(
+            containerColor = if (getMenu == title) {
+                colore9e9e9
+            } else {
+                colorf7f7f7
+            }
+        ),
+        shape = RoundedCornerShape(50),
+        onClick = {
+            setMenu(title)
+        },
+        contentPadding = PaddingValues(
+            start = 12.dp,
+            top = 6.dp,
+            end = 12.dp,
+            bottom = 6.dp,
+        ),
         content = {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(0.dp, 8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(0.dp, 8.dp),
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -283,13 +323,13 @@ fun ItemMainSettingSingleTablet(
             Card(
                 modifier = Modifier
                     .wrapContentSize(),
-                backgroundColor = colordcdcdd,
-                shape = RoundedCornerShape(50.dp, 50.dp, 50.dp, 50.dp)
+                backgroundColor = containerColor,
+                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp)
             ) {
                 Box(
                     modifier = Modifier
-                        .height(44.dp)
-                        .width(44.dp),
+                        .height(36.dp)
+                        .width(36.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Image(
@@ -297,8 +337,8 @@ fun ItemMainSettingSingleTablet(
                         painter = painterResource(id = image),
                         contentDescription = null,
                         modifier = Modifier
-                            .height(40.dp)
-                            .width(40.dp)
+                            .height(28.dp)
+                            .width(28.dp)
                     )
                 }
             }
@@ -309,20 +349,18 @@ fun ItemMainSettingSingleTablet(
                 Row {
                     Text(
                         text = title,
-                        fontSize = 18.sp,
+                        fontSize = 16.sp,
                         color = color000000,
 
                         fontWeight = FontWeight(weight = 500)
                     )
                 }
 
-                Spacer(modifier = Modifier.size(2.dp))
-
                 Row {
                     Text(
                         text = body,
                         fontSize = 14.sp,
-                        color = Color.Gray,
+                        color = color8e8e8e,
                         )
                 }
             }

@@ -64,23 +64,23 @@ fun ScreenMainFCM(workManager: WorkManager, viewModelMain: ViewModelMain, isExpa
 
             ItemMainSetting(
                 image = R.drawable.icon_fcm_gr,
-                titleWorker = "테스트 WORKER : ",
+                titleWorker = "WORKER : ",
                 valueWorker = viewModelMain.state.collectAsState().value.statusTest,
-                statusTitle = "테스트 갱신시간 : ",
+                statusTitle = "갱신시간 : ",
                 valueStatus = viewModelMain.state.collectAsState().value.timeTest,
             )
 
             ItemMainSetting(
                 image = R.drawable.icon_fcm_gr,
-                titleWorker = "테스트 호출 횟수 : ",
+                titleWorker = "호출 횟수 : ",
                 valueWorker = viewModelMain.state.collectAsState().value.countTest,
-                statusTitle = "테스트 금일 호출 횟수 : ",
+                statusTitle = "금일 호출 횟수 : ",
                 valueStatus = viewModelMain.state.collectAsState().value.countTodayTest,
             )
 
             ItemMainSettingSingle(
                 image = R.drawable.icon_fcm_gr,
-                titleWorker = "테스트 호출 주기 : ",
+                titleWorker = "호출 주기 : ",
                 valueWorker = viewModelMain.state.collectAsState().value.timeMillTest,
             )
 

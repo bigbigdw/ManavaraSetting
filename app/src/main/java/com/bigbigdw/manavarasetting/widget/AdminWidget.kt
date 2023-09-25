@@ -1,8 +1,6 @@
 package com.bigbigdw.manavarasetting.widget
 
 import android.content.Context
-import android.util.Log
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.graphics.Color
@@ -10,8 +8,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.glance.Button
-import androidx.glance.ButtonColors
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.Image
@@ -36,11 +32,8 @@ import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
 import androidx.glance.layout.size
 import androidx.glance.layout.wrapContentSize
-import androidx.lifecycle.viewModelScope
 import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
-import com.bigbigdw.manavarasetting.firebase.FCMAlert
-import com.bigbigdw.manavarasetting.main.event.EventMain
 import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager
 import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.BESTWORKER_TIME
 import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.FCM_COUNT_BEST
@@ -56,16 +49,13 @@ import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.T
 import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.TROPHYWORKER_TIME
 import com.bigbigdw.manavarasetting.ui.theme.color4186e1
 import com.bigbigdw.manavarasetting.ui.theme.colorB3000000
-import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
+import com.bigbigdw.manavarasetting.util.updateFcmCount
+import com.bigbigdw.manavarasetting.util.updateWorker
 import com.bigbigdw.manavarasetting.widget.ManavaraSettingWidget.paramWorkerInterval
 import com.bigbigdw.manavarasetting.widget.ManavaraSettingWidget.paramWorkerStatus
 import com.bigbigdw.manavarasetting.widget.ManavaraSettingWidget.paramWorkerTag
 import com.bigbigdw.manavarasetting.widget.ManavaraSettingWidget.paramWorkerTimeMill
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -311,119 +301,22 @@ class WidgetUpdate : ActionCallback {
         parameters: ActionParameters
     ) {
 
-        updateWorker(context = context, update = ManavaraSettingWidget.update(context, glanceId))
+        updateWorker(context = context, update = {
+            CoroutineScope(Dispatchers.IO).launch {
+                ManavaraSettingWidget.update(context, glanceId)
+            }
+        })
 
-        updateFcmCount(context = context, update = ManavaraSettingWidget.update(context, glanceId))
+        updateFcmCount(context = context, update = {
+            CoroutineScope(Dispatchers.IO).launch {
+                ManavaraSettingWidget.update(context, glanceId)
+            }
+        })
     }
 }
 
-fun updateFcmCount(context: Context, update : Unit){
-    val mRootRef = FirebaseDatabase.getInstance().reference.child("MESSAGE").child("ALERT")
 
-    val year = DBDate.dateMMDDHHMM().substring(0,4)
-    val month = DBDate.dateMMDDHHMM().substring(4,6)
-    val day = DBDate.dateMMDDHHMM().substring(6,8)
 
-    var numFcm = 0
-    var numFcmToday = 0
-    var numBest = 0
-    var numBestToday = 0
-    var numJson = 0
-    var numJsonToday = 0
-    var numTrophy = 0
-    var numTrophyToday = 0
-
-    val dataStore = DataStoreManager(context)
-
-    mRootRef.addListenerForSingleValueEvent(object :
-        ValueEventListener {
-        override fun onDataChange(dataSnapshot: DataSnapshot) {
-            if(dataSnapshot.exists()){
-
-                for(item in dataSnapshot.children){
-                    val fcm: FCMAlert? = dataSnapshot.child(item.key ?: "").getValue(FCMAlert::class.java)
-
-                    if(fcm?.body?.contains("테스트") == true){
-                        numFcm += 1
-
-                        if(fcm.body.contains("${year}.${month}.${day}")){
-                            numFcmToday += 1
-                        }
-                    } else if (fcm?.body?.contains("베스트 리스트가 갱신되었습니다") == true) {
-                        numBest += 1
-
-                        if (fcm.body.contains("${year}.${month}.${day}")) {
-                            numBestToday += 1
-                        }
-                    } else if (fcm?.body?.contains("DAY JSON 생성이 완료되었습니다") == true) {
-                        numJson += 1
-
-                        if (fcm.body.contains("${year}.${month}.${day}")) {
-                            numJsonToday += 1
-                        }
-                    } else if (fcm?.body?.contains("트로피 정산이 완료되었습니다") == true) {
-                        numTrophy += 1
-
-                        if (fcm.body.contains("${year}.${month}.${day}")) {
-                            numTrophyToday += 1
-                        }
-                    } else {
-                        Log.d("HIHIHIHI", "item = $item")
-                    }
-
-                }
-
-                CoroutineScope(Dispatchers.IO).launch {
-                    dataStore.setDataStoreString(FCM_COUNT_TEST, numFcm.toString())
-                    dataStore.setDataStoreString(FCM_COUNT_TEST_TODAY, numFcmToday.toString())
-                    dataStore.setDataStoreString(FCM_COUNT_BEST, numBest.toString())
-                    dataStore.setDataStoreString(FCM_COUNT_BEST_TODAY, numBestToday.toString())
-                    dataStore.setDataStoreString(FCM_COUNT_JSON, numJson.toString())
-                    dataStore.setDataStoreString(FCM_COUNT_JSON_TODAY, numJsonToday.toString())
-                    dataStore.setDataStoreString(FCM_COUNT_TROPHY, numTrophy.toString())
-                    dataStore.setDataStoreString(FCM_COUNT_TROPHY_TODAY, numTrophyToday.toString())
-                    update
-                }
-
-            } else {
-                Log.d("HIHI", "FALSE")
-            }
-        }
-
-        override fun onCancelled(databaseError: DatabaseError) {}
-    })
-}
-fun updateWorker(context: Context, update : Unit){
-    val workerRef = FirebaseDatabase.getInstance().reference.child("WORKER")
-
-    workerRef.addListenerForSingleValueEvent(object :
-        ValueEventListener {
-        override fun onDataChange(dataSnapshot: DataSnapshot) {
-            if (dataSnapshot.exists()) {
-
-                val dataStore = DataStoreManager(context)
-
-                val workerTest: String? = dataSnapshot.child("WORKER_TEST").getValue(String::class.java)
-                val workerBest: String? = dataSnapshot.child("WORKER_BEST").getValue(String::class.java)
-                val workerJson: String? = dataSnapshot.child("WORKER_JSON").getValue(String::class.java)
-                val workerTrophy: String? = dataSnapshot.child("WORKER_TROPHY").getValue(String::class.java)
-
-                CoroutineScope(Dispatchers.IO).launch {
-                    dataStore.setDataStoreString(TEST_TIME, workerTest ?: "")
-                    dataStore.setDataStoreString(BESTWORKER_TIME, workerBest ?: "")
-                    dataStore.setDataStoreString(JSONWORKER_TIME, workerJson ?: "")
-                    dataStore.setDataStoreString(TROPHYWORKER_TIME, workerTrophy ?: "")
-                    update
-                }
-
-            } else {
-                Log.d("HIHI", "FALSE")
-            }
-        }
-
-        override fun onCancelled(databaseError: DatabaseError) {}
-    })
-}
 
 class WidgetCallback : ActionCallback {
     override suspend fun onAction(

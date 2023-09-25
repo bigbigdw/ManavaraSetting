@@ -57,21 +57,21 @@ fun ScreenMainJson(
 
             ItemMainSetting(
                 image = R.drawable.icon_json_gr,
-                titleWorker = "JSON WORKER : ",
+                titleWorker = "WORKER : ",
                 valueWorker = viewModelMain.state.collectAsState().value.statusJson,
-                statusTitle = "JSON 갱신시간 : ",
+                statusTitle = "갱신시간 : ",
                 valueStatus = viewModelMain.state.collectAsState().value.testJson,
             )
             ItemMainSetting(
                 image = R.drawable.icon_json_gr,
-                titleWorker = "JSON 호출 횟수 : ",
+                titleWorker = "호출 횟수 : ",
                 valueWorker = viewModelMain.state.collectAsState().value.countJson,
-                statusTitle = "JSON 금일 호출 횟수 : ",
+                statusTitle = "금일 호출 횟수 : ",
                 valueStatus = viewModelMain.state.collectAsState().value.countTodayJson,
             )
             ItemMainSettingSingle(
                 image = R.drawable.icon_json_gr,
-                titleWorker = "JSON 호출 주기 : ",
+                titleWorker = "호출 주기 : ",
                 valueWorker = viewModelMain.state.collectAsState().value.timeMillJson,
             )
 

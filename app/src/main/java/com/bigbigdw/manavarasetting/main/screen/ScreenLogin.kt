@@ -63,8 +63,7 @@ fun ScreenLogin(doLogin : () -> Unit) {
                 text = "MANAVARASETTING",
                 fontSize = 24.sp,
                 textAlign = TextAlign.Center,
-                color = colorFFFFFF,
-                fontWeight = FontWeight(weight = 100)
+                color = colorFFFFFF
             )
             Spacer(modifier = Modifier
                 .fillMaxWidth()
@@ -137,8 +136,7 @@ fun ScreenSplash() {
                 text = "MANAVARASETTING",
                 fontSize = 24.sp,
                 textAlign = TextAlign.Center,
-                color = colorFFFFFF,
-                fontWeight = FontWeight(weight = 100)
+                color = colorFFFFFF
             )
             Spacer(modifier = Modifier
                 .fillMaxWidth()

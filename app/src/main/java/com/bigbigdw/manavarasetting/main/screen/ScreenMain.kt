@@ -35,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -56,7 +57,6 @@ import com.bigbigdw.manavarasetting.ui.theme.colordcdcdd
 
 @Composable
 fun ScreenMain(
-    workManager: WorkManager,
     viewModelMain: ViewModelMain,
     widthSizeClass: WindowWidthSizeClass
 ) {
@@ -69,6 +69,9 @@ fun ScreenMain(
 //    if(isExpandedScreen){
 //        WindowCompat.setDecorFitsSystemWindows(window, false)
 //    }
+
+    val context = LocalContext.current
+    val workManager = WorkManager.getInstance(context)
 
     if(!isExpandedScreen){
         ScreenMainMobile(
@@ -275,7 +278,7 @@ fun NavigationGraph(
         startDestination = ScreemBottomItem.SETTING.screenRoute
     ) {
         composable(ScreemBottomItem.SETTING.screenRoute) {
-            ScreenMainSetting(workManager = workManager, viewModelMain = viewModelMain, isExpandedScreen = isExpandedScreen)
+            ScreenMainSetting(viewModelMain = viewModelMain, isExpandedScreen = isExpandedScreen)
         }
         composable(ScreemBottomItem.FCM.screenRoute) {
             ScreenMainFCM(workManager = workManager, viewModelMain = viewModelMain, isExpandedScreen = isExpandedScreen)
@@ -331,8 +334,7 @@ fun MainHeader(image: Int, title: String) {
         text = title,
         fontSize = 24.sp,
         textAlign = TextAlign.Center,
-        color = color000000,
-        fontWeight = FontWeight(weight = 100)
+        color = color000000
     )
     Spacer(modifier = Modifier.size(22.dp))
 }

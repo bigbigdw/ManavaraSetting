@@ -54,21 +54,21 @@ fun ScreenMainTrophy(
 
             ItemMainSetting(
                 image = R.drawable.icon_trophy_gr,
-                titleWorker = "트로피 WORKER : ",
+                titleWorker = "WORKER : ",
                 valueWorker = viewModelMain.state.collectAsState().value.statusTrophy,
-                statusTitle = "트로피 갱신시간 : ",
+                statusTitle = "갱신시간 : ",
                 valueStatus = viewModelMain.state.collectAsState().value.testTrophy,
             )
             ItemMainSetting(
                 image = R.drawable.icon_trophy_gr,
-                titleWorker = "트로피 호출 횟수 : ",
+                titleWorker = "호출 횟수 : ",
                 valueWorker = viewModelMain.state.collectAsState().value.countTrophy,
-                statusTitle = "트로피 금일 호출 횟수 : ",
+                statusTitle = "금일 호출 횟수 : ",
                 valueStatus = viewModelMain.state.collectAsState().value.countTodayTrophy,
             )
             ItemMainSettingSingle(
                 image = R.drawable.icon_trophy_gr,
-                titleWorker = "트로피 호출 주기 : ",
+                titleWorker = "호출 주기 : ",
                 valueWorker = viewModelMain.state.collectAsState().value.timeMillTrophy,
             )
 
