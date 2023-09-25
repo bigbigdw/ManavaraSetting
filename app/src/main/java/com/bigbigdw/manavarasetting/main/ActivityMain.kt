@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
-import androidx.core.view.WindowCompat
 import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.main.screen.BackOnPressed
 import com.bigbigdw.manavarasetting.main.screen.ScreenMain
@@ -25,7 +24,11 @@ class ActivityMain : ComponentActivity() {
         setContent {
             val widthSizeClass = calculateWindowSizeClass(this).widthSizeClass
 
-            ScreenMain(workManager = workManager, viewModelMain = viewModelMain, widthSizeClass = widthSizeClass, window = window)
+            ScreenMain(
+                workManager = workManager,
+                viewModelMain = viewModelMain,
+                widthSizeClass = widthSizeClass
+            )
             BackOnPressed()
         }
     }

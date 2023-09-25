@@ -6,10 +6,10 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import com.bigbigdw.manavarasetting.R
 
-val pretendardvariable = FontFamily(
-    Font(R.font.pretendardvariable, FontWeight.Light),
-    Font(R.font.pretendardvariable, FontWeight.Normal),
-    Font(R.font.pretendardvariable, FontWeight.Normal, FontStyle.Italic),
-    Font(R.font.pretendardvariable, FontWeight.Medium),
-    Font(R.font.pretendardvariable, FontWeight.Bold)
-)
+//val pretendardvariable = FontFamily(
+//    Font(R.font.pretendardvariable, FontWeight.Light),
+//    Font(R.font.pretendardvariable, FontWeight.Normal),
+//    Font(R.font.pretendardvariable, FontWeight.Normal, FontStyle.Italic),
+//    Font(R.font.pretendardvariable, FontWeight.Medium),
+//    Font(R.font.pretendardvariable, FontWeight.Bold)
+//)

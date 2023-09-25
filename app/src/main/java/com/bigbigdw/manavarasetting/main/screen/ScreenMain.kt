@@ -1,6 +1,5 @@
 package com.bigbigdw.manavarasetting.main.screen
 
-import android.view.Window
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -41,7 +40,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.view.WindowCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -55,14 +53,12 @@ import com.bigbigdw.manavarasetting.ui.theme.color1E1E20
 import com.bigbigdw.manavarasetting.ui.theme.color1e4394
 import com.bigbigdw.manavarasetting.ui.theme.color555b68
 import com.bigbigdw.manavarasetting.ui.theme.colordcdcdd
-import com.bigbigdw.manavarasetting.ui.theme.pretendardvariable
 
 @Composable
 fun ScreenMain(
     workManager: WorkManager,
     viewModelMain: ViewModelMain,
-    widthSizeClass: WindowWidthSizeClass,
-    window: Window
+    widthSizeClass: WindowWidthSizeClass
 ) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -70,9 +66,9 @@ fun ScreenMain(
 
     val isExpandedScreen = widthSizeClass == WindowWidthSizeClass.Expanded
 
-    if(isExpandedScreen){
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-    }
+//    if(isExpandedScreen){
+//        WindowCompat.setDecorFitsSystemWindows(window, false)
+//    }
 
     if(!isExpandedScreen){
         ScreenMainMobile(
@@ -102,7 +98,7 @@ fun ScreenMainTablet(
     isExpandedScreen: Boolean
 ) {
     Row{
-        TableAppNavRail(currentRoute = currentRoute ?: "", navController = navController)
+//        TableAppNavRail(currentRoute = currentRoute ?: "", navController = navController)
         NavigationGraph(
             navController = navController,
             workManager = workManager,
@@ -244,7 +240,6 @@ fun BottomNavScreen(navController: NavHostController, currentRoute: String?) {
                     Text(
                         text = item.title,
                         fontSize = 13.sp,
-                        fontFamily = pretendardvariable,
                         color = color1e4394
                     )
                 },
@@ -337,7 +332,6 @@ fun MainHeader(image: Int, title: String) {
         fontSize = 24.sp,
         textAlign = TextAlign.Center,
         color = color000000,
-        fontFamily = pretendardvariable,
         fontWeight = FontWeight(weight = 100)
     )
     Spacer(modifier = Modifier.size(22.dp))
@@ -401,7 +395,6 @@ fun TableAppNavRail(
                     Text(
                         text = item.title,
                         fontSize = 13.sp,
-                        fontFamily = pretendardvariable,
                         color = color1e4394
                     )
                 },

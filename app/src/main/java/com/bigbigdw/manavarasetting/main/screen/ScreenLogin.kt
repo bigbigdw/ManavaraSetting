@@ -33,7 +33,6 @@ import com.bigbigdw.manavarasetting.ui.theme.color844DF3
 import com.bigbigdw.manavarasetting.ui.theme.colorA7ACB7
 import com.bigbigdw.manavarasetting.ui.theme.colorEDE6FD
 import com.bigbigdw.manavarasetting.ui.theme.colorFFFFFF
-import com.bigbigdw.manavarasetting.ui.theme.pretendardvariable
 import com.bigbigdw.manavarasetting.ui.theme.textColorType2
 
 @Composable
@@ -65,7 +64,6 @@ fun ScreenLogin(doLogin : () -> Unit) {
                 fontSize = 24.sp,
                 textAlign = TextAlign.Center,
                 color = colorFFFFFF,
-                fontFamily = pretendardvariable,
                 fontWeight = FontWeight(weight = 100)
             )
             Spacer(modifier = Modifier
@@ -80,7 +78,7 @@ fun ScreenLogin(doLogin : () -> Unit) {
                 shape = RoundedCornerShape(50.dp)
 
             ) {
-                Text(text = "Google로 로그인", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp, fontFamily = pretendardvariable)
+                Text(text = "Google로 로그인", textAlign = TextAlign.Center, color = colorEDE6FD, fontSize = 16.sp)
             }
         }
 
@@ -94,7 +92,6 @@ fun ScreenLogin(doLogin : () -> Unit) {
                 fontSize = 12.sp,
                 textAlign = TextAlign.Center,
                 color = textColorType2,
-                fontFamily = pretendardvariable
             )
             Spacer(modifier = Modifier
                 .fillMaxWidth()
@@ -104,7 +101,6 @@ fun ScreenLogin(doLogin : () -> Unit) {
                 fontSize = 12.sp,
                 textAlign = TextAlign.Center,
                 color = textColorType2,
-                fontFamily = pretendardvariable
             )
             Spacer(modifier = Modifier
                 .fillMaxWidth()
@@ -142,7 +138,6 @@ fun ScreenSplash() {
                 fontSize = 24.sp,
                 textAlign = TextAlign.Center,
                 color = colorFFFFFF,
-                fontFamily = pretendardvariable,
                 fontWeight = FontWeight(weight = 100)
             )
             Spacer(modifier = Modifier
@@ -153,7 +148,6 @@ fun ScreenSplash() {
                 fontSize = 14.sp,
                 textAlign = TextAlign.Center,
                 color = colorA7ACB7,
-                fontFamily = pretendardvariable
             )
         }
 
@@ -167,7 +161,6 @@ fun ScreenSplash() {
                 fontSize = 12.sp,
                 textAlign = TextAlign.Center,
                 color = textColorType2,
-                fontFamily = pretendardvariable
             )
             Spacer(modifier = Modifier
                 .fillMaxWidth()
@@ -177,7 +170,6 @@ fun ScreenSplash() {
                 fontSize = 12.sp,
                 textAlign = TextAlign.Center,
                 color = textColorType2,
-                fontFamily = pretendardvariable
             )
             Spacer(modifier = Modifier
                 .fillMaxWidth()
