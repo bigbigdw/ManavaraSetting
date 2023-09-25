@@ -18,9 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -50,7 +48,6 @@ import com.bigbigdw.manavarasetting.ui.theme.color8e8e8e
 import com.bigbigdw.manavarasetting.ui.theme.colorA7ACB7
 import com.bigbigdw.manavarasetting.ui.theme.colorEDE6FD
 import com.bigbigdw.manavarasetting.ui.theme.colore9e9e9
-import com.bigbigdw.manavarasetting.ui.theme.colorf6f6f6
 import com.bigbigdw.manavarasetting.ui.theme.colorf7f7f7
 
 @Composable
@@ -127,30 +124,6 @@ fun ScreenTest() {
             color = Color.White,
             modifier = Modifier.align(Alignment.Center)
         )
-    }
-}
-
-@Composable
-fun ScreenTablet(title: String) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = colorf6f6f6)
-            .padding(8.dp, 0.dp)
-            .verticalScroll(rememberScrollState())
-            .semantics { contentDescription = "Overview Screen" },
-    ) {
-        Spacer(modifier = Modifier.size(8.dp))
-
-        Text(
-            modifier = Modifier.padding(16.dp, 0.dp, 0.dp, 0.dp),
-            text = title,
-            fontSize = 24.sp,
-            color = color000000,
-            fontWeight = FontWeight(weight = 700)
-        )
-
-        Spacer(modifier = Modifier.size(8.dp))
     }
 }
 

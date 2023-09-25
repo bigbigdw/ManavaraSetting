@@ -34,6 +34,7 @@ import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color898989
+import com.bigbigdw.manavarasetting.ui.theme.colorFFFFFF
 import com.bigbigdw.manavarasetting.ui.theme.colorf7f7f7
 import com.bigbigdw.manavarasetting.util.FCM
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
@@ -53,7 +54,7 @@ fun ScreenMainFCM(workManager: WorkManager, viewModelMain: ViewModelMain, isExpa
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = colorf7f7f7)
+                .background(color = colorFFFFFF)
                 .verticalScroll(rememberScrollState())
                 .semantics { contentDescription = "Overview Screen" },
             verticalArrangement = Arrangement.Center,
