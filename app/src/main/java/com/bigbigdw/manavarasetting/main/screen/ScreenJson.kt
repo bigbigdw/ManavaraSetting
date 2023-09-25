@@ -60,7 +60,7 @@ fun ScreenMainJson(
                 titleWorker = "WORKER : ",
                 valueWorker = viewModelMain.state.collectAsState().value.statusJson,
                 statusTitle = "갱신시간 : ",
-                valueStatus = viewModelMain.state.collectAsState().value.testJson,
+                valueStatus = viewModelMain.state.collectAsState().value.timeJson,
             )
             ItemMainSetting(
                 image = R.drawable.icon_json_gr,

@@ -57,7 +57,7 @@ fun ScreenMainTrophy(
                 titleWorker = "WORKER : ",
                 valueWorker = viewModelMain.state.collectAsState().value.statusTrophy,
                 statusTitle = "갱신시간 : ",
-                valueStatus = viewModelMain.state.collectAsState().value.testTrophy,
+                valueStatus = viewModelMain.state.collectAsState().value.timeTrophy,
             )
             ItemMainSetting(
                 image = R.drawable.icon_trophy_gr,

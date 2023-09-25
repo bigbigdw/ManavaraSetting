@@ -30,6 +30,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,6 +49,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
+import com.bigbigdw.manavarasetting.main.model.MainSettingLine
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color1E1E20
@@ -273,12 +275,51 @@ fun NavigationGraph(
     isExpandedScreen: Boolean
 ) {
 
+    val lineTest = listOf(
+        MainSettingLine(title = "WORKER : ", value = viewModelMain.state.collectAsState().value.statusTest),
+        MainSettingLine(title = "갱신시간 : ", value = viewModelMain.state.collectAsState().value.timeTest),
+        MainSettingLine(title = "호출 횟수 : ", value = viewModelMain.state.collectAsState().value.countTest),
+        MainSettingLine(title = "금일 호출 횟수 : ", viewModelMain.state.collectAsState().value.countTodayTest),
+        MainSettingLine(title = "호출 주기 : ", value = viewModelMain.state.collectAsState().value.timeMillTest),
+    )
+
+    val lineBest = listOf(
+        MainSettingLine(title = "WORKER : ", value = viewModelMain.state.collectAsState().value.statusBest),
+        MainSettingLine(title = "갱신시간 : ", value = viewModelMain.state.collectAsState().value.timeBest),
+        MainSettingLine(title = "호출 횟수 : ", value = viewModelMain.state.collectAsState().value.countBest),
+        MainSettingLine(title = "금일 호출 횟수 : ", viewModelMain.state.collectAsState().value.countTodayBest),
+        MainSettingLine(title = "호출 주기 : ", value = viewModelMain.state.collectAsState().value.timeMillBest),
+    )
+
+    val lineJson = listOf(
+        MainSettingLine(title = "WORKER : ", value = viewModelMain.state.collectAsState().value.statusJson),
+        MainSettingLine(title = "갱신시간 : ", value = viewModelMain.state.collectAsState().value.timeJson),
+        MainSettingLine(title = "호출 횟수 : ", value = viewModelMain.state.collectAsState().value.countJson),
+        MainSettingLine(title = "금일 호출 횟수 : ", viewModelMain.state.collectAsState().value.countTodayJson),
+        MainSettingLine(title = "호출 주기 : ", value = viewModelMain.state.collectAsState().value.timeMillJson),
+    )
+
+    val lineTrophy = listOf(
+        MainSettingLine(title = "WORKER : ", value = viewModelMain.state.collectAsState().value.statusTrophy),
+        MainSettingLine(title = "갱신시간 : ", value = viewModelMain.state.collectAsState().value.timeTrophy),
+        MainSettingLine(title = "호출 횟수 : ", value = viewModelMain.state.collectAsState().value.countTrophy),
+        MainSettingLine(title = "금일 호출 횟수 : ", viewModelMain.state.collectAsState().value.countTodayTrophy),
+        MainSettingLine(title = "호출 주기 : ", value = viewModelMain.state.collectAsState().value.timeMillTrophy),
+    )
+
     NavHost(
         navController = navController,
         startDestination = ScreemBottomItem.SETTING.screenRoute
     ) {
         composable(ScreemBottomItem.SETTING.screenRoute) {
-            ScreenMainSetting(viewModelMain = viewModelMain, isExpandedScreen = isExpandedScreen)
+            ScreenMainSetting(
+                viewModelMain = viewModelMain,
+                isExpandedScreen = isExpandedScreen,
+                lineTest = lineTest,
+                lineBest = lineBest,
+                lineJson = lineJson,
+                lineTrophy = lineTrophy
+            )
         }
         composable(ScreemBottomItem.FCM.screenRoute) {
             ScreenMainFCM(workManager = workManager, viewModelMain = viewModelMain, isExpandedScreen = isExpandedScreen)

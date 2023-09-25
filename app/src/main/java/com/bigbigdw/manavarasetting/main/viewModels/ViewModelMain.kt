@@ -44,9 +44,9 @@ class ViewModelMain @Inject constructor() : ViewModel() {
             is EventMain.GetDataStoreWorker -> {
                 current.copy(
                     timeTest = event.timeTest,
-                    testBest = event.testBest,
-                    testJson = event.testJson,
-                    testTrophy = event.testTrophy,
+                    timeBest = event.timeBest,
+                    timeJson = event.timeJson,
+                    timeTrophy = event.timeTrophy,
                     statusTest = event.statusTest,
                     statusBest = event.statusBet,
                     statusJson = event.statusJson,
@@ -106,9 +106,9 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                         events.send(
                             EventMain.GetDataStoreWorker(
                                 timeTest = workerTest ?: "",
-                                testBest = workerBest ?: "",
-                                testJson = workerJson ?: "",
-                                testTrophy = workerTrophy ?: "",
+                                timeBest = workerBest ?: "",
+                                timeJson = workerJson ?: "",
+                                timeTrophy = workerTrophy ?: "",
                                 statusTest = PeriodicWorker.checkWorker(workManager = workManager, tag = "TEST"),
                                 statusBet = PeriodicWorker.checkWorker(workManager = workManager, tag = "BEST"),
                                 statusJson = PeriodicWorker.checkWorker(workManager = workManager, tag = "BEST_JSON"),

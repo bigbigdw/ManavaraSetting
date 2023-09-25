@@ -4,9 +4,9 @@ sealed interface EventMain {
     object Loaded : EventMain
     class GetDataStoreWorker(
         val timeTest: String,
-        val testBest: String,
-        val testJson: String,
-        val testTrophy: String,
+        val timeBest: String,
+        val timeJson: String,
+        val timeTrophy: String,
         val statusTest: String,
         val statusBet: String,
         val statusJson: String,
@@ -32,9 +32,9 @@ sealed interface EventMain {
 data class StateMain(
     val Loaded: Boolean = false,
     val timeTest: String = "",
-    val testBest: String = "",
-    val testJson: String = "",
-    val testTrophy: String = "",
+    val timeBest: String = "",
+    val timeJson: String = "",
+    val timeTrophy: String = "",
     val statusTest: String = "",
     val statusBest: String = "",
     val statusJson: String = "",

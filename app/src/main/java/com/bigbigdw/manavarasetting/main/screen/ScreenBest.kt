@@ -58,7 +58,7 @@ fun ScreenMainBest(
                 titleWorker = "WORKER : ",
                 valueWorker = viewModelMain.state.collectAsState().value.statusBest,
                 statusTitle = "갱신시간 : ",
-                valueStatus = viewModelMain.state.collectAsState().value.testBest,
+                valueStatus = viewModelMain.state.collectAsState().value.timeBest,
             )
             ItemMainSetting(
                 image = R.drawable.icon_best_gr,
