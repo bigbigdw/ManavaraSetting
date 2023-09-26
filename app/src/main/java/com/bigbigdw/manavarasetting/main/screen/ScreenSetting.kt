@@ -13,8 +13,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -37,6 +39,17 @@ fun ScreenMainSetting(
     lineJson: List<MainSettingLine>,
     lineTrophy: List<MainSettingLine>,
 ) {
+
+    val context = LocalContext.current
+    val workManager = WorkManager.getInstance(context)
+
+    var isInit by remember { mutableStateOf(false) }
+
+    if(!isInit){
+        viewModelMain.getDataStoreStatus(context = context, workManager = workManager)
+        viewModelMain.getDataStoreFCMCount(context = context)
+        isInit = true
+    }
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -155,6 +168,13 @@ fun ScreenSettingMobileContents(
         }
 
         Spacer(modifier = Modifier.size(24.dp))
+
+        BtnMobile(func = {
+            viewModelMain.getDataStoreStatus(
+                context = context,
+                workManager = workManager
+            )
+        }, btnText = "WORKER 최신화")
 
         BtnMobile(func = { viewModelMain.getDataStoreFCMCount(context = context) }, btnText = "FCM COUNT 최신화")
 
