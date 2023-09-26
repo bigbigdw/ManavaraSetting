@@ -63,8 +63,13 @@ import com.bigbigdw.manavarasetting.util.FCM
 import com.bigbigdw.manavarasetting.util.Mining
 import com.bigbigdw.manavarasetting.util.NaverSeriesGenre
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
+import com.bigbigdw.manavarasetting.util.calculateTrophy
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenreKor
+import com.bigbigdw.manavarasetting.util.makeWeekJson
+import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageDay
+import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageWeek
+import com.google.gson.JsonArray
 import java.util.concurrent.TimeUnit
 
 @Composable
@@ -299,24 +304,41 @@ fun ScreenTablet(
                 }
                 "베스트 BOOK 리스트" -> {
                     ContentsBestList(
+                        detail = "베스트 리스트",
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         setDetailPageType = setDetailPageType
                     )
                 }
-                "베스트 주간 트로피" -> {
+                "베스트 JSON 관리" -> {
+                    ContentsJsonManage(lineJson = lineJson)
+                }
+                "베스트 JSON 투데이 현황" -> {
                     ContentsBestList(
+                        detail = "베스트 JSON 투데이",
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         setDetailPageType = setDetailPageType
                     )
                 }
-                "베스트 월간 트로피" -> {
+                "베스트 JSON 주간 현황" -> {
                     ContentsBestList(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
-                        setDetailPageType = setDetailPageType
+                        setDetailPageType = setDetailPageType,
+                        detail = "베스트 JSON 주간",
                     )
+                }
+                "베스트 JSON 월간 현황" -> {
+                    ContentsBestList(
+                        setDetailPage = setDetailPage,
+                        setDetailMenu = setDetailMenu,
+                        setDetailPageType = setDetailPageType,
+                        detail = "베스트 JSON 월간",
+                    )
+                }
+                "트로피 정산 관리" -> {
+                    ContentsTrophyManage(lineTrophy = lineTrophy)
                 }
             }
         }
@@ -334,6 +356,9 @@ fun ContentsSetting(
 
     val context = LocalContext.current
     val workManager = WorkManager.getInstance(context)
+
+    viewModelMain.getDataStoreStatus(context = context, workManager = workManager)
+    viewModelMain.getDataStoreFCMCount(context = context)
 
     Button(
         colors = ButtonDefaults.buttonColors(containerColor = Color.White),
@@ -508,29 +533,6 @@ fun ContentsFCMManage(lineTest: List<MainSettingLine>) {
         }),
     )
 
-    Spacer(modifier = Modifier.size(16.dp))
-
-    Text(
-        modifier = Modifier.padding(32.dp, 8.dp),
-        text = "테스트 현황",
-        fontSize = 16.sp,
-        color = color8e8e8e,
-        fontWeight = FontWeight(weight = 700)
-    )
-
-    TabletContentWrap(
-        radius = 10,
-        content = {
-            lineTest.forEachIndexed { index, item ->
-                ItemMainTabletContent(
-                    title = item.title,
-                    value = item.value,
-                    isLast = lineTest.size - 1 == index
-                )
-            }
-        }
-    )
-
     Button(
         colors = ButtonDefaults.buttonColors(containerColor = Color.White),
         onClick = { FCM.getFCMToken(context = context) },
@@ -568,6 +570,29 @@ fun ContentsFCMManage(lineTest: List<MainSettingLine>) {
                     )
                 }
                 Spacer(modifier = Modifier.size(16.dp))
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    Text(
+        modifier = Modifier.padding(32.dp, 8.dp),
+        text = "테스트 현황",
+        fontSize = 16.sp,
+        color = color8e8e8e,
+        fontWeight = FontWeight(weight = 700)
+    )
+
+    TabletContentWrap(
+        radius = 10,
+        content = {
+            lineTest.forEachIndexed { index, item ->
+                ItemMainTabletContent(
+                    title = item.title,
+                    value = item.value,
+                    isLast = lineTest.size - 1 == index
+                )
             }
         }
     )
@@ -750,6 +775,7 @@ fun ContentsBestList(
     setDetailPage: (Boolean) -> Unit,
     setDetailMenu: (String) -> Unit,
     setDetailPageType: (String) -> Unit,
+    detail: String,
 ) {
 
     val context = LocalContext.current
@@ -821,6 +847,233 @@ fun ContentsBestList(
                         setDetailMenu(item.title)
                         setDetailPageType(item.value)
                     }
+                )
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(60.dp))
+}
+
+@Composable
+fun ContentsJsonManage(lineJson: List<MainSettingLine>) {
+
+    val context = LocalContext.current
+    val workManager = WorkManager.getInstance(context)
+
+    val itemJsonWorker = listOf(
+        MainSettingLine(title = "JSON WORKER 시작", onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                repeatInterval = 6,
+                tag = "JSON",
+                timeMill = TimeUnit.HOURS
+            )
+        }),
+        MainSettingLine(title = "JSON WORKER 취소", onClick = {
+            PeriodicWorker.cancelWorker(
+                workManager = workManager,
+                tag = "JSON"
+            )
+        }),
+        MainSettingLine(title = "JSON WORKER 확인", onClick = {
+            PeriodicWorker.checkWorker(
+                workManager = workManager,
+                tag = "JSON"
+            )
+        }),
+    )
+
+    val lineUpdateSelf = listOf(
+        MainSettingLine(title = "JSON DAY 생성", onClick = {
+            for (j in NaverSeriesGenre) {
+                uploadJsonArrayToStorageDay(
+                    platform = "NAVER_SERIES",
+                    genre = getNaverSeriesGenre(j)
+                )
+            }
+            FCM.postFCMAlertTest(context = context, message = "DAY JSON 생성이 완료되었습니다")
+        }),
+        MainSettingLine(title = "JSON WEEK 생성", onClick = {
+            for (j in NaverSeriesGenre) {
+
+                val jsonArray = JsonArray()
+
+                for (i in 0..6) {
+                    jsonArray.add("")
+                }
+
+                makeWeekJson(
+                    platform = "NAVER_SERIES",
+                    genre = getNaverSeriesGenre(j),
+                    jsonArray = jsonArray
+                )
+            }
+        }),
+        MainSettingLine(title = "JSON WEEK 업데이트", onClick = {
+            for (j in NaverSeriesGenre) {
+                uploadJsonArrayToStorageWeek(
+                    platform = "NAVER_SERIES",
+                    genre = getNaverSeriesGenre(j)
+                )
+            }
+        })
+    )
+
+    TabletContentWrap(
+        radius = 10,
+        content = {
+            itemJsonWorker.forEachIndexed { index, item ->
+                ItemMainTabletContent(
+                    title = item.title,
+                    isLast = itemJsonWorker.size - 1 == index,
+                    onClick = item.onClick
+                )
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    Text(
+        modifier = Modifier.padding(32.dp, 8.dp),
+        text = "JSON 수동 업데이트",
+        fontSize = 16.sp,
+        color = color8e8e8e,
+        fontWeight = FontWeight(weight = 700)
+    )
+
+    TabletContentWrap(
+        radius = 10,
+        content = {
+            lineUpdateSelf.forEachIndexed { index, item ->
+                ItemMainTabletContent(
+                    title = item.title,
+                    value = item.value,
+                    isLast = lineUpdateSelf.size - 1 == index
+                )
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    Text(
+        modifier = Modifier.padding(32.dp, 8.dp),
+        text = "베스트 현황",
+        fontSize = 16.sp,
+        color = color8e8e8e,
+        fontWeight = FontWeight(weight = 700)
+    )
+
+    TabletContentWrap(
+        radius = 10,
+        content = {
+            lineJson.forEachIndexed { index, item ->
+                ItemMainTabletContent(
+                    title = item.title,
+                    value = item.value,
+                    isLast = lineJson.size - 1 == index
+                )
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(60.dp))
+}
+
+@Composable
+fun ContentsTrophyManage(lineTrophy: List<MainSettingLine>) {
+
+    val context = LocalContext.current
+    val workManager = WorkManager.getInstance(context)
+
+    val itemJsonWorker = listOf(
+        MainSettingLine(title = "TROPHY WORKER 시작", onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                repeatInterval = 9,
+                tag = "TROPHY",
+                timeMill = TimeUnit.HOURS
+            )
+        }),
+        MainSettingLine(title = "TROPHY WORKER 취소", onClick = {
+            PeriodicWorker.cancelWorker(
+                workManager = workManager,
+                tag = "TROPHY"
+            )
+        }),
+        MainSettingLine(title = "TROPHY WORKER 확인", onClick = {
+            PeriodicWorker.checkWorker(
+                workManager = workManager,
+                tag = "TROPHY"
+            )
+        }),
+    )
+
+    val lineUpdateSelf = listOf(
+        MainSettingLine(title = "트로피 정산", onClick = {
+            for (j in NaverSeriesGenre) {
+                calculateTrophy(platform = "NAVER_SERIES", genre = getNaverSeriesGenre(j))
+            }
+            FCM.postFCMAlertTest(context = context, message = "트로피 정산이 완료되었습니다")
+        })
+    )
+
+    TabletContentWrap(
+        radius = 10,
+        content = {
+            itemJsonWorker.forEachIndexed { index, item ->
+                ItemMainTabletContent(
+                    title = item.title,
+                    isLast = itemJsonWorker.size - 1 == index,
+                    onClick = item.onClick
+                )
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    Text(
+        modifier = Modifier.padding(32.dp, 8.dp),
+        text = "JSON 수동 업데이트",
+        fontSize = 16.sp,
+        color = color8e8e8e,
+        fontWeight = FontWeight(weight = 700)
+    )
+
+    TabletContentWrap(
+        radius = 10,
+        content = {
+            lineUpdateSelf.forEachIndexed { index, item ->
+                ItemMainTabletContent(
+                    title = item.title,
+                    value = item.value,
+                    isLast = lineUpdateSelf.size - 1 == index
+                )
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    Text(
+        modifier = Modifier.padding(32.dp, 8.dp),
+        text = "트로피 정산 현황",
+        fontSize = 16.sp,
+        color = color8e8e8e,
+        fontWeight = FontWeight(weight = 700)
+    )
+
+    TabletContentWrap(
+        radius = 10,
+        content = {
+            lineTrophy.forEachIndexed { index, item ->
+                ItemMainTabletContent(
+                    title = item.title,
+                    value = item.value,
+                    isLast = lineTrophy.size - 1 == index
                 )
             }
         }

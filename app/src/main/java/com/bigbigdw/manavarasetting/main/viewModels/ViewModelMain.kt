@@ -73,10 +73,11 @@ class ViewModelMain @Inject constructor() : ViewModel() {
             }
 
             is EventMain.SetFcmAlertList -> {
-                current.copy(
-                    fcmAlertList = event.fcmAlertList,
-                    fcmNoticeList = event.fcmNoticeList
-                )
+                current.copy(fcmAlertList = event.fcmAlertList,)
+            }
+
+            is EventMain.SetFcmNoticeList -> {
+                current.copy(fcmNoticeList = event.fcmNoticeList,)
             }
 
             is EventMain.SetBestBookList -> {
@@ -108,8 +109,8 @@ class ViewModelMain @Inject constructor() : ViewModel() {
 
                     val timeMillTest: String? = dataSnapshot.child("TIMEMILL_TEST").getValue(String::class.java)
                     val timeMillBest: String? = dataSnapshot.child("TIMEMILL_BEST").getValue(String::class.java)
-                    val timeMillJson: String? = dataSnapshot.child("TIMEMILL_BEST_JSON").getValue(String::class.java)
-                    val timeMillTrophy: String? = dataSnapshot.child("TIMEMILL_BEST_TROPHY").getValue(String::class.java)
+                    val timeMillJson: String? = dataSnapshot.child("TIMEMILL_JSON").getValue(String::class.java)
+                    val timeMillTrophy: String? = dataSnapshot.child("TIMEMILL_TROPHY").getValue(String::class.java)
 
                     viewModelScope.launch {
                         dataStore.setDataStoreString(DataStoreManager.TEST_TIME, workerTest ?: "")
@@ -127,8 +128,8 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                                 timeTrophy = workerTrophy ?: "",
                                 statusTest = PeriodicWorker.checkWorker(workManager = workManager, tag = "TEST"),
                                 statusBet = PeriodicWorker.checkWorker(workManager = workManager, tag = "BEST"),
-                                statusJson = PeriodicWorker.checkWorker(workManager = workManager, tag = "BEST_JSON"),
-                                statusTrophy = PeriodicWorker.checkWorker(workManager = workManager, tag = "BEST_TROPHY"),
+                                statusJson = PeriodicWorker.checkWorker(workManager = workManager, tag = "JSON"),
+                                statusTrophy = PeriodicWorker.checkWorker(workManager = workManager, tag = "TROPHY"),
                                 timeMillTest = timeMillTest ?: "",
                                 timeMillBest = timeMillBest ?: "",
                                 timeMillJson = timeMillJson ?: "",
@@ -258,9 +259,9 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                     viewModelScope.launch {
 
                         if(child == "ALERT"){
-                            events.send(EventMain.SetFcmAlertList(fcmAlertList = fcmlist, fcmNoticeList = state.value.fcmNoticeList))
+                            events.send(EventMain.SetFcmAlertList(fcmAlertList = fcmlist))
                         } else if (child == "NOTICE"){
-                            events.send(EventMain.SetFcmAlertList(fcmAlertList = state.value.fcmAlertList, fcmNoticeList = fcmlist))
+                            events.send(EventMain.SetFcmNoticeList(fcmNoticeList = fcmlist))
                         }
                     }
 

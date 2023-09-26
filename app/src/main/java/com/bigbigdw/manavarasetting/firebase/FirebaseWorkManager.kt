@@ -64,7 +64,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
 
             postFCM(data = "베스트 리스트가 갱신되었습니다", time = "${year}.${month}.${day} ${hour}:${min}")
 
-        } else if (inputData.getString(TYPE).equals("BEST_JSON")) {
+        } else if (inputData.getString(TYPE).equals("JSON")) {
             for (j in NaverSeriesGenre) {
 
                 uploadJsonArrayToStorageDay(
@@ -80,7 +80,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
 
             postFCM(data = "DAY JSON 생성이 완료되었습니다", time = "${year}.${month}.${day} ${hour}:${min}")
 
-        } else if (inputData.getString(TYPE).equals("BEST_TROPHY")) {
+        } else if (inputData.getString(TYPE).equals("TROPHY")) {
 
             for (j in NaverSeriesGenre) {
                 calculateTrophy(platform = "NAVER_SERIES", genre = getNaverSeriesGenre(j))

@@ -87,7 +87,7 @@ fun ScreenMainTrophy(
                     PeriodicWorker.doWorker(
                         workManager = workManager,
                         repeatInterval = 9,
-                        tag = "BEST_TROPHY",
+                        tag = "TROPHY",
                         timeMill = TimeUnit.HOURS
                     )
                 },
@@ -98,7 +98,7 @@ fun ScreenMainTrophy(
                 func = {
                     PeriodicWorker.cancelWorker(
                         workManager = workManager,
-                        tag = "BEST_TROPHY"
+                        tag = "TROPHY"
                     )
                 },
                 btnText = "트로피 정산 WORKER 취소"
@@ -108,7 +108,7 @@ fun ScreenMainTrophy(
                 func = {
                     PeriodicWorker.checkWorker(
                         workManager = workManager,
-                        tag = "BEST_TROPHY"
+                        tag = "TROPHY"
                     )
                 },
                 btnText = "트로피 정산 WORKER 확인"

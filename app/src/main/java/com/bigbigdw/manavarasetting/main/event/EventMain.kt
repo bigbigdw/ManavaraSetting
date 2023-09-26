@@ -33,6 +33,9 @@ sealed interface EventMain {
 
     class SetFcmAlertList(
         val fcmAlertList : ArrayList<FCMAlert> = ArrayList(),
+    ) : EventMain
+
+    class SetFcmNoticeList(
         val fcmNoticeList : ArrayList<FCMAlert> = ArrayList(),
     ) : EventMain
 

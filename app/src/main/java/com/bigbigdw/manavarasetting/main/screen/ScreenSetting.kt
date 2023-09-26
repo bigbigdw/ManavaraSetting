@@ -38,12 +38,6 @@ fun ScreenMainSetting(
     lineTrophy: List<MainSettingLine>,
 ) {
 
-    val context = LocalContext.current
-    val workManager = WorkManager.getInstance(context)
-
-    viewModelMain.getDataStoreStatus(context = context, workManager = workManager)
-    viewModelMain.getDataStoreFCMCount(context = context)
-
     Box(
         modifier = Modifier.fillMaxSize()
     ) {

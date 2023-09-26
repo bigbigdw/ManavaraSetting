@@ -125,7 +125,7 @@ fun ScreenMainJson(
                     PeriodicWorker.doWorker(
                         workManager = workManager,
                         repeatInterval = 6,
-                        tag = "BEST_JSON",
+                        tag = "JSON",
                         timeMill = TimeUnit.HOURS
                     )
                 },
@@ -134,12 +134,10 @@ fun ScreenMainJson(
 
             BtnMobile(
                 func = {
-                    for (j in NaverSeriesGenre) {
-                        PeriodicWorker.cancelWorker(
-                            workManager = workManager,
-                            tag = "BEST_JSON"
-                        )
-                    }
+                    PeriodicWorker.cancelWorker(
+                        workManager = workManager,
+                        tag = "JSON"
+                    )
                 },
                 btnText = "JSON WORKER 취소"
             )
@@ -148,7 +146,7 @@ fun ScreenMainJson(
                 func = {
                     PeriodicWorker.checkWorker(
                         workManager = workManager,
-                        tag = "BEST_JSON"
+                        tag = "JSON"
                     )
                 },
                 btnText = "JSON WORKER 확인"
