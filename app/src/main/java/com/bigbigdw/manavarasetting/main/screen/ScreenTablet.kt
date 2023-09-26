@@ -156,30 +156,10 @@ fun ScreenSettingTabletContents(setMenu: (String) -> Unit, getMenu: String, onCl
             onClick = {onClick()}
         )
 
-        ItemMainSettingSingleTablet(
-            containerColor = colorf17fa0,
-            image = R.drawable.icon_best_wht,
-            title = "베스트 주간 토탈 리스트",
-            body = "장르별 주간 베스트 리스트 확인",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = {onClick()}
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = color21c2ec,
-            image = R.drawable.icon_best_wht,
-            title = "베스트 월간 토탈 리스트",
-            body = "장르별 월간 베스트 리스트 확인",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = {onClick()}
-        )
-
         TabletBorderLine()
 
         ItemMainSettingSingleTablet(
-            containerColor = color31c3ae,
+            containerColor = colorf17fa0,
             image = R.drawable.icon_json_wht,
             title = "베스트 JSON 관리",
             body = "베스트 JSON  수동 갱신 & Worker 관리",
@@ -189,7 +169,7 @@ fun ScreenSettingTabletContents(setMenu: (String) -> Unit, getMenu: String, onCl
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color7c81ff,
+            containerColor = color21c2ec,
             image = R.drawable.icon_json_wht,
             title = "베스트 JSON 투데이 현황",
             body = "장르별 DAY JSON 확인",
@@ -199,7 +179,7 @@ fun ScreenSettingTabletContents(setMenu: (String) -> Unit, getMenu: String, onCl
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color64c157,
+            containerColor = color31c3ae,
             image = R.drawable.icon_json_wht,
             title = "베스트 JSON 주간 현황",
             body = "장르별 WEEK 주간 확인",
@@ -209,7 +189,7 @@ fun ScreenSettingTabletContents(setMenu: (String) -> Unit, getMenu: String, onCl
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color52a9ff,
+            containerColor = color7c81ff,
             image = R.drawable.icon_json_wht,
             title = "베스트 JSON 월간 현황",
             body = "장르별 MONTH 월간 확인",
@@ -221,10 +201,30 @@ fun ScreenSettingTabletContents(setMenu: (String) -> Unit, getMenu: String, onCl
         TabletBorderLine()
 
         ItemMainSettingSingleTablet(
-            containerColor = color52a9ff,
+            containerColor = color64c157,
             image = R.drawable.icon_trophy_wht,
             title = "트로피 정산 관리",
             body = "트로피 수동 정산 & Worker 관리",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = {onClick()}
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color52a9ff,
+            image = R.drawable.icon_trophy_wht,
+            title = "트로피 주간 토탈 리스트",
+            body = "장르별 주간 트로피 리스트 확인",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = {onClick()}
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color52a9ff,
+            image = R.drawable.icon_trophy_wht,
+            title = "트로피 월간 토탈 리스트",
+            body = "장르별 월간 트로피 리스트 확인",
             setMenu = setMenu,
             getMenu = getMenu,
             onClick = {onClick()}
