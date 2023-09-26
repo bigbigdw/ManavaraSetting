@@ -103,6 +103,8 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                         dataStore.setDataStoreString(DataStoreManager.JSONWORKER_TIME, workerJson ?: "")
                         dataStore.setDataStoreString(DataStoreManager.TROPHYWORKER_TIME, workerTrophy ?: "")
 
+                        _sideEffects.send("Worker 최신화가 완료되었습니다")
+
                         events.send(
                             EventMain.GetDataStoreWorker(
                                 timeTest = workerTest ?: "",
@@ -119,6 +121,7 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                                 timeMillTrophy = timeMillTrophy ?: "",
                             )
                         )
+
                     }
 
                 } else {
@@ -208,6 +211,8 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                                 countTodayTrophy = numTrophyToday.toString(),
                             )
                         )
+
+                        _sideEffects.send("FCM 카운트 갱신이 완료되었습니다")
                     }
 
                 } else {
@@ -217,5 +222,9 @@ class ViewModelMain @Inject constructor() : ViewModel() {
 
             override fun onCancelled(databaseError: DatabaseError) {}
         })
+    }
+
+    fun test(){
+
     }
 }

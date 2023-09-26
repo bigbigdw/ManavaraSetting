@@ -260,7 +260,8 @@ fun ItemMainSettingSingle(
 fun ItemMainTabletContent(
     title: String,
     value: String,
-    isLast: Boolean
+    isLast: Boolean,
+    onClick : () -> Unit
 ) {
 
     Column {
@@ -272,7 +273,7 @@ fun ItemMainTabletContent(
                 end = 12.dp,
                 bottom = 6.dp,
             ),
-            onClick = {},
+            onClick = { onClick() },
             content = {
                 Row(
                     modifier = Modifier

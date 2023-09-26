@@ -380,7 +380,7 @@ fun updateWorker(context: Context, update: () -> Unit){
                     dataStore.setDataStoreString(DataStoreManager.BESTWORKER_TIME, workerBest ?: "")
                     dataStore.setDataStoreString(DataStoreManager.JSONWORKER_TIME, workerJson ?: "")
                     dataStore.setDataStoreString(DataStoreManager.TROPHYWORKER_TIME, workerTrophy ?: "")
-                    update
+                    update()
                 }
 
             } else {
@@ -457,7 +457,7 @@ fun updateFcmCount(context: Context, update: () -> Unit){
                     dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_JSON_TODAY, numJsonToday.toString())
                     dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_TROPHY, numTrophy.toString())
                     dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_TROPHY_TODAY, numTrophyToday.toString())
-                    update
+                    update()
                 }
 
             } else {
