@@ -112,4 +112,6 @@ dependencies {
 
     implementation("androidx.window:window-extensions:1.0.0-alpha01")
     implementation("androidx.compose.material3:material3-window-size-class")
+
+    implementation("io.coil-kt:coil-compose:2.4.0")
 }

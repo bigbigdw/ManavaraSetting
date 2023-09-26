@@ -8,6 +8,7 @@ import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.firebase.FCMAlert
 import com.bigbigdw.manavarasetting.main.event.EventMain
 import com.bigbigdw.manavarasetting.main.event.StateMain
+import com.bigbigdw.manavarasetting.main.model.BestItemData
 import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import com.google.firebase.database.DataSnapshot
@@ -68,6 +69,19 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                     countTodayJson = event.countTodayJson,
                     countTrophy = event.countTrophy,
                     countTodayTrophy = event.countTodayTrophy,
+                )
+            }
+
+            is EventMain.SetFcmAlertList -> {
+                current.copy(
+                    fcmAlertList = event.fcmAlertList,
+                    fcmNoticeList = event.fcmNoticeList
+                )
+            }
+
+            is EventMain.SetBestBookList -> {
+                current.copy(
+                    setBestBookList = event.setBestBookList
                 )
             }
 
@@ -224,7 +238,68 @@ class ViewModelMain @Inject constructor() : ViewModel() {
         })
     }
 
-    fun test(){
+    fun getFCMList(child: String){
+        val mRootRef = FirebaseDatabase.getInstance().reference.child("MESSAGE").child(child)
 
+        mRootRef.addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if(dataSnapshot.exists()){
+
+                    val fcmlist = ArrayList<FCMAlert>()
+
+                    for(item in dataSnapshot.children){
+                        val fcm: FCMAlert? = dataSnapshot.child(item.key ?: "").getValue(FCMAlert::class.java)
+                        if (fcm != null) {
+                            fcmlist.add(fcm)
+                        }
+                    }
+
+                    viewModelScope.launch {
+
+                        if(child == "ALERT"){
+                            events.send(EventMain.SetFcmAlertList(fcmAlertList = fcmlist, fcmNoticeList = state.value.fcmNoticeList))
+                        } else if (child == "NOTICE"){
+                            events.send(EventMain.SetFcmAlertList(fcmAlertList = state.value.fcmAlertList, fcmNoticeList = fcmlist))
+                        }
+                    }
+
+                } else {
+                    Log.d("HIHI", "FALSE")
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
+    }
+
+    fun getBestList(child: String){
+        val mRootRef = FirebaseDatabase.getInstance().reference.child("BOOK").child("NAVER_SERIES").child(child)
+
+        mRootRef.addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if(dataSnapshot.exists()){
+
+                    val bestList = ArrayList<BestItemData>()
+
+                    for(book in dataSnapshot.children){
+                        val item: BestItemData? = dataSnapshot.child(book.key ?: "").getValue(BestItemData::class.java)
+                        if (item != null) {
+                            bestList.add(item)
+                        }
+                    }
+
+                    viewModelScope.launch {
+                        events.send(EventMain.SetBestBookList(setBestBookList = bestList))
+                    }
+
+                } else {
+                    Log.d("HIHI", "FALSE")
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
     }
 }

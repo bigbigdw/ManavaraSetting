@@ -1,5 +1,8 @@
 package com.bigbigdw.manavarasetting.main.event
 
+import com.bigbigdw.manavarasetting.firebase.FCMAlert
+import com.bigbigdw.manavarasetting.main.model.BestItemData
+
 sealed interface EventMain {
     object Loaded : EventMain
     class GetDataStoreWorker(
@@ -27,6 +30,15 @@ sealed interface EventMain {
         val countTrophy: String,
         val countTodayTrophy: String,
     ) : EventMain
+
+    class SetFcmAlertList(
+        val fcmAlertList : ArrayList<FCMAlert> = ArrayList(),
+        val fcmNoticeList : ArrayList<FCMAlert> = ArrayList(),
+    ) : EventMain
+
+    class SetBestBookList(
+        val setBestBookList : ArrayList<BestItemData> = ArrayList(),
+    ) : EventMain
 }
 
 data class StateMain(
@@ -51,4 +63,7 @@ data class StateMain(
     val timeMillBest: String = "",
     val timeMillJson: String = "",
     val timeMillTrophy: String = "",
+    val fcmAlertList : ArrayList<FCMAlert> = ArrayList(),
+    val fcmNoticeList : ArrayList<FCMAlert> = ArrayList(),
+    val setBestBookList : ArrayList<BestItemData> = ArrayList(),
 )

@@ -1,6 +1,7 @@
 package com.bigbigdw.manavarasetting.main.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,11 +14,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Card
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -35,7 +34,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.work.WorkManager
@@ -56,17 +54,21 @@ import com.bigbigdw.manavarasetting.ui.theme.color898989
 import com.bigbigdw.manavarasetting.ui.theme.color8e8e8e
 import com.bigbigdw.manavarasetting.ui.theme.color998df9
 import com.bigbigdw.manavarasetting.ui.theme.colorabd436
-import com.bigbigdw.manavarasetting.ui.theme.colore9e9e9
 import com.bigbigdw.manavarasetting.ui.theme.colorea927c
 import com.bigbigdw.manavarasetting.ui.theme.colorf17fa0
 import com.bigbigdw.manavarasetting.ui.theme.colorf6f6f6
-import com.bigbigdw.manavarasetting.ui.theme.colorf7f7f7
+import com.bigbigdw.manavarasetting.util.BestRef
+import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.FCM
+import com.bigbigdw.manavarasetting.util.Mining
+import com.bigbigdw.manavarasetting.util.NaverSeriesGenre
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
+import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
+import com.bigbigdw.manavarasetting.util.getNaverSeriesGenreKor
 import java.util.concurrent.TimeUnit
 
 @Composable
-fun ScreenSettingTabletContents(setMenu: (String) -> Unit, getMenu: String){
+fun ScreenSettingTabletContents(setMenu: (String) -> Unit, getMenu: String, onClick : () -> Unit){
 
     Column(
         modifier = Modifier
@@ -96,7 +98,8 @@ fun ScreenSettingTabletContents(setMenu: (String) -> Unit, getMenu: String){
             title = "세팅바라 현황",
             body = "Periodic Worker 현황",
             setMenu = setMenu,
-            getMenu = getMenu
+            getMenu = getMenu,
+            onClick = {onClick()}
         )
 
         TabletBorderLine()
@@ -107,7 +110,8 @@ fun ScreenSettingTabletContents(setMenu: (String) -> Unit, getMenu: String){
             title = "FCM 관리",
             body = "FCM 테스트 & 공지사항 등록 & 토큰 획득",
             setMenu = setMenu,
-            getMenu = getMenu
+            getMenu = getMenu,
+            onClick = {onClick()}
         )
 
         ItemMainSettingSingleTablet(
@@ -116,7 +120,8 @@ fun ScreenSettingTabletContents(setMenu: (String) -> Unit, getMenu: String){
             title = "FCM 공지사항 리스트",
             body = "NOTICE 리스트 확인",
             setMenu = setMenu,
-            getMenu = getMenu
+            getMenu = getMenu,
+            onClick = {onClick()}
         )
 
         ItemMainSettingSingleTablet(
@@ -125,94 +130,124 @@ fun ScreenSettingTabletContents(setMenu: (String) -> Unit, getMenu: String){
             title = "FCM 알림 리스트",
             body = "ALERT 리스트 확인",
             setMenu = setMenu,
-            getMenu = getMenu
+            getMenu = getMenu,
+            onClick = {onClick()}
         )
 
         TabletBorderLine()
 
         ItemMainSettingSingleTablet(
             containerColor = colorea927c,
-            image = R.drawable.icon_fcm_wht,
-            title = "FCM 현황",
-            body = "FCM 푸시 현황 확인",
+            image = R.drawable.icon_best_wht,
+            title = "베스트 리스트 관리",
+            body = "베스트 리스트 수동 갱신 & Worker",
             setMenu = setMenu,
-            getMenu = getMenu
+            getMenu = getMenu,
+            onClick = {onClick()}
         )
 
         ItemMainSettingSingleTablet(
             containerColor = colorabd436,
             image = R.drawable.icon_best_wht,
-            title = "베스트 리스트 갱신",
-            body = "베스트 리스트 수동 갱신",
+            title = "베스트 BOOK 리스트",
+            body = "장르별 작품 리스트 확인",
             setMenu = setMenu,
-            getMenu = getMenu
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = colorf17fa0,
-            image = R.drawable.icon_best_wht,
-            title = "베스트 Worker",
-            body = "베스트 Worker 제어",
-            setMenu = setMenu,
-            getMenu = getMenu
+            getMenu = getMenu,
+            onClick = {onClick()}
         )
 
         TabletBorderLine()
 
         ItemMainSettingSingleTablet(
+            containerColor = colorf17fa0,
+            image = R.drawable.icon_json_wht,
+            title = "베스트 주간 토탈 리스트",
+            body = "장르별 주간 베스트 리스트 확인",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = {onClick()}
+        )
+
+        ItemMainSettingSingleTablet(
             containerColor = color21c2ec,
             image = R.drawable.icon_json_wht,
-            title = "DAY JSON 확인",
-            body = "오늘의 베스트 리스트 JSON 생성",
+            title = "베스트 월간 토탈 리스트",
+            body = "장르별 월간 베스트 리스트 확인",
             setMenu = setMenu,
-            getMenu = getMenu
+            getMenu = getMenu,
+            onClick = {onClick()}
         )
 
         ItemMainSettingSingleTablet(
             containerColor = color31c3ae,
             image = R.drawable.icon_json_wht,
-            title = "WEEK JSON 확인",
-            body = "이번주 베스트 리스트 JSON 생성",
+            title = "베스트 JSON 관리",
+            body = "베스트 JSON  수동 갱신 & Worker 관리",
             setMenu = setMenu,
-            getMenu = getMenu
+            getMenu = getMenu,
+            onClick = {onClick()}
         )
 
         ItemMainSettingSingleTablet(
             containerColor = color7c81ff,
             image = R.drawable.icon_json_wht,
-            title = "WEEK JSON 업데이트",
-            body = "이번주 베스트 리스트 갱신",
+            title = "베스트 JSON 투데이 현황",
+            body = "장르별 DAY JSON 확인",
             setMenu = setMenu,
-            getMenu = getMenu
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = color64c157,
-            image = R.drawable.icon_json_wht,
-            title = "JSON Worker",
-            body = "JSON Worker 제어",
-            setMenu = setMenu,
-            getMenu = getMenu
+            getMenu = getMenu,
+            onClick = {onClick()}
         )
 
         TabletBorderLine()
 
         ItemMainSettingSingleTablet(
-            containerColor = color52a9ff,
+            containerColor = color64c157,
             image = R.drawable.icon_trophy_wht,
-            title = "트로피 정산",
-            body = "오늘의 트로피를 수동 정산",
+            title = "베스트 JSON 주간 현황",
+            body = "장르별 WEEK 주간 확인",
             setMenu = setMenu,
-            getMenu = getMenu
+            getMenu = getMenu,
+            onClick = {onClick()}
         )
 
         ItemMainSettingSingleTablet(
             containerColor = color52a9ff,
             image = R.drawable.icon_trophy_wht,
-            title = "트로피 Worker",
-            body = "트로피 Worker 제어",
+            title = "베스트 JSON 월간 현황",
+            body = "장르별 MONTH 월간 확인",
             setMenu = setMenu,
-            getMenu = getMenu
+            getMenu = getMenu,
+            onClick = {onClick()}
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color52a9ff,
+            image = R.drawable.icon_trophy_wht,
+            title = "트로피 정산 관리",
+            body = "트로피 수동 정산 & Worker 관리",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = {onClick()}
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color52a9ff,
+            image = R.drawable.icon_trophy_wht,
+            title = "베스트 월간 트로피",
+            body = "주간 월간 합산 현황",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = {onClick()}
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color52a9ff,
+            image = R.drawable.icon_trophy_wht,
+            title = "베스트 월간 트로피",
+            body = "주간 월간 합산 현황",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = {onClick()}
         )
 
     }
@@ -225,7 +260,10 @@ fun ScreenTablet(
     lineBest: List<MainSettingLine>,
     lineJson: List<MainSettingLine>,
     lineTrophy: List<MainSettingLine>,
-    viewModelMain : ViewModelMain
+    viewModelMain: ViewModelMain,
+    setDetailPage: (Boolean) -> Unit,
+    setDetailMenu: (String) -> Unit,
+    setDetailPageType: (String) -> Unit
 ) {
 
     Box(
@@ -244,7 +282,11 @@ fun ScreenTablet(
             Spacer(modifier = Modifier.size(16.dp))
 
             Text(
-                modifier = Modifier.padding(24.dp, 0.dp, 0.dp, 0.dp),
+                modifier = Modifier
+                    .padding(24.dp, 0.dp, 0.dp, 0.dp)
+                    .clickable {
+                        setDetailPage(false)
+                    },
                 text = title,
                 fontSize = 24.sp,
                 color = color000000,
@@ -253,16 +295,49 @@ fun ScreenTablet(
 
             Spacer(modifier = Modifier.size(16.dp))
 
-            if(title == "세팅바라 현황"){
-                ContentsSetting(
-                    lineTest = lineTest,
-                    lineBest = lineBest,
-                    lineJson = lineJson,
-                    lineTrophy = lineTrophy,
-                    viewModelMain = viewModelMain
-                )
-            } else if(title == "FCM 관리"){
-                ContentsFCMManage(viewModelMain = viewModelMain)
+            when (title) {
+                "세팅바라 현황" -> {
+                    ContentsSetting(
+                        lineTest = lineTest,
+                        lineBest = lineBest,
+                        lineJson = lineJson,
+                        lineTrophy = lineTrophy,
+                        viewModelMain = viewModelMain
+                    )
+                }
+                "FCM 관리" -> {
+                    ContentsFCMManage(lineTest = lineTest)
+                }
+                "FCM 공지사항 리스트" -> {
+                    ContentsFCMList(viewModelMain = viewModelMain, child = "NOTICE")
+                }
+                "FCM 알림 리스트" -> {
+                    ContentsFCMList(viewModelMain = viewModelMain, child = "ALERT")
+                }
+                "베스트 리스트 관리" -> {
+                    ContentsBestManage(lineBest = lineBest)
+                }
+                "베스트 BOOK 리스트" -> {
+                    ContentsBestList(
+                        setDetailPage = setDetailPage,
+                        setDetailMenu = setDetailMenu,
+                        setDetailPageType = setDetailPageType
+                    )
+                }
+                "베스트 주간 트로피" -> {
+                    ContentsBestList(
+                        setDetailPage = setDetailPage,
+                        setDetailMenu = setDetailMenu,
+                        setDetailPageType = setDetailPageType
+                    )
+                }
+                "베스트 월간 트로피" -> {
+                    ContentsBestList(
+                        setDetailPage = setDetailPage,
+                        setDetailMenu = setDetailMenu,
+                        setDetailPageType = setDetailPageType
+                    )
+                }
             }
         }
     }
@@ -343,8 +418,7 @@ fun ContentsSetting(
                 ItemMainTabletContent(
                     title = item.title,
                     value = item.value,
-                    isLast = lineTrophy.size - 1 == index,
-                    onClick = {}
+                    isLast = lineTrophy.size - 1 == index
                 )
             }
         }
@@ -367,8 +441,7 @@ fun ContentsSetting(
                 ItemMainTabletContent(
                     title = item.title,
                     value = item.value,
-                    isLast = lineTrophy.size - 1 == index,
-                    onClick = {}
+                    isLast = lineTrophy.size - 1 == index
                 )
             }
         }
@@ -391,8 +464,7 @@ fun ContentsSetting(
                 ItemMainTabletContent(
                     title = item.title,
                     value = item.value,
-                    isLast = lineTrophy.size - 1 == index,
-                    onClick = {}
+                    isLast = lineTrophy.size - 1 == index
                 )
             }
         }
@@ -415,8 +487,7 @@ fun ContentsSetting(
                 ItemMainTabletContent(
                     title = item.title,
                     value = item.value,
-                    isLast = lineTrophy.size - 1 == index,
-                    onClick = {}
+                    isLast = lineTrophy.size - 1 == index
                 )
             }
         }
@@ -424,35 +495,61 @@ fun ContentsSetting(
 
     Spacer(modifier = Modifier.size(60.dp))
 }
-@Composable
-fun TabletContentWrap(radius : Int, content : @Composable () -> Unit){
-    Card(
-        modifier = Modifier
-            .fillMaxSize(),
-        backgroundColor = Color.White,
-        shape = RoundedCornerShape(percent = radius),
-        elevation = 0.dp
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(24.dp, 4.dp)
-        ) {
-            content()
-        }
-    }
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ContentsFCMManage(
-    viewModelMain : ViewModelMain
-) {
+fun ContentsFCMManage(lineTest: List<MainSettingLine>) {
 
     val context = LocalContext.current
     val dataStore = DataStoreManager(context)
     val workManager = WorkManager.getInstance(context)
     val (getFCM, setFCM) = remember { mutableStateOf(DataFCMBodyNotification()) }
+
+    val itemFcmWorker = listOf(
+        MainSettingLine(title = "테스트 WORKER 시작", onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                repeatInterval = 15,
+                tag = "TEST",
+                timeMill = TimeUnit.MINUTES
+            )
+        }),
+        MainSettingLine(title = "테스트 WORKER 취소", onClick = {
+            PeriodicWorker.cancelWorker(
+                workManager = workManager,
+                tag = "TEST"
+            )
+        }),
+        MainSettingLine(title = "테스트 WORKER 확인", onClick = {
+            PeriodicWorker.checkWorker(
+                workManager = workManager,
+                tag = "TEST"
+            )
+        }),
+    )
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    Text(
+        modifier = Modifier.padding(32.dp, 8.dp),
+        text = "테스트 현황",
+        fontSize = 16.sp,
+        color = color8e8e8e,
+        fontWeight = FontWeight(weight = 700)
+    )
+
+    TabletContentWrap(
+        radius = 10,
+        content = {
+            lineTest.forEachIndexed { index, item ->
+                ItemMainTabletContent(
+                    title = item.title,
+                    value = item.value,
+                    isLast = lineTest.size - 1 == index
+                )
+            }
+        }
+    )
 
     Button(
         colors = ButtonDefaults.buttonColors(containerColor = Color.White),
@@ -508,41 +605,13 @@ fun ContentsFCMManage(
     TabletContentWrap(
         radius = 10,
         content = {
-            ItemMainTabletContent(
-                title = "테스트 WORKER 시작",
-                value = "",
-                isLast = false,
-                onClick = {
-                    PeriodicWorker.doWorker(
-                        workManager = workManager,
-                        repeatInterval = 15,
-                        tag = "TEST",
-                        timeMill = TimeUnit.MINUTES
-                    )
-                }
-            )
-            ItemMainTabletContent(
-                title = "테스트 WORKER 취소",
-                value = "HELLO",
-                isLast = false,
-                onClick = {
-                    PeriodicWorker.cancelWorker(
-                        workManager = workManager,
-                        tag = "TEST"
-                    )
-                }
-            )
-            ItemMainTabletContent(
-                title = "테스트 WORKER 확인",
-                value = "",
-                isLast = true,
-                onClick = {
-                    PeriodicWorker.checkWorker(
-                        workManager = workManager,
-                        tag = "TEST"
-                    )
-                }
-            )
+            itemFcmWorker.forEachIndexed { index, item ->
+                ItemMainTabletContent(
+                    title = item.title,
+                    isLast = itemFcmWorker.size - 1 == index,
+                    onClick = item.onClick
+                )
+            }
         }
     )
 
@@ -598,16 +667,184 @@ fun ContentsFCMManage(
         }
     )
 
+    Spacer(modifier = Modifier.size(60.dp))
+}
+
+@Composable
+fun ContentsFCMList(viewModelMain: ViewModelMain, child : String){
+
+    viewModelMain.getFCMList(child = child)
+
+    val fcmAlertList = if(child == "ALERT"){
+        viewModelMain.state.collectAsState().value.fcmAlertList
+    } else {
+        viewModelMain.state.collectAsState().value.fcmNoticeList
+    }
+
+    TabletContentWrap(
+        radius = 5,
+        content = {
+            Spacer(modifier = Modifier.size(8.dp))
+
+            fcmAlertList.forEachIndexed { index, item ->
+                ItemTabletFCMList(
+                    item = item,
+                    isLast = fcmAlertList.size - 1 == index
+                )
+            }
+
+            Spacer(modifier = Modifier.size(8.dp))
+        }
+    )
 
     Spacer(modifier = Modifier.size(60.dp))
 }
 
 @Composable
-fun TabletBorderLine(){
-    Spacer(modifier = Modifier.size(8.dp))
-    Spacer(modifier = Modifier
-        .fillMaxWidth()
-        .height(1.dp)
-        .background(color = color8e8e8e))
-    Spacer(modifier = Modifier.size(8.dp))
+fun ContentsBestManage(lineBest: List<MainSettingLine>) {
+
+    val context = LocalContext.current
+    val workManager = WorkManager.getInstance(context)
+
+    val itemBestWorker = listOf(
+        MainSettingLine(title = "베스트 WORKER 시작", onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                repeatInterval = 3,
+                tag = "BEST",
+                timeMill = TimeUnit.HOURS
+            )
+        }),
+        MainSettingLine(title = "베스트 WORKER 취소", onClick = {
+            PeriodicWorker.cancelWorker(workManager = workManager,  tag = "BEST")
+        }),
+        MainSettingLine(title = "베스트 WORKER 확인", onClick = {
+            PeriodicWorker.checkWorker(
+                workManager = workManager,
+                tag = "BEST"
+            )
+        }),
+    )
+
+    TabletContentWrap(
+        radius = 10,
+        content = {
+            itemBestWorker.forEachIndexed { index, item ->
+                ItemMainTabletContent(
+                    title = item.title,
+                    isLast = itemBestWorker.size - 1 == index,
+                    onClick = item.onClick
+                )
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    Text(
+        modifier = Modifier.padding(32.dp, 8.dp),
+        text = "베스트 현황",
+        fontSize = 16.sp,
+        color = color8e8e8e,
+        fontWeight = FontWeight(weight = 700)
+    )
+
+    TabletContentWrap(
+        radius = 10,
+        content = {
+            lineBest.forEachIndexed { index, item ->
+                ItemMainTabletContent(
+                    title = item.title,
+                    value = item.value,
+                    isLast = lineBest.size - 1 == index
+                )
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(60.dp))
+}
+
+@Composable
+fun ContentsBestList(
+    setDetailPage: (Boolean) -> Unit,
+    setDetailMenu: (String) -> Unit,
+    setDetailPageType: (String) -> Unit,
+) {
+
+    val context = LocalContext.current
+    val itemList = ArrayList<MainSettingLine>()
+
+    for (j in NaverSeriesGenre) {
+        itemList.add(MainSettingLine(title = "네이버 시리즈 베스트 리스트 ${getNaverSeriesGenreKor(j)}", value = getNaverSeriesGenre(j)))
+    }
+
+    Button(
+        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+        onClick = {
+            for (j in NaverSeriesGenre) {
+
+                if (DBDate.getDayOfWeekAsNumber() == 0) {
+                    BestRef.setBestRef(platform = "NAVER_SERIES", genre = j).child("TROPHY_WEEK")
+                        .removeValue()
+                }
+
+                if (DBDate.datedd() == "01") {
+                    BestRef.setBestRef(platform = "NAVER_SERIES", genre = j).child("TROPHY_MONTH")
+                        .removeValue()
+                }
+
+                for (i in 1..5) {
+                    Mining.miningNaverSeriesAll(pageCount = i, genre = j)
+                }
+            }
+            FCM.postFCMAlertTest(context = context, message = "베스트 리스트가 갱신되었습니다")
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(44.dp),
+        shape = RoundedCornerShape(50.dp),
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "베스트 리스트 수동 갱신",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    Text(
+        modifier = Modifier.padding(32.dp, 8.dp),
+        text = "네이버 시리즈",
+        fontSize = 16.sp,
+        color = color8e8e8e,
+        fontWeight = FontWeight(weight = 700)
+    )
+
+    TabletContentWrap(
+        radius = 5,
+        content = {
+            itemList.forEachIndexed { index, item ->
+                ItemMainTabletContent(
+                    title = item.title,
+                    isLast = itemList.size - 1 == index,
+                    onClick = {
+                        setDetailPage(true)
+                        setDetailMenu(item.title)
+                        setDetailPageType(item.value)
+                    }
+                )
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(60.dp))
 }

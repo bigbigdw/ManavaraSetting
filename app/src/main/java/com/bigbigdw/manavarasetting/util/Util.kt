@@ -67,6 +67,24 @@ fun getNaverSeriesGenre(genre : String) : String {
     }
 }
 
+fun getNaverSeriesGenreKor(genre : String) : String {
+    if(genre == "ALL"){
+        return "전체"
+    } else if(genre == "99"){
+        return "멜로"
+    } else if(genre == "93"){
+        return "드라마"
+    } else if(genre == "90"){
+        return "소년"
+    } else if(genre == "88"){
+        return "액션"
+    }else if(genre == "107"){
+        return "BL"
+    } else {
+        return "없음"
+    }
+}
+
 @SuppressLint("SuspiciousIndentation")
 fun convertBestItemData(bestItemData : BestItemData) : JsonObject {
     val jsonObject = JsonObject()

@@ -6,4 +6,5 @@ import kotlinx.serialization.Serializable
 data class MainSettingLine (
     var title: String = "",
     var value: String = "",
+    var onClick : () -> Unit = {}
 )

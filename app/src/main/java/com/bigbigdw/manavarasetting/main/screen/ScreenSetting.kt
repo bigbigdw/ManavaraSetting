@@ -53,21 +53,37 @@ fun ScreenMainSetting(
 
                 val (getMenu, setMenu) = remember { mutableStateOf("세팅바라 현황") }
 
-                ScreenSettingTabletContents(setMenu = setMenu, getMenu = getMenu)
+                val (getDetailPage, setDetailPage) = remember { mutableStateOf(false) }
+                val (getDetailPageType, setDetailPageType) = remember { mutableStateOf("") }
+                val (getDetailMenu, setDetailMenu) = remember { mutableStateOf("") }
+
+                ScreenSettingTabletContents(setMenu = setMenu, getMenu = getMenu, onClick = {setDetailPage(false)})
 
                 Spacer(modifier = Modifier
                     .width(16.dp)
                     .fillMaxHeight()
                     .background(color = colorf6f6f6))
 
-                ScreenTablet(
-                    title = getMenu,
-                    lineTest = lineTest,
-                    lineBest = lineBest,
-                    lineJson = lineJson,
-                    lineTrophy = lineTrophy,
-                    viewModelMain = viewModelMain
-                )
+                if(getDetailPage){
+                    ScreenTabletDetail(
+                        setDetailPage = setDetailPage,
+                        getDetailMenu = getDetailMenu,
+                        viewModelMain = viewModelMain,
+                        getDetailPageType = getDetailPageType
+                    )
+                } else {
+                    ScreenTablet(
+                        title = getMenu,
+                        lineTest = lineTest,
+                        lineBest = lineBest,
+                        lineJson = lineJson,
+                        lineTrophy = lineTrophy,
+                        viewModelMain = viewModelMain,
+                        setDetailPage = setDetailPage,
+                        setDetailMenu = setDetailMenu,
+                        setDetailPageType = setDetailPageType
+                    )
+                }
 
             } else {
                 ScreenSettingMobileContents(
@@ -145,8 +161,6 @@ fun ScreenSettingMobileContents(
         }
 
         Spacer(modifier = Modifier.size(24.dp))
-
-        BtnMobile(func = { viewModelMain.getDataStoreStatus(context = context, workManager = workManager) }, btnText = "WORKER 최신화")
 
         BtnMobile(func = { viewModelMain.getDataStoreFCMCount(context = context) }, btnText = "FCM COUNT 최신화")
 
