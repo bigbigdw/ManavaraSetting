@@ -73,172 +73,6 @@ import com.google.gson.JsonArray
 import java.util.concurrent.TimeUnit
 
 @Composable
-fun ScreenSettingTabletContents(setMenu: (String) -> Unit, getMenu: String, onClick : () -> Unit){
-
-    Column(
-        modifier = Modifier
-            .width(334.dp)
-            .fillMaxHeight()
-            .background(color = colorf6f6f6)
-            .padding(8.dp, 0.dp)
-            .verticalScroll(rememberScrollState())
-            .semantics { contentDescription = "Overview Screen" },
-    ) {
-
-        Spacer(modifier = Modifier.size(16.dp))
-
-        Text(
-            modifier = Modifier.padding(16.dp, 0.dp, 0.dp, 0.dp),
-            text = "세팅바라",
-            fontSize = 24.sp,
-            color = color000000,
-            fontWeight = FontWeight(weight = 700)
-        )
-
-        Spacer(modifier = Modifier.size(16.dp))
-
-        ItemMainSettingSingleTablet(
-            containerColor = color52a9ff,
-            image = R.drawable.ic_launcher,
-            title = "세팅바라 현황",
-            body = "Periodic Worker 현황",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = {onClick()}
-        )
-
-        TabletBorderLine()
-
-        ItemMainSettingSingleTablet(
-            containerColor = color4ad7cf,
-            image = R.drawable.icon_fcm_wht,
-            title = "FCM 관리",
-            body = "FCM 테스트 & 공지사항 등록 & 토큰 획득",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = {onClick()}
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = color5372de,
-            image = R.drawable.icon_fcm_wht,
-            title = "FCM 공지사항 리스트",
-            body = "NOTICE 리스트 확인",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = {onClick()}
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = color998df9,
-            image = R.drawable.icon_fcm_wht,
-            title = "FCM 알림 리스트",
-            body = "ALERT 리스트 확인",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = {onClick()}
-        )
-
-        TabletBorderLine()
-
-        ItemMainSettingSingleTablet(
-            containerColor = colorea927c,
-            image = R.drawable.icon_best_wht,
-            title = "베스트 리스트 관리",
-            body = "베스트 리스트 수동 갱신 & Worker",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = {onClick()}
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = colorabd436,
-            image = R.drawable.icon_best_wht,
-            title = "베스트 BOOK 리스트",
-            body = "장르별 작품 리스트 확인",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = {onClick()}
-        )
-
-        TabletBorderLine()
-
-        ItemMainSettingSingleTablet(
-            containerColor = colorf17fa0,
-            image = R.drawable.icon_json_wht,
-            title = "베스트 JSON 관리",
-            body = "베스트 JSON  수동 갱신 & Worker 관리",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = {onClick()}
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = color21c2ec,
-            image = R.drawable.icon_json_wht,
-            title = "베스트 JSON 투데이 현황",
-            body = "장르별 DAY JSON 확인",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = {onClick()}
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = color31c3ae,
-            image = R.drawable.icon_json_wht,
-            title = "베스트 JSON 주간 현황",
-            body = "장르별 WEEK 주간 확인",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = {onClick()}
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = color7c81ff,
-            image = R.drawable.icon_json_wht,
-            title = "베스트 JSON 월간 현황",
-            body = "장르별 MONTH 월간 확인",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = {onClick()}
-        )
-
-        TabletBorderLine()
-
-        ItemMainSettingSingleTablet(
-            containerColor = color64c157,
-            image = R.drawable.icon_trophy_wht,
-            title = "트로피 정산 관리",
-            body = "트로피 수동 정산 & Worker 관리",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = {onClick()}
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = color52a9ff,
-            image = R.drawable.icon_trophy_wht,
-            title = "트로피 주간 토탈 리스트",
-            body = "장르별 주간 트로피 리스트 확인",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = {onClick()}
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = color52a9ff,
-            image = R.drawable.icon_trophy_wht,
-            title = "트로피 월간 토탈 리스트",
-            body = "장르별 월간 트로피 리스트 확인",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = {onClick()}
-        )
-
-    }
-}
-
-@Composable
 fun ScreenTablet(
     title: String,
     lineTest: List<MainSettingLine>,
@@ -536,7 +370,7 @@ fun ContentsFCMManage(lineTest: List<MainSettingLine>) {
         modifier = Modifier
             .padding(8.dp, 0.dp)
             .fillMaxWidth(),
-        shape = RoundedCornerShape(10.dp),
+        shape = RoundedCornerShape(20.dp),
         content = {
 
             Column {
@@ -567,6 +401,32 @@ fun ContentsFCMManage(lineTest: List<MainSettingLine>) {
                     )
                 }
                 Spacer(modifier = Modifier.size(16.dp))
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(32.dp))
+
+    Button(
+        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+        onClick = {
+            FCM.postFCMAlertTest(context = context, message = "테스트")
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(44.dp),
+        shape = RoundedCornerShape(50.dp),
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "푸시 알림 테스트",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
             }
         }
     )

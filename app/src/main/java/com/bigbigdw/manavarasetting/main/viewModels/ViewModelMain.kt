@@ -247,7 +247,7 @@ class ViewModelMain @Inject constructor() : ViewModel() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if(dataSnapshot.exists()){
 
-                    val fcmlist = ArrayList<FCMAlert>()
+                    var fcmlist = ArrayList<FCMAlert>()
 
                     for(item in dataSnapshot.children){
                         val fcm: FCMAlert? = dataSnapshot.child(item.key ?: "").getValue(FCMAlert::class.java)
@@ -257,6 +257,10 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                     }
 
                     viewModelScope.launch {
+
+                        if(fcmlist.size > 1){
+                            fcmlist = fcmlist.reversed() as ArrayList<FCMAlert>
+                        }
 
                         if(child == "ALERT"){
                             events.send(EventMain.SetFcmAlertList(fcmAlertList = fcmlist))
