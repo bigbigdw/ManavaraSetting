@@ -15,6 +15,9 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+import com.google.gson.JsonArray
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -22,6 +25,9 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.runningFold
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
+import java.nio.charset.Charset
 import javax.inject.Inject
 
 class ViewModelMain @Inject constructor() : ViewModel() {
@@ -83,6 +89,14 @@ class ViewModelMain @Inject constructor() : ViewModel() {
             is EventMain.SetBestBookList -> {
                 current.copy(
                     setBestBookList = event.setBestBookList
+                )
+            }
+
+            is EventMain.SetFCMList -> {
+                current.copy(
+                    fcmBestList = event.fcmBestList,
+                    fcmJsonList = event.fcmJsonList,
+                    fcmTrophyList = event.fcmTrophyList,
                 )
             }
 
@@ -166,6 +180,10 @@ class ViewModelMain @Inject constructor() : ViewModel() {
 
         val dataStore = DataStoreManager(context)
 
+        var fcmBestList = ArrayList<FCMAlert>()
+        var fcmJsonList = ArrayList<FCMAlert>()
+        var fcmTrophyList = ArrayList<FCMAlert>()
+
         mRootRef.addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -183,17 +201,23 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                         } else if (fcm?.body?.contains("베스트 리스트가 갱신되었습니다") == true) {
                             numBest += 1
 
+                            fcmBestList.add(fcm)
+
                             if (fcm.body.contains("${year}.${month}.${day}")) {
                                 numBestToday += 1
                             }
                         } else if (fcm?.body?.contains("DAY JSON 생성이 완료되었습니다") == true) {
                             numJson += 1
 
+                            fcmJsonList.add(fcm)
+
                             if (fcm.body.contains("${year}.${month}.${day}")) {
                                 numJsonToday += 1
                             }
                         } else if (fcm?.body?.contains("트로피 정산이 완료되었습니다") == true) {
                             numTrophy += 1
+
+                            fcmTrophyList.add(fcm)
 
                             if (fcm.body.contains("${year}.${month}.${day}")) {
                                 numTrophyToday += 1
@@ -202,6 +226,18 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                             Log.d("HIHIHIHI", "item = $item")
                         }
 
+                    }
+
+                    if(fcmBestList.size > 1){
+                        fcmBestList = fcmBestList.reversed() as ArrayList<FCMAlert>
+                    }
+
+                    if(fcmJsonList.size > 1){
+                        fcmJsonList = fcmJsonList.reversed() as ArrayList<FCMAlert>
+                    }
+
+                    if(fcmTrophyList.size > 1){
+                        fcmTrophyList = fcmTrophyList.reversed() as ArrayList<FCMAlert>
                     }
 
                     viewModelScope.launch {
@@ -227,6 +263,14 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                             )
                         )
 
+                        events.send(
+                            EventMain.SetFCMList(
+                                fcmBestList = fcmBestList,
+                                fcmJsonList = fcmJsonList,
+                                fcmTrophyList = fcmTrophyList,
+                            )
+                        )
+
                         _sideEffects.send("FCM 카운트 갱신이 완료되었습니다")
                     }
 
@@ -240,6 +284,7 @@ class ViewModelMain @Inject constructor() : ViewModel() {
     }
 
     fun getFCMList(child: String){
+
         val mRootRef = FirebaseDatabase.getInstance().reference.child("MESSAGE").child(child)
 
         mRootRef.addListenerForSingleValueEvent(object :
@@ -307,4 +352,29 @@ class ViewModelMain @Inject constructor() : ViewModel() {
             override fun onCancelled(databaseError: DatabaseError) {}
         })
     }
+
+    fun getBestJsonList(genre : String){
+        val storage = Firebase.storage
+        val storageRef = storage.reference
+        val todayFileRef = storageRef.child("NAVER_SERIES/${genre}/DAY/${DBDate.dateMMDD()}.json")
+
+        val todayFile = todayFileRef.getBytes(1024 * 1024)
+
+        todayFile.addOnSuccessListener { bytes ->
+            val jsonString = String(bytes, Charset.forName("UTF-8"))
+            val json = Json { ignoreUnknownKeys = true }
+            val itemList = json.decodeFromString<List<BestItemData>>(jsonString)
+
+            val todayJsonList = ArrayList<BestItemData>()
+
+            for (item in itemList) {
+                todayJsonList.add(item)
+            }
+
+            viewModelScope.launch {
+                events.send(EventMain.SetBestBookList(setBestBookList = todayJsonList))
+            }
+        }
+    }
 }
+

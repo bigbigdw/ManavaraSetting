@@ -310,8 +310,8 @@ fun ScreenSettingTabletContents(setMenu: (String) -> Unit, getMenu: String, onCl
         ItemMainSettingSingleTablet(
             containerColor = color21c2ec,
             image = R.drawable.icon_json_wht,
-            title = "베스트 JSON 관리",
-            body = "베스트 JSON 수동 갱신 & Worker 관리",
+            title = "JSON 베스트 관리",
+            body = "JSON 베스트 수동 갱신 & Worker 관리",
             setMenu = setMenu,
             getMenu = getMenu,
             onClick = {onClick()}
@@ -412,8 +412,8 @@ fun ScreenSettingTabletContents(setMenu: (String) -> Unit, getMenu: String, onCl
         ItemMainSettingSingleTablet(
             containerColor = color79b4f8,
             image = R.drawable.icon_trophy_wht,
-            title = "트로피 갱신 현황",
-            body = "시간별 트로피 갱신 현황",
+            title = "트로피 최신화 현황",
+            body = "시간별 트로피 최신화 현황",
             setMenu = setMenu,
             getMenu = getMenu,
             onClick = {onClick()}

@@ -20,6 +20,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bigbigdw.manavarasetting.main.model.BestItemData
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.colorf6f6f6
@@ -62,18 +63,28 @@ fun ScreenTabletDetail(
             Spacer(modifier = Modifier.size(16.dp))
 
             if(getDetailMenu.contains("베스트 리스트")){
-                ContentsBestListDetail(viewModelMain = viewModelMain, child = getDetailPageType)
+                ContentsBestListDetail(viewModelMain = viewModelMain, child = getDetailPageType, type = "BEST")
+            } else if(getDetailMenu.contains("투데이 JSON 리스트")){
+                ContentsBestListDetail(
+                    viewModelMain = viewModelMain,
+                    genre = getDetailPageType,
+                    type = "JSON"
+                )
             }
         }
     }
 }
 
 @Composable
-fun ContentsBestListDetail(viewModelMain: ViewModelMain, child : String){
+fun ContentsBestListDetail(viewModelMain: ViewModelMain, genre: String, type: String){
 
-    viewModelMain.getBestList(child = child)
-
-    val bestList = viewModelMain.state.collectAsState().value.setBestBookList
+    val bestList: ArrayList<BestItemData> = if(type == "BEST"){
+        viewModelMain.getBestList(child = genre)
+        viewModelMain.state.collectAsState().value.setBestBookList
+    } else {
+        viewModelMain.getBestJsonList(genre = genre)
+        viewModelMain.state.collectAsState().value.setBestBookList
+    }
 
     TabletContentWrap(
         radius = 5,

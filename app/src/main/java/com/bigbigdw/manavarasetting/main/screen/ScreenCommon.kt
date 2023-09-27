@@ -57,9 +57,13 @@ import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color20459e
 import com.bigbigdw.manavarasetting.ui.theme.color8e8e8e
 import com.bigbigdw.manavarasetting.ui.theme.colorA7ACB7
+import com.bigbigdw.manavarasetting.ui.theme.colorB3000000
+import com.bigbigdw.manavarasetting.ui.theme.colorB3FFFFFF
 import com.bigbigdw.manavarasetting.ui.theme.colorEDE6FD
+import com.bigbigdw.manavarasetting.ui.theme.colorFFFFFF
 import com.bigbigdw.manavarasetting.ui.theme.colore9e9e9
 import com.bigbigdw.manavarasetting.ui.theme.colorf7f7f7
+import com.bigbigdw.manavarasetting.util.DBDate
 
 @Composable
 fun BackOnPressed() {
@@ -439,6 +443,8 @@ fun TabletContentWrap(radius : Int, content : @Composable () -> Unit){
 @Composable
 fun ItemTabletFCMList(item : FCMAlert, isLast: Boolean){
 
+    val today = DBDate.dateMMDD()
+
     val year = item.date.substring(0,4)
     val month = item.date.substring(4,6)
     val day = item.date.substring(6,8)
@@ -453,6 +459,11 @@ fun ItemTabletFCMList(item : FCMAlert, isLast: Boolean){
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
+                modifier = Modifier.background(color = if(item.date.contains(today)){
+                    colore9e9e9
+                } else {
+                    Color.Transparent
+                }),
                 text = "${year}.${month}.${day} ${hour}:${min}",
                 color = color000000,
                 fontSize = 18.sp,
@@ -507,7 +518,9 @@ fun ItemTabletBestList(item : BestItemData, isLast: Boolean){
             AsyncImage(
                 model = item.bookImg,
                 contentDescription = null,
-                modifier = Modifier.height(220.dp).widthIn(0.dp, 220.dp)
+                modifier = Modifier
+                    .height(220.dp)
+                    .widthIn(0.dp, 220.dp)
             )
 
             Spacer(modifier = Modifier.size(16.dp))

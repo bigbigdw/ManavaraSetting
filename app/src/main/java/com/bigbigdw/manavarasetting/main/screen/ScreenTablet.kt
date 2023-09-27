@@ -7,13 +7,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -37,25 +35,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.work.WorkManager
-import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.firebase.DataFCMBodyNotification
 import com.bigbigdw.manavarasetting.main.model.MainSettingLine
 import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
-import com.bigbigdw.manavarasetting.ui.theme.color21c2ec
-import com.bigbigdw.manavarasetting.ui.theme.color31c3ae
-import com.bigbigdw.manavarasetting.ui.theme.color4ad7cf
-import com.bigbigdw.manavarasetting.ui.theme.color52a9ff
-import com.bigbigdw.manavarasetting.ui.theme.color5372de
-import com.bigbigdw.manavarasetting.ui.theme.color64c157
-import com.bigbigdw.manavarasetting.ui.theme.color7c81ff
 import com.bigbigdw.manavarasetting.ui.theme.color898989
 import com.bigbigdw.manavarasetting.ui.theme.color8e8e8e
-import com.bigbigdw.manavarasetting.ui.theme.color998df9
-import com.bigbigdw.manavarasetting.ui.theme.colorabd436
-import com.bigbigdw.manavarasetting.ui.theme.colorea927c
-import com.bigbigdw.manavarasetting.ui.theme.colorf17fa0
 import com.bigbigdw.manavarasetting.ui.theme.colorf6f6f6
 import com.bigbigdw.manavarasetting.util.BestRef
 import com.bigbigdw.manavarasetting.util.DBDate
@@ -138,41 +124,46 @@ fun ScreenTablet(
                 }
                 "베스트 BOOK 리스트" -> {
                     ContentsBestList(
-                        detail = "베스트 리스트",
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         setDetailPageType = setDetailPageType
                     )
                 }
-                "베스트 JSON 관리" -> {
+                "베스트 최신화 현황" -> {
+                    ContentsFCMList(viewModelMain = viewModelMain, child = "BEST")
+                }
+                "JSON 베스트 관리" -> {
                     ContentsJsonManage(lineJson = lineJson)
                 }
-                "베스트 JSON 투데이 현황" -> {
-                    ContentsBestList(
-                        detail = "베스트 JSON 투데이",
+                "JSON 투데이 베스트 현황" -> {
+                    ContentsBestJsonList(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         setDetailPageType = setDetailPageType
                     )
                 }
-                "베스트 JSON 주간 현황" -> {
+                "JSON 주간 베스트 현황" -> {
                     ContentsBestList(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         setDetailPageType = setDetailPageType,
-                        detail = "베스트 JSON 주간",
                     )
                 }
-                "베스트 JSON 월간 현황" -> {
+                "JSON 월간 베스트 현황" -> {
                     ContentsBestList(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         setDetailPageType = setDetailPageType,
-                        detail = "베스트 JSON 월간",
                     )
+                }
+                "JSON 최신화 현황" -> {
+                    ContentsFCMList(viewModelMain = viewModelMain, child = "JSON")
                 }
                 "트로피 정산 관리" -> {
                     ContentsTrophyManage(lineTrophy = lineTrophy)
+                }
+                "트로피 최신화 현황" -> {
+                    ContentsFCMList(viewModelMain = viewModelMain, child = "JSON")
                 }
             }
         }
@@ -535,12 +526,29 @@ fun ContentsFCMManage(lineTest: List<MainSettingLine>) {
 @Composable
 fun ContentsFCMList(viewModelMain: ViewModelMain, child : String){
 
-    viewModelMain.getFCMList(child = child)
 
-    val fcmAlertList = if(child == "ALERT"){
-        viewModelMain.state.collectAsState().value.fcmAlertList
-    } else {
-        viewModelMain.state.collectAsState().value.fcmNoticeList
+    val fcmAlertList = when (child) {
+        "ALERT" -> {
+            viewModelMain.getFCMList(child = child)
+            viewModelMain.state.collectAsState().value.fcmAlertList
+        }
+        "NOTICE" -> {
+            viewModelMain.getFCMList(child = child)
+            viewModelMain.getFCMList(child = child)
+            viewModelMain.state.collectAsState().value.fcmNoticeList
+        }
+        "BEST" -> {
+            viewModelMain.state.collectAsState().value.fcmBestList
+        }
+        "JSON" -> {
+            viewModelMain.state.collectAsState().value.fcmJsonList
+        }
+        "TROPHY" -> {
+            viewModelMain.state.collectAsState().value.fcmTrophyList
+        }
+        else -> {
+            viewModelMain.state.collectAsState().value.fcmAlertList
+        }
     }
 
     TabletContentWrap(
@@ -632,7 +640,6 @@ fun ContentsBestList(
     setDetailPage: (Boolean) -> Unit,
     setDetailMenu: (String) -> Unit,
     setDetailPageType: (String) -> Unit,
-    detail: String,
 ) {
 
     val context = LocalContext.current
@@ -683,6 +690,47 @@ fun ContentsBestList(
     )
 
     Spacer(modifier = Modifier.size(16.dp))
+
+    Text(
+        modifier = Modifier.padding(32.dp, 8.dp),
+        text = "네이버 시리즈",
+        fontSize = 16.sp,
+        color = color8e8e8e,
+        fontWeight = FontWeight(weight = 700)
+    )
+
+    TabletContentWrap(
+        radius = 5,
+        content = {
+            itemList.forEachIndexed { index, item ->
+                ItemMainTabletContent(
+                    title = item.title,
+                    isLast = itemList.size - 1 == index,
+                    onClick = {
+                        setDetailPage(true)
+                        setDetailMenu(item.title)
+                        setDetailPageType(item.value)
+                    }
+                )
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(60.dp))
+}
+
+@Composable
+fun ContentsBestJsonList(
+    setDetailPage: (Boolean) -> Unit,
+    setDetailMenu: (String) -> Unit,
+    setDetailPageType: (String) -> Unit,
+) {
+
+    val itemList = ArrayList<MainSettingLine>()
+
+    for (j in NaverSeriesGenre) {
+        itemList.add(MainSettingLine(title = "네이버 시리즈 투데이 JSON 리스트 ${getNaverSeriesGenreKor(j)}", value = getNaverSeriesGenre(j)))
+    }
 
     Text(
         modifier = Modifier.padding(32.dp, 8.dp),

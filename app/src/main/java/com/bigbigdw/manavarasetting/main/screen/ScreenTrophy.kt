@@ -32,8 +32,7 @@ import java.util.concurrent.TimeUnit
 @Composable
 fun ScreenMainTrophy(
     workManager: WorkManager,
-    viewModelMain: ViewModelMain,
-    isExpandedScreen: Boolean
+    viewModelMain: ViewModelMain
 ) {
     val context = LocalContext.current
 
@@ -50,7 +49,7 @@ fun ScreenMainTrophy(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            MainHeader(image = R.drawable.icon_trophy, title = "트로피 갱신 현황")
+            MainHeader(image = R.drawable.icon_trophy, title = "트로피 최신화 현황")
 
             ItemMainSetting(
                 image = R.drawable.icon_trophy_gr,
