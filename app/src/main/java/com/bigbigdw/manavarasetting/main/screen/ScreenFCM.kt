@@ -40,8 +40,8 @@ import com.bigbigdw.manavarasetting.main.model.MainSettingLine
 import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color898989
-import com.bigbigdw.manavarasetting.ui.theme.color8e8e8e
-import com.bigbigdw.manavarasetting.ui.theme.colorf6f6f6
+import com.bigbigdw.manavarasetting.ui.theme.color8E8E8E
+import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.util.FCM
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import java.util.concurrent.TimeUnit
@@ -57,13 +57,19 @@ fun ScreenMainFCM(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = colorf6f6f6)
+                .background(color = colorF6F6F6)
                 .padding(16.dp, 0.dp)
                 .verticalScroll(rememberScrollState())
                 .semantics { contentDescription = "Overview Screen" },
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(80.dp)
+            )
 
             MainHeader(image = R.drawable.icon_fcm, title = "FCM 현황")
 
@@ -136,7 +142,7 @@ fun ContentsFCM(lineTest: List<MainSettingLine>) {
                 ) {
                     Text(
                         text = dataStore.getDataStoreString(DataStoreManager.FCM_TOKEN).collectAsState(initial = "").value ?: "",
-                        color = color8e8e8e,
+                        color = color8E8E8E,
                         fontSize = 16.sp,
                     )
                 }
@@ -177,7 +183,7 @@ fun ContentsFCM(lineTest: List<MainSettingLine>) {
         modifier = Modifier.padding(32.dp, 8.dp),
         text = "테스트 현황",
         fontSize = 16.sp,
-        color = color8e8e8e,
+        color = color8E8E8E,
         fontWeight = FontWeight(weight = 700)
     )
 
@@ -200,7 +206,7 @@ fun ContentsFCM(lineTest: List<MainSettingLine>) {
         modifier = Modifier.padding(32.dp, 8.dp),
         text = "FCM 매니저",
         fontSize = 16.sp,
-        color = color8e8e8e,
+        color = color8E8E8E,
         fontWeight = FontWeight(weight = 700)
     )
 
@@ -223,7 +229,7 @@ fun ContentsFCM(lineTest: List<MainSettingLine>) {
         modifier = Modifier.padding(32.dp, 8.dp),
         text = "FCM 공지사항 등록",
         fontSize = 16.sp,
-        color = color8e8e8e,
+        color = color8E8E8E,
         fontWeight = FontWeight(weight = 700)
     )
 

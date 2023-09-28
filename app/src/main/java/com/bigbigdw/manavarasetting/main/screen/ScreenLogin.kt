@@ -1,6 +1,5 @@
 package com.bigbigdw.manavarasetting.main.screen
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,21 +18,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bigbigdw.manavarasetting.R
-import com.bigbigdw.manavarasetting.ui.theme.color1E1E20
-import com.bigbigdw.manavarasetting.ui.theme.color844DF3
+import com.bigbigdw.manavarasetting.ui.theme.color20459E
+import com.bigbigdw.manavarasetting.ui.theme.color898989
 import com.bigbigdw.manavarasetting.ui.theme.colorA7ACB7
 import com.bigbigdw.manavarasetting.ui.theme.colorEDE6FD
-import com.bigbigdw.manavarasetting.ui.theme.colorFFFFFF
-import com.bigbigdw.manavarasetting.ui.theme.textColorType2
+import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 
 @Composable
 fun ScreenLogin(doLogin : () -> Unit) {
@@ -43,33 +39,20 @@ fun ScreenLogin(doLogin : () -> Unit) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = color1E1E20)
+                .background(color = colorF6F6F6)
                 .verticalScroll(rememberScrollState())
                 .semantics { contentDescription = "Overview Screen" },
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(
-                painter = painterResource(id = R.mipmap.ic_launcher),
-                contentDescription = null,
-                modifier = Modifier
-                    .width(72.dp)
-                    .height(72.dp)
-            )
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(8.dp))
-            Text(
-                text = "MANAVARASETTING",
-                fontSize = 24.sp,
-                textAlign = TextAlign.Center,
-                color = colorFFFFFF
-            )
+
+            MainHeader(image = R.drawable.ic_launcher, title = "세팅바라")
+
             Spacer(modifier = Modifier
                 .fillMaxWidth()
                 .height(22.dp))
             Button(
-                colors = ButtonDefaults.buttonColors(containerColor = color844DF3),
+                colors = ButtonDefaults.buttonColors(containerColor = color20459E),
                 onClick = { doLogin() },
                 modifier = Modifier
                     .width(260.dp)
@@ -90,7 +73,7 @@ fun ScreenLogin(doLogin : () -> Unit) {
                 text = "By 김대우",
                 fontSize = 12.sp,
                 textAlign = TextAlign.Center,
-                color = textColorType2,
+                color = color898989,
             )
             Spacer(modifier = Modifier
                 .fillMaxWidth()
@@ -99,7 +82,7 @@ fun ScreenLogin(doLogin : () -> Unit) {
                 text = "BIGBIGDW",
                 fontSize = 12.sp,
                 textAlign = TextAlign.Center,
-                color = textColorType2,
+                color = color898989,
             )
             Spacer(modifier = Modifier
                 .fillMaxWidth()
@@ -116,28 +99,15 @@ fun ScreenSplash() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = color1E1E20)
+                .background(color = colorF6F6F6)
                 .verticalScroll(rememberScrollState())
                 .semantics { contentDescription = "Overview Screen" },
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(
-                painter = painterResource(id = R.mipmap.ic_launcher),
-                contentDescription = null,
-                modifier = Modifier
-                    .width(72.dp)
-                    .height(72.dp)
-            )
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(8.dp))
-            Text(
-                text = "MANAVARASETTING",
-                fontSize = 24.sp,
-                textAlign = TextAlign.Center,
-                color = colorFFFFFF
-            )
+
+            MainHeader(image = R.drawable.ic_launcher, title = "세팅바라")
+
             Spacer(modifier = Modifier
                 .fillMaxWidth()
                 .height(22.dp))
@@ -158,7 +128,7 @@ fun ScreenSplash() {
                 text = "By 김대우",
                 fontSize = 12.sp,
                 textAlign = TextAlign.Center,
-                color = textColorType2,
+                color = color898989,
             )
             Spacer(modifier = Modifier
                 .fillMaxWidth()
@@ -167,7 +137,7 @@ fun ScreenSplash() {
                 text = "BIGBIGDW",
                 fontSize = 12.sp,
                 textAlign = TextAlign.Center,
-                color = textColorType2,
+                color = color898989,
             )
             Spacer(modifier = Modifier
                 .fillMaxWidth()

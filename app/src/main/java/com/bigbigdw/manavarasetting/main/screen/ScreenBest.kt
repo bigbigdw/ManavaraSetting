@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -23,8 +25,8 @@ import androidx.compose.ui.unit.sp
 import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.main.model.MainSettingLine
-import com.bigbigdw.manavarasetting.ui.theme.color8e8e8e
-import com.bigbigdw.manavarasetting.ui.theme.colorf6f6f6
+import com.bigbigdw.manavarasetting.ui.theme.color8E8E8E
+import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import java.util.concurrent.TimeUnit
 
@@ -39,13 +41,19 @@ fun ScreenMainBest(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = colorf6f6f6)
+                .background(color = colorF6F6F6)
                 .padding(16.dp, 0.dp)
                 .verticalScroll(rememberScrollState())
                 .semantics { contentDescription = "Overview Screen" },
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(80.dp)
+            )
 
             MainHeader(image = R.drawable.icon_best, title = "베스트 리스트 현황")
 
@@ -99,7 +107,7 @@ fun ContentsBest(lineBest: List<MainSettingLine>) {
         modifier = Modifier.padding(32.dp, 8.dp),
         text = "베스트 현황",
         fontSize = 16.sp,
-        color = color8e8e8e,
+        color = color8E8E8E,
         fontWeight = FontWeight(weight = 700)
     )
 

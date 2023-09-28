@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -27,7 +29,7 @@ import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.main.model.MainSettingLine
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
-import com.bigbigdw.manavarasetting.ui.theme.colorf6f6f6
+import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 
 @Composable
 fun ScreenMainSetting(
@@ -68,7 +70,7 @@ fun ScreenMainSetting(
                 Spacer(modifier = Modifier
                     .width(16.dp)
                     .fillMaxHeight()
-                    .background(color = colorf6f6f6))
+                    .background(color = colorF6F6F6))
 
                 if(getDetailPage){
                     ScreenTabletDetail(
@@ -116,13 +118,19 @@ fun ScreenSettingMobile(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = colorf6f6f6)
+            .background(color = colorF6F6F6)
             .padding(16.dp, 0.dp)
             .verticalScroll(rememberScrollState())
             .semantics { contentDescription = "Overview Screen" },
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(80.dp)
+        )
 
         MainHeader(image = R.drawable.ic_launcher, title = "세팅바라 현황")
 

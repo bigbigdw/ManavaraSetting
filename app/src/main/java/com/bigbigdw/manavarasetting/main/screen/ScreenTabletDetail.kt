@@ -26,8 +26,8 @@ import com.bigbigdw.manavarasetting.main.model.BestItemData
 import com.bigbigdw.manavarasetting.main.model.BestListAnalyze
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
-import com.bigbigdw.manavarasetting.ui.theme.color8e8e8e
-import com.bigbigdw.manavarasetting.ui.theme.colorf6f6f6
+import com.bigbigdw.manavarasetting.ui.theme.color8E8E8E
+import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.util.WeekKor
 
 @Composable
@@ -46,7 +46,7 @@ fun ScreenTabletDetail(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = colorf6f6f6)
+                .background(color = colorF6F6F6)
                 .verticalScroll(rememberScrollState())
                 .semantics { contentDescription = "Overview Screen" },
         ) {
@@ -157,7 +157,7 @@ fun ContentsBestListDetailWeek(viewModelMain: ViewModelMain, child: String, type
                 "${index + 1}주차"
             },
             fontSize = 16.sp,
-            color = color8e8e8e,
+            color = color8E8E8E,
             fontWeight = FontWeight(weight = 700)
         )
 

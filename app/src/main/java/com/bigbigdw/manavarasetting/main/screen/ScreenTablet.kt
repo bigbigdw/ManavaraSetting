@@ -33,8 +33,8 @@ import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.main.model.MainSettingLine
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
-import com.bigbigdw.manavarasetting.ui.theme.color8e8e8e
-import com.bigbigdw.manavarasetting.ui.theme.colorf6f6f6
+import com.bigbigdw.manavarasetting.ui.theme.color8E8E8E
+import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.util.BestRef
 import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.FCM
@@ -65,7 +65,7 @@ fun ScreenTablet(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = colorf6f6f6)
+                .background(color = colorF6F6F6)
                 .verticalScroll(rememberScrollState())
                 .semantics { contentDescription = "Overview Screen" },
         ) {
@@ -289,7 +289,7 @@ fun ContentsSetting(
         modifier = Modifier.padding(32.dp, 8.dp),
         text = "테스트 현황",
         fontSize = 16.sp,
-        color = color8e8e8e,
+        color = color8E8E8E,
         fontWeight = FontWeight(weight = 700)
     )
 
@@ -312,7 +312,7 @@ fun ContentsSetting(
         modifier = Modifier.padding(32.dp, 8.dp),
         text = "베스트 현황",
         fontSize = 16.sp,
-        color = color8e8e8e,
+        color = color8E8E8E,
         fontWeight = FontWeight(weight = 700)
     )
 
@@ -335,7 +335,7 @@ fun ContentsSetting(
         modifier = Modifier.padding(32.dp, 8.dp),
         text = "JSON 현황",
         fontSize = 16.sp,
-        color = color8e8e8e,
+        color = color8E8E8E,
         fontWeight = FontWeight(weight = 700)
     )
 
@@ -358,7 +358,7 @@ fun ContentsSetting(
         modifier = Modifier.padding(32.dp, 8.dp),
         text = "트로피 현황",
         fontSize = 16.sp,
-        color = color8e8e8e,
+        color = color8E8E8E,
         fontWeight = FontWeight(weight = 700)
     )
 
@@ -485,7 +485,7 @@ fun ContentsBestList(
         modifier = Modifier.padding(32.dp, 8.dp),
         text = "네이버 시리즈",
         fontSize = 16.sp,
-        color = color8e8e8e,
+        color = color8E8E8E,
         fontWeight = FontWeight(weight = 700)
     )
 
@@ -527,7 +527,7 @@ fun ContentsBestJsonList(
         modifier = Modifier.padding(32.dp, 8.dp),
         text = "네이버 시리즈",
         fontSize = 16.sp,
-        color = color8e8e8e,
+        color = color8E8E8E,
         fontWeight = FontWeight(weight = 700)
     )
 

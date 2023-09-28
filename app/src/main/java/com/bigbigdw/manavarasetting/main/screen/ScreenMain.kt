@@ -59,28 +59,28 @@ import com.bigbigdw.manavarasetting.main.model.MainSettingLine
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color1E1E20
-import com.bigbigdw.manavarasetting.ui.theme.color1e4394
-import com.bigbigdw.manavarasetting.ui.theme.color21c2ec
-import com.bigbigdw.manavarasetting.ui.theme.color31c3ae
-import com.bigbigdw.manavarasetting.ui.theme.color4996e8
-import com.bigbigdw.manavarasetting.ui.theme.color4ad7cf
-import com.bigbigdw.manavarasetting.ui.theme.color52a9ff
-import com.bigbigdw.manavarasetting.ui.theme.color536fd2
-import com.bigbigdw.manavarasetting.ui.theme.color5372de
+import com.bigbigdw.manavarasetting.ui.theme.color1E4394
+import com.bigbigdw.manavarasetting.ui.theme.color21C2EC
+import com.bigbigdw.manavarasetting.ui.theme.color31C3AE
+import com.bigbigdw.manavarasetting.ui.theme.color4996E8
+import com.bigbigdw.manavarasetting.ui.theme.color4AD7CF
+import com.bigbigdw.manavarasetting.ui.theme.color52A9FF
+import com.bigbigdw.manavarasetting.ui.theme.color536FD2
+import com.bigbigdw.manavarasetting.ui.theme.color5372DE
 import com.bigbigdw.manavarasetting.ui.theme.color555b68
-import com.bigbigdw.manavarasetting.ui.theme.color64c157
-import com.bigbigdw.manavarasetting.ui.theme.color79b4f8
-import com.bigbigdw.manavarasetting.ui.theme.color7c81ff
-import com.bigbigdw.manavarasetting.ui.theme.color80bf78
-import com.bigbigdw.manavarasetting.ui.theme.color91cec7
-import com.bigbigdw.manavarasetting.ui.theme.color998df9
-import com.bigbigdw.manavarasetting.ui.theme.colorabd436
-import com.bigbigdw.manavarasetting.ui.theme.colordcdcdd
-import com.bigbigdw.manavarasetting.ui.theme.colorea927c
-import com.bigbigdw.manavarasetting.ui.theme.colorf17666
-import com.bigbigdw.manavarasetting.ui.theme.colorf17fa0
-import com.bigbigdw.manavarasetting.ui.theme.colorf6f6f6
-import com.bigbigdw.manavarasetting.ui.theme.colorfdc24e
+import com.bigbigdw.manavarasetting.ui.theme.color64C157
+import com.bigbigdw.manavarasetting.ui.theme.color79B4F8
+import com.bigbigdw.manavarasetting.ui.theme.color7C81FF
+import com.bigbigdw.manavarasetting.ui.theme.color80BF78
+import com.bigbigdw.manavarasetting.ui.theme.color91CEC7
+import com.bigbigdw.manavarasetting.ui.theme.color998DF9
+import com.bigbigdw.manavarasetting.ui.theme.colorABD436
+import com.bigbigdw.manavarasetting.ui.theme.colorDCDCDD
+import com.bigbigdw.manavarasetting.ui.theme.colorea927C
+import com.bigbigdw.manavarasetting.ui.theme.colorF17666
+import com.bigbigdw.manavarasetting.ui.theme.colorF17FA0
+import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
+import com.bigbigdw.manavarasetting.ui.theme.colorFDC24E
 
 @Composable
 fun ScreenMain(
@@ -245,8 +245,8 @@ fun BottomNavScreen(navController: NavHostController, currentRoute: String?) {
     )
 
     BottomNavigation(
-        backgroundColor = colordcdcdd,
-        contentColor = color1e4394
+        backgroundColor = colorDCDCDD,
+        contentColor = color1E4394
     ) {
 
         items.forEach { item ->
@@ -268,11 +268,11 @@ fun BottomNavScreen(navController: NavHostController, currentRoute: String?) {
                     Text(
                         text = item.title,
                         fontSize = 13.sp,
-                        color = color1e4394
+                        color = color1E4394
                     )
                 },
                 selected = currentRoute == item.screenRoute,
-                selectedContentColor = color1e4394,
+                selectedContentColor = color1E4394,
                 unselectedContentColor = color555b68,
                 alwaysShowLabel = false,
                 onClick = {
@@ -360,15 +360,11 @@ fun NavigationGraph(
 
 @Composable
 fun MainHeader(image: Int, title: String) {
-    Spacer(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(80.dp)
-    )
+
     Card(
         modifier = Modifier
             .wrapContentSize(),
-        backgroundColor = colordcdcdd,
+        backgroundColor = colorDCDCDD,
         shape = RoundedCornerShape(50.dp, 50.dp, 50.dp, 50.dp)
     ) {
         Box(
@@ -460,7 +456,7 @@ fun TableAppNavRail(
                     Text(
                         text = item.title,
                         fontSize = 13.sp,
-                        color = color1e4394
+                        color = color1E4394
                     )
                 },
                 alwaysShowLabel = false
@@ -478,7 +474,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
         modifier = Modifier
             .width(334.dp)
             .fillMaxHeight()
-            .background(color = colorf6f6f6)
+            .background(color = colorF6F6F6)
             .padding(8.dp, 0.dp)
             .verticalScroll(rememberScrollState())
             .semantics { contentDescription = "Overview Screen" },
@@ -497,7 +493,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
         Spacer(modifier = Modifier.size(16.dp))
 
         ItemMainSettingSingleTablet(
-            containerColor = color52a9ff,
+            containerColor = color52A9FF,
             image = R.drawable.ic_launcher,
             title = "세팅바라 현황",
             body = "Periodic Worker 현황",
@@ -509,7 +505,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
         TabletBorderLine()
 
         ItemMainSettingSingleTablet(
-            containerColor = color4ad7cf,
+            containerColor = color4AD7CF,
             image = R.drawable.icon_fcm_wht,
             title = "FCM 관리",
             body = "FCM 테스트 & 공지사항 등록 & 토큰 획득",
@@ -519,7 +515,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color5372de,
+            containerColor = color5372DE,
             image = R.drawable.icon_fcm_wht,
             title = "FCM 공지사항 리스트",
             body = "NOTICE 리스트 확인",
@@ -529,7 +525,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color998df9,
+            containerColor = color998DF9,
             image = R.drawable.icon_fcm_wht,
             title = "FCM 알림 리스트",
             body = "ALERT 리스트 확인",
@@ -541,7 +537,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
         TabletBorderLine()
 
         ItemMainSettingSingleTablet(
-            containerColor = colorea927c,
+            containerColor = colorea927C,
             image = R.drawable.icon_best_wht,
             title = "베스트 리스트 관리",
             body = "베스트 리스트 수동 갱신 & Worker",
@@ -551,7 +547,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = colorabd436,
+            containerColor = colorABD436,
             image = R.drawable.icon_best_wht,
             title = "베스트 BOOK 리스트",
             body = "장르별 작품 리스트 확인",
@@ -561,7 +557,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = colorf17fa0,
+            containerColor = colorF17FA0,
             image = R.drawable.icon_best_wht,
             title = "베스트 최신화 현황",
             body = "시간별 베스트 갱신 현황",
@@ -573,7 +569,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
         TabletBorderLine()
 
         ItemMainSettingSingleTablet(
-            containerColor = color21c2ec,
+            containerColor = color21C2EC,
             image = R.drawable.icon_json_wht,
             title = "JSON 베스트 관리",
             body = "JSON 베스트 수동 갱신 & Worker 관리",
@@ -583,7 +579,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color31c3ae,
+            containerColor = color31C3AE,
             image = R.drawable.icon_json_wht,
             title = "JSON 투데이 베스트 현황",
             body = "장르별 WEEK 투데이 확인",
@@ -593,7 +589,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color7c81ff,
+            containerColor = color7C81FF,
             image = R.drawable.icon_json_wht,
             title = "JSON 주간 베스트 현황",
             body = "WEEK 베스트 확인",
@@ -603,7 +599,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color64c157,
+            containerColor = color64C157,
             image = R.drawable.icon_json_wht,
             title = "JSON 월간 베스트 현황",
             body = "MONTH 베스트 확인",
@@ -613,7 +609,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = colorf17666,
+            containerColor = colorF17666,
             image = R.drawable.icon_json_wht,
             title = "JSON 주간 누적 트로피 현황",
             body = "장르별 주간 JSON 확인",
@@ -623,7 +619,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color536fd2,
+            containerColor = color536FD2,
             image = R.drawable.icon_json_wht,
             title = "JSON 월간 누적 트로피 현황",
             body = "장르별 월간 JSON 확인",
@@ -633,7 +629,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color4996e8,
+            containerColor = color4996E8,
             image = R.drawable.icon_json_wht,
             title = "JSON 최신화 현황",
             body = "시간별 JSON 갱신 현황",
@@ -645,7 +641,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
         TabletBorderLine()
 
         ItemMainSettingSingleTablet(
-            containerColor = colorfdc24e,
+            containerColor = colorFDC24E,
             image = R.drawable.icon_trophy_wht,
             title = "트로피 정산 관리",
             body = "트로피 수동 정산 & Worker 관리",
@@ -655,7 +651,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color80bf78,
+            containerColor = color80BF78,
             image = R.drawable.icon_trophy_wht,
             title = "트로피 주간 토탈 리스트",
             body = "장르별 주간 트로피 리스트 확인",
@@ -665,7 +661,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color91cec7,
+            containerColor = color91CEC7,
             image = R.drawable.icon_trophy_wht,
             title = "트로피 월간 토탈 리스트",
             body = "장르별 월간 트로피 리스트 확인",
@@ -675,7 +671,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color79b4f8,
+            containerColor = color79B4F8,
             image = R.drawable.icon_trophy_wht,
             title = "트로피 최신화 현황",
             body = "시간별 트로피 최신화 현황",

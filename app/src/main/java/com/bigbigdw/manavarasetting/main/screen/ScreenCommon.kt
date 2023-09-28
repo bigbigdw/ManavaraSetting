@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -54,12 +53,12 @@ import com.bigbigdw.manavarasetting.firebase.FCMAlert
 import com.bigbigdw.manavarasetting.main.model.BestItemData
 import com.bigbigdw.manavarasetting.main.model.BestListAnalyze
 import com.bigbigdw.manavarasetting.ui.theme.color000000
-import com.bigbigdw.manavarasetting.ui.theme.color20459e
-import com.bigbigdw.manavarasetting.ui.theme.color8e8e8e
+import com.bigbigdw.manavarasetting.ui.theme.color20459E
+import com.bigbigdw.manavarasetting.ui.theme.color8E8E8E
 import com.bigbigdw.manavarasetting.ui.theme.colorA7ACB7
 import com.bigbigdw.manavarasetting.ui.theme.colorEDE6FD
-import com.bigbigdw.manavarasetting.ui.theme.colore9e9e9
-import com.bigbigdw.manavarasetting.ui.theme.colorf7f7f7
+import com.bigbigdw.manavarasetting.ui.theme.colorE9E9E9
+import com.bigbigdw.manavarasetting.ui.theme.colorF7F7F7
 import com.bigbigdw.manavarasetting.util.DBDate
 
 @Composable
@@ -173,7 +172,7 @@ fun ItemMainSetting(
             text = valueWorker,
             fontSize = 18.sp,
             textAlign = TextAlign.Center,
-            color = color20459e,
+            color = color20459E,
         )
     }
     Row(
@@ -201,7 +200,7 @@ fun ItemMainSetting(
             text = valueStatus,
             fontSize = 18.sp,
             textAlign = TextAlign.Center,
-            color = color20459e,
+            color = color20459E,
         )
     }
 }
@@ -214,7 +213,7 @@ fun BtnMobile(func: () -> Unit, btnText: String) {
             .height(22.dp)
     )
     Button(
-        colors = ButtonDefaults.buttonColors(containerColor = color20459e),
+        colors = ButtonDefaults.buttonColors(containerColor = color20459E),
         onClick = func,
         modifier = Modifier
             .width(260.dp)
@@ -227,43 +226,6 @@ fun BtnMobile(func: () -> Unit, btnText: String) {
             textAlign = TextAlign.Center,
             color = colorEDE6FD,
             fontSize = 16.sp,
-        )
-    }
-}
-
-@Composable
-fun ItemMainSettingSingle(
-    image: Int,
-    titleWorker: String,
-    valueWorker: String,
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(24.dp, 0.dp),
-        horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Image(
-            contentScale = ContentScale.FillWidth,
-            painter = painterResource(id = image),
-            contentDescription = null,
-            modifier = Modifier
-                .height(16.dp)
-                .width(16.dp)
-        )
-        Spacer(modifier = Modifier.size(4.dp))
-        Text(
-            text = titleWorker,
-            fontSize = 18.sp,
-            textAlign = TextAlign.Center,
-            color = color000000,
-        )
-        Text(
-            text = valueWorker,
-            fontSize = 18.sp,
-            textAlign = TextAlign.Center,
-            color = color20459e,
         )
     }
 }
@@ -305,7 +267,7 @@ fun ItemMainTabletContent(
                         text = value,
                         fontSize = 18.sp,
                         textAlign = TextAlign.Center,
-                        color = color20459e,
+                        color = color20459E,
                     )
                 }
             })
@@ -315,7 +277,7 @@ fun ItemMainTabletContent(
             Spacer(modifier = Modifier
                 .fillMaxWidth()
                 .height(1.dp)
-                .background(color = colore9e9e9))
+                .background(color = colorE9E9E9))
             Spacer(modifier = Modifier.size(2.dp))
         }
     }
@@ -335,9 +297,9 @@ fun ItemMainSettingSingleTablet(
     Button(
         colors = ButtonDefaults.buttonColors(
             containerColor = if (getMenu == title) {
-                colore9e9e9
+                colorE9E9E9
             } else {
-                colorf7f7f7
+                colorF7F7F7
             }
         ),
         shape = RoundedCornerShape(50),
@@ -400,7 +362,7 @@ fun ItemMainSettingSingleTablet(
                     Text(
                         text = body,
                         fontSize = 14.sp,
-                        color = color8e8e8e,
+                        color = color8E8E8E,
                         )
                 }
             }
@@ -414,7 +376,7 @@ fun TabletBorderLine(){
     Spacer(modifier = Modifier
         .fillMaxWidth()
         .height(1.dp)
-        .background(color = color8e8e8e))
+        .background(color = color8E8E8E))
     Spacer(modifier = Modifier.size(8.dp))
 }
 
@@ -457,7 +419,7 @@ fun ItemTabletFCMList(item : FCMAlert, isLast: Boolean){
         ) {
             Text(
                 modifier = Modifier.background(color = if(item.date.contains(today)){
-                    colore9e9e9
+                    colorE9E9E9
                 } else {
                     Color.Transparent
                 }),
@@ -476,7 +438,7 @@ fun ItemTabletFCMList(item : FCMAlert, isLast: Boolean){
         ) {
             Text(
                 text = item.title,
-                color = color8e8e8e,
+                color = color8E8E8E,
                 fontSize = 16.sp,
             )
         }
@@ -488,7 +450,7 @@ fun ItemTabletFCMList(item : FCMAlert, isLast: Boolean){
         ) {
             Text(
                 text = item.body,
-                color = color8e8e8e,
+                color = color8E8E8E,
                 fontSize = 16.sp,
             )
         }
@@ -498,7 +460,7 @@ fun ItemTabletFCMList(item : FCMAlert, isLast: Boolean){
             Spacer(modifier = Modifier
                 .fillMaxWidth()
                 .height(1.dp)
-                .background(color = colore9e9e9))
+                .background(color = colorE9E9E9))
             Spacer(modifier = Modifier.size(2.dp))
         }
     }
@@ -546,7 +508,7 @@ fun ItemTabletBestList(item : BestItemData, isLast: Boolean){
                 ) {
                     Text(
                         text = spannableString(textFront = "작가명 : ", color = color000000, textEnd = item.writer),
-                        color = color8e8e8e,
+                        color = color8E8E8E,
                         fontSize = 16.sp,
                     )
                 }
@@ -558,7 +520,7 @@ fun ItemTabletBestList(item : BestItemData, isLast: Boolean){
                 ) {
                     Text(
                         text = spannableString(textFront = "북코드 : ", color = color000000, textEnd = item.bookCode),
-                        color = color8e8e8e,
+                        color = color8E8E8E,
                         fontSize = 16.sp,
                     )
                 }
@@ -570,7 +532,7 @@ fun ItemTabletBestList(item : BestItemData, isLast: Boolean){
                 ) {
                     Text(
                         text = spannableString(textFront = "헌재 스코어 : ", color = color000000, textEnd = item.current.toString()),
-                        color = color8e8e8e,
+                        color = color8E8E8E,
                         fontSize = 16.sp,
                     )
                 }
@@ -582,7 +544,7 @@ fun ItemTabletBestList(item : BestItemData, isLast: Boolean){
                 ) {
                     Text(
                         text = spannableString(textFront = "타입 : ", color = color000000, textEnd = item.type),
-                        color = color8e8e8e,
+                        color = color8E8E8E,
                         fontSize = 16.sp,
                     )
                 }
@@ -594,7 +556,7 @@ fun ItemTabletBestList(item : BestItemData, isLast: Boolean){
                 ) {
                     Text(
                         text = spannableString(textFront = "작품 정보1 : ", color = color000000, textEnd = item.info1),
-                        color = color8e8e8e,
+                        color = color8E8E8E,
                         fontSize = 16.sp,
                     )
                 }
@@ -606,7 +568,7 @@ fun ItemTabletBestList(item : BestItemData, isLast: Boolean){
                 ) {
                     Text(
                         text = spannableString(textFront = "작품 정보2 : ", color = color000000, textEnd = item.info2),
-                        color = color8e8e8e,
+                        color = color8E8E8E,
                         fontSize = 16.sp,
                     )
                 }
@@ -618,7 +580,7 @@ fun ItemTabletBestList(item : BestItemData, isLast: Boolean){
                 ) {
                     Text(
                         text = spannableString(textFront = "작품 정보3 : ", color = color000000, textEnd = item.info3),
-                        color = color8e8e8e,
+                        color = color8E8E8E,
                         fontSize = 16.sp,
                     )
                 }
@@ -630,7 +592,7 @@ fun ItemTabletBestList(item : BestItemData, isLast: Boolean){
                 ) {
                     Text(
                         text = spannableString(textFront = "베스트 총합 : ", color = color000000, textEnd = item.total.toString()),
-                        color = color8e8e8e,
+                        color = color8E8E8E,
                         fontSize = 16.sp,
                     )
                 }
@@ -642,7 +604,7 @@ fun ItemTabletBestList(item : BestItemData, isLast: Boolean){
                 ) {
                     Text(
                         text = spannableString(textFront = "베스트 총합 카운트 : ", color = color000000, textEnd = item.totalCount.toString()),
-                        color = color8e8e8e,
+                        color = color8E8E8E,
                         fontSize = 16.sp,
                     )
                 }
@@ -654,7 +616,7 @@ fun ItemTabletBestList(item : BestItemData, isLast: Boolean){
                 ) {
                     Text(
                         text = spannableString(textFront = "베스트 주간 :", color = color000000, textEnd = item.totalWeek.toString()),
-                        color = color8e8e8e,
+                        color = color8E8E8E,
                         fontSize = 16.sp,
                     )
                 }
@@ -666,7 +628,7 @@ fun ItemTabletBestList(item : BestItemData, isLast: Boolean){
                 ) {
                     Text(
                         text = spannableString(textFront = "베스트 주간 카운트 : ", color = color000000, textEnd = item.totalWeekCount.toString()),
-                        color = color8e8e8e,
+                        color = color8E8E8E,
                         fontSize = 16.sp,
                     )
                 }
@@ -678,7 +640,7 @@ fun ItemTabletBestList(item : BestItemData, isLast: Boolean){
                 ) {
                     Text(
                         text = spannableString(textFront = "베스트 월간 : ", color = color000000, textEnd = item.totalMonth.toString()),
-                        color = color8e8e8e,
+                        color = color8E8E8E,
                         fontSize = 16.sp,
                     )
                 }
@@ -690,7 +652,7 @@ fun ItemTabletBestList(item : BestItemData, isLast: Boolean){
                 ) {
                     Text(
                         text = spannableString(textFront = "베스트 월간 카운트 : ", color = color000000, textEnd = item.totalMonthCount.toString()),
-                        color = color8e8e8e,
+                        color = color8E8E8E,
                         fontSize = 16.sp,
                     )
                 }
@@ -702,7 +664,7 @@ fun ItemTabletBestList(item : BestItemData, isLast: Boolean){
             Spacer(modifier = Modifier
                 .fillMaxWidth()
                 .height(1.dp)
-                .background(color = colore9e9e9))
+                .background(color = colorE9E9E9))
             Spacer(modifier = Modifier.size(2.dp))
         }
     }
@@ -730,13 +692,13 @@ fun ItemTabletBestListVertical(item: BestItemData){
 
         Text(
             text = spannableString(textFront = "작가명 : ", color = color000000, textEnd = item.writer),
-            color = color8e8e8e,
+            color = color8E8E8E,
             fontSize = 16.sp,
         )
 
         Text(
             text = spannableString(textFront = "북코드 : ", color = color000000, textEnd = item.bookCode),
-            color = color8e8e8e,
+            color = color8E8E8E,
             fontSize = 16.sp,
         )
     }
@@ -766,7 +728,7 @@ fun ItemTabletTrophyList(item : BestListAnalyze, isLast: Boolean){
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                modifier = Modifier.background(color = colore9e9e9),
+                modifier = Modifier.background(color = colorE9E9E9),
                 text = item.bookCode,
                 color = color000000,
                 fontSize = 18.sp,
@@ -782,7 +744,7 @@ fun ItemTabletTrophyList(item : BestListAnalyze, isLast: Boolean){
         ) {
             Text(
                 text = spannableString(textFront = "현재 스코어 : ", color = color000000, textEnd = item.number.toString()),
-                color = color8e8e8e,
+                color = color8E8E8E,
                 fontSize = 16.sp,
             )
         }
@@ -794,7 +756,7 @@ fun ItemTabletTrophyList(item : BestListAnalyze, isLast: Boolean){
         ) {
             Text(
                 text = spannableString(textFront = "작품 정보1 : ", color = color000000, textEnd = item.info1),
-                color = color8e8e8e,
+                color = color8E8E8E,
                 fontSize = 16.sp,
             )
         }
@@ -806,7 +768,7 @@ fun ItemTabletTrophyList(item : BestListAnalyze, isLast: Boolean){
         ) {
             Text(
                 text = spannableString(textFront = "트로피 누적 점수 : ", color = color000000, textEnd = item.total.toString()),
-                color = color8e8e8e,
+                color = color8E8E8E,
                 fontSize = 16.sp,
             )
         }
@@ -818,7 +780,7 @@ fun ItemTabletTrophyList(item : BestListAnalyze, isLast: Boolean){
         ) {
             Text(
                 text = spannableString(textFront = "트로피 누적 횟수 : ", color = color000000, textEnd = item.totalCount.toString()),
-                color = color8e8e8e,
+                color = color8E8E8E,
                 fontSize = 16.sp,
             )
         }
@@ -828,7 +790,7 @@ fun ItemTabletTrophyList(item : BestListAnalyze, isLast: Boolean){
             Spacer(modifier = Modifier
                 .fillMaxWidth()
                 .height(1.dp)
-                .background(color = colore9e9e9))
+                .background(color = colorE9E9E9))
             Spacer(modifier = Modifier.size(2.dp))
         }
     }
