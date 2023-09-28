@@ -471,12 +471,12 @@ class ViewModelMain @Inject constructor() : ViewModel() {
         }
     }
 
-    fun getBestTrophyList(type: String){
+    fun getBestTrophyList(type: String, child: String){
 
         val mRootRef = if(type == "주간"){
-            FirebaseDatabase.getInstance().reference.child("BOOK").child("NAVER_SERIES").child("TROPHY_WEEK")
+            FirebaseDatabase.getInstance().reference.child("BEST").child("NAVER_SERIES").child(child).child("TROPHY_WEEK_TOTAL")
         } else {
-            FirebaseDatabase.getInstance().reference.child("BOOK").child("NAVER_SERIES").child("TROPHY_MONTH")
+            FirebaseDatabase.getInstance().reference.child("BEST").child("NAVER_SERIES").child(child).child("TROPHY_MONTH_TOTAL")
         }
 
         mRootRef.addListenerForSingleValueEvent(object :

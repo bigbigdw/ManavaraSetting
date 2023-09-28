@@ -758,6 +758,8 @@ fun ItemTabletTrophyList(item : BestListAnalyze, isLast: Boolean){
 
     Column {
 
+        Spacer(modifier = Modifier.size(4.dp))
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Start,

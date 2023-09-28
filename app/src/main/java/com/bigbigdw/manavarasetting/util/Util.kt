@@ -415,7 +415,8 @@ fun calculateTrophy(platform : String, genre: String) {
                         number = item.current,
                         info1 = item.info1,
                         total = total + item.current,
-                        totalCount = totalCount + 1
+                        totalCount = totalCount + 1,
+                        bookCode = item.bookCode
                     )
 
                     val bestItemData = item.copy(

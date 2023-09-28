@@ -174,7 +174,7 @@ fun ScreenTablet(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         setDetailPageType = setDetailPageType,
-                        type = "주간 트로피월"
+                        type = "주간 트로피"
                     )
                 }
                 "JSON 월간 누적 트로피 현황" -> {
