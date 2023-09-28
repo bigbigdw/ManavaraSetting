@@ -11,13 +11,14 @@ import com.bigbigdw.manavarasetting.main.event.StateMain
 import com.bigbigdw.manavarasetting.main.model.BestItemData
 import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
+import com.bigbigdw.manavarasetting.util.convertBestItemDataJson
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
-import com.google.gson.JsonArray
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -27,6 +28,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import org.json.JSONArray
 import java.nio.charset.Charset
 import javax.inject.Inject
 
@@ -97,6 +99,12 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                     fcmBestList = event.fcmBestList,
                     fcmJsonList = event.fcmJsonList,
                     fcmTrophyList = event.fcmTrophyList,
+                )
+            }
+
+            is EventMain.SetBestBookWeekList -> {
+                current.copy(
+                    bestListWeek = event.bestListWeek
                 )
             }
 
@@ -206,7 +214,7 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                             if (fcm.body.contains("${year}.${month}.${day}")) {
                                 numBestToday += 1
                             }
-                        } else if (fcm?.body?.contains("DAY JSON 생성이 완료되었습니다") == true) {
+                        } else if (fcm?.body?.contains("JSON 최신화가 완료되었습니다") == true) {
                             numJson += 1
 
                             fcmJsonList.add(fcm)
@@ -373,6 +381,86 @@ class ViewModelMain @Inject constructor() : ViewModel() {
 
             viewModelScope.launch {
                 events.send(EventMain.SetBestBookList(setBestBookList = todayJsonList))
+            }
+        }
+    }
+
+    fun getBestJsonWeekList(genre: String){
+        val storage = Firebase.storage
+        val storageRef = storage.reference
+
+        val fileRef: StorageReference =  storageRef.child("NAVER_SERIES/${genre}/WEEK/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
+
+        val file = fileRef.getBytes(1024 * 1024)
+
+        file.addOnSuccessListener { bytes ->
+            val jsonString = String(bytes, Charset.forName("UTF-8"))
+
+            val jsonArray = JSONArray(jsonString)
+
+            val weekJsonList = ArrayList<ArrayList<BestItemData>>()
+
+            for (i in 0 until jsonArray.length()) {
+
+                try{
+                    val jsonArrayItem = jsonArray.getJSONArray(i)
+                    val itemList = ArrayList<BestItemData>()
+
+                    for (j in 0 until jsonArrayItem.length()) {
+
+
+                        val jsonObject = jsonArrayItem.getJSONObject(j)
+                        itemList.add(convertBestItemDataJson(jsonObject))
+                    }
+
+                    weekJsonList.add(itemList)
+                } catch (e : Exception){
+                    weekJsonList.add(ArrayList())
+                }
+            }
+
+            viewModelScope.launch {
+                events.send(EventMain.SetBestBookWeekList(bestListWeek = weekJsonList))
+            }
+        }
+    }
+
+    fun getBestJsonMonthList(genre: String){
+        val storage = Firebase.storage
+        val storageRef = storage.reference
+
+        val fileRef: StorageReference = storageRef.child("NAVER_SERIES/${genre}/MONTH/${DBDate.year()}_${DBDate.month()}.json")
+
+        val file = fileRef.getBytes(1024 * 1024)
+
+        file.addOnSuccessListener { bytes ->
+            val jsonString = String(bytes, Charset.forName("UTF-8"))
+
+            val jsonArray = JSONArray(jsonString)
+
+            val monthJsonList = ArrayList<ArrayList<BestItemData>>()
+
+            for (i in 0 until jsonArray.length()) {
+
+                try{
+                    val jsonArrayItem = jsonArray.getJSONArray(i)
+                    val itemList = ArrayList<BestItemData>()
+
+                    for (j in 0 until jsonArrayItem.length()) {
+
+
+                        val jsonObject = jsonArrayItem.getJSONObject(j)
+                        itemList.add(convertBestItemDataJson(jsonObject))
+                    }
+
+                    monthJsonList.add(itemList)
+                } catch (e : Exception){
+                    monthJsonList.add(ArrayList())
+                }
+            }
+
+            viewModelScope.launch {
+                events.send(EventMain.SetBestBookWeekList(bestListWeek = monthJsonList))
             }
         }
     }

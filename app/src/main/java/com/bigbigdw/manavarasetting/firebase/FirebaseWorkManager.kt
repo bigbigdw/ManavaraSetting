@@ -13,6 +13,7 @@ import com.bigbigdw.manavarasetting.util.calculateTrophy
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
 import com.bigbigdw.manavarasetting.util.setDataStore
 import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageDay
+import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageMonth
 import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageWeek
 import com.bigbigdw.massmath.Firebase.FirebaseService
 import com.google.firebase.database.FirebaseDatabase
@@ -76,9 +77,14 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                     platform = "NAVER_SERIES",
                     genre = getNaverSeriesGenre(j)
                 )
+
+                uploadJsonArrayToStorageMonth(
+                    platform = "NAVER_SERIES",
+                    genre = getNaverSeriesGenre(j)
+                )
             }
 
-            postFCM(data = "DAY JSON 생성이 완료되었습니다", time = "${year}.${month}.${day} ${hour}:${min}")
+            postFCM(data = "JSON 최신화가 완료되었습니다", time = "${year}.${month}.${day} ${hour}:${min}")
 
         } else if (inputData.getString(TYPE).equals("TROPHY")) {
 

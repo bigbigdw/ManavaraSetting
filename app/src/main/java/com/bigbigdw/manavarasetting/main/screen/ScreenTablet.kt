@@ -54,6 +54,7 @@ import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenreKor
 import com.bigbigdw.manavarasetting.util.makeWeekJson
 import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageDay
+import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageMonth
 import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageWeek
 import com.google.gson.JsonArray
 import java.util.concurrent.TimeUnit
@@ -139,21 +140,32 @@ fun ScreenTablet(
                     ContentsBestJsonList(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
-                        setDetailPageType = setDetailPageType
+                        setDetailPageType = setDetailPageType,
+                        type = "투데이"
                     )
                 }
                 "JSON 주간 베스트 현황" -> {
-                    ContentsBestList(
+                    ContentsBestJsonList(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         setDetailPageType = setDetailPageType,
+                        type = "주간"
                     )
                 }
                 "JSON 월간 베스트 현황" -> {
-                    ContentsBestList(
+                    ContentsBestJsonList(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         setDetailPageType = setDetailPageType,
+                        type = "월간"
+                    )
+                }
+                "JSON 주간 현황" -> {
+                    ContentsBestJsonList(
+                        setDetailPage = setDetailPage,
+                        setDetailMenu = setDetailMenu,
+                        setDetailPageType = setDetailPageType,
+                        type = "주간"
                     )
                 }
                 "JSON 최신화 현황" -> {
@@ -221,6 +233,32 @@ fun ContentsSetting(
             ) {
                 Text(
                     text = "FCM 카운트 최신화",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    Button(
+        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+        onClick = { PeriodicWorker.cancelAllWorker(
+            workManager = workManager,
+        ) },
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(44.dp),
+        shape = RoundedCornerShape(50.dp),
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "모든 Worker 취소",
                     color = color000000,
                     fontSize = 18.sp,
                 )
@@ -724,12 +762,13 @@ fun ContentsBestJsonList(
     setDetailPage: (Boolean) -> Unit,
     setDetailMenu: (String) -> Unit,
     setDetailPageType: (String) -> Unit,
+    type : String,
 ) {
 
     val itemList = ArrayList<MainSettingLine>()
 
     for (j in NaverSeriesGenre) {
-        itemList.add(MainSettingLine(title = "네이버 시리즈 투데이 JSON 리스트 ${getNaverSeriesGenreKor(j)}", value = getNaverSeriesGenre(j)))
+        itemList.add(MainSettingLine(title = "네이버 시리즈 $type JSON 리스트 ${getNaverSeriesGenreKor(j)}", value = getNaverSeriesGenre(j)))
     }
 
     Text(
@@ -797,7 +836,7 @@ fun ContentsJsonManage(lineJson: List<MainSettingLine>) {
                     genre = getNaverSeriesGenre(j)
                 )
             }
-            FCM.postFCMAlertTest(context = context, message = "DAY JSON 생성이 완료되었습니다")
+            FCM.postFCMAlertTest(context = context, message = "JSON 최신화가 완료되었습니다")
         }),
         MainSettingLine(title = "JSON WEEK 생성", onClick = {
             for (j in NaverSeriesGenre) {
@@ -822,7 +861,16 @@ fun ContentsJsonManage(lineJson: List<MainSettingLine>) {
                     genre = getNaverSeriesGenre(j)
                 )
             }
+        }),
+        MainSettingLine(title = "JSON MONTH 업데이트", onClick = {
+            for (j in NaverSeriesGenre) {
+                uploadJsonArrayToStorageMonth(
+                    platform = "NAVER_SERIES",
+                    genre = getNaverSeriesGenre(j)
+                )
+            }
         })
+
     )
 
     TabletContentWrap(
@@ -855,7 +903,8 @@ fun ContentsJsonManage(lineJson: List<MainSettingLine>) {
                 ItemMainTabletContent(
                     title = item.title,
                     value = item.value,
-                    isLast = lineUpdateSelf.size - 1 == index
+                    isLast = lineUpdateSelf.size - 1 == index,
+                    onClick = item.onClick
                 )
             }
         }

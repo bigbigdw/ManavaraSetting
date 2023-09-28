@@ -27,6 +27,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import org.json.JSONObject
 import java.io.ByteArrayInputStream
 import java.nio.charset.Charset
 import java.util.Calendar
@@ -47,6 +48,16 @@ val NaverSeriesGenre = arrayListOf(
     "90",
     "88",
     "107",
+)
+
+val WeekKor = arrayListOf(
+    "일",
+    "월",
+    "화",
+    "수",
+    "목",
+    "금",
+    "토",
 )
 
 fun getNaverSeriesGenre(genre : String) : String {
@@ -106,6 +117,28 @@ fun convertBestItemData(bestItemData : BestItemData) : JsonObject {
     return jsonObject
 }
 
+@SuppressLint("SuspiciousIndentation")
+fun convertBestItemDataJson(jsonObject: JSONObject): BestItemData {
+
+    return BestItemData(
+        writer = jsonObject.optString("writer"),
+        title = jsonObject.optString("title"),
+        bookImg = jsonObject.optString("bookImg"),
+        bookCode = jsonObject.optString("bookCode"),
+        type = jsonObject.optString("type"),
+        info1 = jsonObject.optString("info1"),
+        info2 = jsonObject.optString("info2"),
+        info3 = jsonObject.optString("info3"),
+        current = jsonObject.optInt("current"),
+        total = jsonObject.optInt("total"),
+        totalCount = jsonObject.optInt("totalCount"),
+        totalWeek = jsonObject.optInt("totalWeek"),
+        totalWeekCount = jsonObject.optInt("totalWeekCount"),
+        totalMonth = jsonObject.optInt("totalMonth"),
+        totalMonthCount = jsonObject.optInt("totalMonthCount"),
+    )
+}
+
 fun convertBestItemDataAnalyze(bestItemData : BestItemData) : JsonObject {
     val jsonObject = JsonObject()
     jsonObject.addProperty("number", bestItemData.current)
@@ -131,6 +164,85 @@ fun uploadJsonFile() {
         // 업로드 성공 시 처리
     }.addOnFailureListener {
         // 업로드 실패 시 처리
+    }
+}
+
+fun uploadJsonArrayToStorageMonth(platform : String, genre: String) {
+    val storage = Firebase.storage
+    val storageRef = storage.reference
+    val jsonMonthRef = storageRef.child("${platform}/${genre}/MONTH/${DBDate.year()}_${DBDate.month()}.json")
+
+    // JSON 파일을 다운로드
+    jsonMonthRef.getBytes(1024 * 1024)
+        .addOnSuccessListener { bytes ->
+            val jsonString = String(bytes, Charset.forName("UTF-8"))
+            val monthArray = JsonParser().parse(jsonString).asJsonArray
+
+            makeMonthJson(platform = platform, genre = genre, jsonMonthArray = monthArray)
+        }
+
+        .addOnFailureListener {
+
+            val jsonArray = JsonArray()
+
+            val totalWeekCount = DBDate.getNumberOfWeeksInMonth(
+                year = DBDate.year().toInt(), month = DBDate.month().toInt()
+            )
+
+            for (i in 0 until totalWeekCount) {
+                jsonArray.add("")
+            }
+
+            makeMonthJson(platform = platform, genre = genre, jsonMonthArray = jsonArray)
+        }
+}
+
+fun makeMonthJson(platform : String, genre: String, jsonMonthArray : JsonArray)  {
+    val storage = Firebase.storage
+    val storageRef = storage.reference
+
+    val jsonMonthRef = storageRef.child("${platform}/${genre}/MONTH/${DBDate.year()}_${DBDate.month()}.json")
+
+    val jsonTodayRef = storageRef.child("${platform}/${genre}/DAY/${DBDate.dateMMDD()}.json")
+
+    val file = jsonTodayRef.getBytes(1024 * 1024)
+
+    file.addOnSuccessListener { bytes ->
+        val jsonString = String(bytes, Charset.forName("UTF-8"))
+        val json = Json { ignoreUnknownKeys = true }
+        val itemList = json.decodeFromString<List<BestItemData>>(jsonString)
+        val indexNum = DBDate.getDayOfWeekAsNumber()
+
+        val indexWeekNum = DBDate.getCurrentWeekNumber() - 1
+        val weekJson = try {
+            jsonMonthArray.get(indexWeekNum).asJsonArray
+        } catch (e : Exception){
+            JsonArray()
+        }
+
+        if (weekJson.size() > 0) {
+
+            weekJson.set(indexNum, convertBestItemData(itemList[0]))
+            jsonMonthArray.set(indexWeekNum, weekJson)
+
+        } else {
+
+            val itemWeekJsonArray = JsonArray()
+
+            for (i in 0..6) {
+                itemWeekJsonArray.add("")
+            }
+
+            itemWeekJsonArray.set(indexNum, convertBestItemData(itemList[0]))
+            jsonMonthArray.set(indexWeekNum, itemWeekJsonArray)
+        }
+
+        val jsonBytes = jsonMonthArray.toString().toByteArray(Charsets.UTF_8)
+
+        jsonMonthRef.putBytes(jsonBytes)
+            .addOnSuccessListener {
+
+            }
     }
 }
 
@@ -182,7 +294,9 @@ fun makeWeekJson(platform : String, genre: String, jsonArray : JsonArray)  {
             itemJsonArray.add(convertBestItemData(item))
         }
 
-        jsonArray.set(DBDate.getDayOfWeekAsNumber(), itemJsonArray)
+        val indexNum = DBDate.getDayOfWeekAsNumber()
+
+        jsonArray.set(indexNum, itemJsonArray)
 
         val jsonBytes = jsonArray.toString().toByteArray(Charsets.UTF_8)
 
@@ -201,7 +315,6 @@ fun uploadJsonArrayToStorageDay(platform : String, genre: String) {
     val storage = Firebase.storage
     val storageRef = storage.reference
     val jsonArrayRef = storageRef.child("${platform}/${genre}/DAY/${DBDate.dateMMDD()}.json")
-//    val jsonArrayRef = storageRef.child("${platform}/${genre}/DAY/${DBDate.dateYesterday()}.json")
 
     route.addListenerForSingleValueEvent(object :
         ValueEventListener {
@@ -222,8 +335,6 @@ fun uploadJsonArrayToStorageDay(platform : String, genre: String) {
                     .addOnSuccessListener {
                         // 업로드 성공 시 처리
                     }
-            } else {
-                Log.d("HIHI", "FALSE")
             }
         }
 
@@ -366,7 +477,7 @@ fun setDataStore(message: String, context: Context){
         mRootRef.child("WORKER_TROPHY").setValue("${year}.${month}.${day} ${hour}:${min}")
         mRootRef.child("UID_TROPHY").setValue(currentUser?.uid ?: "NONE")
 
-    } else if(message.contains("DAY JSON 생성이 완료되었습니다")){
+    } else if(message.contains("JSON 최신화가 완료되었습니다")){
 
         mRootRef.child("WORKER_JSON").setValue("${year}.${month}.${day} ${hour}:${min}")
         mRootRef.child("UID_JSON").setValue(currentUser?.uid ?: "NONE")
@@ -448,7 +559,7 @@ fun updateFcmCount(context: Context, update: () -> Unit){
                         if (fcm.body.contains("${year}.${month}.${day}")) {
                             numBestToday += 1
                         }
-                    } else if (fcm?.body?.contains("DAY JSON 생성이 완료되었습니다") == true) {
+                    } else if (fcm?.body?.contains("JSON 최신화가 완료되었습니다") == true) {
                         numJson += 1
 
                         if (fcm.body.contains("${year}.${month}.${day}")) {

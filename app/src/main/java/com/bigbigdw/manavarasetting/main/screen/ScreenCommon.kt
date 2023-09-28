@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -48,8 +49,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import coil.compose.rememberAsyncImagePainter
-import coil.request.ImageRequest
 import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.firebase.FCMAlert
 import com.bigbigdw.manavarasetting.main.model.BestItemData
@@ -57,10 +56,7 @@ import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color20459e
 import com.bigbigdw.manavarasetting.ui.theme.color8e8e8e
 import com.bigbigdw.manavarasetting.ui.theme.colorA7ACB7
-import com.bigbigdw.manavarasetting.ui.theme.colorB3000000
-import com.bigbigdw.manavarasetting.ui.theme.colorB3FFFFFF
 import com.bigbigdw.manavarasetting.ui.theme.colorEDE6FD
-import com.bigbigdw.manavarasetting.ui.theme.colorFFFFFF
 import com.bigbigdw.manavarasetting.ui.theme.colore9e9e9
 import com.bigbigdw.manavarasetting.ui.theme.colorf7f7f7
 import com.bigbigdw.manavarasetting.util.DBDate
@@ -708,6 +704,40 @@ fun ItemTabletBestList(item : BestItemData, isLast: Boolean){
                 .background(color = colore9e9e9))
             Spacer(modifier = Modifier.size(2.dp))
         }
+    }
+}
+
+@Composable
+fun ItemTabletBestListVertical(item: BestItemData){
+
+    Column(modifier = Modifier.padding(8.dp).widthIn(0.dp, 220.dp)){
+
+        AsyncImage(
+            model = item.bookImg,
+            contentDescription = null,
+            modifier = Modifier
+                .height(220.dp)
+                .widthIn(0.dp, 220.dp)
+        )
+
+        Text(
+            text = item.title,
+            color = color000000,
+            fontSize = 18.sp,
+            fontWeight = FontWeight(weight = 500)
+        )
+
+        Text(
+            text = spannableString(textFront = "작가명 : ", color = color000000, textEnd = item.writer),
+            color = color8e8e8e,
+            fontSize = 16.sp,
+        )
+
+        Text(
+            text = spannableString(textFront = "북코드 : ", color = color000000, textEnd = item.bookCode),
+            color = color8e8e8e,
+            fontSize = 16.sp,
+        )
     }
 }
 

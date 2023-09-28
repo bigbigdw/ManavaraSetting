@@ -350,7 +350,7 @@ fun ScreenSettingTabletContents(setMenu: (String) -> Unit, getMenu: String, onCl
         ItemMainSettingSingleTablet(
             containerColor = colorf17666,
             image = R.drawable.icon_json_wht,
-            title = "JSON 주간 현황",
+            title = "JSON 주간 누적 트로피 현황",
             body = "장르별 주간 JSON 확인",
             setMenu = setMenu,
             getMenu = getMenu,
@@ -360,7 +360,7 @@ fun ScreenSettingTabletContents(setMenu: (String) -> Unit, getMenu: String, onCl
         ItemMainSettingSingleTablet(
             containerColor = color536fd2,
             image = R.drawable.icon_json_wht,
-            title = "JSON 월간 현황",
+            title = "JSON 월간 누적 트로피 현황",
             body = "장르별 월간 JSON 확인",
             setMenu = setMenu,
             getMenu = getMenu,

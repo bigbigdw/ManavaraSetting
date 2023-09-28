@@ -121,4 +121,16 @@ object DBDate {
         return dayOfWeek.value // 요일을 숫자로 얻습니다. (1: 월요일, 2: 화요일, ..., 7: 일요일)
     }
 
+    fun getNumberOfWeeksInMonth(year: Int, month: Int): Int {
+        val firstDayOfMonth = LocalDate.of(year, month, 1)
+        val lastDayOfMonth = LocalDate.of(year, month, firstDayOfMonth.lengthOfMonth())
+
+        val weekFields = WeekFields.of(Locale.getDefault())
+
+        val firstWeekNumber = firstDayOfMonth.get(weekFields.weekOfWeekBasedYear())
+        val lastWeekNumber = lastDayOfMonth.get(weekFields.weekOfWeekBasedYear())
+
+        return lastWeekNumber - firstWeekNumber + 1
+    }
+
 }

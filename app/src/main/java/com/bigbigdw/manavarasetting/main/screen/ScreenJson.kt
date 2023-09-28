@@ -83,7 +83,7 @@ fun ScreenMainJson(
                             genre = getNaverSeriesGenre(j)
                         )
                     }
-                    FCM.postFCMAlertTest(context = context, message = "DAY JSON 생성이 완료되었습니다")
+                    FCM.postFCMAlertTest(context = context, message = "JSON 최신화가 완료되었습니다")
                 },
                 btnText = "JSON DAY 생성"
             )
