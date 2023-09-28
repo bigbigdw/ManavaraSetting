@@ -4,14 +4,18 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -26,27 +30,26 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.firebase.DataFCMBodyNotification
+import com.bigbigdw.manavarasetting.main.model.MainSettingLine
 import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager
-import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color898989
-import com.bigbigdw.manavarasetting.ui.theme.colorFFFFFF
-import com.bigbigdw.manavarasetting.ui.theme.colorf7f7f7
+import com.bigbigdw.manavarasetting.ui.theme.color8e8e8e
+import com.bigbigdw.manavarasetting.ui.theme.colorf6f6f6
 import com.bigbigdw.manavarasetting.util.FCM
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import java.util.concurrent.TimeUnit
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScreenMainFCM(workManager: WorkManager, viewModelMain: ViewModelMain, isExpandedScreen: Boolean) {
-    val context = LocalContext.current
-
-    val dataStore = DataStoreManager(context)
-    val (getFCM, setFCM) = remember { mutableStateOf(DataFCMBodyNotification()) }
+fun ScreenMainFCM(
+    lineTest: List<MainSettingLine>
+) {
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -54,7 +57,8 @@ fun ScreenMainFCM(workManager: WorkManager, viewModelMain: ViewModelMain, isExpa
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = colorFFFFFF)
+                .background(color = colorf6f6f6)
+                .padding(16.dp, 0.dp)
                 .verticalScroll(rememberScrollState())
                 .semantics { contentDescription = "Overview Screen" },
             verticalArrangement = Arrangement.Center,
@@ -63,28 +67,169 @@ fun ScreenMainFCM(workManager: WorkManager, viewModelMain: ViewModelMain, isExpa
 
             MainHeader(image = R.drawable.icon_fcm, title = "FCM 현황")
 
-            ItemMainSetting(
-                image = R.drawable.icon_fcm_gr,
-                titleWorker = "WORKER : ",
-                valueWorker = viewModelMain.state.collectAsState().value.statusTest,
-                statusTitle = "갱신시간 : ",
-                valueStatus = viewModelMain.state.collectAsState().value.timeTest,
-            )
+            ContentsFCM(lineTest = lineTest)
+        }
+    }
+}
 
-            ItemMainSetting(
-                image = R.drawable.icon_fcm_gr,
-                titleWorker = "호출 횟수 : ",
-                valueWorker = viewModelMain.state.collectAsState().value.countTest,
-                statusTitle = "금일 호출 횟수 : ",
-                valueStatus = viewModelMain.state.collectAsState().value.countTodayTest,
-            )
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ContentsFCM(lineTest: List<MainSettingLine>) {
 
-            ItemMainSettingSingle(
-                image = R.drawable.icon_fcm_gr,
-                titleWorker = "호출 주기 : ",
-                valueWorker = viewModelMain.state.collectAsState().value.timeMillTest,
-            )
+    val context = LocalContext.current
+    val dataStore = DataStoreManager(context)
+    val workManager = WorkManager.getInstance(context)
+    val (getFCM, setFCM) = remember { mutableStateOf(DataFCMBodyNotification()) }
 
+    val itemFcmWorker = listOf(
+        MainSettingLine(title = "테스트 WORKER 시작", onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                repeatInterval = 15,
+                tag = "TEST",
+                timeMill = TimeUnit.MINUTES
+            )
+        }),
+        MainSettingLine(title = "테스트 WORKER 취소", onClick = {
+            PeriodicWorker.cancelWorker(
+                workManager = workManager,
+                tag = "TEST"
+            )
+        }),
+        MainSettingLine(title = "테스트 WORKER 확인", onClick = {
+            PeriodicWorker.checkWorker(
+                workManager = workManager,
+                tag = "TEST"
+            )
+        }),
+    )
+
+    Button(
+        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+        onClick = { FCM.getFCMToken(context = context) },
+        modifier = Modifier
+            .padding(8.dp, 0.dp)
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(20.dp),
+        content = {
+
+            Column {
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "FCM 토큰",
+                        color = color000000,
+                        fontSize = 18.sp,
+                    )
+                }
+
+                Spacer(modifier = Modifier.size(4.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = dataStore.getDataStoreString(DataStoreManager.FCM_TOKEN).collectAsState(initial = "").value ?: "",
+                        color = color8e8e8e,
+                        fontSize = 16.sp,
+                    )
+                }
+                Spacer(modifier = Modifier.size(16.dp))
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(32.dp))
+
+    Button(
+        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+        onClick = {
+            FCM.postFCMAlertTest(context = context, message = "테스트")
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(44.dp),
+        shape = RoundedCornerShape(50.dp),
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "푸시 알림 테스트",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    Text(
+        modifier = Modifier.padding(32.dp, 8.dp),
+        text = "테스트 현황",
+        fontSize = 16.sp,
+        color = color8e8e8e,
+        fontWeight = FontWeight(weight = 700)
+    )
+
+    TabletContentWrap(
+        radius = 10,
+        content = {
+            lineTest.forEachIndexed { index, item ->
+                ItemMainTabletContent(
+                    title = item.title,
+                    value = item.value,
+                    isLast = lineTest.size - 1 == index
+                )
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    Text(
+        modifier = Modifier.padding(32.dp, 8.dp),
+        text = "FCM 매니저",
+        fontSize = 16.sp,
+        color = color8e8e8e,
+        fontWeight = FontWeight(weight = 700)
+    )
+
+    TabletContentWrap(
+        radius = 10,
+        content = {
+            itemFcmWorker.forEachIndexed { index, item ->
+                ItemMainTabletContent(
+                    title = item.title,
+                    isLast = itemFcmWorker.size - 1 == index,
+                    onClick = item.onClick
+                )
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    Text(
+        modifier = Modifier.padding(32.dp, 8.dp),
+        text = "FCM 공지사항 등록",
+        fontSize = 16.sp,
+        color = color8e8e8e,
+        fontWeight = FontWeight(weight = 700)
+    )
+
+    TabletContentWrap(
+        radius = 10,
+        content = {
             TextField(
                 value = getFCM.title,
                 onValueChange = {
@@ -96,7 +241,7 @@ fun ScreenMainFCM(workManager: WorkManager, viewModelMain: ViewModelMain, isExpa
                     containerColor = Color(0),
                     textColor = color000000
                 ),
-                modifier = Modifier.width(260.dp)
+                modifier = Modifier.fillMaxWidth()
             )
 
             Spacer(modifier = Modifier.size(16.dp))
@@ -112,68 +257,17 @@ fun ScreenMainFCM(workManager: WorkManager, viewModelMain: ViewModelMain, isExpa
                     containerColor = Color(0),
                     textColor = color000000
                 ),
-                modifier = Modifier.width(260.dp)
+                modifier = Modifier.fillMaxWidth()
             )
 
-            BtnMobile(func = { FCM.postFCMAlert(context = context, getFCM = getFCM) }, btnText = "공지사항 등록")
-
-            Spacer(modifier = Modifier.size(16.dp))
-
-            TextField(
-                value = dataStore.getDataStoreString(DataStoreManager.FCM_TOKEN).collectAsState(initial = "").value ?: "",
-                onValueChange = {
-                    setFCM(getFCM.copy(title = it))
-                },
-                label = { Text("FCM 토큰", color = color898989) },
-                singleLine = true,
-                colors = TextFieldDefaults.textFieldColors(
-                    containerColor = Color(0),
-                    textColor = color000000
-                ),
-                modifier = Modifier.width(260.dp)
-            )
-
-            BtnMobile(func = { FCM.getFCMToken(context) }, btnText = "FCM 토큰 얻기")
-
-            BtnMobile(func = { FCM.postFCMAlertTest(context = context, message = "테스트") }, btnText = "푸시 알림 테스트")
-
-            BtnMobile(
-                func = {
-                    PeriodicWorker.doWorker(
-                        workManager = workManager,
-                        repeatInterval = 15,
-                        tag = "TEST",
-                        timeMill = TimeUnit.MINUTES
-                    )
-                },
-                btnText = "테스트 WORKER 시작"
-            )
-
-            BtnMobile(
-                func = {
-                    PeriodicWorker.cancelWorker(
-                        workManager = workManager,
-                        tag = "TEST"
-                    )
-                },
-                btnText = "테스트 WORKER 취소"
-            )
-
-            BtnMobile(
-                func = {
-                    PeriodicWorker.checkWorker(
-                        workManager = workManager,
-                        tag = "TEST"
-                    )
-                },
-                btnText = "테스트 WORKER 확인"
-            )
-
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(120.dp)
-            )
+            Box(modifier = Modifier.padding(16.dp), contentAlignment = Alignment.Center) {
+                BtnMobile(
+                    func = { FCM.postFCMAlert(context = context, getFCM = getFCM) },
+                    btnText = "공지사항 등록"
+                )
+            }
         }
-    }
+    )
+
+    Spacer(modifier = Modifier.size(60.dp))
 }

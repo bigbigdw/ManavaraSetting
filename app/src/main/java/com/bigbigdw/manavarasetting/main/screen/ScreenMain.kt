@@ -5,8 +5,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,7 +17,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Card
@@ -38,6 +42,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -53,8 +60,27 @@ import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color1E1E20
 import com.bigbigdw.manavarasetting.ui.theme.color1e4394
+import com.bigbigdw.manavarasetting.ui.theme.color21c2ec
+import com.bigbigdw.manavarasetting.ui.theme.color31c3ae
+import com.bigbigdw.manavarasetting.ui.theme.color4996e8
+import com.bigbigdw.manavarasetting.ui.theme.color4ad7cf
+import com.bigbigdw.manavarasetting.ui.theme.color52a9ff
+import com.bigbigdw.manavarasetting.ui.theme.color536fd2
+import com.bigbigdw.manavarasetting.ui.theme.color5372de
 import com.bigbigdw.manavarasetting.ui.theme.color555b68
+import com.bigbigdw.manavarasetting.ui.theme.color64c157
+import com.bigbigdw.manavarasetting.ui.theme.color79b4f8
+import com.bigbigdw.manavarasetting.ui.theme.color7c81ff
+import com.bigbigdw.manavarasetting.ui.theme.color80bf78
+import com.bigbigdw.manavarasetting.ui.theme.color91cec7
+import com.bigbigdw.manavarasetting.ui.theme.color998df9
+import com.bigbigdw.manavarasetting.ui.theme.colorabd436
 import com.bigbigdw.manavarasetting.ui.theme.colordcdcdd
+import com.bigbigdw.manavarasetting.ui.theme.colorea927c
+import com.bigbigdw.manavarasetting.ui.theme.colorf17666
+import com.bigbigdw.manavarasetting.ui.theme.colorf17fa0
+import com.bigbigdw.manavarasetting.ui.theme.colorf6f6f6
+import com.bigbigdw.manavarasetting.ui.theme.colorfdc24e
 
 @Composable
 fun ScreenMain(
@@ -105,7 +131,6 @@ fun ScreenMainTablet(
 //        TableAppNavRail(currentRoute = currentRoute ?: "", navController = navController)
         NavigationGraph(
             navController = navController,
-            workManager = workManager,
             viewModelMain = viewModelMain,
             isExpandedScreen = isExpandedScreen
         )
@@ -140,7 +165,6 @@ fun ScreenMainMobile(
         ) {
             NavigationGraph(
                 navController = navController,
-                workManager = workManager,
                 viewModelMain = viewModelMain,
                 isExpandedScreen = isExpandedScreen
             )
@@ -269,7 +293,6 @@ fun BottomNavScreen(navController: NavHostController, currentRoute: String?) {
 @Composable
 fun NavigationGraph(
     navController: NavHostController,
-    workManager: WorkManager,
     viewModelMain: ViewModelMain,
     isExpandedScreen: Boolean
 ) {
@@ -321,16 +344,16 @@ fun NavigationGraph(
             )
         }
         composable(ScreemBottomItem.FCM.screenRoute) {
-            ScreenMainFCM(workManager = workManager, viewModelMain = viewModelMain, isExpandedScreen = isExpandedScreen)
+            ScreenMainFCM(lineTest = lineTest)
         }
         composable(ScreemBottomItem.BEST.screenRoute) {
-            ScreenMainBest(workManager = workManager, viewModelMain = viewModelMain, isExpandedScreen = isExpandedScreen)
+            ScreenMainBest(lineBest = lineBest)
         }
         composable(ScreemBottomItem.JSON.screenRoute) {
-            ScreenMainJson(workManager = workManager, viewModelMain = viewModelMain, isExpandedScreen = isExpandedScreen)
+            ScreenMainJson(lineJson = lineJson)
         }
         composable(ScreemBottomItem.TROPHY.screenRoute) {
-            ScreenMainTrophy(workManager = workManager, viewModelMain = viewModelMain)
+            ScreenMainTrophy(lineTrophy = lineTrophy)
         }
     }
 }
@@ -445,5 +468,220 @@ fun TableAppNavRail(
         }
 
         Spacer(Modifier.weight(1f))
+    }
+}
+
+@Composable
+fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> Unit){
+
+    Column(
+        modifier = Modifier
+            .width(334.dp)
+            .fillMaxHeight()
+            .background(color = colorf6f6f6)
+            .padding(8.dp, 0.dp)
+            .verticalScroll(rememberScrollState())
+            .semantics { contentDescription = "Overview Screen" },
+    ) {
+
+        Spacer(modifier = Modifier.size(16.dp))
+
+        Text(
+            modifier = Modifier.padding(16.dp, 0.dp, 0.dp, 0.dp),
+            text = "세팅바라",
+            fontSize = 24.sp,
+            color = color000000,
+            fontWeight = FontWeight(weight = 700)
+        )
+
+        Spacer(modifier = Modifier.size(16.dp))
+
+        ItemMainSettingSingleTablet(
+            containerColor = color52a9ff,
+            image = R.drawable.ic_launcher,
+            title = "세팅바라 현황",
+            body = "Periodic Worker 현황",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = {onClick()}
+        )
+
+        TabletBorderLine()
+
+        ItemMainSettingSingleTablet(
+            containerColor = color4ad7cf,
+            image = R.drawable.icon_fcm_wht,
+            title = "FCM 관리",
+            body = "FCM 테스트 & 공지사항 등록 & 토큰 획득",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = {onClick()}
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color5372de,
+            image = R.drawable.icon_fcm_wht,
+            title = "FCM 공지사항 리스트",
+            body = "NOTICE 리스트 확인",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = {onClick()}
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color998df9,
+            image = R.drawable.icon_fcm_wht,
+            title = "FCM 알림 리스트",
+            body = "ALERT 리스트 확인",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = {onClick()}
+        )
+
+        TabletBorderLine()
+
+        ItemMainSettingSingleTablet(
+            containerColor = colorea927c,
+            image = R.drawable.icon_best_wht,
+            title = "베스트 리스트 관리",
+            body = "베스트 리스트 수동 갱신 & Worker",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = {onClick()}
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = colorabd436,
+            image = R.drawable.icon_best_wht,
+            title = "베스트 BOOK 리스트",
+            body = "장르별 작품 리스트 확인",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = {onClick()}
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = colorf17fa0,
+            image = R.drawable.icon_best_wht,
+            title = "베스트 최신화 현황",
+            body = "시간별 베스트 갱신 현황",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = {onClick()}
+        )
+
+        TabletBorderLine()
+
+        ItemMainSettingSingleTablet(
+            containerColor = color21c2ec,
+            image = R.drawable.icon_json_wht,
+            title = "JSON 베스트 관리",
+            body = "JSON 베스트 수동 갱신 & Worker 관리",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = {onClick()}
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color31c3ae,
+            image = R.drawable.icon_json_wht,
+            title = "JSON 투데이 베스트 현황",
+            body = "장르별 WEEK 투데이 확인",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = {onClick()}
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color7c81ff,
+            image = R.drawable.icon_json_wht,
+            title = "JSON 주간 베스트 현황",
+            body = "WEEK 베스트 확인",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = {onClick()}
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color64c157,
+            image = R.drawable.icon_json_wht,
+            title = "JSON 월간 베스트 현황",
+            body = "MONTH 베스트 확인",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = {onClick()}
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = colorf17666,
+            image = R.drawable.icon_json_wht,
+            title = "JSON 주간 누적 트로피 현황",
+            body = "장르별 주간 JSON 확인",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = {onClick()}
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color536fd2,
+            image = R.drawable.icon_json_wht,
+            title = "JSON 월간 누적 트로피 현황",
+            body = "장르별 월간 JSON 확인",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = {onClick()}
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color4996e8,
+            image = R.drawable.icon_json_wht,
+            title = "JSON 최신화 현황",
+            body = "시간별 JSON 갱신 현황",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = {onClick()}
+        )
+
+        TabletBorderLine()
+
+        ItemMainSettingSingleTablet(
+            containerColor = colorfdc24e,
+            image = R.drawable.icon_trophy_wht,
+            title = "트로피 정산 관리",
+            body = "트로피 수동 정산 & Worker 관리",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = {onClick()}
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color80bf78,
+            image = R.drawable.icon_trophy_wht,
+            title = "트로피 주간 토탈 리스트",
+            body = "장르별 주간 트로피 리스트 확인",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = {onClick()}
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color91cec7,
+            image = R.drawable.icon_trophy_wht,
+            title = "트로피 월간 토탈 리스트",
+            body = "장르별 월간 트로피 리스트 확인",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = {onClick()}
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color79b4f8,
+            image = R.drawable.icon_trophy_wht,
+            title = "트로피 최신화 현황",
+            body = "시간별 트로피 최신화 현황",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = {onClick()}
+        )
     }
 }

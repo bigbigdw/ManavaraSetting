@@ -6,37 +6,32 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
-import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
-import com.bigbigdw.manavarasetting.ui.theme.colorf7f7f7
-import com.bigbigdw.manavarasetting.util.BestRef
-import com.bigbigdw.manavarasetting.util.DBDate
-import com.bigbigdw.manavarasetting.util.FCM
-import com.bigbigdw.manavarasetting.util.Mining
-import com.bigbigdw.manavarasetting.util.NaverSeriesGenre
+import com.bigbigdw.manavarasetting.main.model.MainSettingLine
+import com.bigbigdw.manavarasetting.ui.theme.color8e8e8e
+import com.bigbigdw.manavarasetting.ui.theme.colorf6f6f6
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import java.util.concurrent.TimeUnit
 
 @Composable
 fun ScreenMainBest(
-    workManager: WorkManager,
-    viewModelMain: ViewModelMain,
-    isExpandedScreen: Boolean
+    lineBest: List<MainSettingLine>
 ) {
-    val context = LocalContext.current
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -44,7 +39,8 @@ fun ScreenMainBest(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = colorf7f7f7)
+                .background(color = colorf6f6f6)
+                .padding(16.dp, 0.dp)
                 .verticalScroll(rememberScrollState())
                 .semantics { contentDescription = "Overview Screen" },
             verticalArrangement = Arrangement.Center,
@@ -53,81 +49,72 @@ fun ScreenMainBest(
 
             MainHeader(image = R.drawable.icon_best, title = "베스트 리스트 현황")
 
-            ItemMainSetting(
-                image = R.drawable.icon_best_gr,
-                titleWorker = "WORKER : ",
-                valueWorker = viewModelMain.state.collectAsState().value.statusBest,
-                statusTitle = "갱신시간 : ",
-                valueStatus = viewModelMain.state.collectAsState().value.timeBest,
-            )
-            ItemMainSetting(
-                image = R.drawable.icon_best_gr,
-                titleWorker = "호출 횟수 : ",
-                valueWorker = viewModelMain.state.collectAsState().value.countBest,
-                statusTitle = "금일 호출 횟수 : ",
-                valueStatus = viewModelMain.state.collectAsState().value.countTodayBest,
-            )
-            ItemMainSettingSingle(
-                image = R.drawable.icon_best_gr,
-                titleWorker = "호출 주기 : ",
-                valueWorker = viewModelMain.state.collectAsState().value.timeMillBest,
-            )
-
-            BtnMobile(
-                func = {
-                    for (j in NaverSeriesGenre) {
-
-                        if (DBDate.getDayOfWeekAsNumber() == 0) {
-                            BestRef.setBestRef(platform = "NAVER_SERIES", genre = j).child("TROPHY_WEEK").removeValue()
-                        }
-
-                        if (DBDate.datedd() == "01") {
-                            BestRef.setBestRef(platform = "NAVER_SERIES", genre = j).child("TROPHY_MONTH").removeValue()
-                        }
-
-                        for (i in 1..5) {
-                            Mining.miningNaverSeriesAll(pageCount = i, genre = j)
-                        }
-                    }
-                    FCM.postFCMAlertTest(context = context, message = "베스트 리스트가 갱신되었습니다")
-                },
-                btnText = "베스트 리스트 갱신"
-            )
-
-            BtnMobile(
-                func = {
-                    PeriodicWorker.doWorker(
-                        workManager = workManager,
-                        repeatInterval = 3,
-                        tag = "BEST",
-                        timeMill = TimeUnit.HOURS
-                    )
-                },
-                btnText = "베스트 WORKER 시작"
-            )
-
-            BtnMobile(
-                func = {
-                    PeriodicWorker.cancelWorker(workManager = workManager,  tag = "BEST")
-                },
-                btnText = "베스트 WORKER 취소"
-            )
-
-            BtnMobile(
-                func = {
-                    PeriodicWorker.checkWorker(
-                        workManager = workManager,
-                        tag = "BEST"
-                    )
-                },
-                btnText = "베스트 WORKER 확인"
-            )
-
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(120.dp)
-            )
+            ContentsBest(lineBest = lineBest)
         }
     }
+}
+
+@Composable
+fun ContentsBest(lineBest: List<MainSettingLine>) {
+
+    val context = LocalContext.current
+    val workManager = WorkManager.getInstance(context)
+
+    val itemBestWorker = listOf(
+        MainSettingLine(title = "베스트 WORKER 시작", onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                repeatInterval = 3,
+                tag = "BEST",
+                timeMill = TimeUnit.HOURS
+            )
+        }),
+        MainSettingLine(title = "베스트 WORKER 취소", onClick = {
+            PeriodicWorker.cancelWorker(workManager = workManager,  tag = "BEST")
+        }),
+        MainSettingLine(title = "베스트 WORKER 확인", onClick = {
+            PeriodicWorker.checkWorker(
+                workManager = workManager,
+                tag = "BEST"
+            )
+        }),
+    )
+
+    TabletContentWrap(
+        radius = 10,
+        content = {
+            itemBestWorker.forEachIndexed { index, item ->
+                ItemMainTabletContent(
+                    title = item.title,
+                    isLast = itemBestWorker.size - 1 == index,
+                    onClick = item.onClick
+                )
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    Text(
+        modifier = Modifier.padding(32.dp, 8.dp),
+        text = "베스트 현황",
+        fontSize = 16.sp,
+        color = color8e8e8e,
+        fontWeight = FontWeight(weight = 700)
+    )
+
+    TabletContentWrap(
+        radius = 10,
+        content = {
+            lineBest.forEachIndexed { index, item ->
+                ItemMainTabletContent(
+                    title = item.title,
+                    value = item.value,
+                    isLast = lineBest.size - 1 == index
+                )
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(60.dp))
 }
