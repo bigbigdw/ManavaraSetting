@@ -118,7 +118,7 @@ fun ScreenTablet(
                 "베스트 최신화 현황" -> {
                     ContentsFCMList(viewModelMain = viewModelMain, child = "BEST")
                 }
-                "JSON 베스트 관리" -> {
+                "JSON 관리" -> {
                     ContentsJson(lineJson = lineJson)
                 }
                 "JSON 투데이 베스트 현황" -> {
@@ -126,7 +126,7 @@ fun ScreenTablet(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         setDetailPageType = setDetailPageType,
-                        type = "투데이"
+                        type = "투데이 베스트"
                     )
                 }
                 "JSON 주간 베스트 현황" -> {
@@ -134,7 +134,15 @@ fun ScreenTablet(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         setDetailPageType = setDetailPageType,
-                        type = "주간"
+                        type = "주간 베스트"
+                    )
+                }
+                "JSON 월간 베스트 현황" -> {
+                    ContentsBestJsonList(
+                        setDetailPage = setDetailPage,
+                        setDetailMenu = setDetailMenu,
+                        setDetailPageType = setDetailPageType,
+                        type = "주간 베스트"
                     )
                 }
                 "JSON 주간 현황" -> {
@@ -145,15 +153,8 @@ fun ScreenTablet(
                         type = "주간"
                     )
                 }
-                "JSON 월간 베스트 현황" -> {
-                    ContentsBestJsonList(
-                        setDetailPage = setDetailPage,
-                        setDetailMenu = setDetailMenu,
-                        setDetailPageType = setDetailPageType,
-                        type = "월간"
-                    )
-                }
-                "JSON 주간 누적 트로피 현황" -> {
+
+                "JSON 주간 트로피 현황" -> {
                     ContentsBestJsonList(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
@@ -161,7 +162,7 @@ fun ScreenTablet(
                         type = "주간 트로피"
                     )
                 }
-                "JSON 월간 누적 트로피 현황" -> {
+                "JSON 월간 트로피 현황" -> {
                     ContentsBestJsonList(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
@@ -377,177 +378,3 @@ fun ContentsSetting(
 
     Spacer(modifier = Modifier.size(60.dp))
 }
-
-@Composable
-fun ContentsFCMList(viewModelMain: ViewModelMain, child : String){
-
-
-    val fcmAlertList = when (child) {
-        "ALERT" -> {
-            viewModelMain.getFCMList(child = child)
-            viewModelMain.state.collectAsState().value.fcmAlertList
-        }
-        "NOTICE" -> {
-            viewModelMain.getFCMList(child = child)
-            viewModelMain.getFCMList(child = child)
-            viewModelMain.state.collectAsState().value.fcmNoticeList
-        }
-        "BEST" -> {
-            viewModelMain.state.collectAsState().value.fcmBestList
-        }
-        "JSON" -> {
-            viewModelMain.state.collectAsState().value.fcmJsonList
-        }
-        "TROPHY" -> {
-            viewModelMain.state.collectAsState().value.fcmTrophyList
-        }
-        else -> {
-            viewModelMain.state.collectAsState().value.fcmAlertList
-        }
-    }
-
-    TabletContentWrap(
-        radius = 5,
-        content = {
-            Spacer(modifier = Modifier.size(8.dp))
-
-            fcmAlertList.forEachIndexed { index, item ->
-                ItemTabletFCMList(
-                    item = item,
-                    isLast = fcmAlertList.size - 1 == index
-                )
-            }
-
-            Spacer(modifier = Modifier.size(8.dp))
-        }
-    )
-
-    Spacer(modifier = Modifier.size(60.dp))
-}
-
-@Composable
-fun ContentsBestList(
-    setDetailPage: (Boolean) -> Unit,
-    setDetailMenu: (String) -> Unit,
-    setDetailPageType: (String) -> Unit,
-) {
-
-    val context = LocalContext.current
-    val itemList = ArrayList<MainSettingLine>()
-
-    for (j in NaverSeriesGenre) {
-        itemList.add(MainSettingLine(title = "네이버 시리즈 베스트 리스트 ${getNaverSeriesGenreKor(j)}", value = getNaverSeriesGenre(j)))
-    }
-
-    Button(
-        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-        onClick = {
-            for (j in NaverSeriesGenre) {
-
-                if (DBDate.getDayOfWeekAsNumber() == 0) {
-                    BestRef.setBestRef(platform = "NAVER_SERIES", genre = j).child("TROPHY_WEEK")
-                        .removeValue()
-                }
-
-                if (DBDate.datedd() == "01") {
-                    BestRef.setBestRef(platform = "NAVER_SERIES", genre = j).child("TROPHY_MONTH")
-                        .removeValue()
-                }
-
-                for (i in 1..5) {
-                    Mining.miningNaverSeriesAll(pageCount = i, genre = j)
-                }
-            }
-            FCM.postFCMAlertTest(context = context, message = "베스트 리스트가 갱신되었습니다")
-        },
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(44.dp),
-        shape = RoundedCornerShape(50.dp),
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "베스트 리스트 수동 갱신",
-                    color = color000000,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    Spacer(modifier = Modifier.size(16.dp))
-
-    Text(
-        modifier = Modifier.padding(32.dp, 8.dp),
-        text = "네이버 시리즈",
-        fontSize = 16.sp,
-        color = color8E8E8E,
-        fontWeight = FontWeight(weight = 700)
-    )
-
-    TabletContentWrap(
-        radius = 5,
-        content = {
-            itemList.forEachIndexed { index, item ->
-                ItemMainTabletContent(
-                    title = item.title,
-                    isLast = itemList.size - 1 == index,
-                    onClick = {
-                        setDetailPage(true)
-                        setDetailMenu(item.title)
-                        setDetailPageType(item.value)
-                    }
-                )
-            }
-        }
-    )
-
-    Spacer(modifier = Modifier.size(60.dp))
-}
-
-@Composable
-fun ContentsBestJsonList(
-    setDetailPage: (Boolean) -> Unit,
-    setDetailMenu: (String) -> Unit,
-    setDetailPageType: (String) -> Unit,
-    type : String,
-) {
-
-    val itemList = ArrayList<MainSettingLine>()
-
-    for (j in NaverSeriesGenre) {
-        itemList.add(MainSettingLine(title = "$type JSON ${getNaverSeriesGenreKor(j)}", value = getNaverSeriesGenre(j)))
-    }
-
-    Text(
-        modifier = Modifier.padding(32.dp, 8.dp),
-        text = "네이버 시리즈",
-        fontSize = 16.sp,
-        color = color8E8E8E,
-        fontWeight = FontWeight(weight = 700)
-    )
-
-    TabletContentWrap(
-        radius = 5,
-        content = {
-            itemList.forEachIndexed { index, item ->
-                ItemMainTabletContent(
-                    title = item.title,
-                    isLast = itemList.size - 1 == index,
-                    onClick = {
-                        setDetailPage(true)
-                        setDetailMenu(item.title)
-                        setDetailPageType(item.value)
-                    }
-                )
-            }
-        }
-    )
-
-    Spacer(modifier = Modifier.size(60.dp))
-}
-

@@ -31,6 +31,7 @@ import com.bigbigdw.manavarasetting.util.FCM
 import com.bigbigdw.manavarasetting.util.NaverSeriesGenre
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
+import com.bigbigdw.manavarasetting.util.getNaverSeriesGenreKor
 import com.bigbigdw.manavarasetting.util.makeWeekJson
 import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageDay
 import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageMonth
@@ -217,6 +218,48 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
                     title = item.title,
                     value = item.value,
                     isLast = lineJson.size - 1 == index
+                )
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(60.dp))
+}
+
+@Composable
+fun ContentsBestJsonList(
+    setDetailPage: (Boolean) -> Unit,
+    setDetailMenu: (String) -> Unit,
+    setDetailPageType: (String) -> Unit,
+    type : String,
+) {
+
+    val itemList = ArrayList<MainSettingLine>()
+
+    for (j in NaverSeriesGenre) {
+        itemList.add(MainSettingLine(title = "$type JSON ${getNaverSeriesGenreKor(j)}", value = getNaverSeriesGenre(j)))
+    }
+
+    Text(
+        modifier = Modifier.padding(32.dp, 8.dp),
+        text = "네이버 시리즈",
+        fontSize = 16.sp,
+        color = color8E8E8E,
+        fontWeight = FontWeight(weight = 700)
+    )
+
+    TabletContentWrap(
+        radius = 5,
+        content = {
+            itemList.forEachIndexed { index, item ->
+                ItemMainTabletContent(
+                    title = item.title,
+                    isLast = itemList.size - 1 == index,
+                    onClick = {
+                        setDetailPage(true)
+                        setDetailMenu(item.title)
+                        setDetailPageType(item.value)
+                    }
                 )
             }
         }

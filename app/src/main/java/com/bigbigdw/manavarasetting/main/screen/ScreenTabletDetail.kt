@@ -79,6 +79,18 @@ fun ScreenTabletDetail(
                     child = getDetailPageType,
                     type = "JSON"
                 )
+            }  else if (getDetailMenu.contains("주간 베스트 JSON")) {
+                ContentsBestListDetailWeek(
+                    viewModelMain = viewModelMain,
+                    child = getDetailPageType,
+                    type = "주간"
+                )
+            }  else if (getDetailMenu.contains("월간 베스트 JSON")) {
+                ContentsBestListDetailWeek(
+                    viewModelMain = viewModelMain,
+                    child = getDetailPageType,
+                    type = "월간"
+                )
             } else if (getDetailMenu.contains("주간 트로피")) {
                 ContentsBestListJsonTrophy(
                     viewModelMain = viewModelMain,

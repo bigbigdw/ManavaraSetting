@@ -38,6 +38,7 @@ import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.firebase.DataFCMBodyNotification
 import com.bigbigdw.manavarasetting.main.model.MainSettingLine
 import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager
+import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color898989
 import com.bigbigdw.manavarasetting.ui.theme.color8E8E8E
@@ -272,6 +273,53 @@ fun ContentsFCM(lineTest: List<MainSettingLine>) {
                     btnText = "공지사항 등록"
                 )
             }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(60.dp))
+}
+
+@Composable
+fun ContentsFCMList(viewModelMain: ViewModelMain, child : String){
+
+
+    val fcmAlertList = when (child) {
+        "ALERT" -> {
+            viewModelMain.getFCMList(child = child)
+            viewModelMain.state.collectAsState().value.fcmAlertList
+        }
+        "NOTICE" -> {
+            viewModelMain.getFCMList(child = child)
+            viewModelMain.getFCMList(child = child)
+            viewModelMain.state.collectAsState().value.fcmNoticeList
+        }
+        "BEST" -> {
+            viewModelMain.state.collectAsState().value.fcmBestList
+        }
+        "JSON" -> {
+            viewModelMain.state.collectAsState().value.fcmJsonList
+        }
+        "TROPHY" -> {
+            viewModelMain.state.collectAsState().value.fcmTrophyList
+        }
+        else -> {
+            viewModelMain.state.collectAsState().value.fcmAlertList
+        }
+    }
+
+    TabletContentWrap(
+        radius = 5,
+        content = {
+            Spacer(modifier = Modifier.size(8.dp))
+
+            fcmAlertList.forEachIndexed { index, item ->
+                ItemTabletFCMList(
+                    item = item,
+                    isLast = fcmAlertList.size - 1 == index
+                )
+            }
+
+            Spacer(modifier = Modifier.size(8.dp))
         }
     )
 
