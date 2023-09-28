@@ -65,7 +65,7 @@ fun ContentsTrophy(lineTrophy: List<MainSettingLine>) {
     val workManager = WorkManager.getInstance(context)
 
     val itemJsonWorker = listOf(
-        MainSettingLine(title = "TROPHY WORKER 시작", onClick = {
+        MainSettingLine(title = "WORKER 시작", onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
                 repeatInterval = 9,
@@ -73,13 +73,13 @@ fun ContentsTrophy(lineTrophy: List<MainSettingLine>) {
                 timeMill = TimeUnit.HOURS
             )
         }),
-        MainSettingLine(title = "TROPHY WORKER 취소", onClick = {
+        MainSettingLine(title = "WORKER 취소", onClick = {
             PeriodicWorker.cancelWorker(
                 workManager = workManager,
                 tag = "TROPHY"
             )
         }),
-        MainSettingLine(title = "TROPHY WORKER 확인", onClick = {
+        MainSettingLine(title = "WORKER 확인", onClick = {
             PeriodicWorker.checkWorker(
                 workManager = workManager,
                 tag = "TROPHY"

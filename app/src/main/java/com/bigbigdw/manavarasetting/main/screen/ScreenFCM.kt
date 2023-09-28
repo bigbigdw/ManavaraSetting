@@ -82,7 +82,7 @@ fun ContentsFCM(lineTest: List<MainSettingLine>) {
     val (getFCM, setFCM) = remember { mutableStateOf(DataFCMBodyNotification()) }
 
     val itemFcmWorker = listOf(
-        MainSettingLine(title = "테스트 WORKER 시작", onClick = {
+        MainSettingLine(title = "WORKER 시작", onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
                 repeatInterval = 15,
@@ -90,13 +90,13 @@ fun ContentsFCM(lineTest: List<MainSettingLine>) {
                 timeMill = TimeUnit.MINUTES
             )
         }),
-        MainSettingLine(title = "테스트 WORKER 취소", onClick = {
+        MainSettingLine(title = "WORKER 취소", onClick = {
             PeriodicWorker.cancelWorker(
                 workManager = workManager,
                 tag = "TEST"
             )
         }),
-        MainSettingLine(title = "테스트 WORKER 확인", onClick = {
+        MainSettingLine(title = "WORKER 확인", onClick = {
             PeriodicWorker.checkWorker(
                 workManager = workManager,
                 tag = "TEST"

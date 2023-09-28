@@ -61,7 +61,7 @@ fun ContentsBest(lineBest: List<MainSettingLine>) {
     val workManager = WorkManager.getInstance(context)
 
     val itemBestWorker = listOf(
-        MainSettingLine(title = "베스트 WORKER 시작", onClick = {
+        MainSettingLine(title = "WORKER 시작", onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
                 repeatInterval = 3,
@@ -69,10 +69,10 @@ fun ContentsBest(lineBest: List<MainSettingLine>) {
                 timeMill = TimeUnit.HOURS
             )
         }),
-        MainSettingLine(title = "베스트 WORKER 취소", onClick = {
+        MainSettingLine(title = "WORKER 취소", onClick = {
             PeriodicWorker.cancelWorker(workManager = workManager,  tag = "BEST")
         }),
-        MainSettingLine(title = "베스트 WORKER 확인", onClick = {
+        MainSettingLine(title = "WORKER 확인", onClick = {
             PeriodicWorker.checkWorker(
                 workManager = workManager,
                 tag = "BEST"
