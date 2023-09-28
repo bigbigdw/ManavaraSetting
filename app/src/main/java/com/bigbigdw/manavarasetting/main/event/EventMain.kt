@@ -2,6 +2,7 @@ package com.bigbigdw.manavarasetting.main.event
 
 import com.bigbigdw.manavarasetting.firebase.FCMAlert
 import com.bigbigdw.manavarasetting.main.model.BestItemData
+import com.bigbigdw.manavarasetting.main.model.BestListAnalyze
 
 sealed interface EventMain {
     object Loaded : EventMain
@@ -47,6 +48,10 @@ sealed interface EventMain {
         val bestListWeek : ArrayList<ArrayList<BestItemData>> = ArrayList(),
     ) : EventMain
 
+    class SetTrophyList(
+        val trophyList : ArrayList<BestListAnalyze> = ArrayList(),
+    ) : EventMain
+
     class SetFCMList(
         val fcmBestList : ArrayList<FCMAlert> = ArrayList(),
         val fcmJsonList : ArrayList<FCMAlert> = ArrayList(),
@@ -83,4 +88,5 @@ data class StateMain(
     val fcmJsonList : ArrayList<FCMAlert> = ArrayList(),
     val fcmTrophyList : ArrayList<FCMAlert> = ArrayList(),
     val bestListWeek : ArrayList<ArrayList<BestItemData>> = ArrayList(),
+    val trophyList : ArrayList<BestListAnalyze> = ArrayList(),
 )

@@ -52,6 +52,7 @@ import coil.compose.AsyncImage
 import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.firebase.FCMAlert
 import com.bigbigdw.manavarasetting.main.model.BestItemData
+import com.bigbigdw.manavarasetting.main.model.BestListAnalyze
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color20459e
 import com.bigbigdw.manavarasetting.ui.theme.color8e8e8e
@@ -750,6 +751,85 @@ fun previewItem(){
             title = "TITLE"
         )
     )
+}
+
+@Composable
+fun ItemTabletTrophyList(item : BestListAnalyze, isLast: Boolean){
+
+    Column {
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                modifier = Modifier.background(color = colore9e9e9),
+                text = item.bookCode,
+                color = color000000,
+                fontSize = 18.sp,
+            )
+        }
+
+        Spacer(modifier = Modifier.size(4.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = spannableString(textFront = "현재 스코어 : ", color = color000000, textEnd = item.number.toString()),
+                color = color8e8e8e,
+                fontSize = 16.sp,
+            )
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = spannableString(textFront = "작품 정보1 : ", color = color000000, textEnd = item.info1),
+                color = color8e8e8e,
+                fontSize = 16.sp,
+            )
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = spannableString(textFront = "트로피 누적 점수 : ", color = color000000, textEnd = item.total.toString()),
+                color = color8e8e8e,
+                fontSize = 16.sp,
+            )
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = spannableString(textFront = "트로피 누적 횟수 : ", color = color000000, textEnd = item.totalCount.toString()),
+                color = color8e8e8e,
+                fontSize = 16.sp,
+            )
+        }
+
+        if(!isLast){
+            Spacer(modifier = Modifier.size(2.dp))
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(color = colore9e9e9))
+            Spacer(modifier = Modifier.size(2.dp))
+        }
+    }
 }
 
 @Composable

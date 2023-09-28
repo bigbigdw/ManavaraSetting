@@ -44,9 +44,11 @@ object BestRef {
 
     fun setBookListDataBestAnalyze(ref: MutableMap<String?, Any>): BestListAnalyze {
         return BestListAnalyze(
-            ref["current"] as Int,
-            ref["info1"] as String,
-            ref["current"] as Int,
+            number = ref["current"] as Int,
+            info1 = ref["info1"] as String,
+            total = ref["current"] as Int,
+            totalCount = ref["current"] as Int,
+            bookCode = ref["bookCode"] as String,
         )
     }
 

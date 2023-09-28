@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bigbigdw.manavarasetting.main.model.BestItemData
+import com.bigbigdw.manavarasetting.main.model.BestListAnalyze
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color8e8e8e
@@ -66,23 +67,49 @@ fun ScreenTabletDetail(
 
             Spacer(modifier = Modifier.size(16.dp))
 
-            if(getDetailMenu.contains("베스트 리스트")){
-                ContentsBestListDetail(viewModelMain = viewModelMain, child = getDetailPageType, type = "BEST")
-            } else if(getDetailMenu.contains("투데이 JSON 리스트")){
+            if (getDetailMenu.contains("베스트 리스트")) {
+                ContentsBestListDetail(
+                    viewModelMain = viewModelMain,
+                    child = getDetailPageType,
+                    type = "BEST"
+                )
+            } else if (getDetailMenu.contains("투데이 JSON 리스트")) {
                 ContentsBestListDetail(
                     viewModelMain = viewModelMain,
                     child = getDetailPageType,
                     type = "JSON"
                 )
-            } else if(getDetailMenu.contains("주간 JSON 리스트")){
+            } else if (getDetailMenu.contains("주간 트로피")) {
                 ContentsBestListDetailWeek(
                     viewModelMain = viewModelMain,
-                    child = getDetailPageType
+                    child = getDetailPageType,
+                    type = "주간"
                 )
-            } else if(getDetailMenu.contains("월간 JSON 리스트")){
-                ContentsBestListDetailMonth(
+            } else if (getDetailMenu.contains("월간 트로피")) {
+                ContentsBestListDetailWeek(
                     viewModelMain = viewModelMain,
-                    child = getDetailPageType
+                    child = getDetailPageType,
+                    type = "월간"
+                )
+            } else if (getDetailMenu.contains("트로피 주간")) {
+                ContentsBestListDetailTrophy(
+                    viewModelMain = viewModelMain,
+                    type = "주간"
+                )
+            } else if (getDetailMenu.contains("트로피 월간")) {
+                ContentsBestListDetailTrophy(
+                    viewModelMain = viewModelMain,
+                    type = "월간"
+                )
+            } else if (getDetailMenu.contains("JSON 주간 토탈 리스트")) {
+                ContentsBestListDetailTrophy(
+                    viewModelMain = viewModelMain,
+                    type = "주간"
+                )
+            } else if (getDetailMenu.contains("JSON 월간 토탈 리스트")) {
+                ContentsBestListDetailTrophy(
+                    viewModelMain = viewModelMain,
+                    type = "월간"
                 )
             }
         }
@@ -90,9 +117,9 @@ fun ScreenTabletDetail(
 }
 
 @Composable
-fun ContentsBestListDetail(viewModelMain: ViewModelMain, child: String, type: String){
+fun ContentsBestListDetail(viewModelMain: ViewModelMain, child: String, type: String) {
 
-    val bestList: ArrayList<BestItemData> = if(type == "BEST"){
+    val bestList: ArrayList<BestItemData> = if (type == "BEST") {
         viewModelMain.getBestList(child = child)
         viewModelMain.state.collectAsState().value.setBestBookList
     } else {
@@ -120,18 +147,23 @@ fun ContentsBestListDetail(viewModelMain: ViewModelMain, child: String, type: St
 }
 
 @Composable
-fun ContentsBestListDetailWeek(viewModelMain: ViewModelMain, child: String){
+fun ContentsBestListDetailWeek(viewModelMain: ViewModelMain, child: String, type: String) {
 
-    viewModelMain.getBestJsonWeekList(genre = child)
+    viewModelMain.getBestJsonWeekList(genre = child, type = type)
 
-    val bestWeekList: ArrayList<ArrayList<BestItemData>> = viewModelMain.state.collectAsState().value.bestListWeek
+    val bestWeekList: ArrayList<ArrayList<BestItemData>> =
+        viewModelMain.state.collectAsState().value.bestListWeek
     bestWeekList.forEachIndexed { index, itemArray ->
 
         Spacer(modifier = Modifier.size(16.dp))
 
         Text(
             modifier = Modifier.padding(32.dp, 8.dp),
-            text = "${WeekKor.get(index)}요일",
+            text = if (type == "주간") {
+                "${WeekKor.get(index)}요일"
+            } else {
+                "${index + 1}주차"
+            },
             fontSize = 16.sp,
             color = color8e8e8e,
             fontWeight = FontWeight(weight = 700)
@@ -143,7 +175,7 @@ fun ContentsBestListDetailWeek(viewModelMain: ViewModelMain, child: String){
 
                 Spacer(modifier = Modifier.size(8.dp))
 
-                if(itemArray.size == 0){
+                if (itemArray.size == 0) {
                     Text(
                         text = "없음",
                         color = color000000,
@@ -173,54 +205,29 @@ fun ContentsBestListDetailWeek(viewModelMain: ViewModelMain, child: String){
 }
 
 @Composable
-fun ContentsBestListDetailMonth(viewModelMain: ViewModelMain, child: String){
+fun ContentsBestListDetailTrophy(viewModelMain: ViewModelMain, type: String) {
 
-    viewModelMain.getBestJsonMonthList(genre = child)
+    viewModelMain.getBestTrophyList(type = type)
 
-    val bestWeekList: ArrayList<ArrayList<BestItemData>> = viewModelMain.state.collectAsState().value.bestListWeek
-    bestWeekList.forEachIndexed { index, itemArray ->
+    val bestWeekList: ArrayList<BestListAnalyze> = viewModelMain.state.collectAsState().value.trophyList
 
-        Spacer(modifier = Modifier.size(16.dp))
+    TabletContentWrap(
+        radius = 5,
+        content = {
+            Spacer(modifier = Modifier.size(8.dp))
 
-        Text(
-            modifier = Modifier.padding(32.dp, 8.dp),
-            text = "${index + 1}주차",
-            fontSize = 16.sp,
-            color = color8e8e8e,
-            fontWeight = FontWeight(weight = 700)
-        )
-
-        TabletContentWrap(
-            radius = 5,
-            content = {
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                if(itemArray.size == 0){
-                    Text(
-                        text = "없음",
-                        color = color000000,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight(weight = 500)
-                    )
-                } else {
-                    Row(
-                        modifier = Modifier.horizontalScroll(
-                            rememberScrollState()
-                        )
-                    ) {
-                        itemArray.forEachIndexed { index, item ->
-                            ItemTabletBestListVertical(
-                                item = item
-                            )
-                        }
-                    }
-                }
-
-                Spacer(modifier = Modifier.size(8.dp))
+            bestWeekList.forEachIndexed { index, item ->
+                ItemTabletTrophyList(
+                    item = item,
+                    isLast = bestWeekList.size - 1 == index
+                )
             }
-        )
-    }
+
+            Spacer(modifier = Modifier.size(8.dp))
+        }
+    )
+
+
 
     Spacer(modifier = Modifier.size(60.dp))
 }

@@ -382,7 +382,7 @@ fun ScreenSettingTabletContents(setMenu: (String) -> Unit, getMenu: String, onCl
         ItemMainSettingSingleTablet(
             containerColor = colorfdc24e,
             image = R.drawable.icon_trophy_wht,
-            title = "트로피 졍산 관리",
+            title = "트로피 정산 관리",
             body = "트로피 수동 정산 & Worker 관리",
             setMenu = setMenu,
             getMenu = getMenu,

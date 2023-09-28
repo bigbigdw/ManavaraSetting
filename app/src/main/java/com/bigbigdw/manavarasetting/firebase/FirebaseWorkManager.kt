@@ -14,6 +14,7 @@ import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
 import com.bigbigdw.manavarasetting.util.setDataStore
 import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageDay
 import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageMonth
+import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageTrophy
 import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageWeek
 import com.bigbigdw.massmath.Firebase.FirebaseService
 import com.google.firebase.database.FirebaseDatabase
@@ -81,6 +82,12 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                 uploadJsonArrayToStorageMonth(
                     platform = "NAVER_SERIES",
                     genre = getNaverSeriesGenre(j)
+                )
+
+                uploadJsonArrayToStorageTrophy(
+                    platform = "NAVER_SERIES",
+                    genre = getNaverSeriesGenre(j),
+                    type = "월간"
                 )
             }
 

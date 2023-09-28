@@ -56,6 +56,7 @@ import com.bigbigdw.manavarasetting.util.makeWeekJson
 import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageDay
 import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageMonth
 import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageWeek
+import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageTrophy
 import com.google.gson.JsonArray
 import java.util.concurrent.TimeUnit
 
@@ -152,14 +153,6 @@ fun ScreenTablet(
                         type = "주간"
                     )
                 }
-                "JSON 월간 베스트 현황" -> {
-                    ContentsBestJsonList(
-                        setDetailPage = setDetailPage,
-                        setDetailMenu = setDetailMenu,
-                        setDetailPageType = setDetailPageType,
-                        type = "월간"
-                    )
-                }
                 "JSON 주간 현황" -> {
                     ContentsBestJsonList(
                         setDetailPage = setDetailPage,
@@ -168,11 +161,51 @@ fun ScreenTablet(
                         type = "주간"
                     )
                 }
+                "JSON 월간 베스트 현황" -> {
+                    ContentsBestJsonList(
+                        setDetailPage = setDetailPage,
+                        setDetailMenu = setDetailMenu,
+                        setDetailPageType = setDetailPageType,
+                        type = "월간"
+                    )
+                }
+                "JSON 주간 누적 트로피 현황" -> {
+                    ContentsBestJsonList(
+                        setDetailPage = setDetailPage,
+                        setDetailMenu = setDetailMenu,
+                        setDetailPageType = setDetailPageType,
+                        type = "주간 트로피월"
+                    )
+                }
+                "JSON 월간 누적 트로피 현황" -> {
+                    ContentsBestJsonList(
+                        setDetailPage = setDetailPage,
+                        setDetailMenu = setDetailMenu,
+                        setDetailPageType = setDetailPageType,
+                        type = "월간 트로피"
+                    )
+                }
                 "JSON 최신화 현황" -> {
                     ContentsFCMList(viewModelMain = viewModelMain, child = "JSON")
                 }
                 "트로피 정산 관리" -> {
                     ContentsTrophyManage(lineTrophy = lineTrophy)
+                }
+                "트로피 주간 토탈 리스트" -> {
+                    ContentsBestJsonList(
+                        setDetailPage = setDetailPage,
+                        setDetailMenu = setDetailMenu,
+                        setDetailPageType = setDetailPageType,
+                        type = "트로피 주간"
+                    )
+                }
+                "트로피 월간 토탈 리스트" -> {
+                    ContentsBestJsonList(
+                        setDetailPage = setDetailPage,
+                        setDetailMenu = setDetailMenu,
+                        setDetailPageType = setDetailPageType,
+                        type = "트로피 월간"
+                    )
                 }
                 "트로피 최신화 현황" -> {
                     ContentsFCMList(viewModelMain = viewModelMain, child = "JSON")
@@ -768,7 +801,7 @@ fun ContentsBestJsonList(
     val itemList = ArrayList<MainSettingLine>()
 
     for (j in NaverSeriesGenre) {
-        itemList.add(MainSettingLine(title = "네이버 시리즈 $type JSON 리스트 ${getNaverSeriesGenreKor(j)}", value = getNaverSeriesGenre(j)))
+        itemList.add(MainSettingLine(title = "$type JSON ${getNaverSeriesGenreKor(j)}", value = getNaverSeriesGenre(j)))
     }
 
     Text(
@@ -869,8 +902,25 @@ fun ContentsJsonManage(lineJson: List<MainSettingLine>) {
                     genre = getNaverSeriesGenre(j)
                 )
             }
-        })
-
+        }),
+        MainSettingLine(title = "JSON WEEK 트로피 업데이트", onClick = {
+            for (j in NaverSeriesGenre) {
+                uploadJsonArrayToStorageTrophy(
+                    platform = "NAVER_SERIES",
+                    genre = getNaverSeriesGenre(j),
+                    type = "주간"
+                )
+            }
+        }),
+        MainSettingLine(title = "JSON MONTH 트로피 업데이트", onClick = {
+            for (j in NaverSeriesGenre) {
+                uploadJsonArrayToStorageTrophy(
+                    platform = "NAVER_SERIES",
+                    genre = getNaverSeriesGenre(j),
+                    type = "월간"
+                )
+            }
+        }),
     )
 
     TabletContentWrap(

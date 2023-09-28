@@ -9,8 +9,10 @@ import com.bigbigdw.manavarasetting.firebase.FCMAlert
 import com.bigbigdw.manavarasetting.main.event.EventMain
 import com.bigbigdw.manavarasetting.main.event.StateMain
 import com.bigbigdw.manavarasetting.main.model.BestItemData
+import com.bigbigdw.manavarasetting.main.model.BestListAnalyze
 import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
+import com.bigbigdw.manavarasetting.util.convertBestItemDataAnalyzeJson
 import com.bigbigdw.manavarasetting.util.convertBestItemDataJson
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -105,6 +107,12 @@ class ViewModelMain @Inject constructor() : ViewModel() {
             is EventMain.SetBestBookWeekList -> {
                 current.copy(
                     bestListWeek = event.bestListWeek
+                )
+            }
+
+            is EventMain.SetTrophyList -> {
+                current.copy(
+                    trophyList = event.trophyList
                 )
             }
 
@@ -385,11 +393,15 @@ class ViewModelMain @Inject constructor() : ViewModel() {
         }
     }
 
-    fun getBestJsonWeekList(genre: String){
+    fun getBestJsonWeekList(genre: String, type : String){
         val storage = Firebase.storage
         val storageRef = storage.reference
 
-        val fileRef: StorageReference =  storageRef.child("NAVER_SERIES/${genre}/WEEK/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
+        val fileRef: StorageReference = if(type == "주간"){
+            storageRef.child("NAVER_SERIES/${genre}/WEEK/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
+        } else {
+            storageRef.child("NAVER_SERIES/${genre}/MONTH/${DBDate.year()}_${DBDate.month()}.json")
+        }
 
         val file = fileRef.getBytes(1024 * 1024)
 
@@ -408,9 +420,12 @@ class ViewModelMain @Inject constructor() : ViewModel() {
 
                     for (j in 0 until jsonArrayItem.length()) {
 
-
-                        val jsonObject = jsonArrayItem.getJSONObject(j)
-                        itemList.add(convertBestItemDataJson(jsonObject))
+                        try{
+                            val jsonObject = jsonArrayItem.getJSONObject(j)
+                            itemList.add(convertBestItemDataJson(jsonObject))
+                        }catch (e : Exception){
+                            itemList.add(BestItemData())
+                        }
                     }
 
                     weekJsonList.add(itemList)
@@ -425,44 +440,71 @@ class ViewModelMain @Inject constructor() : ViewModel() {
         }
     }
 
-    fun getBestJsonMonthList(genre: String){
+    fun getBestJsonTrophyList(genre: String, type : String){
         val storage = Firebase.storage
         val storageRef = storage.reference
 
-        val fileRef: StorageReference = storageRef.child("NAVER_SERIES/${genre}/MONTH/${DBDate.year()}_${DBDate.month()}.json")
+        val jsonArrayRef = if(type == "주간"){
+            storageRef.child("NAVER_SERIES/${genre}/WEEK_TROPHY/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
+        } else {
+            storageRef.child("NAVER_SERIES/${genre}/MONTH_TROPHY/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
+        }
 
-        val file = fileRef.getBytes(1024 * 1024)
+        val file = jsonArrayRef.getBytes(1024 * 1024)
 
         file.addOnSuccessListener { bytes ->
             val jsonString = String(bytes, Charset.forName("UTF-8"))
 
             val jsonArray = JSONArray(jsonString)
 
-            val monthJsonList = ArrayList<ArrayList<BestItemData>>()
+            val itemList = ArrayList<BestListAnalyze>()
 
             for (i in 0 until jsonArray.length()) {
 
-                try{
-                    val jsonArrayItem = jsonArray.getJSONArray(i)
-                    val itemList = ArrayList<BestItemData>()
-
-                    for (j in 0 until jsonArrayItem.length()) {
-
-
-                        val jsonObject = jsonArrayItem.getJSONObject(j)
-                        itemList.add(convertBestItemDataJson(jsonObject))
-                    }
-
-                    monthJsonList.add(itemList)
-                } catch (e : Exception){
-                    monthJsonList.add(ArrayList())
-                }
+                val jsonObject = jsonArray.getJSONObject(i)
+                itemList.add(convertBestItemDataAnalyzeJson(jsonObject))
             }
 
             viewModelScope.launch {
-                events.send(EventMain.SetBestBookWeekList(bestListWeek = monthJsonList))
+                events.send(EventMain.SetTrophyList(trophyList = itemList))
             }
         }
     }
+
+    fun getBestTrophyList(type: String){
+
+        val mRootRef = if(type == "주간"){
+            FirebaseDatabase.getInstance().reference.child("BOOK").child("NAVER_SERIES").child("TROPHY_WEEK")
+        } else {
+            FirebaseDatabase.getInstance().reference.child("BOOK").child("NAVER_SERIES").child("TROPHY_MONTH")
+        }
+
+        mRootRef.addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if(dataSnapshot.exists()){
+
+                    val bestList = ArrayList<BestListAnalyze>()
+
+                    for(book in dataSnapshot.children){
+                        val item: BestListAnalyze? = dataSnapshot.child(book.key ?: "").getValue(BestListAnalyze::class.java)
+                        if (item != null) {
+                            bestList.add(item.copy(bookCode = book.key ?: ""))
+                        }
+                    }
+
+                    viewModelScope.launch {
+                        events.send(EventMain.SetTrophyList(trophyList = bestList))
+                    }
+
+                } else {
+                    Log.d("HIHI", "FALSE")
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
+    }
+
 }
 

@@ -37,8 +37,14 @@ data class BestItemData(
     var totalMonthCount:  Int = 1,
 )
 data class BestListAnalyze (
+    @SerialName("number")
     var number: Int = 0,
+    @SerialName("info1")
     var info1: String = "",
+    @SerialName("total")
     var total:  Int = 1,
+    @SerialName("totalCount")
     var totalCount:  Int = 1,
+    @SerialName("bookCode")
+    var bookCode: String = "",
 )

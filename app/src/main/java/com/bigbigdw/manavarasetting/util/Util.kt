@@ -139,12 +139,24 @@ fun convertBestItemDataJson(jsonObject: JSONObject): BestItemData {
     )
 }
 
-fun convertBestItemDataAnalyze(bestItemData : BestItemData) : JsonObject {
+fun convertBestItemDataAnalyzeJson(jsonObject : JSONObject) : BestListAnalyze {
+
+    return BestListAnalyze(
+        number = jsonObject.optInt("number"),
+        info1 = jsonObject.optString("info1"),
+        total = jsonObject.optInt("total"),
+        totalCount = jsonObject.optInt("totalCount"),
+        bookCode = jsonObject.optString("bookCode"),
+    )
+}
+
+fun convertBestItemDataAnalyze(bestItemData : BestListAnalyze) : JsonObject {
     val jsonObject = JsonObject()
-    jsonObject.addProperty("number", bestItemData.current)
+    jsonObject.addProperty("number", bestItemData.number)
     jsonObject.addProperty("info1", bestItemData.info1)
     jsonObject.addProperty("total", bestItemData.total)
     jsonObject.addProperty("totalCount", bestItemData.totalCount)
+    jsonObject.addProperty("bookCode", bestItemData.bookCode)
     return jsonObject
 }
 
@@ -591,6 +603,47 @@ fun updateFcmCount(context: Context, update: () -> Unit){
 
             } else {
                 Log.d("HIHI", "FALSE")
+            }
+        }
+
+        override fun onCancelled(databaseError: DatabaseError) {}
+    })
+}
+
+fun uploadJsonArrayToStorageTrophy(platform : String, genre: String, type : String) {
+
+    val route = if(type == "주간"){
+        BestRef.setBestRef(platform, genre).child("TROPHY_WEEK_TOTAL")
+    } else {
+        BestRef.setBestRef(platform, genre).child("TROPHY_MONTH_TOTAL")
+    }
+    val storage = Firebase.storage
+    val storageRef = storage.reference
+    val jsonArrayRef = if(type == "주간"){
+        storageRef.child("${platform}/${genre}/WEEK_TROPHY/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
+    } else {
+        storageRef.child("${platform}/${genre}/MONTH_TROPHY/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
+    }
+
+    route.addListenerForSingleValueEvent(object :
+        ValueEventListener {
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            if(dataSnapshot.exists()){
+
+                val jsonArray = JsonArray()
+
+                for (postSnapshot in dataSnapshot.children) {
+                    val group: BestListAnalyze? = postSnapshot.getValue(BestListAnalyze::class.java)
+                    jsonArray.add(convertBestItemDataAnalyze(group ?: BestListAnalyze()))
+                }
+
+                val jsonArrayByteArray = jsonArray.toString().toByteArray(Charsets.UTF_8)
+
+
+                jsonArrayRef.putBytes(jsonArrayByteArray)
+                    .addOnSuccessListener {
+                        // 업로드 성공 시 처리
+                    }
             }
         }
 
