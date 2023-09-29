@@ -2,7 +2,6 @@ package com.bigbigdw.manavarasetting.util
 
 import android.util.Log
 import com.bigbigdw.manavarasetting.util.DBDate.dateMMDD
-import com.bigbigdw.manavarasetting.main.model.BestItemData
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements

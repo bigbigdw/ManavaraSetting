@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class BestItemData(
+data class ItemBookInfo(
     @SerialName("writer")
     var writer: String = "",
     @SerialName("title")
@@ -36,7 +36,7 @@ data class BestItemData(
     @SerialName("totalMonthCount")
     var totalMonthCount:  Int = 1,
 )
-data class BestListAnalyze (
+data class ItemBestInfo (
     @SerialName("number")
     var number: Int = 0,
     @SerialName("info1")

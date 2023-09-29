@@ -22,8 +22,8 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.bigbigdw.manavarasetting.main.model.BestItemData
-import com.bigbigdw.manavarasetting.main.model.BestListAnalyze
+import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
+import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color8E8E8E
@@ -73,7 +73,7 @@ fun ScreenTabletDetail(
                     child = getDetailPageType,
                     type = "BEST"
                 )
-            } else if (getDetailMenu.contains("투데이 JSON 리스트")) {
+            } else if (getDetailMenu.contains("투데이 베스트 JSON")) {
                 ContentsBestListDetail(
                     viewModelMain = viewModelMain,
                     child = getDetailPageType,
@@ -123,13 +123,13 @@ fun ScreenTabletDetail(
 @Composable
 fun ContentsBestListDetail(viewModelMain: ViewModelMain, child: String, type: String) {
 
-    val bestList: ArrayList<BestItemData> = if (type == "BEST") {
+    if (type == "BEST") {
         viewModelMain.getBestList(child = child)
-        viewModelMain.state.collectAsState().value.setBestBookList
     } else {
         viewModelMain.getBestJsonList(genre = child)
-        viewModelMain.state.collectAsState().value.setBestBookList
     }
+
+    val bestList: ArrayList<ItemBookInfo> = viewModelMain.state.collectAsState().value.setBestBookList
 
     TabletContentWrap(
         radius = 5,
@@ -155,7 +155,7 @@ fun ContentsBestListDetailWeek(viewModelMain: ViewModelMain, child: String, type
 
     viewModelMain.getBestJsonWeekList(genre = child, type = type)
 
-    val bestWeekList: ArrayList<ArrayList<BestItemData>> =
+    val bestWeekList: ArrayList<ArrayList<ItemBookInfo>> =
         viewModelMain.state.collectAsState().value.bestListWeek
     bestWeekList.forEachIndexed { index, itemArray ->
 
@@ -213,7 +213,7 @@ fun ContentsBestListJsonTrophy(viewModelMain: ViewModelMain, child: String, type
 
     viewModelMain.getBestJsonTrophyList(type = type, genre = child)
 
-    val bestWeekList: ArrayList<BestListAnalyze> = viewModelMain.state.collectAsState().value.trophyList
+    val bestWeekList: ArrayList<ItemBestInfo> = viewModelMain.state.collectAsState().value.trophyList
 
     TabletContentWrap(
         radius = 5,
@@ -241,7 +241,7 @@ fun ContentsBestListDetailTrophy(viewModelMain: ViewModelMain, type: String, chi
 
     viewModelMain.getBestTrophyList(type = type, child = child)
 
-    val bestWeekList: ArrayList<BestListAnalyze> = viewModelMain.state.collectAsState().value.trophyList
+    val bestWeekList: ArrayList<ItemBestInfo> = viewModelMain.state.collectAsState().value.trophyList
 
     TabletContentWrap(
         radius = 5,

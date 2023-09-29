@@ -50,8 +50,8 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.firebase.FCMAlert
-import com.bigbigdw.manavarasetting.main.model.BestItemData
-import com.bigbigdw.manavarasetting.main.model.BestListAnalyze
+import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
+import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color20459E
 import com.bigbigdw.manavarasetting.ui.theme.color8E8E8E
@@ -467,7 +467,7 @@ fun ItemTabletFCMList(item : FCMAlert, isLast: Boolean){
 }
 
 @Composable
-fun ItemTabletBestList(item : BestItemData, isLast: Boolean){
+fun ItemTabletBestList(item : ItemBookInfo, isLast: Boolean){
 
     Column {
 
@@ -671,7 +671,7 @@ fun ItemTabletBestList(item : BestItemData, isLast: Boolean){
 }
 
 @Composable
-fun ItemTabletBestListVertical(item: BestItemData){
+fun ItemTabletBestListVertical(item: ItemBookInfo){
 
     Column(modifier = Modifier.padding(8.dp).widthIn(0.dp, 220.dp)){
 
@@ -708,7 +708,7 @@ fun ItemTabletBestListVertical(item: BestItemData){
 @Preview
 fun previewItem(){
     ItemTabletBestList(
-        isLast = true, item = BestItemData(
+        isLast = true, item = ItemBookInfo(
             bookImg = "https://cf.joara.com/literature_file/1295645_1693736606_thumb.png",
             title = "TITLE"
         )
@@ -716,7 +716,7 @@ fun previewItem(){
 }
 
 @Composable
-fun ItemTabletTrophyList(item : BestListAnalyze, isLast: Boolean){
+fun ItemTabletTrophyList(item : ItemBestInfo, isLast: Boolean){
 
     Column {
 

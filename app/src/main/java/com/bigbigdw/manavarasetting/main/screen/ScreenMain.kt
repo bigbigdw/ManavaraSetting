@@ -582,7 +582,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
             containerColor = color31C3AE,
             image = R.drawable.icon_json_wht,
             title = "JSON 투데이 베스트 현황",
-            body = "장르별 WEEK 투데이 확인",
+            body = "WEEK 투데이 확인",
             setMenu = setMenu,
             getMenu = getMenu,
             onClick = {onClick()}
@@ -611,7 +611,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
         ItemMainSettingSingleTablet(
             containerColor = colorF17666,
             image = R.drawable.icon_json_wht,
-            title = "JSON 주간 누적 트로피 현황",
+            title = "JSON 주간 트로피 현황",
             body = "장르별 주간 JSON 확인",
             setMenu = setMenu,
             getMenu = getMenu,
@@ -621,7 +621,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
         ItemMainSettingSingleTablet(
             containerColor = color536FD2,
             image = R.drawable.icon_json_wht,
-            title = "JSON 월간 누적 트로피 현황",
+            title = "JSON 월간 트로피 현황",
             body = "장르별 월간 JSON 확인",
             setMenu = setMenu,
             getMenu = getMenu,

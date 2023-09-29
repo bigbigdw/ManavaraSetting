@@ -142,7 +142,7 @@ fun ScreenTablet(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         setDetailPageType = setDetailPageType,
-                        type = "주간 베스트"
+                        type = "월간 베스트"
                     )
                 }
                 "JSON 주간 현황" -> {

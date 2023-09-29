@@ -8,8 +8,8 @@ import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.firebase.FCMAlert
 import com.bigbigdw.manavarasetting.main.event.EventMain
 import com.bigbigdw.manavarasetting.main.event.StateMain
-import com.bigbigdw.manavarasetting.main.model.BestItemData
-import com.bigbigdw.manavarasetting.main.model.BestListAnalyze
+import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
+import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
 import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import com.bigbigdw.manavarasetting.util.convertBestItemDataAnalyzeJson
@@ -32,6 +32,7 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.json.JSONArray
 import java.nio.charset.Charset
+import java.util.Collections
 import javax.inject.Inject
 
 class ViewModelMain @Inject constructor() : ViewModel() {
@@ -340,17 +341,17 @@ class ViewModelMain @Inject constructor() : ViewModel() {
     }
 
     fun getBestList(child: String){
-        val mRootRef = FirebaseDatabase.getInstance().reference.child("BOOK").child("NAVER_SERIES").child(child)
+        val mRootRef = FirebaseDatabase.getInstance().reference.child("BEST").child("NAVER_SERIES").child(child).child("DAY")
 
         mRootRef.addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if(dataSnapshot.exists()){
 
-                    val bestList = ArrayList<BestItemData>()
+                    val bestList = ArrayList<ItemBookInfo>()
 
                     for(book in dataSnapshot.children){
-                        val item: BestItemData? = dataSnapshot.child(book.key ?: "").getValue(BestItemData::class.java)
+                        val item: ItemBookInfo? = dataSnapshot.child(book.key ?: "").getValue(ItemBookInfo::class.java)
                         if (item != null) {
                             bestList.add(item)
                         }
@@ -379,9 +380,9 @@ class ViewModelMain @Inject constructor() : ViewModel() {
         todayFile.addOnSuccessListener { bytes ->
             val jsonString = String(bytes, Charset.forName("UTF-8"))
             val json = Json { ignoreUnknownKeys = true }
-            val itemList = json.decodeFromString<List<BestItemData>>(jsonString)
+            val itemList = json.decodeFromString<List<ItemBookInfo>>(jsonString)
 
-            val todayJsonList = ArrayList<BestItemData>()
+            val todayJsonList = ArrayList<ItemBookInfo>()
 
             for (item in itemList) {
                 todayJsonList.add(item)
@@ -410,13 +411,13 @@ class ViewModelMain @Inject constructor() : ViewModel() {
 
             val jsonArray = JSONArray(jsonString)
 
-            val weekJsonList = ArrayList<ArrayList<BestItemData>>()
+            val weekJsonList = ArrayList<ArrayList<ItemBookInfo>>()
 
             for (i in 0 until jsonArray.length()) {
 
                 try{
                     val jsonArrayItem = jsonArray.getJSONArray(i)
-                    val itemList = ArrayList<BestItemData>()
+                    val itemList = ArrayList<ItemBookInfo>()
 
                     for (j in 0 until jsonArrayItem.length()) {
 
@@ -424,7 +425,7 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                             val jsonObject = jsonArrayItem.getJSONObject(j)
                             itemList.add(convertBestItemDataJson(jsonObject))
                         }catch (e : Exception){
-                            itemList.add(BestItemData())
+                            itemList.add(ItemBookInfo())
                         }
                     }
 
@@ -457,13 +458,17 @@ class ViewModelMain @Inject constructor() : ViewModel() {
 
             val jsonArray = JSONArray(jsonString)
 
-            val itemList = ArrayList<BestListAnalyze>()
+            val itemList = ArrayList<ItemBestInfo>()
 
             for (i in 0 until jsonArray.length()) {
 
                 val jsonObject = jsonArray.getJSONObject(i)
                 itemList.add(convertBestItemDataAnalyzeJson(jsonObject))
             }
+
+            val cmpAsc: java.util.Comparator<ItemBestInfo> =
+                Comparator { o1, o2 -> o1.totalCount.compareTo(o2.totalCount) }
+            Collections.sort(itemList, cmpAsc)
 
             viewModelScope.launch {
                 events.send(EventMain.SetTrophyList(trophyList = itemList))
@@ -484,10 +489,10 @@ class ViewModelMain @Inject constructor() : ViewModel() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if(dataSnapshot.exists()){
 
-                    val bestList = ArrayList<BestListAnalyze>()
+                    val bestList = ArrayList<ItemBestInfo>()
 
                     for(book in dataSnapshot.children){
-                        val item: BestListAnalyze? = dataSnapshot.child(book.key ?: "").getValue(BestListAnalyze::class.java)
+                        val item: ItemBestInfo? = dataSnapshot.child(book.key ?: "").getValue(ItemBestInfo::class.java)
                         if (item != null) {
                             bestList.add(item.copy(bookCode = book.key ?: ""))
                         }

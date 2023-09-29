@@ -1,7 +1,7 @@
 package com.bigbigdw.manavarasetting.util
 
-import com.bigbigdw.manavarasetting.main.model.BestItemData
-import com.bigbigdw.manavarasetting.main.model.BestListAnalyze
+import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
+import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
@@ -42,8 +42,8 @@ object BestRef {
         return mRootRef.child("DATA").child(platform).child(genre).child(num.toString())
     }
 
-    fun setBookListDataBestAnalyze(ref: MutableMap<String?, Any>): BestListAnalyze {
-        return BestListAnalyze(
+    fun setBookListDataBestAnalyze(ref: MutableMap<String?, Any>): ItemBestInfo {
+        return ItemBestInfo(
             number = ref["current"] as Int,
             info1 = ref["info1"] as String,
             total = ref["current"] as Int,
@@ -56,8 +56,8 @@ object BestRef {
         return mRootRef.child("BEST").child(platform).child(genre)
     }
 
-    fun setBookListDataBest(ref: MutableMap<String?, Any>): BestItemData {
-        return BestItemData(
+    fun setBookListDataBest(ref: MutableMap<String?, Any>): ItemBookInfo {
+        return ItemBookInfo(
             ref["writerName"] as String,
             ref["subject"] as String,
             ref["bookImg"] as String,

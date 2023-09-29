@@ -5,8 +5,8 @@ import android.content.Context
 import android.icu.text.SimpleDateFormat
 import android.util.Log
 import com.bigbigdw.manavarasetting.firebase.FCMAlert
-import com.bigbigdw.manavarasetting.main.model.BestItemData
-import com.bigbigdw.manavarasetting.main.model.BestListAnalyze
+import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
+import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
 import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager
 import com.bigbigdw.manavarasetting.util.DBDate.datedd
 import com.bigbigdw.manavarasetting.util.DBDate.getYesterdayDayOfWeek
@@ -97,7 +97,7 @@ fun getNaverSeriesGenreKor(genre : String) : String {
 }
 
 @SuppressLint("SuspiciousIndentation")
-fun convertBestItemData(bestItemData : BestItemData) : JsonObject {
+fun convertBestItemData(bestItemData : ItemBookInfo) : JsonObject {
     val jsonObject = JsonObject()
         jsonObject.addProperty("writer", bestItemData.writer)
         jsonObject.addProperty("title", bestItemData.title)
@@ -118,9 +118,9 @@ fun convertBestItemData(bestItemData : BestItemData) : JsonObject {
 }
 
 @SuppressLint("SuspiciousIndentation")
-fun convertBestItemDataJson(jsonObject: JSONObject): BestItemData {
+fun convertBestItemDataJson(jsonObject: JSONObject): ItemBookInfo {
 
-    return BestItemData(
+    return ItemBookInfo(
         writer = jsonObject.optString("writer"),
         title = jsonObject.optString("title"),
         bookImg = jsonObject.optString("bookImg"),
@@ -139,9 +139,9 @@ fun convertBestItemDataJson(jsonObject: JSONObject): BestItemData {
     )
 }
 
-fun convertBestItemDataAnalyzeJson(jsonObject : JSONObject) : BestListAnalyze {
+fun convertBestItemDataAnalyzeJson(jsonObject : JSONObject) : ItemBestInfo {
 
-    return BestListAnalyze(
+    return ItemBestInfo(
         number = jsonObject.optInt("number"),
         info1 = jsonObject.optString("info1"),
         total = jsonObject.optInt("total"),
@@ -150,7 +150,7 @@ fun convertBestItemDataAnalyzeJson(jsonObject : JSONObject) : BestListAnalyze {
     )
 }
 
-fun convertBestItemDataAnalyze(bestItemData : BestListAnalyze) : JsonObject {
+fun convertBestItemDataAnalyze(bestItemData : ItemBestInfo) : JsonObject {
     val jsonObject = JsonObject()
     jsonObject.addProperty("number", bestItemData.number)
     jsonObject.addProperty("info1", bestItemData.info1)
@@ -165,7 +165,7 @@ fun uploadJsonFile() {
     val storageRef = storage.reference
     val jsonFileRef = storageRef.child("your_folder/your_json_file.json") // 저장할 경로 및 파일 이름 지정
 
-    val json = Gson().toJson(BestItemData()) // Gson 라이브러리를 사용하여 객체를 JSON으로 변환
+    val json = Gson().toJson(ItemBookInfo()) // Gson 라이브러리를 사용하여 객체를 JSON으로 변환
 
     // JSON 문자열을 바이트 배열로 변환
     val jsonBytes = ByteArrayInputStream(json.toByteArray(Charsets.UTF_8))
@@ -222,7 +222,7 @@ fun makeMonthJson(platform : String, genre: String, jsonMonthArray : JsonArray) 
     file.addOnSuccessListener { bytes ->
         val jsonString = String(bytes, Charset.forName("UTF-8"))
         val json = Json { ignoreUnknownKeys = true }
-        val itemList = json.decodeFromString<List<BestItemData>>(jsonString)
+        val itemList = json.decodeFromString<List<ItemBookInfo>>(jsonString)
         val indexNum = DBDate.getDayOfWeekAsNumber()
 
         val indexWeekNum = DBDate.getCurrentWeekNumber() - 1
@@ -298,7 +298,7 @@ fun makeWeekJson(platform : String, genre: String, jsonArray : JsonArray)  {
     file.addOnSuccessListener { bytes ->
         val jsonString = String(bytes, Charset.forName("UTF-8"))
         val json = Json { ignoreUnknownKeys = true }
-        val itemList = json.decodeFromString<List<BestItemData>>(jsonString)
+        val itemList = json.decodeFromString<List<ItemBookInfo>>(jsonString)
         val itemJsonArray = JsonArray()
 
         // JSON 배열 사용
@@ -336,8 +336,8 @@ fun uploadJsonArrayToStorageDay(platform : String, genre: String) {
                 val jsonArray = JsonArray()
 
                 for (postSnapshot in dataSnapshot.children) {
-                    val group: BestItemData? = postSnapshot.getValue(BestItemData::class.java)
-                    jsonArray.add(convertBestItemData(group ?: BestItemData()))
+                    val group: ItemBookInfo? = postSnapshot.getValue(ItemBookInfo::class.java)
+                    jsonArray.add(convertBestItemData(group ?: ItemBookInfo()))
                 }
 
                 val jsonArrayByteArray = jsonArray.toString().toByteArray(Charsets.UTF_8)
@@ -365,9 +365,9 @@ fun calculateTrophy(platform : String, genre: String) {
 
     yesterdayFile.addOnSuccessListener { yesterdayBytes ->
         val yesterdayJson = Json { ignoreUnknownKeys = true }
-        val yesterdayItemList = yesterdayJson.decodeFromString<List<BestItemData>>(String(yesterdayBytes, Charset.forName("UTF-8")))
+        val yesterdayItemList = yesterdayJson.decodeFromString<List<ItemBookInfo>>(String(yesterdayBytes, Charset.forName("UTF-8")))
 
-        val yesterDatItemMap = mutableMapOf<String, BestItemData>()
+        val yesterDatItemMap = mutableMapOf<String, ItemBookInfo>()
 
         for (item in yesterdayItemList) {
             yesterDatItemMap[item.bookCode] = item
@@ -376,7 +376,7 @@ fun calculateTrophy(platform : String, genre: String) {
         todayFile.addOnSuccessListener { bytes ->
             val jsonString = String(bytes, Charset.forName("UTF-8"))
             val json = Json { ignoreUnknownKeys = true }
-            val itemList = json.decodeFromString<List<BestItemData>>(jsonString)
+            val itemList = json.decodeFromString<List<ItemBookInfo>>(jsonString)
 
             val jsonArray = JsonArray()
 
@@ -411,7 +411,7 @@ fun calculateTrophy(platform : String, genre: String) {
                         (yesterDatItemMap[item.bookCode]?.totalMonthCount ?: 0)
                     }
 
-                    val bestListAnalyze = BestListAnalyze(
+                    val bestListAnalyze = ItemBestInfo(
                         number = item.current,
                         info1 = item.info1,
                         total = total + item.current,
@@ -634,8 +634,8 @@ fun uploadJsonArrayToStorageTrophy(platform : String, genre: String, type : Stri
                 val jsonArray = JsonArray()
 
                 for (postSnapshot in dataSnapshot.children) {
-                    val group: BestListAnalyze? = postSnapshot.getValue(BestListAnalyze::class.java)
-                    jsonArray.add(convertBestItemDataAnalyze(group ?: BestListAnalyze()))
+                    val group: ItemBestInfo? = postSnapshot.getValue(ItemBestInfo::class.java)
+                    jsonArray.add(convertBestItemDataAnalyze(group ?: ItemBestInfo()))
                 }
 
                 val jsonArrayByteArray = jsonArray.toString().toByteArray(Charsets.UTF_8)
