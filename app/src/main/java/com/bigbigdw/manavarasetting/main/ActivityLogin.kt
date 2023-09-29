@@ -64,10 +64,7 @@ class ActivityLogin : ComponentActivity() {
             ActivityResultContracts.StartIntentSenderForResult()
         ) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                // 권한이 부여되었을 때의 처리를 여기에 추가하세요.
-
                 viewModelLogin.loginResult(activity = this@ActivityLogin, oneTapClient = oneTapClient, data = result.data)
-
             } else {
                 Log.d("ActivityLogin", "로그인 실패")
             }

@@ -39,6 +39,7 @@ class ActivitySpalsh : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         registerNotification()
+        registerNotificationAdmin()
         askNotificationPermission()
 
         setContent {
@@ -64,6 +65,23 @@ class ActivitySpalsh : ComponentActivity() {
         val channelId = "공지사항"
         val channelName = "공지사항"
         val channelDescription = "공지사항"
+
+        val notificationChannel: NotificationChannel?
+
+        notificationChannel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
+        notificationChannel.description = channelDescription
+        notificationManager.createNotificationChannel(notificationChannel)
+    }
+
+    private fun registerNotificationAdmin(){
+
+        FirebaseMessaging.getInstance().subscribeToTopic("adminAll")
+
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+
+        val channelId = "운영"
+        val channelName = "운영"
+        val channelDescription = "운영"
 
         val notificationChannel: NotificationChannel?
 

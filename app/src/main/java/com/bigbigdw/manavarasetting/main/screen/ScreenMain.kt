@@ -571,7 +571,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
         ItemMainSettingSingleTablet(
             containerColor = color21C2EC,
             image = R.drawable.icon_json_wht,
-            title = "JSON 베스트 관리",
+            title = "JSON 관리",
             body = "JSON 베스트 수동 갱신 & Worker 관리",
             setMenu = setMenu,
             getMenu = getMenu,

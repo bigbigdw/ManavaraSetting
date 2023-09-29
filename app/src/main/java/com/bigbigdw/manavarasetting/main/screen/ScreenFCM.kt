@@ -182,52 +182,6 @@ fun ContentsFCM(lineTest: List<MainSettingLine>) {
 
     Text(
         modifier = Modifier.padding(32.dp, 8.dp),
-        text = "테스트 현황",
-        fontSize = 16.sp,
-        color = color8E8E8E,
-        fontWeight = FontWeight(weight = 700)
-    )
-
-    TabletContentWrap(
-        radius = 10,
-        content = {
-            lineTest.forEachIndexed { index, item ->
-                ItemMainTabletContent(
-                    title = item.title,
-                    value = item.value,
-                    isLast = lineTest.size - 1 == index
-                )
-            }
-        }
-    )
-
-    Spacer(modifier = Modifier.size(16.dp))
-
-    Text(
-        modifier = Modifier.padding(32.dp, 8.dp),
-        text = "FCM 매니저",
-        fontSize = 16.sp,
-        color = color8E8E8E,
-        fontWeight = FontWeight(weight = 700)
-    )
-
-    TabletContentWrap(
-        radius = 10,
-        content = {
-            itemFcmWorker.forEachIndexed { index, item ->
-                ItemMainTabletContent(
-                    title = item.title,
-                    isLast = itemFcmWorker.size - 1 == index,
-                    onClick = item.onClick
-                )
-            }
-        }
-    )
-
-    Spacer(modifier = Modifier.size(16.dp))
-
-    Text(
-        modifier = Modifier.padding(32.dp, 8.dp),
         text = "FCM 공지사항 등록",
         fontSize = 16.sp,
         color = color8E8E8E,
@@ -271,6 +225,52 @@ fun ContentsFCM(lineTest: List<MainSettingLine>) {
                 BtnMobile(
                     func = { FCM.postFCMAlert(context = context, getFCM = getFCM) },
                     btnText = "공지사항 등록"
+                )
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    Text(
+        modifier = Modifier.padding(32.dp, 8.dp),
+        text = "테스트 현황",
+        fontSize = 16.sp,
+        color = color8E8E8E,
+        fontWeight = FontWeight(weight = 700)
+    )
+
+    TabletContentWrap(
+        radius = 10,
+        content = {
+            lineTest.forEachIndexed { index, item ->
+                ItemMainTabletContent(
+                    title = item.title,
+                    value = item.value,
+                    isLast = lineTest.size - 1 == index
+                )
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    Text(
+        modifier = Modifier.padding(32.dp, 8.dp),
+        text = "FCM 매니저",
+        fontSize = 16.sp,
+        color = color8E8E8E,
+        fontWeight = FontWeight(weight = 700)
+    )
+
+    TabletContentWrap(
+        radius = 10,
+        content = {
+            itemFcmWorker.forEachIndexed { index, item ->
+                ItemMainTabletContent(
+                    title = item.title,
+                    isLast = itemFcmWorker.size - 1 == index,
+                    onClick = item.onClick
                 )
             }
         }

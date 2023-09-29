@@ -112,7 +112,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
     private fun postFCM(data : String, time : String) {
 
         val fcmBody = DataFCMBody(
-            "/topics/all",
+            "/topics/adminAll",
             "high",
             DataFCMBodyData("마나바라 세팅", data),
             DataFCMBodyNotification(title = "마나바라 세팅", body = "$time $data", click_action= "best"),
