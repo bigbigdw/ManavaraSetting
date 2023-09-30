@@ -60,10 +60,12 @@ fun ScreenTablet(
     Box(
         modifier = Modifier
             .fillMaxSize()
+
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(0.dp, 0.dp, 16.dp, 0.dp)
                 .background(color = colorF6F6F6)
                 .verticalScroll(rememberScrollState())
                 .semantics { contentDescription = "Overview Screen" },
