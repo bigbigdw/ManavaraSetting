@@ -157,10 +157,22 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                                 timeBest = workerBest ?: "",
                                 timeJson = workerJson ?: "",
                                 timeTrophy = workerTrophy ?: "",
-                                statusTest = PeriodicWorker.checkWorker(workManager = workManager, tag = "TEST"),
-                                statusBet = PeriodicWorker.checkWorker(workManager = workManager, tag = "BEST"),
-                                statusJson = PeriodicWorker.checkWorker(workManager = workManager, tag = "JSON"),
-                                statusTrophy = PeriodicWorker.checkWorker(workManager = workManager, tag = "TROPHY"),
+                                statusTest = PeriodicWorker.checkWorker(
+                                    workManager = workManager,
+                                    tag = "TEST"
+                                ),
+                                statusBet = PeriodicWorker.checkWorker(
+                                    workManager = workManager,
+                                    tag = "BEST"
+                                ),
+                                statusJson = PeriodicWorker.checkWorker(
+                                    workManager = workManager,
+                                    tag = "JSON_TODAY"
+                                ),
+                                statusTrophy = PeriodicWorker.checkWorker(
+                                    workManager = workManager,
+                                    tag = "TROPHY"
+                                ),
                                 timeMillTest = timeMillTest ?: "",
                                 timeMillBest = timeMillBest ?: "",
                                 timeMillJson = timeMillJson ?: "",
@@ -215,7 +227,7 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                             if(fcm.body.contains("${year}.${month}.${day}")){
                                 numFcmToday += 1
                             }
-                        } else if (fcm?.body?.contains("베스트 리스트가 갱신되었습니다") == true) {
+                        } else if (fcm?.activity?.contains("BEST") == true) {
                             numBest += 1
 
                             fcmBestList.add(fcm)
@@ -223,7 +235,8 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                             if (fcm.body.contains("${year}.${month}.${day}")) {
                                 numBestToday += 1
                             }
-                        } else if (fcm?.body?.contains("JSON 최신화가 완료되었습니다") == true) {
+                        } else if (fcm?.activity?.contains("JSON") == true) {
+
                             numJson += 1
 
                             fcmJsonList.add(fcm)
@@ -231,7 +244,7 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                             if (fcm.body.contains("${year}.${month}.${day}")) {
                                 numJsonToday += 1
                             }
-                        } else if (fcm?.body?.contains("트로피 정산이 완료되었습니다") == true) {
+                        } else if (fcm?.activity?.contains("TROPHY") == true) {
                             numTrophy += 1
 
                             fcmTrophyList.add(fcm)

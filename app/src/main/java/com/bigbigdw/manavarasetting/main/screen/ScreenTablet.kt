@@ -60,7 +60,6 @@ fun ScreenTablet(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Color.Red)
     ) {
         Column(
             modifier = Modifier
@@ -193,7 +192,7 @@ fun ScreenTablet(
                     )
                 }
                 "트로피 최신화 현황" -> {
-                    ContentsFCMList(viewModelMain = viewModelMain, child = "JSON")
+                    ContentsFCMList(viewModelMain = viewModelMain, child = "TROPHY")
                 }
             }
         }

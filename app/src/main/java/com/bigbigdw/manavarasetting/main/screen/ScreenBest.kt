@@ -91,7 +91,7 @@ fun ContentsBest(lineBest: List<MainSettingLine>) {
             )
         }),
         MainSettingLine(title = "WORKER 취소", onClick = {
-            PeriodicWorker.cancelWorker(workManager = workManager,  tag = "BEST")
+            PeriodicWorker.cancelWorker(workManager = workManager, tag = "BEST")
         }),
         MainSettingLine(title = "WORKER 확인", onClick = {
             PeriodicWorker.checkWorker(

@@ -282,6 +282,9 @@ fun ContentsFCM(lineTest: List<MainSettingLine>) {
 @Composable
 fun ContentsFCMList(viewModelMain: ViewModelMain, child : String){
 
+    val context = LocalContext.current
+
+    viewModelMain.getDataStoreFCMCount(context = context)
 
     val fcmAlertList = when (child) {
         "ALERT" -> {
@@ -289,7 +292,6 @@ fun ContentsFCMList(viewModelMain: ViewModelMain, child : String){
             viewModelMain.state.collectAsState().value.fcmAlertList
         }
         "NOTICE" -> {
-            viewModelMain.getFCMList(child = child)
             viewModelMain.getFCMList(child = child)
             viewModelMain.state.collectAsState().value.fcmNoticeList
         }

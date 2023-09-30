@@ -78,25 +78,94 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
     val context = LocalContext.current
     val workManager = WorkManager.getInstance(context)
 
-    val itemJsonWorker = listOf(
-        MainSettingLine(title = "WORKER 시작", onClick = {
+    val itemJsonWorkerToday = listOf(
+        MainSettingLine(title = "JSON 투데이 WORKER 시작", onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
                 repeatInterval = 6,
-                tag = "JSON",
+                tag = "JSON_TODAY",
                 timeMill = TimeUnit.HOURS
             )
         }),
-        MainSettingLine(title = "WORKER 취소", onClick = {
+        MainSettingLine(title = "JSON 투데이 WORKER 취소", onClick = {
             PeriodicWorker.cancelWorker(
                 workManager = workManager,
-                tag = "JSON"
+                tag = "JSON_TODAY"
             )
         }),
-        MainSettingLine(title = "WORKER 확인", onClick = {
+        MainSettingLine(title = "JSON 투데이 WORKER 확인", onClick = {
             PeriodicWorker.checkWorker(
                 workManager = workManager,
-                tag = "JSON"
+                tag = "JSON_TODAY"
+            )
+        })
+    )
+
+    val itemJsonWorkerWeek = listOf(
+        MainSettingLine(title = "JSON 주간 WORKER 시작", onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                repeatInterval = 6,
+                tag = "JSON_WEEK",
+                timeMill = TimeUnit.HOURS
+            )
+        }),
+        MainSettingLine(title = "JSON 주간 WORKER 취소", onClick = {
+            PeriodicWorker.cancelWorker(
+                workManager = workManager,
+                tag = "JSON_WEEK"
+            )
+        }),
+        MainSettingLine(title = "JSON 주간 WORKER 확인", onClick = {
+            PeriodicWorker.checkWorker(
+                workManager = workManager,
+                tag = "JSON_WEEK"
+            )
+        }),
+    )
+
+    val itemJsonWorkerWeekTrophy = listOf(
+        MainSettingLine(title = "JSON 주긴 트로피 WORKER 시작", onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                repeatInterval = 6,
+                tag = "JSON_WEEK_TROPHY",
+                timeMill = TimeUnit.HOURS
+            )
+        }),
+        MainSettingLine(title = "JSON 주긴 트로피 WORKER 취소", onClick = {
+            PeriodicWorker.cancelWorker(
+                workManager = workManager,
+                tag = "JSON_WEEK_TROPHY"
+            )
+        }),
+        MainSettingLine(title = "JSON 주긴 트로피 WORKER 확인", onClick = {
+            PeriodicWorker.checkWorker(
+                workManager = workManager,
+                tag = "JSON_WEEK_TROPHY"
+            )
+        }),
+    )
+
+    val itemJsonWorkerMonthTrophy = listOf(
+        MainSettingLine(title = "JSON 월간 트로피 WORKER 시작", onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                repeatInterval = 6,
+                tag = "JSON_MONTH_TROPHY",
+                timeMill = TimeUnit.HOURS
+            )
+        }),
+        MainSettingLine(title = "JSON 월간 트로피 WORKER 취소", onClick = {
+            PeriodicWorker.cancelWorker(
+                workManager = workManager,
+                tag = "JSON_MONTH_TROPHY"
+            )
+        }),
+        MainSettingLine(title = "JSON 월간 트로피 WORKER 확인", onClick = {
+            PeriodicWorker.checkWorker(
+                workManager = workManager,
+                tag = "JSON_MONTH_TROPHY"
             )
         }),
     )
@@ -166,10 +235,79 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
     TabletContentWrap(
         radius = 10,
         content = {
-            itemJsonWorker.forEachIndexed { index, item ->
+            itemJsonWorkerToday.forEachIndexed { index, item ->
                 ItemMainTabletContent(
                     title = item.title,
-                    isLast = itemJsonWorker.size - 1 == index,
+                    isLast = itemJsonWorkerToday.size - 1 == index,
+                    onClick = item.onClick
+                )
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    Text(
+        modifier = Modifier.padding(32.dp, 8.dp),
+        text = "JSON 주간",
+        fontSize = 16.sp,
+        color = color8E8E8E,
+        fontWeight = FontWeight(weight = 700)
+    )
+
+    TabletContentWrap(
+        radius = 10,
+        content = {
+            itemJsonWorkerWeek.forEachIndexed { index, item ->
+                ItemMainTabletContent(
+                    title = item.title,
+                    isLast = itemJsonWorkerWeek.size - 1 == index,
+                    onClick = item.onClick
+                )
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    Text(
+        modifier = Modifier.padding(32.dp, 8.dp),
+        text = "JSON 주간 트로피",
+        fontSize = 16.sp,
+        color = color8E8E8E,
+        fontWeight = FontWeight(weight = 700)
+    )
+
+    TabletContentWrap(
+        radius = 10,
+        content = {
+            itemJsonWorkerWeekTrophy.forEachIndexed { index, item ->
+                ItemMainTabletContent(
+                    title = item.title,
+                    isLast = itemJsonWorkerWeekTrophy.size - 1 == index,
+                    onClick = item.onClick
+                )
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    Text(
+        modifier = Modifier.padding(32.dp, 8.dp),
+        text = "JSON 월간 트로피",
+        fontSize = 16.sp,
+        color = color8E8E8E,
+        fontWeight = FontWeight(weight = 700)
+    )
+
+    TabletContentWrap(
+        radius = 10,
+        content = {
+            itemJsonWorkerMonthTrophy.forEachIndexed { index, item ->
+                ItemMainTabletContent(
+                    title = item.title,
+                    isLast = itemJsonWorkerMonthTrophy.size - 1 == index,
                     onClick = item.onClick
                 )
             }

@@ -468,7 +468,7 @@ fun miningValue(ref: MutableMap<String?, Any>, num : Int, platform: String, genr
     BestRef.setBestData(platform, num, genre).setValue(BestRef.setBookListDataBest(ref))
 }
 
-fun setDataStore(message: String, context: Context){
+fun setDataStore(activity: String){
     val mRootRef = FirebaseDatabase.getInstance().reference.child("WORKER")
 
     val year = DBDate.dateMMDDHHMM().substring(0,4)
@@ -480,25 +480,23 @@ fun setDataStore(message: String, context: Context){
     var currentUser :  FirebaseUser? = null
     currentUser = Firebase.auth.currentUser
 
-    if(message.contains("테스트")){
-
-        mRootRef.child("WORKER_TEST").setValue("${year}.${month}.${day} ${hour}:${min}")
-        mRootRef.child("UID_TEST").setValue(currentUser?.uid ?: "NONE")
-
-    } else if(message.contains("트로피 정산이 완료되었습니다")){
+    if(activity.contains("TROPHY")){
 
         mRootRef.child("WORKER_TROPHY").setValue("${year}.${month}.${day} ${hour}:${min}")
         mRootRef.child("UID_TROPHY").setValue(currentUser?.uid ?: "NONE")
 
-    } else if(message.contains("JSON 최신화가 완료되었습니다")){
+    } else if(activity.contains("JSON")){
 
         mRootRef.child("WORKER_JSON").setValue("${year}.${month}.${day} ${hour}:${min}")
         mRootRef.child("UID_JSON").setValue(currentUser?.uid ?: "NONE")
 
-    } else if(message.contains("베스트 리스트가 갱신되었습니다")){
+    } else if(activity.contains("BEST")){
 
         mRootRef.child("WORKER_BEST").setValue("${year}.${month}.${day} ${hour}:${min}")
         mRootRef.child("UID_BEST").setValue(currentUser?.uid ?: "NONE")
+    } else {
+        mRootRef.child("WORKER_TEST").setValue("${year}.${month}.${day} ${hour}:${min}")
+        mRootRef.child("UID_TEST").setValue(currentUser?.uid ?: "NONE")
     }
 }
 
@@ -566,19 +564,20 @@ fun updateFcmCount(context: Context, update: () -> Unit){
                         if(fcm.body.contains("${year}.${month}.${day}")){
                             numFcmToday += 1
                         }
-                    } else if (fcm?.body?.contains("베스트 리스트가 갱신되었습니다") == true) {
+                    } else if (fcm?.activity?.contains("BEST") == true) {
                         numBest += 1
 
                         if (fcm.body.contains("${year}.${month}.${day}")) {
                             numBestToday += 1
                         }
-                    } else if (fcm?.body?.contains("JSON 최신화가 완료되었습니다") == true) {
+                    } else if (fcm?.activity?.contains("JSON") == true) {
+
                         numJson += 1
 
                         if (fcm.body.contains("${year}.${month}.${day}")) {
                             numJsonToday += 1
                         }
-                    } else if (fcm?.body?.contains("트로피 정산이 완료되었습니다") == true) {
+                    } else if (fcm?.activity?.contains("TROPHY") == true) {
                         numTrophy += 1
 
                         if (fcm.body.contains("${year}.${month}.${day}")) {

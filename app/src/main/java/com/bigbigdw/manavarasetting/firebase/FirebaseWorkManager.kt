@@ -18,9 +18,6 @@ import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageTrophy
 import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageWeek
 import com.bigbigdw.massmath.Firebase.FirebaseService
 import com.google.firebase.database.FirebaseDatabase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Retrofit
@@ -64,25 +61,22 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                 }
             }
 
-            postFCM(data = "베스트 리스트가 갱신되었습니다", time = "${year}.${month}.${day} ${hour}:${min}")
+            postFCM(data = "베스트 리스트가 갱신되었습니다", time = "${year}.${month}.${day} ${hour}:${min}", activity = "BEST")
 
-        } else if (inputData.getString(TYPE).equals("JSON")) {
+        } else if (inputData.getString(TYPE).equals("JSON_MONTH_TROPHY")) {
             for (j in NaverSeriesGenre) {
-
-                uploadJsonArrayToStorageDay(
-                    platform = "NAVER_SERIES",
-                    genre = getNaverSeriesGenre(j)
-                )
-
-                uploadJsonArrayToStorageWeek(
-                    platform = "NAVER_SERIES",
-                    genre = getNaverSeriesGenre(j)
-                )
 
                 uploadJsonArrayToStorageMonth(
                     platform = "NAVER_SERIES",
                     genre = getNaverSeriesGenre(j)
                 )
+
+            }
+
+            postFCM(data = "JSON 월간 트로피 최신화가 완료되었습니다", time = "${year}.${month}.${day} ${hour}:${min}", activity = "JSON")
+
+        }  else if (inputData.getString(TYPE).equals("JSON_WEEK_TROPHY")) {
+            for (j in NaverSeriesGenre) {
 
                 uploadJsonArrayToStorageTrophy(
                     platform = "NAVER_SERIES",
@@ -91,7 +85,30 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                 )
             }
 
-            postFCM(data = "JSON 최신화가 완료되었습니다", time = "${year}.${month}.${day} ${hour}:${min}")
+            postFCM(data = "JSON 주긴 트로피 최신화가 완료되었습니다", time = "${year}.${month}.${day} ${hour}:${min}", activity = "JSON")
+
+        }  else if (inputData.getString(TYPE).equals("JSON_TODAY")) {
+            for (j in NaverSeriesGenre) {
+
+                uploadJsonArrayToStorageDay(
+                    platform = "NAVER_SERIES",
+                    genre = getNaverSeriesGenre(j)
+                )
+
+            }
+
+            postFCM(data = "JSON 투데이 최신화가 완료되었습니다", time = "${year}.${month}.${day} ${hour}:${min}", activity = "JSON")
+
+        }  else if (inputData.getString(TYPE).equals("JSON_WEEK")) {
+            for (j in NaverSeriesGenre) {
+
+                uploadJsonArrayToStorageWeek(
+                    platform = "NAVER_SERIES",
+                    genre = getNaverSeriesGenre(j)
+                )
+            }
+
+            postFCM(data = "JSON 주간 최신화가 완료되었습니다", time = "${year}.${month}.${day} ${hour}:${min}", activity = "JSON")
 
         } else if (inputData.getString(TYPE).equals("TROPHY")) {
 
@@ -99,7 +116,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                 calculateTrophy(platform = "NAVER_SERIES", genre = getNaverSeriesGenre(j))
             }
 
-            postFCM(data = "트로피 정산이 완료되었습니다", time = "${year}.${month}.${day} ${hour}:${min}")
+            postFCM(data = "트로피 정산이 완료되었습니다", time = "${year}.${month}.${day} ${hour}:${min}", activity = "TROPHY")
 
         } else if (inputData.getString(TYPE).equals("TEST")) {
             postFCM(data = "테스트", time = "${year}.${month}.${day} ${hour}:${min}")
@@ -109,7 +126,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
         return Result.success()
     }
 
-    private fun postFCM(data : String, time : String) {
+    private fun postFCM(data : String, time : String, activity : String = "") {
 
         val fcmBody = DataFCMBody(
             "/topics/adminAll",
@@ -118,9 +135,9 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
             DataFCMBodyNotification(title = "마나바라 세팅", body = "$time $data", click_action= "best"),
         )
 
-        miningAlert("마나바라 세팅", "$time $data", "ALERT")
+        miningAlert("마나바라 세팅", "$time $data", "ALERT", activity = activity)
 
-        setDataStore(message = data, context = applicationContext)
+        setDataStore(activity = activity)
 
         val call = Retrofit.Builder()
             .baseUrl("https://fcm.googleapis.com")
@@ -148,12 +165,14 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
         })
     }
 
-    private fun miningAlert(title: String, message: String, child: String) {
+    private fun miningAlert(title: String, message: String, child: String, activity : String = "") {
         FirebaseDatabase.getInstance().reference.child("MESSAGE").child(child)
             .child(DBDate.dateMMDDHHMM()).setValue(
                 FCMAlert(
-                    DBDate.dateMMDDHHMM(),
-                    title, message
+                    date = DBDate.dateMMDDHHMM(),
+                    title = title,
+                    body = message,
+                    activity = activity
                 )
             )
     }

@@ -13,11 +13,7 @@ import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager
 import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.FCM_TOKEN
 import com.bigbigdw.massmath.Firebase.FirebaseService
 import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -49,7 +45,7 @@ object FCM {
 
         postFCM(context = context, fcmBody = fcmBody)
 
-        setDataStore(context = context, message = message)
+        setDataStore(activity = "TEST")
 
         miningAlert(title = "공지사항", message = "${year}.${month}.${day} ${hour}:${min} $message")
     }
@@ -136,7 +132,7 @@ object FCM {
 
         postFCM(context = context, fcmBody = fcmBody)
 
-        setDataStore(context = context, message = getFCM.body)
+        setDataStore(activity = "NOTICE")
 
         miningAlert(title = getFCM.title, message = getFCM.body)
     }

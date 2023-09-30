@@ -58,7 +58,7 @@ object PeriodicWorker {
         }
     }
 
-    fun cancelWorker(workManager: WorkManager, tag : String){
+    fun cancelWorker(workManager: WorkManager, tag: String){
         workManager.cancelAllWorkByTag(tag)
     }
 
