@@ -55,31 +55,10 @@ class ViewModelMain @Inject constructor() : ViewModel() {
 
             is EventMain.GetDataStoreWorker -> {
                 current.copy(
-                    timeTest = event.timeTest,
-                    timeBest = event.timeBest,
-                    timeJson = event.timeJson,
-                    timeTrophy = event.timeTrophy,
                     statusTest = event.statusTest,
                     statusBest = event.statusBet,
                     statusJson = event.statusJson,
                     statusTrophy = event.statusTrophy,
-                    timeMillTest = event.timeMillTest,
-                    timeMillBest = event.timeMillBest,
-                    timeMillJson = event.timeMillJson,
-                    timeMillTrophy = event.timeMillTrophy,
-                )
-            }
-
-            is EventMain.GetDataStoreFCM -> {
-                current.copy(
-                    countTest = event.countTest,
-                    countTodayTest = event.countTodayTest,
-                    countBest = event.countBest,
-                    countTodayBest = event.countTodayBest,
-                    countJson = event.countJson,
-                    countTodayJson = event.countTodayJson,
-                    countTrophy = event.countTrophy,
-                    countTodayTrophy = event.countTodayTrophy,
                 )
             }
 
@@ -149,14 +128,15 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                         dataStore.setDataStoreString(DataStoreManager.JSONWORKER_TIME, workerJson ?: "")
                         dataStore.setDataStoreString(DataStoreManager.TROPHYWORKER_TIME, workerTrophy ?: "")
 
+                        dataStore.setDataStoreString(DataStoreManager.TIMEMILL_TEST, timeMillTest ?: "")
+                        dataStore.setDataStoreString(DataStoreManager.TIMEMILL_BEST, timeMillBest ?: "")
+                        dataStore.setDataStoreString(DataStoreManager.TIMEMILL_JSON, timeMillJson ?: "")
+                        dataStore.setDataStoreString(DataStoreManager.TIMEMILL_TROPHY, timeMillTrophy ?: "")
+
                         _sideEffects.send("Worker 최신화가 완료되었습니다")
 
                         events.send(
                             EventMain.GetDataStoreWorker(
-                                timeTest = workerTest ?: "",
-                                timeBest = workerBest ?: "",
-                                timeJson = workerJson ?: "",
-                                timeTrophy = workerTrophy ?: "",
                                 statusTest = PeriodicWorker.checkWorker(
                                     workManager = workManager,
                                     tag = "TEST"
@@ -173,10 +153,6 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                                     workManager = workManager,
                                     tag = "TROPHY"
                                 ),
-                                timeMillTest = timeMillTest ?: "",
-                                timeMillBest = timeMillBest ?: "",
-                                timeMillJson = timeMillJson ?: "",
-                                timeMillTrophy = timeMillTrophy ?: "",
                             )
                         )
 
@@ -279,19 +255,6 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                         dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_JSON_TODAY, numJsonToday.toString())
                         dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_TROPHY, numTrophy.toString())
                         dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_TROPHY_TODAY, numTrophyToday.toString())
-
-                        events.send(
-                            EventMain.GetDataStoreFCM(
-                                countTest = numFcm.toString(),
-                                countTodayTest = numFcmToday.toString(),
-                                countBest = numBest.toString(),
-                                countTodayBest = numBestToday.toString(),
-                                countJson = numJson.toString(),
-                                countTodayJson = numJsonToday.toString(),
-                                countTrophy = numTrophy.toString(),
-                                countTodayTrophy = numTrophyToday.toString(),
-                            )
-                        )
 
                         events.send(
                             EventMain.SetFCMList(

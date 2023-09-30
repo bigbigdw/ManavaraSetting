@@ -23,13 +23,10 @@ class DataStoreManager(private val context: Context) {
 
         val FCM_COUNT_TEST = stringPreferencesKey("FCM_COUNT_TEST")
         val FCM_COUNT_TEST_TODAY = stringPreferencesKey("FCM_COUNT_TEST_TODAY")
-
         val FCM_COUNT_BEST = stringPreferencesKey("FCM_COUNT_BEST")
         val FCM_COUNT_BEST_TODAY = stringPreferencesKey("FCM_COUNT_BEST_TODAY")
-
         val FCM_COUNT_JSON = stringPreferencesKey("FCM_COUNT_JSON")
         val FCM_COUNT_JSON_TODAY = stringPreferencesKey("FCM_COUNT_JSON_TODAY")
-
         val FCM_COUNT_TROPHY = stringPreferencesKey("FCM_COUNT_TROPHY")
         val FCM_COUNT_TROPHY_TODAY = stringPreferencesKey("FCM_COUNT_TROPHY_TODAY")
 

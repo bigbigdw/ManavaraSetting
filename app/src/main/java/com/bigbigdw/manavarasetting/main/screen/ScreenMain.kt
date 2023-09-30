@@ -48,6 +48,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.datastore.core.DataStore
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -56,6 +57,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.main.model.MainSettingLine
+import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color1E1E20
@@ -297,36 +299,39 @@ fun NavigationGraph(
     isExpandedScreen: Boolean
 ) {
 
+    val context = LocalContext.current
+    val dataStore = DataStoreManager(context)
+
     val lineTest = listOf(
         MainSettingLine(title = "WORKER : ", value = viewModelMain.state.collectAsState().value.statusTest),
-        MainSettingLine(title = "갱신시간 : ", value = viewModelMain.state.collectAsState().value.timeTest),
-        MainSettingLine(title = "호출 횟수 : ", value = viewModelMain.state.collectAsState().value.countTest),
-        MainSettingLine(title = "금일 호출 횟수 : ", viewModelMain.state.collectAsState().value.countTodayTest),
-        MainSettingLine(title = "호출 주기 : ", value = viewModelMain.state.collectAsState().value.timeMillTest),
+        MainSettingLine(title = "갱신시간 : ", value = dataStore.getDataStoreString(DataStoreManager.TEST_TIME).collectAsState(initial = "").value ?: ""),
+        MainSettingLine(title = "호출 횟수 : ", value = dataStore.getDataStoreString(DataStoreManager.FCM_COUNT_TEST).collectAsState(initial = "").value ?: ""),
+        MainSettingLine(title = "금일 호출 횟수 : ", dataStore.getDataStoreString(DataStoreManager.FCM_COUNT_TEST_TODAY).collectAsState(initial = "").value ?: ""),
+        MainSettingLine(title = "호출 주기 : ", value = dataStore.getDataStoreString(DataStoreManager.TIMEMILL_TEST).collectAsState(initial = "").value ?: ""),
     )
 
     val lineBest = listOf(
         MainSettingLine(title = "WORKER : ", value = viewModelMain.state.collectAsState().value.statusBest),
-        MainSettingLine(title = "갱신시간 : ", value = viewModelMain.state.collectAsState().value.timeBest),
-        MainSettingLine(title = "호출 횟수 : ", value = viewModelMain.state.collectAsState().value.countBest),
-        MainSettingLine(title = "금일 호출 횟수 : ", viewModelMain.state.collectAsState().value.countTodayBest),
-        MainSettingLine(title = "호출 주기 : ", value = viewModelMain.state.collectAsState().value.timeMillBest),
+        MainSettingLine(title = "갱신시간 : ", value = dataStore.getDataStoreString(DataStoreManager.BESTWORKER_TIME).collectAsState(initial = "").value ?: ""),
+        MainSettingLine(title = "호출 횟수 : ", value = dataStore.getDataStoreString(DataStoreManager.FCM_COUNT_BEST).collectAsState(initial = "").value ?: ""),
+        MainSettingLine(title = "금일 호출 횟수 : ", dataStore.getDataStoreString(DataStoreManager.FCM_COUNT_BEST_TODAY).collectAsState(initial = "").value ?: ""),
+        MainSettingLine(title = "호출 주기 : ", value = dataStore.getDataStoreString(DataStoreManager.TIMEMILL_BEST).collectAsState(initial = "").value ?: ""),
     )
 
     val lineJson = listOf(
         MainSettingLine(title = "WORKER : ", value = viewModelMain.state.collectAsState().value.statusJson),
-        MainSettingLine(title = "갱신시간 : ", value = viewModelMain.state.collectAsState().value.timeJson),
-        MainSettingLine(title = "호출 횟수 : ", value = viewModelMain.state.collectAsState().value.countJson),
-        MainSettingLine(title = "금일 호출 횟수 : ", viewModelMain.state.collectAsState().value.countTodayJson),
-        MainSettingLine(title = "호출 주기 : ", value = viewModelMain.state.collectAsState().value.timeMillJson),
+        MainSettingLine(title = "갱신시간 : ", value = dataStore.getDataStoreString(DataStoreManager.JSONWORKER_TIME).collectAsState(initial = "").value ?: ""),
+        MainSettingLine(title = "호출 횟수 : ", value = dataStore.getDataStoreString(DataStoreManager.FCM_COUNT_JSON).collectAsState(initial = "").value ?: ""),
+        MainSettingLine(title = "금일 호출 횟수 : ", dataStore.getDataStoreString(DataStoreManager.FCM_COUNT_JSON_TODAY).collectAsState(initial = "").value ?: ""),
+        MainSettingLine(title = "호출 주기 : ", value = dataStore.getDataStoreString(DataStoreManager.TIMEMILL_JSON).collectAsState(initial = "").value ?: ""),
     )
 
     val lineTrophy = listOf(
         MainSettingLine(title = "WORKER : ", value = viewModelMain.state.collectAsState().value.statusTrophy),
-        MainSettingLine(title = "갱신시간 : ", value = viewModelMain.state.collectAsState().value.timeTrophy),
-        MainSettingLine(title = "호출 횟수 : ", value = viewModelMain.state.collectAsState().value.countTrophy),
-        MainSettingLine(title = "금일 호출 횟수 : ", viewModelMain.state.collectAsState().value.countTodayTrophy),
-        MainSettingLine(title = "호출 주기 : ", value = viewModelMain.state.collectAsState().value.timeMillTrophy),
+        MainSettingLine(title = "갱신시간 : ", value = dataStore.getDataStoreString(DataStoreManager.TROPHYWORKER_TIME).collectAsState(initial = "").value ?: ""),
+        MainSettingLine(title = "호출 횟수 : ", value = dataStore.getDataStoreString(DataStoreManager.FCM_COUNT_TROPHY).collectAsState(initial = "").value ?: ""),
+        MainSettingLine(title = "금일 호출 횟수 : ", dataStore.getDataStoreString(DataStoreManager.FCM_COUNT_TROPHY_TODAY).collectAsState(initial = "").value ?: ""),
+        MainSettingLine(title = "호출 주기 : ", value = dataStore.getDataStoreString(DataStoreManager.TIMEMILL_TROPHY).collectAsState(initial = "").value ?: ""),
     )
 
     NavHost(
