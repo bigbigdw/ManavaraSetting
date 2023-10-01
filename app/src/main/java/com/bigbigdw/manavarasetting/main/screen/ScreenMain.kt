@@ -63,6 +63,7 @@ import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color1E1E20
 import com.bigbigdw.manavarasetting.ui.theme.color1E4394
 import com.bigbigdw.manavarasetting.ui.theme.color21C2EC
+import com.bigbigdw.manavarasetting.ui.theme.color2EA259
 import com.bigbigdw.manavarasetting.ui.theme.color31C3AE
 import com.bigbigdw.manavarasetting.ui.theme.color4996E8
 import com.bigbigdw.manavarasetting.ui.theme.color4AD7CF
@@ -73,7 +74,9 @@ import com.bigbigdw.manavarasetting.ui.theme.color555b68
 import com.bigbigdw.manavarasetting.ui.theme.color64C157
 import com.bigbigdw.manavarasetting.ui.theme.color79B4F8
 import com.bigbigdw.manavarasetting.ui.theme.color7C81FF
+import com.bigbigdw.manavarasetting.ui.theme.color808CF8
 import com.bigbigdw.manavarasetting.ui.theme.color80BF78
+import com.bigbigdw.manavarasetting.ui.theme.color8AA6BD
 import com.bigbigdw.manavarasetting.ui.theme.color91CEC7
 import com.bigbigdw.manavarasetting.ui.theme.color998DF9
 import com.bigbigdw.manavarasetting.ui.theme.colorABD436
@@ -83,6 +86,7 @@ import com.bigbigdw.manavarasetting.ui.theme.colorF17666
 import com.bigbigdw.manavarasetting.ui.theme.colorF17FA0
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.ui.theme.colorFDC24E
+import com.bigbigdw.manavarasetting.ui.theme.colorffAC59
 
 @Composable
 fun ScreenMain(
@@ -643,10 +647,50 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
             onClick = {onClick()}
         )
 
+        ItemMainSettingSingleTablet(
+            containerColor = colorFDC24E,
+            image = R.drawable.icon_json_wht,
+            title = "JSON 투데이 최신화 현황",
+            body = "시간별 JSON 투데이 갱신 현황",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = {onClick()}
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color80BF78,
+            image = R.drawable.icon_json_wht,
+            title = "JSON 주간 최신화 현황",
+            body = "시간별 JSON 주간 갱신 현황",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = {onClick()}
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color91CEC7,
+            image = R.drawable.icon_json_wht,
+            title = "JSON 주간 트로피 최신화 현황",
+            body = "시간별 JSON 주간 트로피 갱신 현황",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = {onClick()}
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color79B4F8,
+            image = R.drawable.icon_json_wht,
+            title = "JSON 월간 트로피 최신화 현황",
+            body = "시간별 JSON 월간 트로피 갱신 현황",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = {onClick()}
+        )
+
         TabletBorderLine()
 
         ItemMainSettingSingleTablet(
-            containerColor = colorFDC24E,
+            containerColor = color8AA6BD,
             image = R.drawable.icon_trophy_wht,
             title = "트로피 정산 관리",
             body = "트로피 수동 정산 & Worker 관리",
@@ -656,7 +700,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color80BF78,
+            containerColor = color2EA259,
             image = R.drawable.icon_trophy_wht,
             title = "트로피 주간 토탈 리스트",
             body = "장르별 주간 트로피 리스트 확인",
@@ -666,7 +710,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color91CEC7,
+            containerColor = color808CF8,
             image = R.drawable.icon_trophy_wht,
             title = "트로피 월간 토탈 리스트",
             body = "장르별 월간 트로피 리스트 확인",
@@ -676,7 +720,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color79B4F8,
+            containerColor = colorffAC59,
             image = R.drawable.icon_trophy_wht,
             title = "트로피 최신화 현황",
             body = "시간별 트로피 최신화 현황",

@@ -133,7 +133,7 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                         dataStore.setDataStoreString(DataStoreManager.TIMEMILL_JSON, timeMillJson ?: "")
                         dataStore.setDataStoreString(DataStoreManager.TIMEMILL_TROPHY, timeMillTrophy ?: "")
 
-                        _sideEffects.send("Worker 최신화가 완료되었습니다")
+//                        _sideEffects.send("Worker 최신화가 완료되었습니다")
 
                         events.send(
                             EventMain.GetDataStoreWorker(
@@ -264,7 +264,7 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                             )
                         )
 
-                        _sideEffects.send("FCM 카운트 갱신이 완료되었습니다")
+//                        _sideEffects.send("FCM 카운트 갱신이 완료되었습니다")
                     }
 
                 } else {

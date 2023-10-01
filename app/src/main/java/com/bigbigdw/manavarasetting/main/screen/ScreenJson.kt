@@ -125,7 +125,7 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
     )
 
     val itemJsonWorkerWeekTrophy = listOf(
-        MainSettingLine(title = "JSON 주긴 트로피 WORKER 시작", onClick = {
+        MainSettingLine(title = "JSON 주간 트로피 WORKER 시작", onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
                 repeatInterval = 8,
@@ -133,13 +133,13 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
                 timeMill = TimeUnit.HOURS
             )
         }),
-        MainSettingLine(title = "JSON 주긴 트로피 WORKER 취소", onClick = {
+        MainSettingLine(title = "JSON 주간 트로피 WORKER 취소", onClick = {
             PeriodicWorker.cancelWorker(
                 workManager = workManager,
                 tag = "JSON_WEEK_TROPHY"
             )
         }),
-        MainSettingLine(title = "JSON 주긴 트로피 WORKER 확인", onClick = {
+        MainSettingLine(title = "JSON 주간 트로피 WORKER 확인", onClick = {
             PeriodicWorker.checkWorker(
                 workManager = workManager,
                 tag = "JSON_WEEK_TROPHY"

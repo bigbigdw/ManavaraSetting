@@ -85,7 +85,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                 )
             }
 
-            postFCM(data = "JSON 주긴 트로피 최신화가 완료되었습니다", time = "${year}.${month}.${day} ${hour}:${min}", activity = "JSON")
+            postFCM(data = "JSON 주간 트로피 최신화가 완료되었습니다", time = "${year}.${month}.${day} ${hour}:${min}", activity = "JSON")
 
         }  else if (inputData.getString(TYPE).equals("JSON_TODAY")) {
             for (j in NaverSeriesGenre) {
