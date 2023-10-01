@@ -219,13 +219,8 @@ fun ContentsSetting(
     val context = LocalContext.current
     val workManager = WorkManager.getInstance(context)
 
-    Button(
-        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+    TabletContentWrapBtn(
         onClick = { viewModelMain.getDataStoreStatus(context = context, workManager = workManager) },
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(44.dp),
-        shape = RoundedCornerShape(50.dp),
         content = {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -241,15 +236,8 @@ fun ContentsSetting(
         }
     )
 
-    Spacer(modifier = Modifier.size(16.dp))
-
-    Button(
-        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+    TabletContentWrapBtn(
         onClick = { viewModelMain.getDataStoreFCMCount(context = context) },
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(44.dp),
-        shape = RoundedCornerShape(50.dp),
         content = {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -265,17 +253,10 @@ fun ContentsSetting(
         }
     )
 
-    Spacer(modifier = Modifier.size(16.dp))
-
-    Button(
-        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+    TabletContentWrapBtn(
         onClick = { PeriodicWorker.cancelAllWorker(
             workManager = workManager,
         ) },
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(44.dp),
-        shape = RoundedCornerShape(50.dp),
         content = {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -291,15 +272,8 @@ fun ContentsSetting(
         }
     )
 
-    Spacer(modifier = Modifier.size(16.dp))
-
-    Button(
-        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+    TabletContentWrapBtn(
         onClick = { viewModelMain.resetBest(str = "BEST") },
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(44.dp),
-        shape = RoundedCornerShape(50.dp),
         content = {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -315,15 +289,8 @@ fun ContentsSetting(
         }
     )
 
-    Spacer(modifier = Modifier.size(16.dp))
-
-    Button(
-        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+    TabletContentWrapBtn(
         onClick = { viewModelMain.resetBest(str = "BOOK") },
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(44.dp),
-        shape = RoundedCornerShape(50.dp),
         content = {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -339,15 +306,8 @@ fun ContentsSetting(
         }
     )
 
-    Spacer(modifier = Modifier.size(16.dp))
-
-    Button(
-        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-        onClick = { viewModelMain.resetBest(str = "DATA") },
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(44.dp),
-        shape = RoundedCornerShape(50.dp),
+    TabletContentWrapBtn(
+        onClick = { viewModelMain.resetBest(str = "BOOK") },
         content = {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -361,6 +321,24 @@ fun ContentsSetting(
                 )
             }
         }
+    )
+
+    TabletContentWrapBtn(
+        onClick = { viewModelMain.resetBest(str = "ALERT") },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "WORKER ALERT 초기화",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        },
+        isContinue = false
     )
 
     Spacer(modifier = Modifier.size(16.dp))

@@ -76,7 +76,7 @@ fun ContentsTrophy(lineTrophy: List<MainSettingLine>) {
         MainSettingLine(title = "WORKER 시작", onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
-                repeatInterval = 9,
+                repeatInterval = 7,
                 tag = "TROPHY",
                 timeMill = TimeUnit.HOURS
             )

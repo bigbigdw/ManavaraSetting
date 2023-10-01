@@ -170,7 +170,6 @@ fun ContentsBestListDetailWeek(viewModelMain: ViewModelMain, child: String, type
         )
 
         TabletContentWrap {
-
             Spacer(modifier = Modifier.size(8.dp))
 
             if (itemArray.size == 0) {
@@ -245,8 +244,6 @@ fun ContentsBestListDetailTrophy(viewModelMain: ViewModelMain, type: String, chi
 
         Spacer(modifier = Modifier.size(8.dp))
     }
-
-
 
     Spacer(modifier = Modifier.size(60.dp))
 }

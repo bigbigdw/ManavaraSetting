@@ -386,7 +386,7 @@ fun TabletContentWrap(content: @Composable () -> Unit){
         modifier = Modifier
             .fillMaxSize(),
         backgroundColor = Color.White,
-        shape = RoundedCornerShape(size = 20.dp),
+        shape = RoundedCornerShape(20.dp),
         elevation = 0.dp
     ) {
         Column(
@@ -400,6 +400,25 @@ fun TabletContentWrap(content: @Composable () -> Unit){
 
             Spacer(modifier = Modifier.size(4.dp))
         }
+    }
+}
+
+@Composable
+fun TabletContentWrapBtn(content: @Composable () -> Unit, onClick: () -> Unit, isContinue: Boolean = true){
+
+    Button(
+        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+        onClick = { onClick() },
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(44.dp),
+        shape = RoundedCornerShape(50.dp),
+        content = {
+            content()
+        })
+
+    if(isContinue){
+        Spacer(modifier = Modifier.size(16.dp))
     }
 }
 
@@ -677,7 +696,9 @@ fun ItemTabletBestList(item : ItemBookInfo, isLast: Boolean){
 @Composable
 fun ItemTabletBestListVertical(item: ItemBookInfo){
 
-    Column(modifier = Modifier.padding(8.dp).widthIn(0.dp, 220.dp)){
+    Column(modifier = Modifier
+        .padding(8.dp)
+        .widthIn(0.dp, 220.dp)){
 
         AsyncImage(
             model = item.bookImg,

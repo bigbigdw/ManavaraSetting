@@ -82,7 +82,7 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
         MainSettingLine(title = "JSON 투데이 WORKER 시작", onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
-                repeatInterval = 6,
+                repeatInterval = 4,
                 tag = "JSON_TODAY",
                 timeMill = TimeUnit.HOURS
             )
@@ -99,7 +99,7 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
         MainSettingLine(title = "JSON 주간 WORKER 시작", onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
-                repeatInterval = 7,
+                repeatInterval = 5,
                 tag = "JSON_WEEK",
                 timeMill = TimeUnit.HOURS
             )
@@ -116,7 +116,7 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
         MainSettingLine(title = "JSON 월간 WORKER 시작", onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
-                repeatInterval = 9,
+                repeatInterval = 6,
                 tag = "JSON_MONTH",
                 timeMill = TimeUnit.HOURS
             )

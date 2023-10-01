@@ -500,7 +500,13 @@ class ViewModelMain @Inject constructor() : ViewModel() {
         currentUser = auth.currentUser
 
         if(currentUser?.uid == "A8uh2QkVQaV3Q3rE8SgBNKzV6VH2"){
-            mRootRef.child(str).removeValue()
+
+            if(str == "ALERT"){
+                mRootRef.child("MESSAGE").child(str).removeValue()
+            } else {
+                mRootRef.child(str).removeValue()
+            }
+
         }
     }
 
