@@ -104,18 +104,15 @@ fun ContentsTrophy(lineTrophy: List<MainSettingLine>) {
         })
     )
 
-    TabletContentWrap(
-        radius = 10,
-        content = {
-            itemJsonWorker.forEachIndexed { index, item ->
-                ItemMainTabletContent(
-                    title = item.title,
-                    isLast = itemJsonWorker.size - 1 == index,
-                    onClick = item.onClick
-                )
-            }
+    TabletContentWrap {
+        itemJsonWorker.forEachIndexed { index, item ->
+            ItemMainTabletContent(
+                title = item.title,
+                isLast = itemJsonWorker.size - 1 == index,
+                onClick = item.onClick
+            )
         }
-    )
+    }
 
     Spacer(modifier = Modifier.size(16.dp))
 
@@ -127,18 +124,15 @@ fun ContentsTrophy(lineTrophy: List<MainSettingLine>) {
         fontWeight = FontWeight(weight = 700)
     )
 
-    TabletContentWrap(
-        radius = 10,
-        content = {
-            lineUpdateSelf.forEachIndexed { index, item ->
-                ItemMainTabletContent(
-                    title = item.title,
-                    value = item.value,
-                    isLast = lineUpdateSelf.size - 1 == index
-                )
-            }
+    TabletContentWrap {
+        lineUpdateSelf.forEachIndexed { index, item ->
+            ItemMainTabletContent(
+                title = item.title,
+                value = item.value,
+                isLast = lineUpdateSelf.size - 1 == index
+            )
         }
-    )
+    }
 
     Spacer(modifier = Modifier.size(16.dp))
 
@@ -150,18 +144,15 @@ fun ContentsTrophy(lineTrophy: List<MainSettingLine>) {
         fontWeight = FontWeight(weight = 700)
     )
 
-    TabletContentWrap(
-        radius = 10,
-        content = {
-            lineTrophy.forEachIndexed { index, item ->
-                ItemMainTabletContent(
-                    title = item.title,
-                    value = item.value,
-                    isLast = lineTrophy.size - 1 == index
-                )
-            }
+    TabletContentWrap {
+        lineTrophy.forEachIndexed { index, item ->
+            ItemMainTabletContent(
+                title = item.title,
+                value = item.value,
+                isLast = lineTrophy.size - 1 == index
+            )
         }
-    )
+    }
 
     Spacer(modifier = Modifier.size(60.dp))
 }

@@ -189,47 +189,44 @@ fun ContentsFCM(lineTest: List<MainSettingLine>) {
         fontWeight = FontWeight(weight = 700)
     )
 
-    TabletContentWrap(
-        radius = 10,
-        content = {
-            TextField(
-                value = getFCM.title,
-                onValueChange = {
-                    setFCM(getFCM.copy(title = it))
-                },
-                label = { Text("푸시 알림 제목", color = color898989) },
-                singleLine = true,
-                colors = TextFieldDefaults.textFieldColors(
-                    containerColor = Color(0),
-                    textColor = color000000
-                ),
-                modifier = Modifier.fillMaxWidth()
+    TabletContentWrap {
+        TextField(
+            value = getFCM.title,
+            onValueChange = {
+                setFCM(getFCM.copy(title = it))
+            },
+            label = { Text("푸시 알림 제목", color = color898989) },
+            singleLine = true,
+            colors = TextFieldDefaults.textFieldColors(
+                containerColor = Color(0),
+                textColor = color000000
+            ),
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.size(16.dp))
+
+        TextField(
+            value = getFCM.body,
+            onValueChange = {
+                setFCM(getFCM.copy(body = it))
+            },
+            label = { Text("푸시 알림 내용", color = color898989) },
+            singleLine = true,
+            colors = TextFieldDefaults.textFieldColors(
+                containerColor = Color(0),
+                textColor = color000000
+            ),
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Box(modifier = Modifier.padding(16.dp), contentAlignment = Alignment.Center) {
+            BtnMobile(
+                func = { FCM.postFCMAlert(context = context, getFCM = getFCM) },
+                btnText = "공지사항 등록"
             )
-
-            Spacer(modifier = Modifier.size(16.dp))
-
-            TextField(
-                value = getFCM.body,
-                onValueChange = {
-                    setFCM(getFCM.copy(body = it))
-                },
-                label = { Text("푸시 알림 내용", color = color898989) },
-                singleLine = true,
-                colors = TextFieldDefaults.textFieldColors(
-                    containerColor = Color(0),
-                    textColor = color000000
-                ),
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            Box(modifier = Modifier.padding(16.dp), contentAlignment = Alignment.Center) {
-                BtnMobile(
-                    func = { FCM.postFCMAlert(context = context, getFCM = getFCM) },
-                    btnText = "공지사항 등록"
-                )
-            }
         }
-    )
+    }
 
     Spacer(modifier = Modifier.size(16.dp))
 
@@ -241,18 +238,15 @@ fun ContentsFCM(lineTest: List<MainSettingLine>) {
         fontWeight = FontWeight(weight = 700)
     )
 
-    TabletContentWrap(
-        radius = 10,
-        content = {
-            lineTest.forEachIndexed { index, item ->
-                ItemMainTabletContent(
-                    title = item.title,
-                    value = item.value,
-                    isLast = lineTest.size - 1 == index
-                )
-            }
+    TabletContentWrap {
+        lineTest.forEachIndexed { index, item ->
+            ItemMainTabletContent(
+                title = item.title,
+                value = item.value,
+                isLast = lineTest.size - 1 == index
+            )
         }
-    )
+    }
 
     Spacer(modifier = Modifier.size(16.dp))
 
@@ -264,18 +258,15 @@ fun ContentsFCM(lineTest: List<MainSettingLine>) {
         fontWeight = FontWeight(weight = 700)
     )
 
-    TabletContentWrap(
-        radius = 10,
-        content = {
-            itemFcmWorker.forEachIndexed { index, item ->
-                ItemMainTabletContent(
-                    title = item.title,
-                    isLast = itemFcmWorker.size - 1 == index,
-                    onClick = item.onClick
-                )
-            }
+    TabletContentWrap {
+        itemFcmWorker.forEachIndexed { index, item ->
+            ItemMainTabletContent(
+                title = item.title,
+                isLast = itemFcmWorker.size - 1 == index,
+                onClick = item.onClick
+            )
         }
-    )
+    }
 
     Spacer(modifier = Modifier.size(60.dp))
 }
@@ -355,21 +346,18 @@ fun ContentsFCMList(viewModelMain: ViewModelMain, child : String){
         }
     }
 
-    TabletContentWrap(
-        radius = 5,
-        content = {
-            Spacer(modifier = Modifier.size(8.dp))
+    TabletContentWrap {
+        Spacer(modifier = Modifier.size(8.dp))
 
-            fcmAlertList.forEachIndexed { index, item ->
-                ItemTabletFCMList(
-                    item = item,
-                    isLast = fcmAlertList.size - 1 == index
-                )
-            }
-
-            Spacer(modifier = Modifier.size(8.dp))
+        fcmAlertList.forEachIndexed { index, item ->
+            ItemTabletFCMList(
+                item = item,
+                isLast = fcmAlertList.size - 1 == index
+            )
         }
-    )
+
+        Spacer(modifier = Modifier.size(8.dp))
+    }
 
     Spacer(modifier = Modifier.size(60.dp))
 }

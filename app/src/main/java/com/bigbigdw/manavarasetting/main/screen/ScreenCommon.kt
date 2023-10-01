@@ -381,12 +381,12 @@ fun TabletBorderLine(){
 }
 
 @Composable
-fun TabletContentWrap(radius : Int, content : @Composable () -> Unit){
+fun TabletContentWrap(content: @Composable () -> Unit){
     Card(
         modifier = Modifier
             .fillMaxSize(),
         backgroundColor = Color.White,
-        shape = RoundedCornerShape(percent = radius),
+        shape = RoundedCornerShape(size = 20.dp),
         elevation = 0.dp
     ) {
         Column(
@@ -394,7 +394,11 @@ fun TabletContentWrap(radius : Int, content : @Composable () -> Unit){
                 .fillMaxSize()
                 .padding(24.dp, 4.dp)
         ) {
+            Spacer(modifier = Modifier.size(4.dp))
+
             content()
+
+            Spacer(modifier = Modifier.size(4.dp))
         }
     }
 }

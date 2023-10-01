@@ -232,18 +232,15 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
         }),
     )
 
-    TabletContentWrap(
-        radius = 10,
-        content = {
-            itemJsonWorkerToday.forEachIndexed { index, item ->
-                ItemMainTabletContent(
-                    title = item.title,
-                    isLast = itemJsonWorkerToday.size - 1 == index,
-                    onClick = item.onClick
-                )
-            }
+    TabletContentWrap {
+        itemJsonWorkerToday.forEachIndexed { index, item ->
+            ItemMainTabletContent(
+                title = item.title,
+                isLast = itemJsonWorkerToday.size - 1 == index,
+                onClick = item.onClick
+            )
         }
-    )
+    }
 
     Spacer(modifier = Modifier.size(16.dp))
 
@@ -255,18 +252,15 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
         fontWeight = FontWeight(weight = 700)
     )
 
-    TabletContentWrap(
-        radius = 10,
-        content = {
-            itemJsonWorkerWeek.forEachIndexed { index, item ->
-                ItemMainTabletContent(
-                    title = item.title,
-                    isLast = itemJsonWorkerWeek.size - 1 == index,
-                    onClick = item.onClick
-                )
-            }
+    TabletContentWrap {
+        itemJsonWorkerWeek.forEachIndexed { index, item ->
+            ItemMainTabletContent(
+                title = item.title,
+                isLast = itemJsonWorkerWeek.size - 1 == index,
+                onClick = item.onClick
+            )
         }
-    )
+    }
 
     Spacer(modifier = Modifier.size(16.dp))
 
@@ -278,18 +272,15 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
         fontWeight = FontWeight(weight = 700)
     )
 
-    TabletContentWrap(
-        radius = 10,
-        content = {
-            itemJsonWorkerWeekTrophy.forEachIndexed { index, item ->
-                ItemMainTabletContent(
-                    title = item.title,
-                    isLast = itemJsonWorkerWeekTrophy.size - 1 == index,
-                    onClick = item.onClick
-                )
-            }
+    TabletContentWrap {
+        itemJsonWorkerWeekTrophy.forEachIndexed { index, item ->
+            ItemMainTabletContent(
+                title = item.title,
+                isLast = itemJsonWorkerWeekTrophy.size - 1 == index,
+                onClick = item.onClick
+            )
         }
-    )
+    }
 
     Spacer(modifier = Modifier.size(16.dp))
 
@@ -301,18 +292,15 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
         fontWeight = FontWeight(weight = 700)
     )
 
-    TabletContentWrap(
-        radius = 10,
-        content = {
-            itemJsonWorkerMonthTrophy.forEachIndexed { index, item ->
-                ItemMainTabletContent(
-                    title = item.title,
-                    isLast = itemJsonWorkerMonthTrophy.size - 1 == index,
-                    onClick = item.onClick
-                )
-            }
+    TabletContentWrap {
+        itemJsonWorkerMonthTrophy.forEachIndexed { index, item ->
+            ItemMainTabletContent(
+                title = item.title,
+                isLast = itemJsonWorkerMonthTrophy.size - 1 == index,
+                onClick = item.onClick
+            )
         }
-    )
+    }
 
     Spacer(modifier = Modifier.size(16.dp))
 
@@ -324,19 +312,16 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
         fontWeight = FontWeight(weight = 700)
     )
 
-    TabletContentWrap(
-        radius = 10,
-        content = {
-            lineUpdateSelf.forEachIndexed { index, item ->
-                ItemMainTabletContent(
-                    title = item.title,
-                    value = item.value,
-                    isLast = lineUpdateSelf.size - 1 == index,
-                    onClick = item.onClick
-                )
-            }
+    TabletContentWrap {
+        lineUpdateSelf.forEachIndexed { index, item ->
+            ItemMainTabletContent(
+                title = item.title,
+                value = item.value,
+                isLast = lineUpdateSelf.size - 1 == index,
+                onClick = item.onClick
+            )
         }
-    )
+    }
 
     Spacer(modifier = Modifier.size(16.dp))
 
@@ -348,18 +333,15 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
         fontWeight = FontWeight(weight = 700)
     )
 
-    TabletContentWrap(
-        radius = 10,
-        content = {
-            lineJson.forEachIndexed { index, item ->
-                ItemMainTabletContent(
-                    title = item.title,
-                    value = item.value,
-                    isLast = lineJson.size - 1 == index
-                )
-            }
+    TabletContentWrap {
+        lineJson.forEachIndexed { index, item ->
+            ItemMainTabletContent(
+                title = item.title,
+                value = item.value,
+                isLast = lineJson.size - 1 == index
+            )
         }
-    )
+    }
 
     Spacer(modifier = Modifier.size(60.dp))
 }
@@ -386,22 +368,19 @@ fun ContentsBestJsonList(
         fontWeight = FontWeight(weight = 700)
     )
 
-    TabletContentWrap(
-        radius = 5,
-        content = {
-            itemList.forEachIndexed { index, item ->
-                ItemMainTabletContent(
-                    title = item.title,
-                    isLast = itemList.size - 1 == index,
-                    onClick = {
-                        setDetailPage(true)
-                        setDetailMenu(item.title)
-                        setDetailPageType(item.value)
-                    }
-                )
-            }
+    TabletContentWrap {
+        itemList.forEachIndexed { index, item ->
+            ItemMainTabletContent(
+                title = item.title,
+                isLast = itemList.size - 1 == index,
+                onClick = {
+                    setDetailPage(true)
+                    setDetailMenu(item.title)
+                    setDetailPageType(item.value)
+                }
+            )
         }
-    )
+    }
 
     Spacer(modifier = Modifier.size(60.dp))
 }

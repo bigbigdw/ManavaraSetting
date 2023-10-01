@@ -19,7 +19,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,14 +34,7 @@ import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color8E8E8E
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
-import com.bigbigdw.manavarasetting.util.BestRef
-import com.bigbigdw.manavarasetting.util.DBDate
-import com.bigbigdw.manavarasetting.util.FCM
-import com.bigbigdw.manavarasetting.util.Mining
-import com.bigbigdw.manavarasetting.util.NaverSeriesGenre
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
-import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
-import com.bigbigdw.manavarasetting.util.getNaverSeriesGenreKor
 
 @Composable
 fun ScreenTablet(
@@ -75,7 +67,6 @@ fun ScreenTablet(
 
             Text(
                 modifier = Modifier
-                    .padding(24.dp, 0.dp, 0.dp, 0.dp)
                     .clickable {
                         setDetailPage(false)
                     },
@@ -307,18 +298,15 @@ fun ContentsSetting(
         fontWeight = FontWeight(weight = 700)
     )
 
-    TabletContentWrap(
-        radius = 10,
-        content = {
-            lineTest.forEachIndexed { index, item ->
-                ItemMainTabletContent(
-                    title = item.title,
-                    value = item.value,
-                    isLast = lineTrophy.size - 1 == index
-                )
-            }
+    TabletContentWrap {
+        lineTest.forEachIndexed { index, item ->
+            ItemMainTabletContent(
+                title = item.title,
+                value = item.value,
+                isLast = lineTrophy.size - 1 == index
+            )
         }
-    )
+    }
 
     Spacer(modifier = Modifier.size(16.dp))
 
@@ -330,18 +318,15 @@ fun ContentsSetting(
         fontWeight = FontWeight(weight = 700)
     )
 
-    TabletContentWrap(
-        radius = 10,
-        content = {
-            lineBest.forEachIndexed { index, item ->
-                ItemMainTabletContent(
-                    title = item.title,
-                    value = item.value,
-                    isLast = lineTrophy.size - 1 == index
-                )
-            }
+    TabletContentWrap {
+        lineBest.forEachIndexed { index, item ->
+            ItemMainTabletContent(
+                title = item.title,
+                value = item.value,
+                isLast = lineTrophy.size - 1 == index
+            )
         }
-    )
+    }
 
     Spacer(modifier = Modifier.size(16.dp))
 
@@ -353,18 +338,15 @@ fun ContentsSetting(
         fontWeight = FontWeight(weight = 700)
     )
 
-    TabletContentWrap(
-        radius = 10,
-        content = {
-            lineJson.forEachIndexed { index, item ->
-                ItemMainTabletContent(
-                    title = item.title,
-                    value = item.value,
-                    isLast = lineTrophy.size - 1 == index
-                )
-            }
+    TabletContentWrap {
+        lineJson.forEachIndexed { index, item ->
+            ItemMainTabletContent(
+                title = item.title,
+                value = item.value,
+                isLast = lineTrophy.size - 1 == index
+            )
         }
-    )
+    }
 
     Spacer(modifier = Modifier.size(16.dp))
 
@@ -376,18 +358,15 @@ fun ContentsSetting(
         fontWeight = FontWeight(weight = 700)
     )
 
-    TabletContentWrap(
-        radius = 10,
-        content = {
-            lineTrophy.forEachIndexed { index, item ->
-                ItemMainTabletContent(
-                    title = item.title,
-                    value = item.value,
-                    isLast = lineTrophy.size - 1 == index
-                )
-            }
+    TabletContentWrap {
+        lineTrophy.forEachIndexed { index, item ->
+            ItemMainTabletContent(
+                title = item.title,
+                value = item.value,
+                isLast = lineTrophy.size - 1 == index
+            )
         }
-    )
+    }
 
     Spacer(modifier = Modifier.size(60.dp))
 }

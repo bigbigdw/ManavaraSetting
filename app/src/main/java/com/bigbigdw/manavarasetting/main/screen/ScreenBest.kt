@@ -101,18 +101,15 @@ fun ContentsBest(lineBest: List<MainSettingLine>) {
         }),
     )
 
-    TabletContentWrap(
-        radius = 10,
-        content = {
-            itemBestWorker.forEachIndexed { index, item ->
-                ItemMainTabletContent(
-                    title = item.title,
-                    isLast = itemBestWorker.size - 1 == index,
-                    onClick = item.onClick
-                )
-            }
+    TabletContentWrap {
+        itemBestWorker.forEachIndexed { index, item ->
+            ItemMainTabletContent(
+                title = item.title,
+                isLast = itemBestWorker.size - 1 == index,
+                onClick = item.onClick
+            )
         }
-    )
+    }
 
     Spacer(modifier = Modifier.size(16.dp))
 
@@ -124,18 +121,15 @@ fun ContentsBest(lineBest: List<MainSettingLine>) {
         fontWeight = FontWeight(weight = 700)
     )
 
-    TabletContentWrap(
-        radius = 10,
-        content = {
-            lineBest.forEachIndexed { index, item ->
-                ItemMainTabletContent(
-                    title = item.title,
-                    value = item.value,
-                    isLast = lineBest.size - 1 == index
-                )
-            }
+    TabletContentWrap {
+        lineBest.forEachIndexed { index, item ->
+            ItemMainTabletContent(
+                title = item.title,
+                value = item.value,
+                isLast = lineBest.size - 1 == index
+            )
         }
-    )
+    }
 
     Spacer(modifier = Modifier.size(60.dp))
 }
@@ -204,22 +198,19 @@ fun ContentsBestList(
         fontWeight = FontWeight(weight = 700)
     )
 
-    TabletContentWrap(
-        radius = 5,
-        content = {
-            itemList.forEachIndexed { index, item ->
-                ItemMainTabletContent(
-                    title = item.title,
-                    isLast = itemList.size - 1 == index,
-                    onClick = {
-                        setDetailPage(true)
-                        setDetailMenu(item.title)
-                        setDetailPageType(item.value)
-                    }
-                )
-            }
+    TabletContentWrap {
+        itemList.forEachIndexed { index, item ->
+            ItemMainTabletContent(
+                title = item.title,
+                isLast = itemList.size - 1 == index,
+                onClick = {
+                    setDetailPage(true)
+                    setDetailMenu(item.title)
+                    setDetailPageType(item.value)
+                }
+            )
         }
-    )
+    }
 
     Spacer(modifier = Modifier.size(60.dp))
 }

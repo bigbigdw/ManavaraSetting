@@ -16,7 +16,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
@@ -131,21 +130,18 @@ fun ContentsBestListDetail(viewModelMain: ViewModelMain, child: String, type: St
 
     val bestList: ArrayList<ItemBookInfo> = viewModelMain.state.collectAsState().value.setBestBookList
 
-    TabletContentWrap(
-        radius = 5,
-        content = {
-            Spacer(modifier = Modifier.size(8.dp))
+    TabletContentWrap {
+        Spacer(modifier = Modifier.size(8.dp))
 
-            bestList.forEachIndexed { index, item ->
-                ItemTabletBestList(
-                    item = item,
-                    isLast = bestList.size - 1 == index
-                )
-            }
-
-            Spacer(modifier = Modifier.size(8.dp))
+        bestList.forEachIndexed { index, item ->
+            ItemTabletBestList(
+                item = item,
+                isLast = bestList.size - 1 == index
+            )
         }
-    )
+
+        Spacer(modifier = Modifier.size(8.dp))
+    }
 
     Spacer(modifier = Modifier.size(60.dp))
 }
@@ -173,36 +169,33 @@ fun ContentsBestListDetailWeek(viewModelMain: ViewModelMain, child: String, type
             fontWeight = FontWeight(weight = 700)
         )
 
-        TabletContentWrap(
-            radius = 5,
-            content = {
+        TabletContentWrap {
 
-                Spacer(modifier = Modifier.size(8.dp))
+            Spacer(modifier = Modifier.size(8.dp))
 
-                if (itemArray.size == 0) {
-                    Text(
-                        text = "없음",
-                        color = color000000,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight(weight = 500)
+            if (itemArray.size == 0) {
+                Text(
+                    text = "없음",
+                    color = color000000,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight(weight = 500)
+                )
+            } else {
+                Row(
+                    modifier = Modifier.horizontalScroll(
+                        rememberScrollState()
                     )
-                } else {
-                    Row(
-                        modifier = Modifier.horizontalScroll(
-                            rememberScrollState()
+                ) {
+                    itemArray.forEachIndexed { index, item ->
+                        ItemTabletBestListVertical(
+                            item = item
                         )
-                    ) {
-                        itemArray.forEachIndexed { index, item ->
-                            ItemTabletBestListVertical(
-                                item = item
-                            )
-                        }
                     }
                 }
-
-                Spacer(modifier = Modifier.size(8.dp))
             }
-        )
+
+            Spacer(modifier = Modifier.size(8.dp))
+        }
     }
 
     Spacer(modifier = Modifier.size(60.dp))
@@ -215,21 +208,18 @@ fun ContentsBestListJsonTrophy(viewModelMain: ViewModelMain, child: String, type
 
     val bestWeekList: ArrayList<ItemBestInfo> = viewModelMain.state.collectAsState().value.trophyList
 
-    TabletContentWrap(
-        radius = 5,
-        content = {
-            Spacer(modifier = Modifier.size(8.dp))
+    TabletContentWrap {
+        Spacer(modifier = Modifier.size(8.dp))
 
-            bestWeekList.forEachIndexed { index, item ->
-                ItemTabletTrophyList(
-                    item = item,
-                    isLast = bestWeekList.size - 1 == index
-                )
-            }
-
-            Spacer(modifier = Modifier.size(8.dp))
+        bestWeekList.forEachIndexed { index, item ->
+            ItemTabletTrophyList(
+                item = item,
+                isLast = bestWeekList.size - 1 == index
+            )
         }
-    )
+
+        Spacer(modifier = Modifier.size(8.dp))
+    }
 
 
 
@@ -243,21 +233,18 @@ fun ContentsBestListDetailTrophy(viewModelMain: ViewModelMain, type: String, chi
 
     val bestWeekList: ArrayList<ItemBestInfo> = viewModelMain.state.collectAsState().value.trophyList
 
-    TabletContentWrap(
-        radius = 5,
-        content = {
-            Spacer(modifier = Modifier.size(8.dp))
+    TabletContentWrap {
+        Spacer(modifier = Modifier.size(8.dp))
 
-            bestWeekList.forEachIndexed { index, item ->
-                ItemTabletTrophyList(
-                    item = item,
-                    isLast = bestWeekList.size - 1 == index
-                )
-            }
-
-            Spacer(modifier = Modifier.size(8.dp))
+        bestWeekList.forEachIndexed { index, item ->
+            ItemTabletTrophyList(
+                item = item,
+                isLast = bestWeekList.size - 1 == index
+            )
         }
-    )
+
+        Spacer(modifier = Modifier.size(8.dp))
+    }
 
 
 
