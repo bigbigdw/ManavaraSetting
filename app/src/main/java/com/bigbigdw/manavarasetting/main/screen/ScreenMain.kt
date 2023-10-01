@@ -647,60 +647,10 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
             onClick = {onClick()}
         )
 
-        ItemMainSettingSingleTablet(
-            containerColor = colorFDC24E,
-            image = R.drawable.icon_json_wht,
-            title = "JSON 투데이 최신화 현황",
-            body = "시간별 JSON 투데이 갱신 현황",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = {onClick()}
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = color80BF78,
-            image = R.drawable.icon_json_wht,
-            title = "JSON 주간 최신화 현황",
-            body = "시간별 JSON 주간 갱신 현황",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = {onClick()}
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = color91CEC7,
-            image = R.drawable.icon_json_wht,
-            title = "JSON 월간 최신화 현황",
-            body = "시간별 JSON 월간 갱신 현황",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = {onClick()}
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = color79B4F8,
-            image = R.drawable.icon_json_wht,
-            title = "JSON 주간 트로피 최신화 현황",
-            body = "시간별 JSON 주간 트로피 갱신 현황",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = {onClick()}
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = color8AA6BD,
-            image = R.drawable.icon_json_wht,
-            title = "JSON 월간 트로피 최신화 현황",
-            body = "시간별 JSON 월간 트로피 갱신 현황",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = {onClick()}
-        )
-
         TabletBorderLine()
 
         ItemMainSettingSingleTablet(
-            containerColor = color2EA259,
+            containerColor = colorFDC24E,
             image = R.drawable.icon_trophy_wht,
             title = "트로피 정산 관리",
             body = "트로피 수동 정산 & Worker 관리",
@@ -710,7 +660,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color808CF8,
+            containerColor = color80BF78,
             image = R.drawable.icon_trophy_wht,
             title = "트로피 주간 토탈 리스트",
             body = "장르별 주간 트로피 리스트 확인",
@@ -720,7 +670,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = colorFFAC59,
+            containerColor = color91CEC7,
             image = R.drawable.icon_trophy_wht,
             title = "트로피 월간 토탈 리스트",
             body = "장르별 월간 트로피 리스트 확인",
@@ -730,7 +680,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color8F8F8F,
+            containerColor = color79B4F8,
             image = R.drawable.icon_trophy_wht,
             title = "트로피 최신화 현황",
             body = "시간별 트로피 최신화 현황",
@@ -738,5 +688,6 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
             getMenu = getMenu,
             onClick = {onClick()}
         )
+
     }
 }

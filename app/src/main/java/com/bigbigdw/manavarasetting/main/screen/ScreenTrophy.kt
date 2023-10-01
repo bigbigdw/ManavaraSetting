@@ -32,6 +32,8 @@ import com.bigbigdw.manavarasetting.util.NaverSeriesComicGenre
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import com.bigbigdw.manavarasetting.util.calculateTrophy
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.util.concurrent.TimeUnit
 
 @Composable
@@ -76,7 +78,7 @@ fun ContentsTrophy(lineTrophy: List<MainSettingLine>) {
         MainSettingLine(title = "WORKER 시작", onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
-                repeatInterval = 7,
+                repeatInterval = 5,
                 tag = "TROPHY",
                 timeMill = TimeUnit.HOURS
             )
@@ -103,13 +105,18 @@ fun ContentsTrophy(lineTrophy: List<MainSettingLine>) {
 
     TabletContentWrapBtn(
         onClick = {
-            for (j in NaverSeriesComicGenre) {
-                calculateTrophy(
-                    platform = "NAVER_SERIES",
-                    genre = getNaverSeriesGenre(j),
-                    type = "COMIC"
-                )
+            runBlocking {
+                for (j in NaverSeriesComicGenre) {
+                    launch {
+                        calculateTrophy(
+                            platform = "NAVER_SERIES",
+                            genre = getNaverSeriesGenre(j),
+                            type = "COMIC"
+                        )
+                    }
+                }
             }
+
             FCM.postFCMAlertTest(context = context, message = "트로피 정산이 완료되었습니다")
         },
         content = {

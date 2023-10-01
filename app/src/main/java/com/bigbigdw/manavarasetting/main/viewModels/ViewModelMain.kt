@@ -152,7 +152,7 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                                 ),
                                 statusJson = PeriodicWorker.checkWorker(
                                     workManager = workManager,
-                                    tag = "JSON_TODAY"
+                                    tag = "JSON"
                                 ),
                                 statusTrophy = PeriodicWorker.checkWorker(
                                     workManager = workManager,

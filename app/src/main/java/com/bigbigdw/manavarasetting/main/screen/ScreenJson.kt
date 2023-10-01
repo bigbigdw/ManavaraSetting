@@ -32,12 +32,9 @@ import com.bigbigdw.manavarasetting.util.NaverSeriesComicGenre
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenreKor
-import com.bigbigdw.manavarasetting.util.makeWeekJson
 import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageDay
-import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageMonth
-import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageTrophy
-import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageWeek
-import com.google.gson.JsonArray
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.util.concurrent.TimeUnit
 
 @Composable
@@ -79,156 +76,39 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
     val workManager = WorkManager.getInstance(context)
 
     val itemJsonWorkerToday = listOf(
-        MainSettingLine(title = "JSON 투데이 WORKER 시작", onClick = {
+        MainSettingLine(title = "JSON WORKER 시작", onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
                 repeatInterval = 4,
-                tag = "JSON_TODAY",
+                tag = "JSON",
                 timeMill = TimeUnit.HOURS
             )
         }),
         MainSettingLine(title = "JSON 투데이 WORKER 취소", onClick = {
             PeriodicWorker.cancelWorker(
                 workManager = workManager,
-                tag = "JSON_TODAY"
-            )
-        })
-    )
-
-    val itemJsonWorkerWeek = listOf(
-        MainSettingLine(title = "JSON 주간 WORKER 시작", onClick = {
-            PeriodicWorker.doWorker(
-                workManager = workManager,
-                repeatInterval = 5,
-                tag = "JSON_WEEK",
-                timeMill = TimeUnit.HOURS
-            )
-        }),
-        MainSettingLine(title = "JSON 주간 WORKER 취소", onClick = {
-            PeriodicWorker.cancelWorker(
-                workManager = workManager,
-                tag = "JSON_WEEK"
-            )
-        })
-    )
-
-    val itemJsonWorkerMonth = listOf(
-        MainSettingLine(title = "JSON 월간 WORKER 시작", onClick = {
-            PeriodicWorker.doWorker(
-                workManager = workManager,
-                repeatInterval = 6,
-                tag = "JSON_MONTH",
-                timeMill = TimeUnit.HOURS
-            )
-        }),
-        MainSettingLine(title = "JSON 월간 WORKER 취소", onClick = {
-            PeriodicWorker.cancelWorker(
-                workManager = workManager,
-                tag = "JSON_MONTH"
-            )
-        })
-    )
-
-    val itemJsonWorkerWeekTrophy = listOf(
-        MainSettingLine(title = "JSON 주간 트로피 WORKER 시작", onClick = {
-            PeriodicWorker.doWorker(
-                workManager = workManager,
-                repeatInterval = 8,
-                tag = "JSON_WEEK_TROPHY",
-                timeMill = TimeUnit.HOURS
-            )
-        }),
-        MainSettingLine(title = "JSON 주간 트로피 WORKER 취소", onClick = {
-            PeriodicWorker.cancelWorker(
-                workManager = workManager,
-                tag = "JSON_WEEK_TROPHY"
-            )
-        })
-    )
-
-    val itemJsonWorkerMonthTrophy = listOf(
-        MainSettingLine(title = "JSON 월간 트로피 WORKER 시작", onClick = {
-            PeriodicWorker.doWorker(
-                workManager = workManager,
-                repeatInterval = 9,
-                tag = "JSON_MONTH_TROPHY",
-                timeMill = TimeUnit.HOURS
-            )
-        }),
-        MainSettingLine(title = "JSON 월간 트로피 WORKER 취소", onClick = {
-            PeriodicWorker.cancelWorker(
-                workManager = workManager,
-                tag = "JSON_MONTH_TROPHY"
+                tag = "JSON"
             )
         })
     )
 
     val lineUpdateSelf = listOf(
-        MainSettingLine(title = "JSON DAY 생성", onClick = {
-            for (j in NaverSeriesComicGenre) {
-                uploadJsonArrayToStorageDay(
-                    platform = "NAVER_SERIES",
-                    genre = getNaverSeriesGenre(j),
-                    type = "COMIC"
-                )
-            }
-            FCM.postFCMAlertTest(context = context, message = "JSON 최신화가 완료되었습니다")
-        }),
-        MainSettingLine(title = "JSON WEEK 생성", onClick = {
-            for (j in NaverSeriesComicGenre) {
+        MainSettingLine(title = "JSON 수동 갱신", onClick = {
+            runBlocking {
+                for (j in NaverSeriesComicGenre) {
+                    launch {
+                        uploadJsonArrayToStorageDay(
+                            platform = "NAVER_SERIES",
+                            genre = getNaverSeriesGenre(j),
+                            type = "COMIC"
+                        )
+                    }
 
-                val jsonArray = JsonArray()
-
-                for (i in 0..6) {
-                    jsonArray.add("")
                 }
+            }
 
-                makeWeekJson(
-                    platform = "NAVER_SERIES",
-                    genre = getNaverSeriesGenre(j),
-                    jsonArray = jsonArray,
-                    type = "COMIC"
-                )
-            }
-        }),
-        MainSettingLine(title = "JSON WEEK 업데이트", onClick = {
-            for (j in NaverSeriesComicGenre) {
-                uploadJsonArrayToStorageWeek(
-                    platform = "NAVER_SERIES",
-                    genre = getNaverSeriesGenre(j),
-                    type = "COMIC"
-                )
-            }
-        }),
-        MainSettingLine(title = "JSON MONTH 업데이트", onClick = {
-            for (j in NaverSeriesComicGenre) {
-                uploadJsonArrayToStorageMonth(
-                    platform = "NAVER_SERIES",
-                    genre = getNaverSeriesGenre(j),
-                    type = "COMIC"
-                )
-            }
-        }),
-        MainSettingLine(title = "JSON WEEK 트로피 업데이트", onClick = {
-            for (j in NaverSeriesComicGenre) {
-                uploadJsonArrayToStorageTrophy(
-                    platform = "NAVER_SERIES",
-                    genre = getNaverSeriesGenre(j),
-                    menu = "주간",
-                    type = "COMIC"
-                )
-            }
-        }),
-        MainSettingLine(title = "JSON MONTH 트로피 업데이트", onClick = {
-            for (j in NaverSeriesComicGenre) {
-                uploadJsonArrayToStorageTrophy(
-                    platform = "NAVER_SERIES",
-                    genre = getNaverSeriesGenre(j),
-                    menu = "월간",
-                    type = "COMIC"
-                )
-            }
-        }),
+            FCM.postFCMAlertTest(context = context, message = "JSON 최신화가 완료되었습니다")
+        })
     )
 
     TabletContentWrap {
@@ -236,54 +116,6 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
             ItemMainTabletContent(
                 title = item.title,
                 isLast = itemJsonWorkerToday.size - 1 == index,
-                onClick = item.onClick
-            )
-        }
-    }
-
-    ItemTabletTitle(str = "JSON 주간")
-
-    TabletContentWrap {
-        itemJsonWorkerWeek.forEachIndexed { index, item ->
-            ItemMainTabletContent(
-                title = item.title,
-                isLast = itemJsonWorkerWeek.size - 1 == index,
-                onClick = item.onClick
-            )
-        }
-    }
-
-    ItemTabletTitle(str = "JSON 월간")
-
-    TabletContentWrap {
-        itemJsonWorkerMonth.forEachIndexed { index, item ->
-            ItemMainTabletContent(
-                title = item.title,
-                isLast = itemJsonWorkerMonth.size - 1 == index,
-                onClick = item.onClick
-            )
-        }
-    }
-
-    ItemTabletTitle(str = "JSON 주간 트로피")
-
-    TabletContentWrap {
-        itemJsonWorkerWeekTrophy.forEachIndexed { index, item ->
-            ItemMainTabletContent(
-                title = item.title,
-                isLast = itemJsonWorkerWeekTrophy.size - 1 == index,
-                onClick = item.onClick
-            )
-        }
-    }
-
-    ItemTabletTitle(str = "JSON 월간 트로피")
-
-    TabletContentWrap {
-        itemJsonWorkerMonthTrophy.forEachIndexed { index, item ->
-            ItemMainTabletContent(
-                title = item.title,
-                isLast = itemJsonWorkerMonthTrophy.size - 1 == index,
                 onClick = item.onClick
             )
         }
@@ -331,13 +163,7 @@ fun ContentsBestJsonList(
         itemList.add(MainSettingLine(title = "$type JSON ${getNaverSeriesGenreKor(j)}", value = getNaverSeriesGenre(j)))
     }
 
-    Text(
-        modifier = Modifier.padding(32.dp, 8.dp),
-        text = "네이버 시리즈",
-        fontSize = 16.sp,
-        color = color8E8E8E,
-        fontWeight = FontWeight(weight = 700)
-    )
+    ItemTabletTitle(str = "네이버 시리즈", isTopPadding = false)
 
     TabletContentWrap {
         itemList.forEachIndexed { index, item ->

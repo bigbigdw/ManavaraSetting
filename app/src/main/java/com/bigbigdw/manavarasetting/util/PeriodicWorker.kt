@@ -16,8 +16,9 @@ import java.util.concurrent.TimeUnit
 
 object PeriodicWorker {
     fun doWorker(workManager: WorkManager, repeatInterval: Long, tag: String, timeMill: TimeUnit){
+
         val inputData = Data.Builder()
-            .putString(FirebaseWorkManager.TYPE, tag)
+            .putString(FirebaseWorkManager.WORKER, tag)
             .build()
 
         val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(repeatInterval, timeMill)

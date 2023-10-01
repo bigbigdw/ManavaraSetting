@@ -165,21 +165,6 @@ fun ScreenTablet(
                 "JSON 최신화 현황" -> {
                     ContentsFCMList(viewModelMain = viewModelMain, child = "JSON")
                 }
-                "JSON 투데이 최신화 현황" -> {
-                    ContentsFCMList(viewModelMain = viewModelMain, child = "JSON_TODAY")
-                }
-                "JSON 주간 최신화 현황" -> {
-                    ContentsFCMList(viewModelMain = viewModelMain, child = "JSON_WEEK")
-                }
-                "JSON 월간 최신화 현황" -> {
-                    ContentsFCMList(viewModelMain = viewModelMain, child = "JSON_MONTH")
-                }
-                "JSON 주간 트로피 최신화 현황" -> {
-                    ContentsFCMList(viewModelMain = viewModelMain, child = "JSON_WEEK_TROPHY")
-                }
-                "JSON 월간 트로피 최신화 현황" -> {
-                    ContentsFCMList(viewModelMain = viewModelMain, child = "JSON_MONTH_TROPHY")
-                }
                 "트로피 정산 관리" -> {
                     ContentsTrophy(lineTrophy = lineTrophy)
                 }

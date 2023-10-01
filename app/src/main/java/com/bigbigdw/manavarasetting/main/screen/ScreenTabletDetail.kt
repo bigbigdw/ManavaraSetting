@@ -64,8 +64,6 @@ fun ScreenTabletDetail(
                 fontWeight = FontWeight(weight = 700)
             )
 
-            Spacer(modifier = Modifier.size(16.dp))
-
             if (getDetailMenu.contains("베스트 리스트")) {
                 ContentsBestListDetail(
                     viewModelMain = viewModelMain,
@@ -167,18 +165,12 @@ fun ContentsBestListDetailWeek(platform : String, viewModelMain: ViewModelMain, 
         viewModelMain.state.collectAsState().value.bestListWeek
     bestWeekList.forEachIndexed { index, itemArray ->
 
-        Spacer(modifier = Modifier.size(16.dp))
-
-        Text(
-            modifier = Modifier.padding(32.dp, 8.dp),
-            text = if (menu == "주간") {
-                "${WeekKor.get(index)}요일"
+        ItemTabletTitle(
+            str = if (menu == "주간") {
+                "${WeekKor[index]}요일"
             } else {
                 "${index + 1}주차"
-            },
-            fontSize = 16.sp,
-            color = color8E8E8E,
-            fontWeight = FontWeight(weight = 700)
+            }
         )
 
         TabletContentWrap {

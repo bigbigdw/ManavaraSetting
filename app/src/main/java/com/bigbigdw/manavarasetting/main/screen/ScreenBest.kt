@@ -224,13 +224,7 @@ fun ContentsBestList(
         itemList.add(MainSettingLine(title = "네이버 시리즈 베스트 리스트 ${getNaverSeriesGenreKor(j)}", value = getNaverSeriesGenre(j)))
     }
 
-    Text(
-        modifier = Modifier.padding(32.dp, 8.dp),
-        text = "네이버 시리즈",
-        fontSize = 16.sp,
-        color = color8E8E8E,
-        fontWeight = FontWeight(weight = 700)
-    )
+    ItemTabletTitle(str = "네이버 시리즈", isTopPadding = false)
 
     TabletContentWrap {
         itemList.forEachIndexed { index, item ->

@@ -14,7 +14,13 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import java.nio.charset.Charset
 
-fun miningValue(ref: MutableMap<String?, Any>, num : Int, platform: String, genre: String, type : String) {
+fun miningValue(
+    ref: MutableMap<String?, Any>,
+    num: Int,
+    platform: String,
+    genre: String,
+    type: String
+) {
 
     BestRef.setBookCode(
         platform = platform,
@@ -55,11 +61,12 @@ fun miningValue(ref: MutableMap<String?, Any>, num : Int, platform: String, genr
     ).setValue(BestRef.setBookListDataBestAnalyze(ref))
 }
 
-fun uploadJsonArrayToStorageWeek(platform : String, genre: String, type : String) {
+private fun uploadJsonArrayToStorageWeek(platform: String, genre: String, type: String) {
     val storage = Firebase.storage
     val storageRef = storage.reference
 
-    val jsonFileRef = storageRef.child("${platform}/${type}/${genre}/WEEK/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json") // 읽어올 JSON 파일의 경로
+    val jsonFileRef =
+        storageRef.child("${platform}/${type}/${genre}/WEEK/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json") // 읽어올 JSON 파일의 경로
 
     // JSON 파일을 다운로드
     jsonFileRef.getBytes(1024 * 1024)
@@ -74,7 +81,7 @@ fun uploadJsonArrayToStorageWeek(platform : String, genre: String, type : String
 
             val jsonArray = JsonArray()
 
-            for(i in 0..6){
+            for (i in 0..6) {
                 jsonArray.add("")
             }
 
@@ -82,11 +89,12 @@ fun uploadJsonArrayToStorageWeek(platform : String, genre: String, type : String
         }
 }
 
-fun makeWeekJson(platform : String, genre: String, jsonArray : JsonArray, type : String)  {
+private fun makeWeekJson(platform: String, genre: String, jsonArray: JsonArray, type: String) {
     val storage = Firebase.storage
     val storageRef = storage.reference
 
-    val jsonWeekRef = storageRef.child("${platform}/${type}/${genre}/WEEK/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
+    val jsonWeekRef =
+        storageRef.child("${platform}/${type}/${genre}/WEEK/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
 
     val jsonFileRef = storageRef.child("${platform}/${type}/${genre}/DAY/${DBDate.dateMMDD()}.json")
 
@@ -111,7 +119,13 @@ fun makeWeekJson(platform : String, genre: String, jsonArray : JsonArray, type :
 
         jsonWeekRef.putBytes(jsonBytes)
             .addOnSuccessListener {
-                Log.d("makeWeekJson", "jsonWeekRef 성공")
+                Log.d("JSON_MINING $genre", "uploadJsonArrayToStorageWeek makeWeekJson")
+
+                uploadJsonArrayToStorageMonth(
+                    platform = platform,
+                    genre = genre,
+                    type = type
+                )
             }.addOnFailureListener {
                 Log.d("makeWeekJson", "jsonWeekRef 실패")
             }
@@ -120,10 +134,11 @@ fun makeWeekJson(platform : String, genre: String, jsonArray : JsonArray, type :
     }
 }
 
-fun uploadJsonArrayToStorageMonth(platform : String, genre: String, type : String) {
+private fun uploadJsonArrayToStorageMonth(platform: String, genre: String, type: String) {
     val storage = Firebase.storage
     val storageRef = storage.reference
-    val jsonMonthRef = storageRef.child("${platform}/${type}/${genre}/MONTH/${DBDate.year()}_${DBDate.month()}.json")
+    val jsonMonthRef =
+        storageRef.child("${platform}/${type}/${genre}/MONTH/${DBDate.year()}_${DBDate.month()}.json")
 
     // JSON 파일을 다운로드
     jsonMonthRef.getBytes(1024 * 1024)
@@ -131,7 +146,12 @@ fun uploadJsonArrayToStorageMonth(platform : String, genre: String, type : Strin
             val jsonString = String(bytes, Charset.forName("UTF-8"))
             val monthArray = JsonParser().parse(jsonString).asJsonArray
 
-            makeMonthJson(platform = platform, genre = genre, jsonMonthArray = monthArray, type = type)
+            makeMonthJson(
+                platform = platform,
+                genre = genre,
+                jsonMonthArray = monthArray,
+                type = type
+            )
 
         }.addOnFailureListener {
 
@@ -145,17 +165,24 @@ fun uploadJsonArrayToStorageMonth(platform : String, genre: String, type : Strin
                 jsonArray.add("")
             }
 
-            makeMonthJson(platform = platform, genre = genre, jsonMonthArray = jsonArray, type = type)
+            makeMonthJson(
+                platform = platform,
+                genre = genre,
+                jsonMonthArray = jsonArray,
+                type = type
+            )
         }
 }
 
-fun makeMonthJson(platform : String, genre: String, jsonMonthArray : JsonArray, type : String)  {
+private fun makeMonthJson(platform: String, genre: String, jsonMonthArray: JsonArray, type: String) {
     val storage = Firebase.storage
     val storageRef = storage.reference
 
-    val jsonMonthRef = storageRef.child("${platform}/${type}/${genre}/MONTH/${DBDate.year()}_${DBDate.month()}.json")
+    val jsonMonthRef =
+        storageRef.child("${platform}/${type}/${genre}/MONTH/${DBDate.year()}_${DBDate.month()}.json")
 
-    val jsonTodayRef = storageRef.child("${platform}/${type}/${genre}/DAY/${DBDate.dateMMDD()}.json")
+    val jsonTodayRef =
+        storageRef.child("${platform}/${type}/${genre}/DAY/${DBDate.dateMMDD()}.json")
 
     val file = jsonTodayRef.getBytes(1024 * 1024)
 
@@ -168,7 +195,7 @@ fun makeMonthJson(platform : String, genre: String, jsonMonthArray : JsonArray, 
         val indexWeekNum = DBDate.getCurrentWeekNumber() - 1
         val weekJson = try {
             jsonMonthArray.get(indexWeekNum).asJsonArray
-        } catch (e : Exception){
+        } catch (e: Exception) {
             JsonArray()
         }
 
@@ -193,26 +220,27 @@ fun makeMonthJson(platform : String, genre: String, jsonMonthArray : JsonArray, 
 
         jsonMonthRef.putBytes(jsonBytes)
             .addOnSuccessListener {
-                Log.d("makeMonthJson", "jsonMonthRef 성공")
+                Log.d("JSON_MINING $genre", "uploadJsonArrayToStorageMonth makeMonthJson")
             }.addOnFailureListener {
-                Log.d("makeMonthJson", "jsonMonthRef 실패")
+                Log.d("JSON_MINING $genre", "uploadJsonArrayToStorageMonth makeMonthJson")
             }
     }.addOnFailureListener {
         Log.d("makeMonthJson", "file 실패")
     }
 }
 
-fun uploadJsonArrayToStorageDay(platform : String, genre: String, type: String) {
+fun uploadJsonArrayToStorageDay(platform: String, genre: String, type: String) {
 
     val route = BestRef.setBestRef(platform = platform, genre = genre, type = type).child("DAY")
     val storage = Firebase.storage
     val storageRef = storage.reference
-    val jsonArrayRef = storageRef.child("${platform}/${type}/${genre}/DAY/${DBDate.dateMMDD()}.json")
+    val jsonArrayRef =
+        storageRef.child("${platform}/${type}/${genre}/DAY/${DBDate.dateMMDD()}.json")
 
     route.addListenerForSingleValueEvent(object :
         ValueEventListener {
         override fun onDataChange(dataSnapshot: DataSnapshot) {
-            if(dataSnapshot.exists()){
+            if (dataSnapshot.exists()) {
 
                 val jsonArray = JsonArray()
 
@@ -226,7 +254,14 @@ fun uploadJsonArrayToStorageDay(platform : String, genre: String, type: String) 
 
                 jsonArrayRef.putBytes(jsonArrayByteArray)
                     .addOnSuccessListener {
-                        // 업로드 성공 시 처리
+
+                        Log.d("JSON_MINING $genre", "uploadJsonArrayToStorageDay")
+
+                        uploadJsonArrayToStorageWeek(
+                            platform = platform,
+                            genre = genre,
+                            type = type
+                        )
                     }
             }
         }
@@ -235,18 +270,25 @@ fun uploadJsonArrayToStorageDay(platform : String, genre: String, type: String) 
     })
 }
 
-fun calculateTrophy(platform : String, genre: String, type : String) {
+fun calculateTrophy(platform: String, genre: String, type: String) {
     val storage = Firebase.storage
     val storageRef = storage.reference
-    val todayFileRef = storageRef.child("${platform}/${type}/${genre}/DAY/${DBDate.dateMMDD()}.json")
-    val yesterdayFileRef = storageRef.child("${platform}/${type}/${genre}/DAY/${DBDate.dateYesterday()}.json")
+    val todayFileRef =
+        storageRef.child("${platform}/${type}/${genre}/DAY/${DBDate.dateMMDD()}.json")
+    val yesterdayFileRef =
+        storageRef.child("${platform}/${type}/${genre}/DAY/${DBDate.dateYesterday()}.json")
 
     val todayFile = todayFileRef.getBytes(1024 * 1024)
     val yesterdayFile = yesterdayFileRef.getBytes(1024 * 1024)
 
     yesterdayFile.addOnSuccessListener { yesterdayBytes ->
         val yesterdayJson = Json { ignoreUnknownKeys = true }
-        val yesterdayItemList = yesterdayJson.decodeFromString<List<ItemBookInfo>>(String(yesterdayBytes, Charset.forName("UTF-8")))
+        val yesterdayItemList = yesterdayJson.decodeFromString<List<ItemBookInfo>>(
+            String(
+                yesterdayBytes,
+                Charset.forName("UTF-8")
+            )
+        )
 
         val yesterDatItemMap = mutableMapOf<String, ItemBookInfo>()
 
@@ -263,7 +305,7 @@ fun calculateTrophy(platform : String, genre: String, type : String) {
 
             // JSON 배열 사용
             for (item in itemList) {
-                if(yesterDatItemMap.containsKey(item.bookCode)){
+                if (yesterDatItemMap.containsKey(item.bookCode)) {
 
                     val total = yesterDatItemMap[item.bookCode]?.current ?: 0
                     val totalCount = (yesterDatItemMap[item.bookCode]?.totalCount ?: 0)
@@ -362,9 +404,19 @@ fun calculateTrophy(platform : String, genre: String, type : String) {
 
             todayFileRef.putBytes(jsonArrayByteArray)
                 .addOnSuccessListener {
-                    Log.d("HIHI-TROPHY", "성공")
+                    Log.d("TROPHY_MINING $genre", "calculateTrophy addOnSuccessListener")
+
+                    uploadJsonArrayToStorageTrophyWeek(
+                        platform = platform,
+                        genre = genre,
+                        type = type
+                    )
+
                 }.addOnFailureListener {
-                    Log.d("HIHI-TROPHY", "실패 $it")
+                    Log.d(
+                        "TROPHY_MINING $genre",
+                        "calculateTrophy addOnSuccessListener addOnFailureListener == $it"
+                    )
                 }
 
         }
@@ -444,9 +496,22 @@ fun calculateTrophy(platform : String, genre: String, type : String) {
 
             todayFileRef.putBytes(jsonArrayByteArray)
                 .addOnSuccessListener {
-                    Log.d("HIHI-TROPHY", "성공")
+                    Log.d(
+                        "TROPHY_MINING $genre",
+                        "calculateTrophy addOnFailureListener addOnSuccessListener"
+                    )
+
+                    uploadJsonArrayToStorageTrophyWeek(
+                        platform = platform,
+                        genre = genre,
+                        type = type
+                    )
+
                 }.addOnFailureListener {
-                    Log.d("HIHI-TROPHY", "실패 $it")
+                    Log.d(
+                        "TROPHY_MINING $genre",
+                        "calculateTrophy addOnFailureListener addOnFailureListener == $it"
+                    )
                 }
 
         }
@@ -454,26 +519,24 @@ fun calculateTrophy(platform : String, genre: String, type : String) {
 
 }
 
-fun uploadJsonArrayToStorageTrophy(platform : String, genre: String, menu : String, type : String) {
+private fun uploadJsonArrayToStorageTrophyWeek(
+    platform: String,
+    genre: String,
+    type: String
+) {
 
-    val route = if(menu == "주간"){
-        BestRef.setBestRef(platform = platform, genre = genre, type = type).child("TROPHY_WEEK_TOTAL")
-    } else {
-        BestRef.setBestRef(platform = platform, genre = genre, type = type).child("TROPHY_MONTH_TOTAL")
-    }
+    val route = BestRef.setBestRef(platform = platform, genre = genre, type = type)
+        .child("TROPHY_WEEK_TOTAL")
 
     val storage = Firebase.storage
     val storageRef = storage.reference
-    val jsonArrayRef = if(menu == "주간"){
+    val jsonArrayRef =
         storageRef.child("${platform}/${type}/${genre}/WEEK_TROPHY/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
-    } else {
-        storageRef.child("${platform}/${type}/${genre}/MONTH_TROPHY/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
-    }
 
     route.addListenerForSingleValueEvent(object :
         ValueEventListener {
         override fun onDataChange(dataSnapshot: DataSnapshot) {
-            if(dataSnapshot.exists()){
+            if (dataSnapshot.exists()) {
 
                 val jsonArray = JsonArray()
 
@@ -487,9 +550,73 @@ fun uploadJsonArrayToStorageTrophy(platform : String, genre: String, menu : Stri
 
                 jsonArrayRef.putBytes(jsonArrayByteArray)
                     .addOnSuccessListener {
-                        Log.d("uploadJsonArrayToStorageTrophy", "jsonArrayRef 성공 == $it")
+                        Log.d(
+                            "TROPHY_MINING $genre",
+                            "uploadJsonArrayToStorageTrophyWeek addOnSuccessListener"
+                        )
+
+
+                        uploadJsonArrayToStorageTrophyMonth(
+                            platform = platform,
+                            genre = genre,
+                            type = type
+                        )
+
                     }.addOnFailureListener {
-                        Log.d("uploadJsonArrayToStorageTrophy", "jsonArrayRef 실패 == $it")
+                        Log.d(
+                            "TROPHY_MINING $genre",
+                            "uploadJsonArrayToStorageTrophyWeek addOnFailureListener == $it"
+                        )
+                    }
+            } else {
+                Log.d("uploadJsonArrayToStorageTrophy", "route 실패")
+            }
+        }
+
+        override fun onCancelled(databaseError: DatabaseError) {}
+    })
+}
+
+private fun uploadJsonArrayToStorageTrophyMonth(
+    platform: String,
+    genre: String,
+    type: String
+) {
+
+    val route = BestRef.setBestRef(platform = platform, genre = genre, type = type)
+        .child("TROPHY_MONTH_TOTAL")
+
+    val storage = Firebase.storage
+    val storageRef = storage.reference
+    val jsonArrayRef =
+        storageRef.child("${platform}/${type}/${genre}/MONTH_TROPHY/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
+
+    route.addListenerForSingleValueEvent(object :
+        ValueEventListener {
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            if (dataSnapshot.exists()) {
+
+                val jsonArray = JsonArray()
+
+                for (postSnapshot in dataSnapshot.children) {
+                    val group: ItemBestInfo? = postSnapshot.getValue(ItemBestInfo::class.java)
+                    jsonArray.add(convertBestItemDataAnalyze(group ?: ItemBestInfo()))
+                }
+
+                val jsonArrayByteArray = jsonArray.toString().toByteArray(Charsets.UTF_8)
+
+
+                jsonArrayRef.putBytes(jsonArrayByteArray)
+                    .addOnSuccessListener {
+                        Log.d(
+                            "TROPHY_MINING $genre",
+                            "uploadJsonArrayToStorageTrophyMonth addOnSuccessListener"
+                        )
+                    }.addOnFailureListener {
+                        Log.d(
+                            "TROPHY_MINING $genre",
+                            "uploadJsonArrayToStorageTrophyMonth addOnFailureListener == $it"
+                        )
                     }
             } else {
                 Log.d("uploadJsonArrayToStorageTrophy", "route 실패")

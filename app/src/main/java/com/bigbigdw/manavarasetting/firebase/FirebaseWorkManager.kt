@@ -13,9 +13,6 @@ import com.bigbigdw.manavarasetting.util.calculateTrophy
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
 import com.bigbigdw.manavarasetting.util.setDataStore
 import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageDay
-import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageMonth
-import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageTrophy
-import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageWeek
 import com.bigbigdw.massmath.Firebase.FirebaseService
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.asCoroutineDispatcher
@@ -34,9 +31,8 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
     val dataStore = DataStoreManager(context)
 
     companion object {
-        const val TYPE = "type"
-        const val UID = "uid"
-        const val USER = "user"
+        const val WORKER = "WORKER"
+        const val PLATFORM = "PLATFORM"
     }
 
     override fun doWork(): Result {
@@ -47,11 +43,14 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
         val hour = DBDate.dateMMDDHHMM().substring(8, 10)
         val min = DBDate.dateMMDDHHMM().substring(10, 12)
 
-        if (inputData.getString(TYPE).equals("BEST")) {
+        var workerName = inputData.getString(WORKER) + "_" + inputData.getString(PLATFORM)
 
+        if (inputData.getString(WORKER).equals("BEST")) {
 
+            val threadPool = Executors.newFixedThreadPool(5).asCoroutineDispatcher()
+
+            runBlocking {
                 for (j in NaverSeriesComicGenre) {
-
                     if (DBDate.getDayOfWeekAsNumber() == 0) {
                         BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "COMIC")
                             .child("TROPHY_WEEK").removeValue()
@@ -62,11 +61,15 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                             .child("TROPHY_MONTH").removeValue()
                     }
 
-                    for (i in 1..5) {
-                        MiningSource.miningNaverSeriesComic(pageCount = i, genre = j)
+                    repeat(5) { i ->
+                        launch(threadPool) {
+                            MiningSource.miningNaverSeriesComic(pageCount = i + 1, genre = j)
+                        }
                     }
                 }
+            }
 
+            threadPool.close()
 
             postFCM(
                 data = "베스트 리스트가 갱신되었습니다",
@@ -74,15 +77,18 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                 activity = "BEST"
             )
 
-        } else if (inputData.getString(TYPE).equals("JSON_TODAY")) {
-            for (j in NaverSeriesComicGenre) {
+        } else if (inputData.getString(WORKER).equals("JSON")) {
+            runBlocking {
+                for (j in NaverSeriesComicGenre) {
+                    launch {
+                        uploadJsonArrayToStorageDay(
+                            platform = "NAVER_SERIES",
+                            genre = getNaverSeriesGenre(j),
+                            type = "COMIC"
+                        )
+                    }
 
-                uploadJsonArrayToStorageDay(
-                    platform = "NAVER_SERIES",
-                    genre = getNaverSeriesGenre(j),
-                    type = "COMIC"
-                )
-
+                }
             }
 
             postFCM(
@@ -91,81 +97,19 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                 activity = "JSON"
             )
 
-        } else if (inputData.getString(TYPE).equals("JSON_WEEK")) {
-            for (j in NaverSeriesComicGenre) {
+        } else if (inputData.getString(WORKER).equals("TROPHY")) {
 
-                uploadJsonArrayToStorageWeek(
-                    platform = "NAVER_SERIES",
-                    genre = getNaverSeriesGenre(j),
-                    type = "COMIC"
-                )
-            }
+            runBlocking {
+                for (j in NaverSeriesComicGenre) {
+                    launch {
+                        calculateTrophy(
+                            platform = "NAVER_SERIES",
+                            genre = getNaverSeriesGenre(j),
+                            type = "COMIC"
+                        )
+                    }
 
-            postFCM(
-                data = "JSON 주간 최신화가 완료되었습니다",
-                time = "${year}.${month}.${day} ${hour}:${min}",
-                activity = "JSON"
-            )
-
-        } else if (inputData.getString(TYPE).equals("JSON_MONTH")) {
-            for (j in NaverSeriesComicGenre) {
-
-                uploadJsonArrayToStorageMonth(
-                    platform = "NAVER_SERIES",
-                    genre = getNaverSeriesGenre(j),
-                    type = "COMIC"
-                )
-
-            }
-
-            postFCM(
-                data = "JSON 월간 최신화가 완료되었습니다",
-                time = "${year}.${month}.${day} ${hour}:${min}",
-                activity = "JSON"
-            )
-
-        } else if (inputData.getString(TYPE).equals("JSON_WEEK_TROPHY")) {
-            for (j in NaverSeriesComicGenre) {
-
-                uploadJsonArrayToStorageTrophy(
-                    platform = "NAVER_SERIES",
-                    genre = getNaverSeriesGenre(j),
-                    menu = "주간",
-                    type = "COMIC"
-                )
-            }
-
-            postFCM(
-                data = "JSON 주간 트로피 최신화가 완료되었습니다",
-                time = "${year}.${month}.${day} ${hour}:${min}",
-                activity = "JSON"
-            )
-
-        } else if (inputData.getString(TYPE).equals("JSON_MONTH_TROPHY")) {
-            for (j in NaverSeriesComicGenre) {
-
-                uploadJsonArrayToStorageTrophy(
-                    platform = "NAVER_SERIES",
-                    genre = getNaverSeriesGenre(j),
-                    menu = "월간",
-                    type = "COMIC"
-                )
-            }
-
-            postFCM(
-                data = "JSON 월간 트로피 최신화가 완료되었습니다",
-                time = "${year}.${month}.${day} ${hour}:${min}",
-                activity = "JSON"
-            )
-
-        } else if (inputData.getString(TYPE).equals("TROPHY")) {
-
-            for (j in NaverSeriesComicGenre) {
-                calculateTrophy(
-                    platform = "NAVER_SERIES",
-                    genre = getNaverSeriesGenre(j),
-                    type = "COMIC"
-                )
+                }
             }
 
             postFCM(
@@ -174,7 +118,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                 activity = "TROPHY"
             )
 
-        } else if (inputData.getString(TYPE).equals("TEST")) {
+        } else if (inputData.getString(WORKER).equals("TEST")) {
             postFCM(data = "테스트", time = "${year}.${month}.${day} ${hour}:${min}")
 
         }

@@ -265,62 +265,6 @@ fun ContentsFCMList(viewModelMain: ViewModelMain, child : String){
         "JSON" -> {
             viewModelMain.state.collectAsState().value.fcmJsonList
         }
-        "JSON_TODAY" -> {
-
-            val finalList = ArrayList<FCMAlert>()
-
-            for(item in viewModelMain.state.collectAsState().value.fcmJsonList){
-                if(item.body.contains("JSON 투데이 최신화")){
-                    finalList.add(item)
-                }
-            }
-
-            finalList
-        }
-        "JSON_WEEK" -> {
-            val finalList = ArrayList<FCMAlert>()
-
-            for(item in viewModelMain.state.collectAsState().value.fcmJsonList){
-                if(item.body.contains("JSON 주간 최신화")){
-                    finalList.add(item)
-                }
-            }
-
-            finalList
-        }
-        "JSON_MONTH" -> {
-            val finalList = ArrayList<FCMAlert>()
-
-            for(item in viewModelMain.state.collectAsState().value.fcmJsonList){
-                if(item.body.contains("JSON 월간 최신화")){
-                    finalList.add(item)
-                }
-            }
-
-            finalList
-        }
-        "JSON_WEEK_TROPHY" -> {
-            val finalList = ArrayList<FCMAlert>()
-
-            for(item in viewModelMain.state.collectAsState().value.fcmJsonList){
-                if(item.body.contains("JSON 주간 트로피 최신화")){
-                    finalList.add(item)
-                }
-            }
-
-            finalList
-        }
-        "JSON_MONTH_TROPHY" -> {
-            val finalList = ArrayList<FCMAlert>()
-
-            for(item in viewModelMain.state.collectAsState().value.fcmJsonList){
-                if(item.body.contains("JSON 월간 트로피 최신화")){
-                    finalList.add(item)
-                }
-            }
-
-            finalList
-        }
         "TROPHY" -> {
             viewModelMain.state.collectAsState().value.fcmTrophyList
         }
