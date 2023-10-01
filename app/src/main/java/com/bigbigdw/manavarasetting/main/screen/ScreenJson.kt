@@ -92,12 +92,6 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
                 workManager = workManager,
                 tag = "JSON_TODAY"
             )
-        }),
-        MainSettingLine(title = "JSON 투데이 WORKER 확인", onClick = {
-            PeriodicWorker.checkWorker(
-                workManager = workManager,
-                tag = "JSON_TODAY"
-            )
         })
     )
 
@@ -115,13 +109,24 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
                 workManager = workManager,
                 tag = "JSON_WEEK"
             )
-        }),
-        MainSettingLine(title = "JSON 주간 WORKER 확인", onClick = {
-            PeriodicWorker.checkWorker(
+        })
+    )
+
+    val itemJsonWorkerMonth = listOf(
+        MainSettingLine(title = "JSON 월간 WORKER 시작", onClick = {
+            PeriodicWorker.doWorker(
                 workManager = workManager,
-                tag = "JSON_WEEK"
+                repeatInterval = 9,
+                tag = "JSON_MONTH",
+                timeMill = TimeUnit.HOURS
             )
         }),
+        MainSettingLine(title = "JSON 월간 WORKER 취소", onClick = {
+            PeriodicWorker.cancelWorker(
+                workManager = workManager,
+                tag = "JSON_MONTH"
+            )
+        })
     )
 
     val itemJsonWorkerWeekTrophy = listOf(
@@ -138,13 +143,7 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
                 workManager = workManager,
                 tag = "JSON_WEEK_TROPHY"
             )
-        }),
-        MainSettingLine(title = "JSON 주간 트로피 WORKER 확인", onClick = {
-            PeriodicWorker.checkWorker(
-                workManager = workManager,
-                tag = "JSON_WEEK_TROPHY"
-            )
-        }),
+        })
     )
 
     val itemJsonWorkerMonthTrophy = listOf(
@@ -161,13 +160,7 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
                 workManager = workManager,
                 tag = "JSON_MONTH_TROPHY"
             )
-        }),
-        MainSettingLine(title = "JSON 월간 트로피 WORKER 확인", onClick = {
-            PeriodicWorker.checkWorker(
-                workManager = workManager,
-                tag = "JSON_MONTH_TROPHY"
-            )
-        }),
+        })
     )
 
     val lineUpdateSelf = listOf(
@@ -175,7 +168,8 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
             for (j in NaverSeriesGenre) {
                 uploadJsonArrayToStorageDay(
                     platform = "NAVER_SERIES",
-                    genre = getNaverSeriesGenre(j)
+                    genre = getNaverSeriesGenre(j),
+                    type = "COMIC"
                 )
             }
             FCM.postFCMAlertTest(context = context, message = "JSON 최신화가 완료되었습니다")
@@ -192,7 +186,8 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
                 makeWeekJson(
                     platform = "NAVER_SERIES",
                     genre = getNaverSeriesGenre(j),
-                    jsonArray = jsonArray
+                    jsonArray = jsonArray,
+                    type = "COMIC"
                 )
             }
         }),
@@ -200,7 +195,8 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
             for (j in NaverSeriesGenre) {
                 uploadJsonArrayToStorageWeek(
                     platform = "NAVER_SERIES",
-                    genre = getNaverSeriesGenre(j)
+                    genre = getNaverSeriesGenre(j),
+                    type = "COMIC"
                 )
             }
         }),
@@ -208,7 +204,8 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
             for (j in NaverSeriesGenre) {
                 uploadJsonArrayToStorageMonth(
                     platform = "NAVER_SERIES",
-                    genre = getNaverSeriesGenre(j)
+                    genre = getNaverSeriesGenre(j),
+                    type = "COMIC"
                 )
             }
         }),
@@ -217,7 +214,8 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
                 uploadJsonArrayToStorageTrophy(
                     platform = "NAVER_SERIES",
                     genre = getNaverSeriesGenre(j),
-                    type = "주간"
+                    menu = "주간",
+                    type = "COMIC"
                 )
             }
         }),
@@ -226,7 +224,8 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
                 uploadJsonArrayToStorageTrophy(
                     platform = "NAVER_SERIES",
                     genre = getNaverSeriesGenre(j),
-                    type = "월간"
+                    menu = "월간",
+                    type = "COMIC"
                 )
             }
         }),
@@ -257,6 +256,26 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
             ItemMainTabletContent(
                 title = item.title,
                 isLast = itemJsonWorkerWeek.size - 1 == index,
+                onClick = item.onClick
+            )
+        }
+    }
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    Text(
+        modifier = Modifier.padding(32.dp, 8.dp),
+        text = "JSON 월간",
+        fontSize = 16.sp,
+        color = color8E8E8E,
+        fontWeight = FontWeight(weight = 700)
+    )
+
+    TabletContentWrap {
+        itemJsonWorkerMonth.forEachIndexed { index, item ->
+            ItemMainTabletContent(
+                title = item.title,
+                isLast = itemJsonWorkerMonth.size - 1 == index,
                 onClick = item.onClick
             )
         }

@@ -36,7 +36,7 @@ import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.util.BestRef
 import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.FCM
-import com.bigbigdw.manavarasetting.util.Mining
+import com.bigbigdw.manavarasetting.util.MiningSource
 import com.bigbigdw.manavarasetting.util.NaverSeriesGenre
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
@@ -92,13 +92,7 @@ fun ContentsBest(lineBest: List<MainSettingLine>) {
         }),
         MainSettingLine(title = "WORKER 취소", onClick = {
             PeriodicWorker.cancelWorker(workManager = workManager, tag = "BEST")
-        }),
-        MainSettingLine(title = "WORKER 확인", onClick = {
-            PeriodicWorker.checkWorker(
-                workManager = workManager,
-                tag = "BEST"
-            )
-        }),
+        })
     )
 
     TabletContentWrap {
@@ -154,17 +148,23 @@ fun ContentsBestList(
             for (j in NaverSeriesGenre) {
 
                 if (DBDate.getDayOfWeekAsNumber() == 0) {
-                    BestRef.setBestRef(platform = "NAVER_SERIES", genre = j).child("TROPHY_WEEK")
+                    BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "COMIC").child("TROPHY_WEEK")
+                        .removeValue()
+
+                    BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "COMIC").child("TROPHY_MONTH")
                         .removeValue()
                 }
 
-                if (DBDate.datedd() == "01") {
-                    BestRef.setBestRef(platform = "NAVER_SERIES", genre = j).child("TROPHY_MONTH")
+                if (DBDate.getDayOfWeekAsNumber() == 0) {
+                    BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "NOVEL").child("TROPHY_WEEK")
+                        .removeValue()
+
+                    BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "NOVEL").child("TROPHY_MONTH")
                         .removeValue()
                 }
 
                 for (i in 1..5) {
-                    Mining.miningNaverSeriesAll(pageCount = i, genre = j)
+                    MiningSource.miningNaverSeriesComic(pageCount = i, genre = j)
                 }
             }
             FCM.postFCMAlertTest(context = context, message = "베스트 리스트가 갱신되었습니다")

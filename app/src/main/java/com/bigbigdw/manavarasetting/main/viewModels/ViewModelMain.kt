@@ -10,10 +10,14 @@ import com.bigbigdw.manavarasetting.main.event.EventMain
 import com.bigbigdw.manavarasetting.main.event.StateMain
 import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
+import com.bigbigdw.manavarasetting.util.BestRef
 import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import com.bigbigdw.manavarasetting.util.convertBestItemDataAnalyzeJson
 import com.bigbigdw.manavarasetting.util.convertBestItemDataJson
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -485,6 +489,19 @@ class ViewModelMain @Inject constructor() : ViewModel() {
 
             override fun onCancelled(databaseError: DatabaseError) {}
         })
+    }
+
+    fun resetBest(str : String){
+        var currentUser :  FirebaseUser? = null
+        val auth: FirebaseAuth = Firebase.auth
+
+        val mRootRef = FirebaseDatabase.getInstance().reference
+
+        currentUser = auth.currentUser
+
+        if(currentUser?.uid == "A8uh2QkVQaV3Q3rE8SgBNKzV6VH2"){
+            mRootRef.child(str).removeValue()
+        }
     }
 
 }

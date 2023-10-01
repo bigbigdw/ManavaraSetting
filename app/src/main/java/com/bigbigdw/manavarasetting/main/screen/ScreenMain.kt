@@ -48,7 +48,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.datastore.core.DataStore
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -77,6 +76,7 @@ import com.bigbigdw.manavarasetting.ui.theme.color7C81FF
 import com.bigbigdw.manavarasetting.ui.theme.color808CF8
 import com.bigbigdw.manavarasetting.ui.theme.color80BF78
 import com.bigbigdw.manavarasetting.ui.theme.color8AA6BD
+import com.bigbigdw.manavarasetting.ui.theme.color8F8F8F
 import com.bigbigdw.manavarasetting.ui.theme.color91CEC7
 import com.bigbigdw.manavarasetting.ui.theme.color998DF9
 import com.bigbigdw.manavarasetting.ui.theme.colorABD436
@@ -86,7 +86,7 @@ import com.bigbigdw.manavarasetting.ui.theme.colorF17666
 import com.bigbigdw.manavarasetting.ui.theme.colorF17FA0
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.ui.theme.colorFDC24E
-import com.bigbigdw.manavarasetting.ui.theme.colorffAC59
+import com.bigbigdw.manavarasetting.ui.theme.colorFFAC59
 
 @Composable
 fun ScreenMain(
@@ -481,7 +481,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
 
     Column(
         modifier = Modifier
-            .width(334.dp)
+            .width(360.dp)
             .fillMaxHeight()
             .background(color = colorF6F6F6)
             .padding(8.dp, 0.dp)
@@ -670,6 +670,16 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
         ItemMainSettingSingleTablet(
             containerColor = color91CEC7,
             image = R.drawable.icon_json_wht,
+            title = "JSON 월간 최신화 현황",
+            body = "시간별 JSON 월간 갱신 현황",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = {onClick()}
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color79B4F8,
+            image = R.drawable.icon_json_wht,
             title = "JSON 주간 트로피 최신화 현황",
             body = "시간별 JSON 주간 트로피 갱신 현황",
             setMenu = setMenu,
@@ -678,7 +688,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color79B4F8,
+            containerColor = color8AA6BD,
             image = R.drawable.icon_json_wht,
             title = "JSON 월간 트로피 최신화 현황",
             body = "시간별 JSON 월간 트로피 갱신 현황",
@@ -690,7 +700,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
         TabletBorderLine()
 
         ItemMainSettingSingleTablet(
-            containerColor = color8AA6BD,
+            containerColor = color2EA259,
             image = R.drawable.icon_trophy_wht,
             title = "트로피 정산 관리",
             body = "트로피 수동 정산 & Worker 관리",
@@ -700,7 +710,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color2EA259,
+            containerColor = color808CF8,
             image = R.drawable.icon_trophy_wht,
             title = "트로피 주간 토탈 리스트",
             body = "장르별 주간 트로피 리스트 확인",
@@ -710,7 +720,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color808CF8,
+            containerColor = colorFFAC59,
             image = R.drawable.icon_trophy_wht,
             title = "트로피 월간 토탈 리스트",
             body = "장르별 월간 트로피 리스트 확인",
@@ -720,7 +730,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = colorffAC59,
+            containerColor = color8F8F8F,
             image = R.drawable.icon_trophy_wht,
             title = "트로피 최신화 현황",
             body = "시간별 트로피 최신화 현황",

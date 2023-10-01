@@ -86,19 +86,17 @@ fun ContentsTrophy(lineTrophy: List<MainSettingLine>) {
                 workManager = workManager,
                 tag = "TROPHY"
             )
-        }),
-        MainSettingLine(title = "WORKER 확인", onClick = {
-            PeriodicWorker.checkWorker(
-                workManager = workManager,
-                tag = "TROPHY"
-            )
-        }),
+        })
     )
 
     val lineUpdateSelf = listOf(
         MainSettingLine(title = "트로피 정산", onClick = {
             for (j in NaverSeriesGenre) {
-                calculateTrophy(platform = "NAVER_SERIES", genre = getNaverSeriesGenre(j))
+                calculateTrophy(
+                    platform = "NAVER_SERIES",
+                    genre = getNaverSeriesGenre(j),
+                    type = "COMIC"
+                )
             }
             FCM.postFCMAlertTest(context = context, message = "트로피 정산이 완료되었습니다")
         })

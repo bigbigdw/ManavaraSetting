@@ -9,37 +9,45 @@ object BestRef {
 
     private val mRootRef = FirebaseDatabase.getInstance().reference
 
-    fun setBookMonthlyBest(type: String, genre: String, bookCode: String): DatabaseReference {
-        return setBestRef(type, genre).child("TROPHY_MONTH").child(bookCode).child(DBDate.datedd())
-    }
-    fun setBookMonthlyBestTotal(type: String, genre: String, bookCode: String): DatabaseReference {
-        return setBestRef(type, genre).child("TROPHY_MONTH_TOTAL").child(bookCode)
-    }
-    fun setBookWeeklyBest(type: String, genre: String, bookCode: String): DatabaseReference {
-        return setBestRef(type, genre).child("TROPHY_WEEK").child(bookCode).child(DBDate.getDayOfWeekAsNumber().toString())
-    }
-    fun setBookWeeklyBestTotal(type: String, genre: String, bookCode: String): DatabaseReference {
-        return setBestRef(type, genre).child("TROPHY_WEEK_TOTAL").child(bookCode)
+    fun setBookMonthlyBest(
+        platform: String,
+        genre: String,
+        bookCode: String,
+        type: String
+    ): DatabaseReference {
+        return setBestRef(platform = platform, genre = genre, type = type)
+            .child("TROPHY_MONTH")
+            .child(bookCode).child(DBDate.datedd())
     }
 
-    fun setBookWeeklyBestYesterday(type: String, genre: String, bookCode: String): DatabaseReference {
-        return setBestRef(type, genre).child("TROPHY_WEEK").child(bookCode).child((DBDate.getDayOfWeekAsNumber() - 1).toString())
+    fun setBookMonthlyBestTotal(platform: String, genre: String, bookCode: String, type: String): DatabaseReference {
+        return setBestRef(platform = platform, genre = genre, type = type).child("TROPHY_MONTH_TOTAL").child(bookCode)
     }
 
-    fun setBestTrophy(type: String, genre: String, bookCode: String): DatabaseReference {
-        return setBestRef(type, genre).child("TROPHY").child(bookCode).child(DBDate.dateYYYY()).child(DBDate.dateMM()).child(DBDate.datedd())
+    fun setBookWeeklyBest(platform: String, genre: String, bookCode: String, type: String): DatabaseReference {
+        return setBestRef(platform = platform, genre = genre, type = type).child("TROPHY_WEEK").child(bookCode)
+            .child(DBDate.getDayOfWeekAsNumber().toString())
     }
 
-    fun setBookDailyBest(platform: String, num: Int, genre: String): DatabaseReference {
-        return  setBestRef(platform, genre).child("DAY").child(num.toString())
+    fun setBookWeeklyBestTotal(platform: String, genre: String, bookCode: String, type: String): DatabaseReference {
+        return setBestRef(platform = platform, genre = genre, type = type).child("TROPHY_WEEK_TOTAL").child(bookCode)
     }
 
-    fun setBookCode(type: String, genre: String, bookCode: String): DatabaseReference {
-        return mRootRef.child("BOOK").child(type).child(genre).child(bookCode)
+    fun setBestTrophy(platform: String, genre: String, bookCode: String, type: String): DatabaseReference {
+        return setBestRef(platform = platform, genre = genre, type = type).child("TROPHY").child(bookCode).child(DBDate.dateYYYY())
+            .child(DBDate.dateMM()).child(DBDate.datedd())
     }
 
-    fun setBestData(platform: String, num: Int, genre: String): DatabaseReference {
-        return mRootRef.child("DATA").child(platform).child(genre).child(num.toString())
+    fun setBookDailyBest(platform: String, num: Int, genre: String, type: String): DatabaseReference {
+        return setBestRef(platform = platform, genre = genre, type = type).child("DAY").child(num.toString())
+    }
+
+    fun setBookCode(platform: String, genre: String, bookCode: String, type: String): DatabaseReference {
+        return mRootRef.child("BOOK").child(type).child(platform).child(genre).child(bookCode)
+    }
+
+    fun setBestData(platform: String, bookCode: String, genre: String, type: String): DatabaseReference {
+        return mRootRef.child("DATA").child(type).child(platform).child(genre).child(bookCode).child(DBDate.year()).child(DBDate.month()).child(DBDate.datedd())
     }
 
     fun setBookListDataBestAnalyze(ref: MutableMap<String?, Any>): ItemBestInfo {
@@ -52,21 +60,21 @@ object BestRef {
         )
     }
 
-    fun setBestRef(platform: String, genre: String): DatabaseReference {
-        return mRootRef.child("BEST").child(platform).child(genre)
+    fun setBestRef(platform: String, genre: String, type: String): DatabaseReference {
+        return mRootRef.child("BEST").child(type).child(platform).child(genre)
     }
 
     fun setBookListDataBest(ref: MutableMap<String?, Any>): ItemBookInfo {
         return ItemBookInfo(
-            ref["writerName"] as String,
-            ref["subject"] as String,
-            ref["bookImg"] as String,
-            ref["bookCode"] as String,
-            ref["current"] as Int,
-            ref["type"] as String,
-            ref["info1"] as String,
-            ref["info2"] as String,
-            ref["info3"] as String,
+            writer = ref["writerName"] as String,
+            title = ref["subject"] as String,
+            bookImg = ref["bookImg"] as String,
+            bookCode = ref["bookCode"] as String,
+            current = ref["current"] as Int,
+            type = ref["type"] as String,
+            info1 = ref["info1"] as String,
+            info2 = ref["info2"] as String,
+            info3 = ref["info3"] as String,
         )
     }
 }

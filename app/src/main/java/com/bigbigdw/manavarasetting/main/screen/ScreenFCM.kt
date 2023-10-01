@@ -103,13 +103,7 @@ fun ContentsFCM(lineTest: List<MainSettingLine>) {
                 workManager = workManager,
                 tag = "TEST"
             )
-        }),
-        MainSettingLine(title = "WORKER 확인", onClick = {
-            PeriodicWorker.checkWorker(
-                workManager = workManager,
-                tag = "TEST"
-            )
-        }),
+        })
     )
 
     Button(
@@ -310,6 +304,17 @@ fun ContentsFCMList(viewModelMain: ViewModelMain, child : String){
 
             for(item in viewModelMain.state.collectAsState().value.fcmJsonList){
                 if(item.body.contains("JSON 주간 최신화")){
+                    finalList.add(item)
+                }
+            }
+
+            finalList
+        }
+        "JSON_MONTH" -> {
+            val finalList = ArrayList<FCMAlert>()
+
+            for(item in viewModelMain.state.collectAsState().value.fcmJsonList){
+                if(item.body.contains("JSON 월간 최신화")){
                     finalList.add(item)
                 }
             }

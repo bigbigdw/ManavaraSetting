@@ -171,6 +171,9 @@ fun ScreenTablet(
                 "JSON 주간 최신화 현황" -> {
                     ContentsFCMList(viewModelMain = viewModelMain, child = "JSON_WEEK")
                 }
+                "JSON 월간 최신화 현황" -> {
+                    ContentsFCMList(viewModelMain = viewModelMain, child = "JSON_MONTH")
+                }
                 "JSON 주간 트로피 최신화 현황" -> {
                     ContentsFCMList(viewModelMain = viewModelMain, child = "JSON_WEEK_TROPHY")
                 }
@@ -281,6 +284,78 @@ fun ContentsSetting(
             ) {
                 Text(
                     text = "모든 Worker 취소",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    Button(
+        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+        onClick = { viewModelMain.resetBest(str = "BEST") },
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(44.dp),
+        shape = RoundedCornerShape(50.dp),
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "BEST 초기화",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    Button(
+        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+        onClick = { viewModelMain.resetBest(str = "BOOK") },
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(44.dp),
+        shape = RoundedCornerShape(50.dp),
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "BOOK 초기화",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    Button(
+        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+        onClick = { viewModelMain.resetBest(str = "DATA") },
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(44.dp),
+        shape = RoundedCornerShape(50.dp),
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "DATA 초기화",
                     color = color000000,
                     fontSize = 18.sp,
                 )

@@ -50,6 +50,6 @@ val color79B4F8 = Color(android.graphics.Color.parseColor("#79b4f8"))
 val color8AA6BD = Color(android.graphics.Color.parseColor("#8aa6bc"))
 val color2EA259 = Color(android.graphics.Color.parseColor("#2ea259"))
 val color808CF8 = Color(android.graphics.Color.parseColor("#808cf8"))
-val colorffAC59 = Color(android.graphics.Color.parseColor("#ffac59"))
-val color8f8f8f = Color(android.graphics.Color.parseColor("#8f8f8f"))
+val colorFFAC59 = Color(android.graphics.Color.parseColor("#ffac59"))
+val color8F8F8F = Color(android.graphics.Color.parseColor("#8f8f8f"))
 
