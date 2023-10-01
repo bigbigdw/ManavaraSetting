@@ -28,7 +28,7 @@ import com.bigbigdw.manavarasetting.main.model.MainSettingLine
 import com.bigbigdw.manavarasetting.ui.theme.color8E8E8E
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.util.FCM
-import com.bigbigdw.manavarasetting.util.NaverSeriesGenre
+import com.bigbigdw.manavarasetting.util.NaverSeriesComicGenre
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenreKor
@@ -165,7 +165,7 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
 
     val lineUpdateSelf = listOf(
         MainSettingLine(title = "JSON DAY 생성", onClick = {
-            for (j in NaverSeriesGenre) {
+            for (j in NaverSeriesComicGenre) {
                 uploadJsonArrayToStorageDay(
                     platform = "NAVER_SERIES",
                     genre = getNaverSeriesGenre(j),
@@ -175,7 +175,7 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
             FCM.postFCMAlertTest(context = context, message = "JSON 최신화가 완료되었습니다")
         }),
         MainSettingLine(title = "JSON WEEK 생성", onClick = {
-            for (j in NaverSeriesGenre) {
+            for (j in NaverSeriesComicGenre) {
 
                 val jsonArray = JsonArray()
 
@@ -192,7 +192,7 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
             }
         }),
         MainSettingLine(title = "JSON WEEK 업데이트", onClick = {
-            for (j in NaverSeriesGenre) {
+            for (j in NaverSeriesComicGenre) {
                 uploadJsonArrayToStorageWeek(
                     platform = "NAVER_SERIES",
                     genre = getNaverSeriesGenre(j),
@@ -201,7 +201,7 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
             }
         }),
         MainSettingLine(title = "JSON MONTH 업데이트", onClick = {
-            for (j in NaverSeriesGenre) {
+            for (j in NaverSeriesComicGenre) {
                 uploadJsonArrayToStorageMonth(
                     platform = "NAVER_SERIES",
                     genre = getNaverSeriesGenre(j),
@@ -210,7 +210,7 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
             }
         }),
         MainSettingLine(title = "JSON WEEK 트로피 업데이트", onClick = {
-            for (j in NaverSeriesGenre) {
+            for (j in NaverSeriesComicGenre) {
                 uploadJsonArrayToStorageTrophy(
                     platform = "NAVER_SERIES",
                     genre = getNaverSeriesGenre(j),
@@ -220,7 +220,7 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
             }
         }),
         MainSettingLine(title = "JSON MONTH 트로피 업데이트", onClick = {
-            for (j in NaverSeriesGenre) {
+            for (j in NaverSeriesComicGenre) {
                 uploadJsonArrayToStorageTrophy(
                     platform = "NAVER_SERIES",
                     genre = getNaverSeriesGenre(j),
@@ -241,15 +241,7 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
         }
     }
 
-    Spacer(modifier = Modifier.size(16.dp))
-
-    Text(
-        modifier = Modifier.padding(32.dp, 8.dp),
-        text = "JSON 주간",
-        fontSize = 16.sp,
-        color = color8E8E8E,
-        fontWeight = FontWeight(weight = 700)
-    )
+    ItemTabletTitle(str = "JSON 주간")
 
     TabletContentWrap {
         itemJsonWorkerWeek.forEachIndexed { index, item ->
@@ -261,15 +253,7 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
         }
     }
 
-    Spacer(modifier = Modifier.size(16.dp))
-
-    Text(
-        modifier = Modifier.padding(32.dp, 8.dp),
-        text = "JSON 월간",
-        fontSize = 16.sp,
-        color = color8E8E8E,
-        fontWeight = FontWeight(weight = 700)
-    )
+    ItemTabletTitle(str = "JSON 월간")
 
     TabletContentWrap {
         itemJsonWorkerMonth.forEachIndexed { index, item ->
@@ -281,15 +265,7 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
         }
     }
 
-    Spacer(modifier = Modifier.size(16.dp))
-
-    Text(
-        modifier = Modifier.padding(32.dp, 8.dp),
-        text = "JSON 주간 트로피",
-        fontSize = 16.sp,
-        color = color8E8E8E,
-        fontWeight = FontWeight(weight = 700)
-    )
+    ItemTabletTitle(str = "JSON 주간 트로피")
 
     TabletContentWrap {
         itemJsonWorkerWeekTrophy.forEachIndexed { index, item ->
@@ -301,15 +277,7 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
         }
     }
 
-    Spacer(modifier = Modifier.size(16.dp))
-
-    Text(
-        modifier = Modifier.padding(32.dp, 8.dp),
-        text = "JSON 월간 트로피",
-        fontSize = 16.sp,
-        color = color8E8E8E,
-        fontWeight = FontWeight(weight = 700)
-    )
+    ItemTabletTitle(str = "JSON 월간 트로피")
 
     TabletContentWrap {
         itemJsonWorkerMonthTrophy.forEachIndexed { index, item ->
@@ -321,15 +289,7 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
         }
     }
 
-    Spacer(modifier = Modifier.size(16.dp))
-
-    Text(
-        modifier = Modifier.padding(32.dp, 8.dp),
-        text = "JSON 수동 업데이트",
-        fontSize = 16.sp,
-        color = color8E8E8E,
-        fontWeight = FontWeight(weight = 700)
-    )
+    ItemTabletTitle(str = "JSON 수동 업데이트")
 
     TabletContentWrap {
         lineUpdateSelf.forEachIndexed { index, item ->
@@ -342,15 +302,7 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
         }
     }
 
-    Spacer(modifier = Modifier.size(16.dp))
-
-    Text(
-        modifier = Modifier.padding(32.dp, 8.dp),
-        text = "JSON 현황",
-        fontSize = 16.sp,
-        color = color8E8E8E,
-        fontWeight = FontWeight(weight = 700)
-    )
+    ItemTabletTitle(str = "JSON 현황")
 
     TabletContentWrap {
         lineJson.forEachIndexed { index, item ->
@@ -375,7 +327,7 @@ fun ContentsBestJsonList(
 
     val itemList = ArrayList<MainSettingLine>()
 
-    for (j in NaverSeriesGenre) {
+    for (j in NaverSeriesComicGenre) {
         itemList.add(MainSettingLine(title = "$type JSON ${getNaverSeriesGenreKor(j)}", value = getNaverSeriesGenre(j)))
     }
 

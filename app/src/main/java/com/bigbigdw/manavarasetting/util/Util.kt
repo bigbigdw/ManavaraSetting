@@ -8,8 +8,6 @@ import com.bigbigdw.manavarasetting.firebase.FCMAlert
 import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
 import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager
-import com.bigbigdw.manavarasetting.util.DBDate.datedd
-import com.bigbigdw.manavarasetting.util.DBDate.getYesterdayDayOfWeek
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -19,17 +17,12 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.google.gson.Gson
-import com.google.gson.JsonArray
 import com.google.gson.JsonObject
-import com.google.gson.JsonParser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
 import org.json.JSONObject
 import java.io.ByteArrayInputStream
-import java.nio.charset.Charset
 import java.util.Calendar
 import java.util.Date
 
@@ -41,13 +34,22 @@ fun dateMMDDHHMM(): String {
     return format.format(currentTime).toString()
 }
 
-val NaverSeriesGenre = arrayListOf(
+val NaverSeriesComicGenre = arrayListOf(
     "ALL",
     "99",
     "93",
     "90",
     "88",
     "107",
+)
+
+val NaverSeriesNovelGenre = arrayListOf(
+    "ALL",
+    "201",
+    "207",
+    "202",
+    "208",
+    "206",
 )
 
 val WeekKor = arrayListOf(

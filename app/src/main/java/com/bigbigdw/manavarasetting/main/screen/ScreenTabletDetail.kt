@@ -82,37 +82,49 @@ fun ScreenTabletDetail(
                 ContentsBestListDetailWeek(
                     viewModelMain = viewModelMain,
                     child = getDetailPageType,
-                    type = "주간"
+                    platform = "NAVER_SERIES",
+                    menu = "주간",
+                    type = "COMIC"
                 )
             }  else if (getDetailMenu.contains("월간 베스트 JSON")) {
                 ContentsBestListDetailWeek(
                     viewModelMain = viewModelMain,
                     child = getDetailPageType,
-                    type = "월간"
+                    platform = "NAVER_SERIES",
+                    menu = "월간",
+                    type = "COMIC"
                 )
             } else if (getDetailMenu.contains("주간 트로피")) {
                 ContentsBestListJsonTrophy(
                     viewModelMain = viewModelMain,
                     child = getDetailPageType,
-                    type = "주간"
+                    platform = "NAVER_SERIES",
+                    menu = "주간",
+                    type = "COMIC"
                 )
             } else if (getDetailMenu.contains("월간 트로피")) {
                 ContentsBestListJsonTrophy(
                     viewModelMain = viewModelMain,
                     child = getDetailPageType,
-                    type = "월간"
+                    platform = "NAVER_SERIES",
+                    menu = "월간",
+                    type = "COMIC"
                 )
             } else if (getDetailMenu.contains("트로피 주간")) {
                 ContentsBestListDetailTrophy(
                     viewModelMain = viewModelMain,
                     child = getDetailPageType,
-                    type = "주간"
+                    platform = "NAVER_SERIES",
+                    menu = "주간",
+                    type = "COMIC"
                 )
             } else if (getDetailMenu.contains("트로피 월간")) {
                 ContentsBestListDetailTrophy(
                     viewModelMain = viewModelMain,
                     child = getDetailPageType,
-                    type = "월간"
+                    platform = "NAVER_SERIES",
+                    menu = "월간",
+                    type = "COMIC"
                 )
             }
         }
@@ -123,9 +135,9 @@ fun ScreenTabletDetail(
 fun ContentsBestListDetail(viewModelMain: ViewModelMain, child: String, type: String) {
 
     if (type == "BEST") {
-        viewModelMain.getBestList(child = child)
+        viewModelMain.getBestList(platform = "NAVER_SERIES", child = child, type = "COMIC")
     } else {
-        viewModelMain.getBestJsonList(genre = child)
+        viewModelMain.getBestJsonList(platform = "NAVER_SERIES", genre = child, type = "COMIC")
     }
 
     val bestList: ArrayList<ItemBookInfo> = viewModelMain.state.collectAsState().value.setBestBookList
@@ -147,9 +159,9 @@ fun ContentsBestListDetail(viewModelMain: ViewModelMain, child: String, type: St
 }
 
 @Composable
-fun ContentsBestListDetailWeek(viewModelMain: ViewModelMain, child: String, type: String) {
+fun ContentsBestListDetailWeek(platform : String, viewModelMain: ViewModelMain, child: String, type: String, menu : String) {
 
-    viewModelMain.getBestJsonWeekList(genre = child, type = type)
+    viewModelMain.getBestJsonWeekList(platform = platform, genre = child, menu = menu, type = type)
 
     val bestWeekList: ArrayList<ArrayList<ItemBookInfo>> =
         viewModelMain.state.collectAsState().value.bestListWeek
@@ -159,7 +171,7 @@ fun ContentsBestListDetailWeek(viewModelMain: ViewModelMain, child: String, type
 
         Text(
             modifier = Modifier.padding(32.dp, 8.dp),
-            text = if (type == "주간") {
+            text = if (menu == "주간") {
                 "${WeekKor.get(index)}요일"
             } else {
                 "${index + 1}주차"
@@ -201,9 +213,9 @@ fun ContentsBestListDetailWeek(viewModelMain: ViewModelMain, child: String, type
 }
 
 @Composable
-fun ContentsBestListJsonTrophy(viewModelMain: ViewModelMain, child: String, type: String) {
+fun ContentsBestListJsonTrophy(platform : String, viewModelMain: ViewModelMain, child: String, menu: String, type: String) {
 
-    viewModelMain.getBestJsonTrophyList(type = type, genre = child)
+    viewModelMain.getBestJsonTrophyList(platform = platform, menu = menu, genre = child, type = type)
 
     val bestWeekList: ArrayList<ItemBestInfo> = viewModelMain.state.collectAsState().value.trophyList
 
@@ -226,9 +238,9 @@ fun ContentsBestListJsonTrophy(viewModelMain: ViewModelMain, child: String, type
 }
 
 @Composable
-fun ContentsBestListDetailTrophy(viewModelMain: ViewModelMain, type: String, child: String) {
+fun ContentsBestListDetailTrophy(viewModelMain: ViewModelMain, menu: String, child: String, platform: String, type: String) {
 
-    viewModelMain.getBestTrophyList(type = type, child = child)
+    viewModelMain.getBestTrophyList(platform = platform, menu = menu, child = child, type = type)
 
     val bestWeekList: ArrayList<ItemBestInfo> = viewModelMain.state.collectAsState().value.trophyList
 

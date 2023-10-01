@@ -12,15 +12,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -37,7 +33,8 @@ import com.bigbigdw.manavarasetting.util.BestRef
 import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.FCM
 import com.bigbigdw.manavarasetting.util.MiningSource
-import com.bigbigdw.manavarasetting.util.NaverSeriesGenre
+import com.bigbigdw.manavarasetting.util.NaverSeriesComicGenre
+import com.bigbigdw.manavarasetting.util.NaverSeriesNovelGenre
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenreKor
@@ -107,13 +104,82 @@ fun ContentsBest(lineBest: List<MainSettingLine>) {
 
     Spacer(modifier = Modifier.size(16.dp))
 
-    Text(
-        modifier = Modifier.padding(32.dp, 8.dp),
-        text = "베스트 현황",
-        fontSize = 16.sp,
-        color = color8E8E8E,
-        fontWeight = FontWeight(weight = 700)
+    TabletContentWrapBtn(
+        onClick = {
+            for (j in NaverSeriesComicGenre) {
+
+                if (DBDate.getDayOfWeekAsNumber() == 0) {
+                    BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "COMIC").child("TROPHY_WEEK")
+                        .removeValue()
+                }
+
+                if (DBDate.getDayOfWeekAsNumber() == 0) {
+                    BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "COMIC").child("TROPHY_WEEK")
+                        .removeValue()
+                }
+
+                for (i in 1..5) {
+                    MiningSource.miningNaverSeriesComic(pageCount = i, genre = j)
+                }
+            }
+            FCM.postFCMAlertTest(context = context, message = "베스트 리스트가 갱신되었습니다")
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "베스트 리스트 웹툰 수동 갱신",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        },
+        isContinue = true
     )
+
+    TabletContentWrapBtn(
+        onClick = {
+
+//            MiningSource.miningNaverSeriesNovel(pageCount = 1, genre = "ALL")
+
+            for (j in NaverSeriesNovelGenre) {
+
+                if (DBDate.getDayOfWeekAsNumber() == 0) {
+                    BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "NOVEL").child("TROPHY_WEEK")
+                        .removeValue()
+                }
+
+                if (DBDate.getDayOfWeekAsNumber() == 0) {
+                    BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "NOVEL").child("TROPHY_WEEK")
+                        .removeValue()
+                }
+
+                for (i in 1..5) {
+                    MiningSource.miningNaverSeriesNovel(pageCount = i, genre = j)
+                }
+            }
+            FCM.postFCMAlertTest(context = context, message = "베스트 리스트가 갱신되었습니다")
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "베스트 리스트 웹소설 수동 갱신",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        },
+        isContinue = false
+    )
+
+    ItemTabletTitle(str = "베스트 현황")
 
     TabletContentWrap {
         lineBest.forEachIndexed { index, item ->
@@ -135,60 +201,12 @@ fun ContentsBestList(
     setDetailPageType: (String) -> Unit,
 ) {
 
-    val context = LocalContext.current
+
     val itemList = ArrayList<MainSettingLine>()
 
-    for (j in NaverSeriesGenre) {
+    for (j in NaverSeriesComicGenre) {
         itemList.add(MainSettingLine(title = "네이버 시리즈 베스트 리스트 ${getNaverSeriesGenreKor(j)}", value = getNaverSeriesGenre(j)))
     }
-
-    Button(
-        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-        onClick = {
-            for (j in NaverSeriesGenre) {
-
-                if (DBDate.getDayOfWeekAsNumber() == 0) {
-                    BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "COMIC").child("TROPHY_WEEK")
-                        .removeValue()
-
-                    BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "COMIC").child("TROPHY_MONTH")
-                        .removeValue()
-                }
-
-                if (DBDate.getDayOfWeekAsNumber() == 0) {
-                    BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "NOVEL").child("TROPHY_WEEK")
-                        .removeValue()
-
-                    BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "NOVEL").child("TROPHY_MONTH")
-                        .removeValue()
-                }
-
-                for (i in 1..5) {
-                    MiningSource.miningNaverSeriesComic(pageCount = i, genre = j)
-                }
-            }
-            FCM.postFCMAlertTest(context = context, message = "베스트 리스트가 갱신되었습니다")
-        },
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(44.dp),
-        shape = RoundedCornerShape(50.dp),
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "베스트 리스트 수동 갱신",
-                    color = color000000,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    Spacer(modifier = Modifier.size(16.dp))
 
     Text(
         modifier = Modifier.padding(32.dp, 8.dp),

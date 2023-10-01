@@ -38,6 +38,7 @@ import org.json.JSONArray
 import java.nio.charset.Charset
 import java.util.Collections
 import javax.inject.Inject
+import kotlin.reflect.typeOf
 
 class ViewModelMain @Inject constructor() : ViewModel() {
 
@@ -320,8 +321,8 @@ class ViewModelMain @Inject constructor() : ViewModel() {
         })
     }
 
-    fun getBestList(child: String){
-        val mRootRef = FirebaseDatabase.getInstance().reference.child("BEST").child("NAVER_SERIES").child(child).child("DAY")
+    fun getBestList(platform: String, child: String, type: String){
+        val mRootRef = FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform).child(child).child("DAY")
 
         mRootRef.addListenerForSingleValueEvent(object :
             ValueEventListener {
@@ -350,10 +351,10 @@ class ViewModelMain @Inject constructor() : ViewModel() {
         })
     }
 
-    fun getBestJsonList(genre : String){
+    fun getBestJsonList(platform : String, genre : String, type: String){
         val storage = Firebase.storage
         val storageRef = storage.reference
-        val todayFileRef = storageRef.child("NAVER_SERIES/${genre}/DAY/${DBDate.dateMMDD()}.json")
+        val todayFileRef = storageRef.child("${platform}/${type}/${genre}/DAY/${DBDate.dateMMDD()}.json")
 
         val todayFile = todayFileRef.getBytes(1024 * 1024)
 
@@ -374,14 +375,14 @@ class ViewModelMain @Inject constructor() : ViewModel() {
         }
     }
 
-    fun getBestJsonWeekList(genre: String, type : String){
+    fun getBestJsonWeekList(platform: String, genre: String, menu : String, type : String){
         val storage = Firebase.storage
         val storageRef = storage.reference
 
-        val fileRef: StorageReference = if(type == "주간"){
-            storageRef.child("NAVER_SERIES/${genre}/WEEK/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
+        val fileRef: StorageReference = if(menu == "주간"){
+            storageRef.child("${platform}/${type}/${genre}/WEEK/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
         } else {
-            storageRef.child("NAVER_SERIES/${genre}/MONTH/${DBDate.year()}_${DBDate.month()}.json")
+            storageRef.child("${platform}/${type}/${genre}/MONTH/${DBDate.year()}_${DBDate.month()}.json")
         }
 
         val file = fileRef.getBytes(1024 * 1024)
@@ -421,14 +422,14 @@ class ViewModelMain @Inject constructor() : ViewModel() {
         }
     }
 
-    fun getBestJsonTrophyList(genre: String, type : String){
+    fun getBestJsonTrophyList(platform: String, genre: String, menu : String, type: String){
         val storage = Firebase.storage
         val storageRef = storage.reference
 
-        val jsonArrayRef = if(type == "주간"){
-            storageRef.child("NAVER_SERIES/${genre}/WEEK_TROPHY/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
+        val jsonArrayRef = if(menu == "주간"){
+            storageRef.child("${platform}/${type}/${genre}/WEEK_TROPHY/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
         } else {
-            storageRef.child("NAVER_SERIES/${genre}/MONTH_TROPHY/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
+            storageRef.child("${platform}/${type}/${genre}/MONTH_TROPHY/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
         }
 
         val file = jsonArrayRef.getBytes(1024 * 1024)
@@ -456,12 +457,12 @@ class ViewModelMain @Inject constructor() : ViewModel() {
         }
     }
 
-    fun getBestTrophyList(type: String, child: String){
+    fun getBestTrophyList(platform: String, menu: String, type: String, child: String){
 
-        val mRootRef = if(type == "주간"){
-            FirebaseDatabase.getInstance().reference.child("BEST").child("NAVER_SERIES").child(child).child("TROPHY_WEEK_TOTAL")
+        val mRootRef = if(menu == "주간"){
+            FirebaseDatabase.getInstance().reference.child("BEST").child(platform).child(type).child(child).child("TROPHY_WEEK_TOTAL")
         } else {
-            FirebaseDatabase.getInstance().reference.child("BEST").child("NAVER_SERIES").child(child).child("TROPHY_MONTH_TOTAL")
+            FirebaseDatabase.getInstance().reference.child("BEST").child(platform).child(type).child(child).child("TROPHY_MONTH_TOTAL")
         }
 
         mRootRef.addListenerForSingleValueEvent(object :

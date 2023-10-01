@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,16 +20,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.main.model.MainSettingLine
-import com.bigbigdw.manavarasetting.ui.theme.color8E8E8E
+import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.util.FCM
-import com.bigbigdw.manavarasetting.util.NaverSeriesGenre
+import com.bigbigdw.manavarasetting.util.NaverSeriesComicGenre
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import com.bigbigdw.manavarasetting.util.calculateTrophy
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
@@ -89,19 +89,6 @@ fun ContentsTrophy(lineTrophy: List<MainSettingLine>) {
         })
     )
 
-    val lineUpdateSelf = listOf(
-        MainSettingLine(title = "트로피 정산", onClick = {
-            for (j in NaverSeriesGenre) {
-                calculateTrophy(
-                    platform = "NAVER_SERIES",
-                    genre = getNaverSeriesGenre(j),
-                    type = "COMIC"
-                )
-            }
-            FCM.postFCMAlertTest(context = context, message = "트로피 정산이 완료되었습니다")
-        })
-    )
-
     TabletContentWrap {
         itemJsonWorker.forEachIndexed { index, item ->
             ItemMainTabletContent(
@@ -114,33 +101,34 @@ fun ContentsTrophy(lineTrophy: List<MainSettingLine>) {
 
     Spacer(modifier = Modifier.size(16.dp))
 
-    Text(
-        modifier = Modifier.padding(32.dp, 8.dp),
-        text = "JSON 수동 업데이트",
-        fontSize = 16.sp,
-        color = color8E8E8E,
-        fontWeight = FontWeight(weight = 700)
+    TabletContentWrapBtn(
+        onClick = {
+            for (j in NaverSeriesComicGenre) {
+                calculateTrophy(
+                    platform = "NAVER_SERIES",
+                    genre = getNaverSeriesGenre(j),
+                    type = "COMIC"
+                )
+            }
+            FCM.postFCMAlertTest(context = context, message = "트로피 정산이 완료되었습니다")
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text =  "트로피 정산",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        },
+        isContinue = false
     )
 
-    TabletContentWrap {
-        lineUpdateSelf.forEachIndexed { index, item ->
-            ItemMainTabletContent(
-                title = item.title,
-                value = item.value,
-                isLast = lineUpdateSelf.size - 1 == index
-            )
-        }
-    }
-
-    Spacer(modifier = Modifier.size(16.dp))
-
-    Text(
-        modifier = Modifier.padding(32.dp, 8.dp),
-        text = "트로피 정산 현황",
-        fontSize = 16.sp,
-        color = color8E8E8E,
-        fontWeight = FontWeight(weight = 700)
-    )
+    ItemTabletTitle(str = "트로피 정산 현황")
 
     TabletContentWrap {
         lineTrophy.forEachIndexed { index, item ->

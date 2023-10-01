@@ -341,15 +341,7 @@ fun ContentsSetting(
         isContinue = false
     )
 
-    Spacer(modifier = Modifier.size(16.dp))
-
-    Text(
-        modifier = Modifier.padding(32.dp, 8.dp),
-        text = "테스트 현황",
-        fontSize = 16.sp,
-        color = color8E8E8E,
-        fontWeight = FontWeight(weight = 700)
-    )
+    ItemTabletTitle(str = "테스트 현황")
 
     TabletContentWrap {
         lineTest.forEachIndexed { index, item ->
@@ -361,15 +353,7 @@ fun ContentsSetting(
         }
     }
 
-    Spacer(modifier = Modifier.size(16.dp))
-
-    Text(
-        modifier = Modifier.padding(32.dp, 8.dp),
-        text = "베스트 현황",
-        fontSize = 16.sp,
-        color = color8E8E8E,
-        fontWeight = FontWeight(weight = 700)
-    )
+    ItemTabletTitle(str = "베스트 현황")
 
     TabletContentWrap {
         lineBest.forEachIndexed { index, item ->
@@ -381,15 +365,7 @@ fun ContentsSetting(
         }
     }
 
-    Spacer(modifier = Modifier.size(16.dp))
-
-    Text(
-        modifier = Modifier.padding(32.dp, 8.dp),
-        text = "JSON 현황",
-        fontSize = 16.sp,
-        color = color8E8E8E,
-        fontWeight = FontWeight(weight = 700)
-    )
+    ItemTabletTitle(str = "JSON 현황")
 
     TabletContentWrap {
         lineJson.forEachIndexed { index, item ->

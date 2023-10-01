@@ -129,20 +129,22 @@ fun ContentsFCM(lineTest: List<MainSettingLine>) {
                     )
                 }
 
-                Spacer(modifier = Modifier.size(4.dp))
+                if(dataStore.getDataStoreString(DataStoreManager.FCM_TOKEN).collectAsState(initial = "").value?.isNotBlank() == true){
+                    Spacer(modifier = Modifier.size(4.dp))
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = dataStore.getDataStoreString(DataStoreManager.FCM_TOKEN).collectAsState(initial = "").value ?: "",
-                        color = color8E8E8E,
-                        fontSize = 16.sp,
-                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Start,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = dataStore.getDataStoreString(DataStoreManager.FCM_TOKEN).collectAsState(initial = "").value ?: "",
+                            color = color8E8E8E,
+                            fontSize = 16.sp,
+                        )
+                    }
+                    Spacer(modifier = Modifier.size(16.dp))
                 }
-                Spacer(modifier = Modifier.size(16.dp))
             }
         }
     )
@@ -173,15 +175,7 @@ fun ContentsFCM(lineTest: List<MainSettingLine>) {
         }
     )
 
-    Spacer(modifier = Modifier.size(16.dp))
-
-    Text(
-        modifier = Modifier.padding(32.dp, 8.dp),
-        text = "FCM 공지사항 등록",
-        fontSize = 16.sp,
-        color = color8E8E8E,
-        fontWeight = FontWeight(weight = 700)
-    )
+    ItemTabletTitle(str = "FCM 공지사항 등록")
 
     TabletContentWrap {
         TextField(
@@ -222,15 +216,7 @@ fun ContentsFCM(lineTest: List<MainSettingLine>) {
         }
     }
 
-    Spacer(modifier = Modifier.size(16.dp))
-
-    Text(
-        modifier = Modifier.padding(32.dp, 8.dp),
-        text = "테스트 현황",
-        fontSize = 16.sp,
-        color = color8E8E8E,
-        fontWeight = FontWeight(weight = 700)
-    )
+    ItemTabletTitle(str = "테스트 현황")
 
     TabletContentWrap {
         lineTest.forEachIndexed { index, item ->
@@ -242,15 +228,7 @@ fun ContentsFCM(lineTest: List<MainSettingLine>) {
         }
     }
 
-    Spacer(modifier = Modifier.size(16.dp))
-
-    Text(
-        modifier = Modifier.padding(32.dp, 8.dp),
-        text = "FCM 매니저",
-        fontSize = 16.sp,
-        color = color8E8E8E,
-        fontWeight = FontWeight(weight = 700)
-    )
+    ItemTabletTitle(str = "FCM 매니저")
 
     TabletContentWrap {
         itemFcmWorker.forEachIndexed { index, item ->

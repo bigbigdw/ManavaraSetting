@@ -57,7 +57,7 @@ object MiningSource {
                     NaverRef["writerName"] = naverSeries[i].select(".comic_cont .info .ellipsis .author").first()?.text() ?: ""
                     NaverRef["subject"] = naverSeries.select(".comic_cont h3 a")[i].text()
                     NaverRef["bookImg"] = naverSeries.select("a img")[i].absUrl("src")
-                    NaverRef["bookCode"] = naverSeries.select(".comic_cont a")[i].absUrl("href").replace("https://series.naver.com/comic/detail.series?productNo=", "")
+                    NaverRef["bookCode"] = naverSeries.select(".comic_cont a")[i].absUrl("href").replace("https://series.naver.com/novel/detail.series?productNo=", "")
                     NaverRef["info1"] = naverSeries.select(".comic_cont .info .score_num")[i].text()
                     NaverRef["info2"] = naverSeries[i].select(".comic_cont .info .ellipsis")[1]?.text() ?: ""
                     NaverRef["info3"] = naverSeries.select(".comic_cont .dsc")[i].text()

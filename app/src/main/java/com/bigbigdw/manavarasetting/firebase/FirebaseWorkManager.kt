@@ -8,7 +8,7 @@ import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager
 import com.bigbigdw.manavarasetting.util.BestRef
 import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.MiningSource
-import com.bigbigdw.manavarasetting.util.NaverSeriesGenre
+import com.bigbigdw.manavarasetting.util.NaverSeriesComicGenre
 import com.bigbigdw.manavarasetting.util.calculateTrophy
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
 import com.bigbigdw.manavarasetting.util.setDataStore
@@ -45,7 +45,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
 
         if (inputData.getString(TYPE).equals("BEST")) {
 
-            for (j in NaverSeriesGenre) {
+            for (j in NaverSeriesComicGenre) {
 
                 if (DBDate.getDayOfWeekAsNumber() == 0) {
                     BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "COMIC")
@@ -69,7 +69,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
             )
 
         } else if (inputData.getString(TYPE).equals("JSON_TODAY")) {
-            for (j in NaverSeriesGenre) {
+            for (j in NaverSeriesComicGenre) {
 
                 uploadJsonArrayToStorageDay(
                     platform = "NAVER_SERIES",
@@ -86,7 +86,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
             )
 
         } else if (inputData.getString(TYPE).equals("JSON_WEEK")) {
-            for (j in NaverSeriesGenre) {
+            for (j in NaverSeriesComicGenre) {
 
                 uploadJsonArrayToStorageWeek(
                     platform = "NAVER_SERIES",
@@ -102,7 +102,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
             )
 
         } else if (inputData.getString(TYPE).equals("JSON_MONTH")) {
-            for (j in NaverSeriesGenre) {
+            for (j in NaverSeriesComicGenre) {
 
                 uploadJsonArrayToStorageMonth(
                     platform = "NAVER_SERIES",
@@ -119,7 +119,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
             )
 
         } else if (inputData.getString(TYPE).equals("JSON_WEEK_TROPHY")) {
-            for (j in NaverSeriesGenre) {
+            for (j in NaverSeriesComicGenre) {
 
                 uploadJsonArrayToStorageTrophy(
                     platform = "NAVER_SERIES",
@@ -136,7 +136,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
             )
 
         } else if (inputData.getString(TYPE).equals("JSON_MONTH_TROPHY")) {
-            for (j in NaverSeriesGenre) {
+            for (j in NaverSeriesComicGenre) {
 
                 uploadJsonArrayToStorageTrophy(
                     platform = "NAVER_SERIES",
@@ -154,7 +154,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
 
         } else if (inputData.getString(TYPE).equals("TROPHY")) {
 
-            for (j in NaverSeriesGenre) {
+            for (j in NaverSeriesComicGenre) {
                 calculateTrophy(
                     platform = "NAVER_SERIES",
                     genre = getNaverSeriesGenre(j),

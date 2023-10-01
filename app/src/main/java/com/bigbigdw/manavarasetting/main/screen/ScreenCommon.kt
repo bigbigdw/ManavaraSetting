@@ -822,6 +822,19 @@ fun ItemTabletTrophyList(item : ItemBestInfo, isLast: Boolean){
 }
 
 @Composable
+fun ItemTabletTitle(str : String){
+    Spacer(modifier = Modifier.size(16.dp))
+
+    Text(
+        modifier = Modifier.padding(16.dp, 8.dp),
+        text = str,
+        fontSize = 16.sp,
+        color = color8E8E8E,
+        fontWeight = FontWeight(weight = 700)
+    )
+}
+
+@Composable
 fun spannableString(textFront : String, color : Color, textEnd : String) : AnnotatedString {
     val annotatedString = buildAnnotatedString {
         withStyle(style = SpanStyle(color = color, fontWeight = FontWeight(weight = 500))) {
