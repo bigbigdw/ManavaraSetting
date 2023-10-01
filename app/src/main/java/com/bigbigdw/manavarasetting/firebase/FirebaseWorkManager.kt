@@ -18,10 +18,14 @@ import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageTrophy
 import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageWeek
 import com.bigbigdw.massmath.Firebase.FirebaseService
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.Executors
 
 
 class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
@@ -45,22 +49,24 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
 
         if (inputData.getString(TYPE).equals("BEST")) {
 
-            for (j in NaverSeriesComicGenre) {
 
-                if (DBDate.getDayOfWeekAsNumber() == 0) {
-                    BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "COMIC")
-                        .child("TROPHY_WEEK").removeValue()
+                for (j in NaverSeriesComicGenre) {
+
+                    if (DBDate.getDayOfWeekAsNumber() == 0) {
+                        BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "COMIC")
+                            .child("TROPHY_WEEK").removeValue()
+                    }
+
+                    if (DBDate.datedd() == "01") {
+                        BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "COMIC")
+                            .child("TROPHY_MONTH").removeValue()
+                    }
+
+                    for (i in 1..5) {
+                        MiningSource.miningNaverSeriesComic(pageCount = i, genre = j)
+                    }
                 }
 
-                if (DBDate.datedd() == "01") {
-                    BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "COMIC")
-                        .child("TROPHY_MONTH").removeValue()
-                }
-
-                for (i in 1..5) {
-                    MiningSource.miningNaverSeriesComic(pageCount = i, genre = j)
-                }
-            }
 
             postFCM(
                 data = "베스트 리스트가 갱신되었습니다",

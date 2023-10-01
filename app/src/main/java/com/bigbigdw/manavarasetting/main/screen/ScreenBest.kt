@@ -1,5 +1,6 @@
 package com.bigbigdw.manavarasetting.main.screen
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -38,6 +39,10 @@ import com.bigbigdw.manavarasetting.util.NaverSeriesNovelGenre
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenreKor
+import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 @Composable
@@ -106,22 +111,33 @@ fun ContentsBest(lineBest: List<MainSettingLine>) {
 
     TabletContentWrapBtn(
         onClick = {
-            for (j in NaverSeriesComicGenre) {
 
-                if (DBDate.getDayOfWeekAsNumber() == 0) {
-                    BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "COMIC").child("TROPHY_WEEK")
-                        .removeValue()
-                }
+            val threadPool = Executors.newFixedThreadPool(5).asCoroutineDispatcher()
 
-                if (DBDate.getDayOfWeekAsNumber() == 0) {
-                    BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "COMIC").child("TROPHY_WEEK")
-                        .removeValue()
-                }
+            runBlocking {
+                for (j in NaverSeriesComicGenre) {
 
-                for (i in 1..5) {
-                    MiningSource.miningNaverSeriesComic(pageCount = i, genre = j)
+                    if (DBDate.getDayOfWeekAsNumber() == 0) {
+                        BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "COMIC")
+                            .child("TROPHY_WEEK").removeValue()
+                    }
+
+                    if (DBDate.datedd() == "01") {
+                        BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "COMIC")
+                            .child("TROPHY_MONTH").removeValue()
+                    }
+
+                    repeat(5) { i ->
+                        launch(threadPool) {
+                            Log.d("!!!!!!!", "pageCount = ${i + 1} genre = $j")
+                            MiningSource.miningNaverSeriesComic(pageCount = i + 1, genre = j)
+                        }
+                    }
                 }
             }
+
+            threadPool.close()
+
             FCM.postFCMAlertTest(context = context, message = "베스트 리스트가 갱신되었습니다")
         },
         content = {
