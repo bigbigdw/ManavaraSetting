@@ -334,13 +334,17 @@ class WidgetCallback : ActionCallback {
                     workManager = workManager,
                     repeatInterval = parameters[paramWorkerInterval] ?: 0,
                     tag = parameters[paramWorkerTag] ?: "",
-                    timeMill = parameters[paramWorkerTimeMill] ?: TimeUnit.HOURS
+                    timeMill = parameters[paramWorkerTimeMill] ?: TimeUnit.HOURS,
+                    platform = "NAVER_SERIES",
+                    type = "COMIC"
                 )
 
             } else if (parameters[paramWorkerStatus] == "CANCEL") {
                 PeriodicWorker.cancelWorker(
                     workManager = workManager,
-                    tag = "TEST"
+                    tag = "TEST",
+                    platform = "NAVER_SERIES",
+                    type = "COMIC"
                 )
 
             }

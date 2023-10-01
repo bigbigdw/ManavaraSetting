@@ -15,14 +15,16 @@ import com.google.firebase.ktx.Firebase
 import java.util.concurrent.TimeUnit
 
 object PeriodicWorker {
-    fun doWorker(workManager: WorkManager, repeatInterval: Long, tag: String, timeMill: TimeUnit){
+    fun doWorker(workManager: WorkManager, repeatInterval: Long, tag: String, timeMill: TimeUnit, platform : String, type: String){
 
         val inputData = Data.Builder()
             .putString(FirebaseWorkManager.WORKER, tag)
+            .putString(FirebaseWorkManager.PLATFORM, platform)
+            .putString(FirebaseWorkManager.TYPE, type)
             .build()
 
         val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(repeatInterval, timeMill)
-            .addTag(tag)
+            .addTag("${tag}_${platform}_${type}")
             .setInputData(inputData)
             .setConstraints(
                 Constraints.Builder()
@@ -59,8 +61,8 @@ object PeriodicWorker {
         }
     }
 
-    fun cancelWorker(workManager: WorkManager, tag: String){
-        workManager.cancelAllWorkByTag(tag)
+    fun cancelWorker(workManager: WorkManager, tag: String, platform : String, type: String){
+        workManager.cancelAllWorkByTag("${tag}_${platform}_${type}")
     }
 
     fun cancelAllWorker(workManager: WorkManager){

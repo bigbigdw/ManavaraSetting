@@ -9,6 +9,7 @@ import com.bigbigdw.manavarasetting.util.BestRef
 import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.MiningSource
 import com.bigbigdw.manavarasetting.util.NaverSeriesComicGenre
+import com.bigbigdw.manavarasetting.util.NaverSeriesNovelGenre
 import com.bigbigdw.manavarasetting.util.calculateTrophy
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
 import com.bigbigdw.manavarasetting.util.setDataStore
@@ -33,6 +34,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
     companion object {
         const val WORKER = "WORKER"
         const val PLATFORM = "PLATFORM"
+        const val TYPE = "TYPE"
     }
 
     override fun doWork(): Result {
@@ -43,59 +45,77 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
         val hour = DBDate.dateMMDDHHMM().substring(8, 10)
         val min = DBDate.dateMMDDHHMM().substring(10, 12)
 
-        var workerName = inputData.getString(WORKER) + "_" + inputData.getString(PLATFORM)
+        val workerName = inputData.getString(WORKER) + "_" + inputData.getString(PLATFORM) + "_" + inputData.getString(TYPE)
+
+        Log.d("WORKER!!!!WORKER", "workerName ==$workerName inputData.getString(WORKER) ==${inputData.getString(WORKER)} inputData.getString(PLATFORM) ==${inputData.getString(PLATFORM)} inputData.getString(TYPE) ==${inputData.getString(TYPE)}")
 
         if (inputData.getString(WORKER).equals("BEST")) {
 
             val threadPool = Executors.newFixedThreadPool(5).asCoroutineDispatcher()
 
             runBlocking {
-                for (j in NaverSeriesComicGenre) {
-                    if (DBDate.getDayOfWeekAsNumber() == 0) {
-                        BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "COMIC")
-                            .child("TROPHY_WEEK").removeValue()
-                    }
 
-                    if (DBDate.datedd() == "01") {
-                        BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "COMIC")
-                            .child("TROPHY_MONTH").removeValue()
-                    }
+                if(inputData.getString(PLATFORM).equals("NAVER_SERIES")){
 
-                    repeat(5) { i ->
-                        launch(threadPool) {
-                            MiningSource.miningNaverSeriesComic(pageCount = i + 1, genre = j)
+                    if(inputData.getString(PLATFORM).equals("COMIC")){
+
+                        for (j in NaverSeriesComicGenre) {
+                            if (DBDate.getDayOfWeekAsNumber() == 0) {
+                                BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = inputData.getString(TYPE) ?: "")
+                                    .child("TROPHY_WEEK").removeValue()
+                            }
+
+                            if (DBDate.datedd() == "01") {
+                                BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = inputData.getString(TYPE) ?: "")
+                                    .child("TROPHY_MONTH").removeValue()
+                            }
+
+                            repeat(5) { i ->
+                                launch(threadPool) {
+                                    MiningSource.miningNaverSeriesComic(pageCount = i + 1, genre = j)
+                                }
+                            }
+                        }
+
+                    } else {
+                        for (j in NaverSeriesNovelGenre) {
+                            if (DBDate.getDayOfWeekAsNumber() == 0) {
+                                BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = inputData.getString(TYPE) ?: "")
+                                    .child("TROPHY_WEEK").removeValue()
+                            }
+
+                            if (DBDate.datedd() == "01") {
+                                BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = inputData.getString(TYPE) ?: "")
+                                    .child("TROPHY_MONTH").removeValue()
+                            }
+
+                            repeat(5) { i ->
+                                launch(threadPool) {
+                                    MiningSource.miningNaverSeriesNovel(pageCount = i + 1, genre = j)
+                                }
+                            }
                         }
                     }
+
                 }
+
             }
 
             threadPool.close()
-
-            postFCM(
-                data = "베스트 리스트가 갱신되었습니다",
-                time = "${year}.${month}.${day} ${hour}:${min}",
-                activity = "BEST"
-            )
 
         } else if (inputData.getString(WORKER).equals("JSON")) {
             runBlocking {
                 for (j in NaverSeriesComicGenre) {
                     launch {
                         uploadJsonArrayToStorageDay(
-                            platform = "NAVER_SERIES",
+                            platform = inputData.getString(PLATFORM) ?: "",
                             genre = getNaverSeriesGenre(j),
-                            type = "COMIC"
+                            type = inputData.getString(TYPE) ?: ""
                         )
                     }
 
                 }
             }
-
-            postFCM(
-                data = "JSON 투데이 최신화가 완료되었습니다",
-                time = "${year}.${month}.${day} ${hour}:${min}",
-                activity = "JSON"
-            )
 
         } else if (inputData.getString(WORKER).equals("TROPHY")) {
 
@@ -103,25 +123,25 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                 for (j in NaverSeriesComicGenre) {
                     launch {
                         calculateTrophy(
-                            platform = "NAVER_SERIES",
+                            platform = inputData.getString(PLATFORM) ?: "",
                             genre = getNaverSeriesGenre(j),
-                            type = "COMIC"
+                            type = inputData.getString(TYPE) ?: ""
                         )
                     }
 
                 }
             }
 
-            postFCM(
-                data = "트로피 정산이 완료되었습니다",
-                time = "${year}.${month}.${day} ${hour}:${min}",
-                activity = "TROPHY"
-            )
-
         } else if (inputData.getString(WORKER).equals("TEST")) {
             postFCM(data = "테스트", time = "${year}.${month}.${day} ${hour}:${min}")
 
         }
+
+        postFCM(
+            data = "$workerName 가 갱신되었습니다",
+            time = "${year}.${month}.${day} ${hour}:${min}",
+            activity = inputData.getString(WORKER) ?: ""
+        )
 
         return Result.success()
     }

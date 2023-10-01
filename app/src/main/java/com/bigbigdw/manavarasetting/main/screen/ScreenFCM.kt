@@ -95,13 +95,17 @@ fun ContentsFCM(lineTest: List<MainSettingLine>) {
                 workManager = workManager,
                 repeatInterval = 15,
                 tag = "TEST",
-                timeMill = TimeUnit.MINUTES
+                timeMill = TimeUnit.MINUTES,
+                platform = "NAVER_SERIES",
+                type = "COMIC"
             )
         }),
         MainSettingLine(title = "WORKER 취소", onClick = {
             PeriodicWorker.cancelWorker(
                 workManager = workManager,
-                tag = "TEST"
+                tag = "TEST",
+                platform = "NAVER_SERIES",
+                type = "COMIC"
             )
         })
     )

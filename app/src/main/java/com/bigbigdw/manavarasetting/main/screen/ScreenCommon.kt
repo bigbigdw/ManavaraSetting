@@ -242,10 +242,10 @@ fun ItemMainTabletContent(
         Button(
             colors = ButtonDefaults.buttonColors(containerColor = Color.White),
             contentPadding = PaddingValues(
-                start = 12.dp,
+                start = 0.dp,
                 top = 6.dp,
-                end = 12.dp,
-                bottom = 6.dp,
+                end = 6.dp,
+                bottom = 0.dp,
             ),
             onClick = { onClick() },
             content = {

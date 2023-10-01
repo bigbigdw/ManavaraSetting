@@ -75,20 +75,42 @@ fun ContentsTrophy(lineTrophy: List<MainSettingLine>) {
     val workManager = WorkManager.getInstance(context)
 
     val itemJsonWorker = listOf(
-        MainSettingLine(title = "WORKER 시작", onClick = {
+        MainSettingLine(title = "트로피 웹툰 WORKER 시작", onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
                 repeatInterval = 5,
                 tag = "TROPHY",
-                timeMill = TimeUnit.HOURS
+                timeMill = TimeUnit.MINUTES,
+                platform = "NAVER_SERIES",
+                type = "COMIC"
             )
         }),
-        MainSettingLine(title = "WORKER 취소", onClick = {
+        MainSettingLine(title = "트로피 웹툰 WORKER 취소", onClick = {
             PeriodicWorker.cancelWorker(
                 workManager = workManager,
-                tag = "TROPHY"
+                tag = "TROPHY",
+                platform = "NAVER_SERIES",
+                type = "COMIC"
             )
-        })
+        }),
+        MainSettingLine(title = "트로피 웹소설 WORKER 시작", onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                repeatInterval = 5,
+                tag = "TROPHY",
+                timeMill = TimeUnit.MINUTES,
+                platform = "NAVER_SERIES",
+                type = "NOVEL"
+            )
+        }),
+        MainSettingLine(title = "트로피 웹소설 WORKER 취소", onClick = {
+            PeriodicWorker.cancelWorker(
+                workManager = workManager,
+                tag = "TROPHY",
+                platform = "NAVER_SERIES",
+                type = "NOVEL"
+            )
+        }),
     )
 
     TabletContentWrap {

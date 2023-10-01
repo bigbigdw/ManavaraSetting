@@ -76,20 +76,42 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
     val workManager = WorkManager.getInstance(context)
 
     val itemJsonWorkerToday = listOf(
-        MainSettingLine(title = "JSON WORKER 시작", onClick = {
+        MainSettingLine(title = "JSON 웹툰 WORKER 시작", onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
                 repeatInterval = 4,
                 tag = "JSON",
-                timeMill = TimeUnit.HOURS
+                timeMill = TimeUnit.HOURS,
+                platform = "NAVER_SERIES",
+                type = "COMIC"
             )
         }),
-        MainSettingLine(title = "JSON 투데이 WORKER 취소", onClick = {
+        MainSettingLine(title = "JSON 웹툰 WORKER 취소", onClick = {
             PeriodicWorker.cancelWorker(
                 workManager = workManager,
-                tag = "JSON"
+                tag = "JSON",
+                platform = "NAVER_SERIES",
+                type = "COMIC"
             )
-        })
+        }),
+        MainSettingLine(title = "JSON 웹소설 WORKER 시작", onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                repeatInterval = 4,
+                tag = "JSON",
+                timeMill = TimeUnit.HOURS,
+                platform = "NAVER_SERIES",
+                type = "NOVEL"
+            )
+        }),
+        MainSettingLine(title = "JSON 웹소설 WORKER 취소", onClick = {
+            PeriodicWorker.cancelWorker(
+                workManager = workManager,
+                tag = "JSON",
+                platform = "NAVER_SERIES",
+                type = "NOVEL"
+            )
+        }),
     )
 
     val lineUpdateSelf = listOf(

@@ -84,16 +84,41 @@ fun ContentsBest(lineBest: List<MainSettingLine>) {
     val workManager = WorkManager.getInstance(context)
 
     val itemBestWorker = listOf(
-        MainSettingLine(title = "WORKER 시작", onClick = {
+        MainSettingLine(title = "WORKER 웹툰 시작", onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
                 repeatInterval = 3,
                 tag = "BEST",
-                timeMill = TimeUnit.HOURS
+                timeMill = TimeUnit.HOURS,
+                platform = "NAVER_SERIES",
+                type = "COMIC"
             )
         }),
-        MainSettingLine(title = "WORKER 취소", onClick = {
-            PeriodicWorker.cancelWorker(workManager = workManager, tag = "BEST")
+        MainSettingLine(title = "WORKER 웹툰 취소", onClick = {
+            PeriodicWorker.cancelWorker(
+                workManager = workManager,
+                tag = "BEST",
+                platform = "NAVER_SERIES",
+                type = "COMIC"
+            )
+        }),
+        MainSettingLine(title = "WORKER 웹소설 시작", onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                repeatInterval = 3,
+                tag = "BEST",
+                timeMill = TimeUnit.HOURS,
+                platform = "NAVER_SERIES",
+                type = "NOVEL"
+            )
+        }),
+        MainSettingLine(title = "WORKER 웹소설 취소", onClick = {
+            PeriodicWorker.cancelWorker(
+                workManager = workManager,
+                tag = "BEST",
+                platform = "NAVER_SERIES",
+                type = "NOVEL"
+            )
         })
     )
 
