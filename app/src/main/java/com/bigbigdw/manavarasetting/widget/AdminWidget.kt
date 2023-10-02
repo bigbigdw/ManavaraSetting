@@ -34,12 +34,17 @@ import androidx.glance.layout.size
 import androidx.glance.layout.wrapContentSize
 import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
+
+import com.bigbigdw.manavarasetting.ui.theme.color1CE3EE
+import com.bigbigdw.manavarasetting.ui.theme.colorFFFFFF
 import com.bigbigdw.manavarasetting.util.DataStoreManager
-import com.bigbigdw.manavarasetting.ui.theme.color4186e1
 import com.bigbigdw.manavarasetting.ui.theme.colorB3000000
 import com.bigbigdw.manavarasetting.util.DataStoreManager.Companion.BEST_NAVER_SERIES_COMIC
+import com.bigbigdw.manavarasetting.util.DataStoreManager.Companion.BEST_NAVER_SERIES_NOVEL
 import com.bigbigdw.manavarasetting.util.DataStoreManager.Companion.JSON_NAVER_SERIES_COMIC
+import com.bigbigdw.manavarasetting.util.DataStoreManager.Companion.JSON_NAVER_SERIES_NOVEL
 import com.bigbigdw.manavarasetting.util.DataStoreManager.Companion.TROPHY_NAVER_SERIES_COMIC
+import com.bigbigdw.manavarasetting.util.DataStoreManager.Companion.TROPHY_NAVER_SERIES_NOVEL
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import com.bigbigdw.manavarasetting.util.updateWorker
 import com.bigbigdw.manavarasetting.widget.ManavaraSettingWidget.paramWorkerInterval
@@ -82,9 +87,13 @@ fun ScreenWidget(context: Context) {
 
     val dataStore = DataStoreManager(context)
 
-    val BESTWORKER_TIME = dataStore.getDataStoreString(BEST_NAVER_SERIES_COMIC).collectAsState(initial = "")
-    val JSONWORKER_TIME = dataStore.getDataStoreString(JSON_NAVER_SERIES_COMIC).collectAsState(initial = "")
-    val TROPHYWORKER_TIME = dataStore.getDataStoreString(TROPHY_NAVER_SERIES_COMIC).collectAsState(initial = "")
+    val BEST_NAVER_SERIES_COMIC = dataStore.getDataStoreString(BEST_NAVER_SERIES_COMIC).collectAsState(initial = "")
+    val JSON_NAVER_SERIES_COMIC = dataStore.getDataStoreString(JSON_NAVER_SERIES_COMIC).collectAsState(initial = "")
+    val TROPHY_NAVER_SERIES_COMIC = dataStore.getDataStoreString(TROPHY_NAVER_SERIES_COMIC).collectAsState(initial = "")
+
+    val BEST_NAVER_SERIES_NOVEL = dataStore.getDataStoreString(BEST_NAVER_SERIES_NOVEL).collectAsState(initial = "")
+    val JSON_NAVER_SERIES_NOVEL = dataStore.getDataStoreString(JSON_NAVER_SERIES_NOVEL).collectAsState(initial = "")
+    val TROPHY_NAVER_SERIES_NOVEL = dataStore.getDataStoreString(TROPHY_NAVER_SERIES_NOVEL).collectAsState(initial = "")
 
     Column(
         modifier = GlanceModifier
@@ -96,9 +105,10 @@ fun ScreenWidget(context: Context) {
         horizontalAlignment = Alignment.Start,
     ) {
 
-        Spacer(modifier = GlanceModifier.size(12.dp))
+        Spacer(modifier = GlanceModifier.size(4.dp))
 
         Row(
+            modifier = GlanceModifier.background(color = colorB3000000).padding(4.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -114,59 +124,132 @@ fun ScreenWidget(context: Context) {
             Text(
                 text = "세팅바라 현황",
                 style = TextStyle(
-                    color = ColorProvider(Color.White),
-                    fontSize = 20.sp,
+                    color = ColorProvider(colorFFFFFF),
+                    fontSize = 24.sp,
                 )
             )
         }
 
-        Spacer(modifier = GlanceModifier.size(8.dp))
+        Column(modifier = GlanceModifier.padding(8.dp)){
 
+            Spacer(modifier = GlanceModifier.size(4.dp))
 
-        Column(
-            modifier = GlanceModifier
-                .wrapContentSize()
-                .padding(8.dp),
-            verticalAlignment = Alignment.Top,
-            horizontalAlignment = Alignment.Start,
-        ) {
-            ItemMainSetting(
-                image = R.drawable.icon_best_wht,
-                titleWorker = "베스트 WORKER : ",
-                valueWorker = BESTWORKER_TIME.value ?: "알 수 없음",
+            Text(
+                text = "네이버 시리즈 웹툰",
+                style = TextStyle(
+                    color = ColorProvider(colorFFFFFF),
+                    fontSize = 20.sp,
+                )
             )
 
+            Spacer(modifier = GlanceModifier.size(4.dp))
+
+            Column(
+                modifier = GlanceModifier
+                    .wrapContentSize()
+                    .padding(2.dp),
+                verticalAlignment = Alignment.Top,
+                horizontalAlignment = Alignment.Start,
+            ) {
+                ItemMainSetting(
+                    image = R.drawable.icon_best_wht,
+                    titleWorker = "베스트 : ",
+                    valueWorker = BEST_NAVER_SERIES_COMIC.value ?: "알 수 없음",
+                )
+
+            }
+
+            Column(
+                modifier = GlanceModifier
+                    .wrapContentSize()
+                    .padding(2.dp),
+                verticalAlignment = Alignment.Top,
+                horizontalAlignment = Alignment.Start,
+            ) {
+                ItemMainSetting(
+                    image = R.drawable.icon_json_wht,
+                    titleWorker = "JSON : ",
+                    valueWorker = JSON_NAVER_SERIES_COMIC.value ?: "알 수 없음",
+                )
+
+            }
+
+            Column(
+                modifier = GlanceModifier
+                    .wrapContentSize()
+                    .padding(2.dp),
+                verticalAlignment = Alignment.Top,
+                horizontalAlignment = Alignment.Start,
+            ) {
+                ItemMainSetting(
+                    image = R.drawable.icon_trophy_wht,
+                    titleWorker = "트로피 : ",
+                    valueWorker = TROPHY_NAVER_SERIES_COMIC.value ?: "알 수 없음",
+                )
+
+                Spacer(modifier = GlanceModifier.size(8.dp))
+            }
         }
 
-        Column(
-            modifier = GlanceModifier
-                .wrapContentSize()
-                .padding(8.dp),
-            verticalAlignment = Alignment.Top,
-            horizontalAlignment = Alignment.Start,
-        ) {
-            ItemMainSetting(
-                image = R.drawable.icon_json_wht,
-                titleWorker = "JSON WORKER : ",
-                valueWorker = JSONWORKER_TIME.value ?: "알 수 없음",
+        Column(modifier = GlanceModifier.padding(8.dp)){
+
+            Spacer(modifier = GlanceModifier.size(4.dp))
+
+            Text(
+                text = "네이버 시리즈 웹소설",
+                style = TextStyle(
+                    color = ColorProvider(colorFFFFFF),
+                    fontSize = 20.sp,
+                )
             )
 
-        }
+            Spacer(modifier = GlanceModifier.size(4.dp))
 
-        Column(
-            modifier = GlanceModifier
-                .wrapContentSize()
-                .padding(8.dp),
-            verticalAlignment = Alignment.Top,
-            horizontalAlignment = Alignment.Start,
-        ) {
-            ItemMainSetting(
-                image = R.drawable.icon_trophy_wht,
-                titleWorker = "트로피 WORKER : ",
-                valueWorker = TROPHYWORKER_TIME.value ?: "알 수 없음",
-            )
+            Column(
+                modifier = GlanceModifier
+                    .wrapContentSize()
+                    .padding(2.dp),
+                verticalAlignment = Alignment.Top,
+                horizontalAlignment = Alignment.Start,
+            ) {
+                ItemMainSetting(
+                    image = R.drawable.icon_best_wht,
+                    titleWorker = "베스트 : ",
+                    valueWorker = BEST_NAVER_SERIES_NOVEL.value ?: "알 수 없음",
+                )
 
-            Spacer(modifier = GlanceModifier.size(8.dp))
+            }
+
+            Column(
+                modifier = GlanceModifier
+                    .wrapContentSize()
+                    .padding(2.dp),
+                verticalAlignment = Alignment.Top,
+                horizontalAlignment = Alignment.Start,
+            ) {
+                ItemMainSetting(
+                    image = R.drawable.icon_json_wht,
+                    titleWorker = "JSON : ",
+                    valueWorker = JSON_NAVER_SERIES_NOVEL.value ?: "알 수 없음",
+                )
+
+            }
+
+            Column(
+                modifier = GlanceModifier
+                    .wrapContentSize()
+                    .padding(2.dp),
+                verticalAlignment = Alignment.Top,
+                horizontalAlignment = Alignment.Start,
+            ) {
+                ItemMainSetting(
+                    image = R.drawable.icon_trophy_wht,
+                    titleWorker = "트로피 : ",
+                    valueWorker = TROPHY_NAVER_SERIES_NOVEL.value ?: "알 수 없음",
+                )
+
+                Spacer(modifier = GlanceModifier.size(8.dp))
+            }
         }
     }
 }
@@ -190,7 +273,7 @@ fun ItemMainSetting(
         Text(
             text = titleWorker,
             style = TextStyle(
-                color = ColorProvider(Color.White),
+                color = ColorProvider(colorFFFFFF),
                 fontSize = 18.sp,
             )
         )
@@ -200,7 +283,7 @@ fun ItemMainSetting(
         Text(
             text = valueWorker,
             style = TextStyle(
-                color = ColorProvider(color4186e1),
+                color = ColorProvider(color1CE3EE),
                 fontSize = 18.sp,
             )
         )

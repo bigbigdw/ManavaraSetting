@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.main.model.MainSettingLine
+import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color8E8E8E
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.util.FCM
@@ -40,7 +41,8 @@ import java.util.concurrent.TimeUnit
 
 @Composable
 fun ScreenMainJson(
-    lineJson: List<MainSettingLine>
+    lineJson: List<MainSettingLine>,
+    viewModelMain: ViewModelMain
 ) {
 
     Box(
@@ -65,19 +67,19 @@ fun ScreenMainJson(
 
             MainHeader(image = R.drawable.icon_json, title = "베스트 JSON 현황")
 
-            ContentsJson(lineJson = lineJson)
+            ContentsJson(viewModelMain = viewModelMain, lineJson = lineJson)
         }
     }
 }
 
 @Composable
-fun ContentsJson(lineJson: List<MainSettingLine>) {
+fun ContentsJson(lineJson: List<MainSettingLine>, viewModelMain: ViewModelMain) {
 
     val context = LocalContext.current
     val workManager = WorkManager.getInstance(context)
 
-    val itemJsonWorkerToday = listOf(
-        MainSettingLine(title = "JSON 웹툰 WORKER 시작", onClick = {
+    val itemNaverSeriesComic = listOf(
+        MainSettingLine(title = "WORKER 시작", onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
                 repeatInterval = 4,
@@ -86,16 +88,33 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
                 platform = "NAVER_SERIES",
                 type = "COMIC"
             )
+
+            viewModelMain.getDataStoreStatus(context = context)
         }),
-        MainSettingLine(title = "JSON 웹툰 WORKER 취소", onClick = {
+        MainSettingLine(title = "WORKER 취소", onClick = {
             PeriodicWorker.cancelWorker(
                 workManager = workManager,
                 tag = "JSON",
                 platform = "NAVER_SERIES",
                 type = "COMIC"
             )
+
+            viewModelMain.getDataStoreStatus(context = context)
         }),
-        MainSettingLine(title = "JSON 웹소설 WORKER 시작", onClick = {
+        MainSettingLine(title = "WORKER 확인", onClick = {
+            viewModelMain.checkWorker(
+                workManager = workManager,
+                tag = "JSON",
+                platform = "NAVER_SERIES",
+                type = "COMIC"
+            )
+
+            viewModelMain.getDataStoreStatus(context = context)
+        }),
+    )
+
+    val itemNaverSeriesNovel = listOf(
+        MainSettingLine(title = "WORKER 시작", onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
                 repeatInterval = 4,
@@ -104,14 +123,28 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
                 platform = "NAVER_SERIES",
                 type = "NOVEL"
             )
+
+            viewModelMain.getDataStoreStatus(context = context)
         }),
-        MainSettingLine(title = "JSON 웹소설 WORKER 취소", onClick = {
+        MainSettingLine(title = "WORKER 취소", onClick = {
             PeriodicWorker.cancelWorker(
                 workManager = workManager,
                 tag = "JSON",
                 platform = "NAVER_SERIES",
                 type = "NOVEL"
             )
+
+            viewModelMain.getDataStoreStatus(context = context)
+        }),
+        MainSettingLine(title = "WORKER 확인", onClick = {
+            viewModelMain.checkWorker(
+                workManager = workManager,
+                tag = "JSON",
+                platform = "NAVER_SERIES",
+                type = "NOVEL"
+            )
+
+            viewModelMain.getDataStoreStatus(context = context)
         }),
     )
 
@@ -134,11 +167,25 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
         })
     )
 
+    ItemTabletTitle(str = "네이버 시리즈 웹툰", isTopPadding = false)
+
     TabletContentWrap {
-        itemJsonWorkerToday.forEachIndexed { index, item ->
+        itemNaverSeriesComic.forEachIndexed { index, item ->
             ItemMainTabletContent(
                 title = item.title,
-                isLast = itemJsonWorkerToday.size - 1 == index,
+                isLast = itemNaverSeriesComic.size - 1 == index,
+                onClick = item.onClick
+            )
+        }
+    }
+
+    ItemTabletTitle(str = "네이버 시리즈 웹소설")
+
+    TabletContentWrap {
+        itemNaverSeriesNovel.forEachIndexed { index, item ->
+            ItemMainTabletContent(
+                title = item.title,
+                isLast = itemNaverSeriesNovel.size - 1 == index,
                 onClick = item.onClick
             )
         }

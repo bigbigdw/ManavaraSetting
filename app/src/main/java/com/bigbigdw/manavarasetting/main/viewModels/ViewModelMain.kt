@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.firebase.FCMAlert
 import com.bigbigdw.manavarasetting.main.event.EventMain
 import com.bigbigdw.manavarasetting.main.event.StateMain
@@ -11,6 +12,7 @@ import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
 import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.DataStoreManager
+import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import com.bigbigdw.manavarasetting.util.convertBestItemDataAnalyzeJson
 import com.bigbigdw.manavarasetting.util.convertBestItemDataJson
 import com.google.firebase.auth.FirebaseAuth
@@ -389,16 +391,20 @@ class ViewModelMain @Inject constructor() : ViewModel() {
             viewModelScope.launch {
                 events.send(EventMain.SetTrophyList(trophyList = itemList))
             }
+        }.addOnFailureListener {
+            Log.d("JSON_TROPHY_$type", "FAIL == $it")
         }
     }
 
-    fun getBestTrophyList(platform: String, menu: String, type: String, child: String){
+    fun getBestTrophyList(platform: String, menu: String, type: String, genre: String){
 
         val mRootRef = if(menu == "주간"){
-            FirebaseDatabase.getInstance().reference.child("BEST").child(platform).child(type).child(child).child("TROPHY_WEEK_TOTAL")
+            FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform).child(genre).child("TROPHY_WEEK_TOTAL")
         } else {
-            FirebaseDatabase.getInstance().reference.child("BEST").child(platform).child(type).child(child).child("TROPHY_MONTH_TOTAL")
+            FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform).child(genre).child("TROPHY_MONTH_TOTAL")
         }
+
+        Log.d("JSON_TROPHY_$type", "mRootRef == $mRootRef")
 
         mRootRef.addListenerForSingleValueEvent(object :
             ValueEventListener {
@@ -419,7 +425,7 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                     }
 
                 } else {
-                    Log.d("HIHI", "FALSE")
+                    Log.d("JSON_TROPHY_$type", "FAIL == NOT EXIST")
                 }
             }
 
@@ -443,6 +449,19 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                 mRootRef.child(str).removeValue()
             }
 
+        }
+    }
+
+    fun checkWorker(workManager: WorkManager, tag: String, platform: String, type: String) {
+        viewModelScope.launch {
+            _sideEffects.send(
+                PeriodicWorker.checkWorker(
+                    workManager = workManager,
+                    tag = tag,
+                    platform = platform,
+                    type = type
+                )
+            )
         }
     }
 

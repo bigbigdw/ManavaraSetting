@@ -94,7 +94,7 @@ fun ScreenTablet(
                     ContentsFCMList(viewModelMain = viewModelMain, child = "ALERT")
                 }
                 "베스트 리스트 관리" -> {
-                    ContentsBest(lineBest = lineBest)
+                    ContentsBest(lineBest = lineBest, viewModelMain = viewModelMain)
                 }
                 "베스트 BOOK 리스트" -> {
                     ContentsBestList(
@@ -109,7 +109,7 @@ fun ScreenTablet(
                     ContentsFCMList(viewModelMain = viewModelMain, child = "BEST")
                 }
                 "JSON 관리" -> {
-                    ContentsJson(lineJson = lineJson)
+                    ContentsJson(viewModelMain = viewModelMain, lineJson = lineJson)
                 }
                 "JSON 투데이 베스트 현황" -> {
                     ContentsBestJsonList(
@@ -176,7 +176,7 @@ fun ScreenTablet(
                     ContentsFCMList(viewModelMain = viewModelMain, child = "JSON")
                 }
                 "트로피 정산 관리" -> {
-                    ContentsTrophy(lineTrophy = lineTrophy)
+                    ContentsTrophy(viewModelMain = viewModelMain,lineTrophy = lineTrophy)
                 }
                 "트로피 주간 토탈 리스트" -> {
                     ContentsBestJsonList(

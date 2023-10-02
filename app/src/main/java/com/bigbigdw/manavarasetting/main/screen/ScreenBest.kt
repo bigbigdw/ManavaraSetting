@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.main.model.MainSettingLine
+import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.util.BestRef
@@ -44,7 +45,8 @@ import java.util.concurrent.TimeUnit
 
 @Composable
 fun ScreenMainBest(
-    lineBest: List<MainSettingLine>
+    lineBest: List<MainSettingLine>,
+    viewModelMain: ViewModelMain
 ) {
 
     Box(
@@ -69,19 +71,19 @@ fun ScreenMainBest(
 
             MainHeader(image = R.drawable.icon_best, title = "베스트 리스트 현황")
 
-            ContentsBest(lineBest = lineBest)
+            ContentsBest(viewModelMain = viewModelMain, lineBest = lineBest)
         }
     }
 }
 
 @Composable
-fun ContentsBest(lineBest: List<MainSettingLine>) {
+fun ContentsBest(lineBest: List<MainSettingLine>, viewModelMain: ViewModelMain) {
 
     val context = LocalContext.current
     val workManager = WorkManager.getInstance(context)
 
-    val itemBestWorker = listOf(
-        MainSettingLine(title = "WORKER 웹툰 시작", onClick = {
+    val itemNaverSeriesComic = listOf(
+        MainSettingLine(title = "WORKER 시작", onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
                 repeatInterval = 3,
@@ -90,48 +92,85 @@ fun ContentsBest(lineBest: List<MainSettingLine>) {
                 platform = "NAVER_SERIES",
                 type = "COMIC"
             )
+
+            viewModelMain.getDataStoreStatus(context = context)
         }),
-        MainSettingLine(title = "WORKER 웹툰 취소", onClick = {
+        MainSettingLine(title = "WORKER 취소", onClick = {
             PeriodicWorker.cancelWorker(
                 workManager = workManager,
                 tag = "BEST",
                 platform = "NAVER_SERIES",
                 type = "COMIC"
             )
-        }),
-        MainSettingLine(title = "WORKER 웹소설 시작", onClick = {
-            PeriodicWorker.doWorker(
-                workManager = workManager,
-                repeatInterval = 3,
-                tag = "BEST",
-                timeMill = TimeUnit.HOURS,
-                platform = "NAVER_SERIES",
-                type = "NOVEL"
-            )
-        }),
-        MainSettingLine(title = "WORKER 웹소설 취소", onClick = {
-            PeriodicWorker.cancelWorker(
-                workManager = workManager,
-                tag = "BEST",
-                platform = "NAVER_SERIES",
-                type = "NOVEL"
-            )
+
+            viewModelMain.getDataStoreStatus(context = context)
         }),
         MainSettingLine(title = "WORKER 확인", onClick = {
-            PeriodicWorker.checkWorker(
+            viewModelMain.checkWorker(
                 workManager = workManager,
                 tag = "BEST",
                 platform = "NAVER_SERIES",
                 type = "NOVEL"
             )
+
+            viewModelMain.getDataStoreStatus(context = context)
         }),
     )
 
+    val itemNaverSeriesNovel = listOf(
+        MainSettingLine(title = "WORKER 시작", onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                repeatInterval = 3,
+                tag = "BEST",
+                timeMill = TimeUnit.HOURS,
+                platform = "NAVER_SERIES",
+                type = "NOVEL"
+            )
+
+            viewModelMain.getDataStoreStatus(context = context)
+        }),
+        MainSettingLine(title = "WORKER 취소", onClick = {
+            PeriodicWorker.cancelWorker(
+                workManager = workManager,
+                tag = "BEST",
+                platform = "NAVER_SERIES",
+                type = "NOVEL"
+            )
+
+            viewModelMain.getDataStoreStatus(context = context)
+        }),
+        MainSettingLine(title = "WORKER 확인", onClick = {
+            viewModelMain.checkWorker(
+                workManager = workManager,
+                tag = "BEST",
+                platform = "NAVER_SERIES",
+                type = "NOVEL"
+            )
+
+            viewModelMain.getDataStoreStatus(context = context)
+        }),
+    )
+
+    ItemTabletTitle(str = "네이버 시리즈 웹툰", isTopPadding = false)
+
     TabletContentWrap {
-        itemBestWorker.forEachIndexed { index, item ->
+        itemNaverSeriesComic.forEachIndexed { index, item ->
             ItemMainTabletContent(
                 title = item.title,
-                isLast = itemBestWorker.size - 1 == index,
+                isLast = itemNaverSeriesComic.size - 1 == index,
+                onClick = item.onClick
+            )
+        }
+    }
+
+    ItemTabletTitle(str = "네이버 시리즈 웹소설")
+
+    TabletContentWrap {
+        itemNaverSeriesNovel.forEachIndexed { index, item ->
+            ItemMainTabletContent(
+                title = item.title,
+                isLast = itemNaverSeriesNovel.size - 1 == index,
                 onClick = item.onClick
             )
         }

@@ -51,12 +51,12 @@ fun ScreenMainSetting(
     }
 
     val lineCount = listOf(
-        MainSettingLine(title = "베스트 최신화 횟수 : ", value = viewModelMain.state.collectAsState().value.fcmBestList.size.toString() ?: ""),
-        MainSettingLine(title = "베스트 금일 최신화 횟수 : ", value = viewModelMain.state.collectAsState().value.fcmBestCount.toString() ?: ""),
-        MainSettingLine(title = "JSON 최신화 횟수 : ", value = viewModelMain.state.collectAsState().value.fcmJsonList.size.toString() ?: ""),
-        MainSettingLine(title = "JSON 금일 최신화 횟수 : ", value = viewModelMain.state.collectAsState().value.fcmJsonCount.toString() ?: ""),
-        MainSettingLine(title = "트로피 최신화 횟수 : ", value = viewModelMain.state.collectAsState().value.fcmTrophyList.size.toString() ?: ""),
-        MainSettingLine(title = "트로피 금일 최신화 횟수 : ", value = viewModelMain.state.collectAsState().value.fcmTrophyCount.toString() ?: ""),
+        MainSettingLine(title = "베스트 최신화 횟수 : ", value = viewModelMain.state.collectAsState().value.fcmBestList.size.toString()),
+        MainSettingLine(title = "베스트 금일 최신화 횟수 : ", value = viewModelMain.state.collectAsState().value.fcmBestCount.toString()),
+        MainSettingLine(title = "JSON 최신화 횟수 : ", value = viewModelMain.state.collectAsState().value.fcmJsonList.size.toString()),
+        MainSettingLine(title = "JSON 금일 최신화 횟수 : ", value = viewModelMain.state.collectAsState().value.fcmJsonCount.toString()),
+        MainSettingLine(title = "트로피 최신화 횟수 : ", value = viewModelMain.state.collectAsState().value.fcmTrophyList.size.toString()),
+        MainSettingLine(title = "트로피 금일 최신화 횟수 : ", value = viewModelMain.state.collectAsState().value.fcmTrophyCount.toString()),
     )
 
     Box(

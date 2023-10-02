@@ -328,13 +328,13 @@ fun NavigationGraph(
             )
         }
         composable(ScreemBottomItem.BEST.screenRoute) {
-            ScreenMainBest(lineBest = lineBest)
+            ScreenMainBest(viewModelMain = viewModelMain, lineBest = lineBest)
         }
         composable(ScreemBottomItem.JSON.screenRoute) {
-            ScreenMainJson(lineJson = lineJson)
+            ScreenMainJson(viewModelMain = viewModelMain, lineJson = lineJson)
         }
         composable(ScreemBottomItem.TROPHY.screenRoute) {
-            ScreenMainTrophy(lineTrophy = lineTrophy)
+            ScreenMainTrophy(viewModelMain = viewModelMain,lineTrophy = lineTrophy)
         }
     }
 }
