@@ -327,6 +327,9 @@ fun NavigationGraph(
                 lineTrophy = lineTrophy
             )
         }
+        composable(ScreemBottomItem.FCM.screenRoute) {
+            ScreenMainFCM()
+        }
         composable(ScreemBottomItem.BEST.screenRoute) {
             ScreenMainBest(viewModelMain = viewModelMain, lineBest = lineBest)
         }
