@@ -7,14 +7,9 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.bigbigdw.manavarasetting.R
-import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager
-import com.google.firebase.database.FirebaseDatabase
 
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class FirebaseMessagingOnReceived : FirebaseMessagingService() {
 

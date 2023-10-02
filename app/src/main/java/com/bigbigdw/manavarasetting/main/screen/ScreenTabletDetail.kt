@@ -25,7 +25,6 @@ import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
-import com.bigbigdw.manavarasetting.ui.theme.color8E8E8E
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.util.WeekKor
 
@@ -34,7 +33,9 @@ fun ScreenTabletDetail(
     setDetailPage: (Boolean) -> Unit,
     getDetailMenu: String,
     viewModelMain: ViewModelMain,
-    getDetailPageType: String
+    getDetailPlatform: String,
+    getDetailGenre: String,
+    getDetailType: String,
 ) {
 
     Box(
@@ -67,35 +68,39 @@ fun ScreenTabletDetail(
             if (getDetailMenu.contains("베스트 리스트")) {
                 ContentsBestListDetail(
                     viewModelMain = viewModelMain,
-                    child = getDetailPageType,
-                    type = "BEST"
+                    type = "BEST",
+                    getDetailPlatform = getDetailPlatform,
+                    getDetailGenre = getDetailGenre,
+                    getDetailType = getDetailType,
                 )
-            } else if (getDetailMenu.contains("투데이 베스트 JSON")) {
+            } else if (getDetailMenu.contains("JSON 투데이 베스트")) {
                 ContentsBestListDetail(
                     viewModelMain = viewModelMain,
-                    child = getDetailPageType,
-                    type = "JSON"
+                    type = "JSON",
+                    getDetailPlatform = getDetailPlatform,
+                    getDetailGenre = getDetailGenre,
+                    getDetailType = getDetailType,
                 )
-            }  else if (getDetailMenu.contains("주간 베스트 JSON")) {
+            }  else if (getDetailMenu.contains("JSON 주간 베스트")) {
                 ContentsBestListDetailWeek(
                     viewModelMain = viewModelMain,
-                    child = getDetailPageType,
-                    platform = "NAVER_SERIES",
                     menu = "주간",
-                    type = "COMIC"
+                    getDetailPlatform = getDetailPlatform,
+                    getDetailGenre = getDetailGenre,
+                    getDetailType = getDetailType,
                 )
-            }  else if (getDetailMenu.contains("월간 베스트 JSON")) {
+            }  else if (getDetailMenu.contains("JSON 월간 베스트")) {
                 ContentsBestListDetailWeek(
                     viewModelMain = viewModelMain,
-                    child = getDetailPageType,
-                    platform = "NAVER_SERIES",
                     menu = "월간",
-                    type = "COMIC"
+                    getDetailPlatform = getDetailPlatform,
+                    getDetailGenre = getDetailGenre,
+                    getDetailType = getDetailType,
                 )
             } else if (getDetailMenu.contains("주간 트로피")) {
                 ContentsBestListJsonTrophy(
                     viewModelMain = viewModelMain,
-                    child = getDetailPageType,
+                    child = getDetailPlatform,
                     platform = "NAVER_SERIES",
                     menu = "주간",
                     type = "COMIC"
@@ -103,7 +108,7 @@ fun ScreenTabletDetail(
             } else if (getDetailMenu.contains("월간 트로피")) {
                 ContentsBestListJsonTrophy(
                     viewModelMain = viewModelMain,
-                    child = getDetailPageType,
+                    child = getDetailPlatform,
                     platform = "NAVER_SERIES",
                     menu = "월간",
                     type = "COMIC"
@@ -111,7 +116,7 @@ fun ScreenTabletDetail(
             } else if (getDetailMenu.contains("트로피 주간")) {
                 ContentsBestListDetailTrophy(
                     viewModelMain = viewModelMain,
-                    child = getDetailPageType,
+                    child = getDetailPlatform,
                     platform = "NAVER_SERIES",
                     menu = "주간",
                     type = "COMIC"
@@ -119,7 +124,7 @@ fun ScreenTabletDetail(
             } else if (getDetailMenu.contains("트로피 월간")) {
                 ContentsBestListDetailTrophy(
                     viewModelMain = viewModelMain,
-                    child = getDetailPageType,
+                    child = getDetailPlatform,
                     platform = "NAVER_SERIES",
                     menu = "월간",
                     type = "COMIC"
@@ -130,15 +135,23 @@ fun ScreenTabletDetail(
 }
 
 @Composable
-fun ContentsBestListDetail(viewModelMain: ViewModelMain, child: String, type: String) {
+fun ContentsBestListDetail(
+    viewModelMain: ViewModelMain,
+    type: String,
+    getDetailPlatform: String,
+    getDetailGenre: String,
+    getDetailType: String
+) {
 
     if (type == "BEST") {
-        viewModelMain.getBestList(platform = "NAVER_SERIES", child = child, type = "COMIC")
+        viewModelMain.getBestList(platform = getDetailPlatform, child = getDetailGenre, type = getDetailType)
     } else {
-        viewModelMain.getBestJsonList(platform = "NAVER_SERIES", genre = child, type = "COMIC")
+        viewModelMain.getBestJsonList(platform = getDetailPlatform, genre = getDetailGenre, type = getDetailType)
     }
 
     val bestList: ArrayList<ItemBookInfo> = viewModelMain.state.collectAsState().value.setBestBookList
+
+    Spacer(modifier = Modifier.size(16.dp))
 
     TabletContentWrap {
         Spacer(modifier = Modifier.size(8.dp))
@@ -157,9 +170,15 @@ fun ContentsBestListDetail(viewModelMain: ViewModelMain, child: String, type: St
 }
 
 @Composable
-fun ContentsBestListDetailWeek(platform : String, viewModelMain: ViewModelMain, child: String, type: String, menu : String) {
+fun ContentsBestListDetailWeek(
+    viewModelMain: ViewModelMain,
+    menu: String,
+    getDetailPlatform: String,
+    getDetailGenre: String,
+    getDetailType: String
+) {
 
-    viewModelMain.getBestJsonWeekList(platform = platform, genre = child, menu = menu, type = type)
+    viewModelMain.getBestJsonWeekList(platform = getDetailPlatform, genre = getDetailGenre, menu = menu, type = getDetailType)
 
     val bestWeekList: ArrayList<ArrayList<ItemBookInfo>> =
         viewModelMain.state.collectAsState().value.bestListWeek

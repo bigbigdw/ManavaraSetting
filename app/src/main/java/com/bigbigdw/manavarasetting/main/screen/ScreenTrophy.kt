@@ -80,7 +80,7 @@ fun ContentsTrophy(lineTrophy: List<MainSettingLine>) {
                 workManager = workManager,
                 repeatInterval = 5,
                 tag = "TROPHY",
-                timeMill = TimeUnit.MINUTES,
+                timeMill = TimeUnit.HOURS,
                 platform = "NAVER_SERIES",
                 type = "COMIC"
             )
@@ -98,7 +98,7 @@ fun ContentsTrophy(lineTrophy: List<MainSettingLine>) {
                 workManager = workManager,
                 repeatInterval = 5,
                 tag = "TROPHY",
-                timeMill = TimeUnit.MINUTES,
+                timeMill = TimeUnit.HOURS,
                 platform = "NAVER_SERIES",
                 type = "NOVEL"
             )

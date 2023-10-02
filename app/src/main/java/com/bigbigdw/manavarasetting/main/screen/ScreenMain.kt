@@ -56,13 +56,12 @@ import androidx.navigation.compose.rememberNavController
 import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.main.model.MainSettingLine
-import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager
+import com.bigbigdw.manavarasetting.util.DataStoreManager
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color1E1E20
 import com.bigbigdw.manavarasetting.ui.theme.color1E4394
 import com.bigbigdw.manavarasetting.ui.theme.color21C2EC
-import com.bigbigdw.manavarasetting.ui.theme.color2EA259
 import com.bigbigdw.manavarasetting.ui.theme.color31C3AE
 import com.bigbigdw.manavarasetting.ui.theme.color4996E8
 import com.bigbigdw.manavarasetting.ui.theme.color4AD7CF
@@ -73,10 +72,7 @@ import com.bigbigdw.manavarasetting.ui.theme.color555b68
 import com.bigbigdw.manavarasetting.ui.theme.color64C157
 import com.bigbigdw.manavarasetting.ui.theme.color79B4F8
 import com.bigbigdw.manavarasetting.ui.theme.color7C81FF
-import com.bigbigdw.manavarasetting.ui.theme.color808CF8
 import com.bigbigdw.manavarasetting.ui.theme.color80BF78
-import com.bigbigdw.manavarasetting.ui.theme.color8AA6BD
-import com.bigbigdw.manavarasetting.ui.theme.color8F8F8F
 import com.bigbigdw.manavarasetting.ui.theme.color91CEC7
 import com.bigbigdw.manavarasetting.ui.theme.color998DF9
 import com.bigbigdw.manavarasetting.ui.theme.colorABD436
@@ -86,7 +82,6 @@ import com.bigbigdw.manavarasetting.ui.theme.colorF17666
 import com.bigbigdw.manavarasetting.ui.theme.colorF17FA0
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.ui.theme.colorFDC24E
-import com.bigbigdw.manavarasetting.ui.theme.colorFFAC59
 
 @Composable
 fun ScreenMain(
@@ -110,7 +105,6 @@ fun ScreenMain(
         ScreenMainMobile(
             navController = navController,
             currentRoute = currentRoute,
-            workManager = workManager,
             viewModelMain = viewModelMain,
             isExpandedScreen = isExpandedScreen
         )
@@ -148,7 +142,6 @@ fun ScreenMainTablet(
 fun ScreenMainMobile(
     navController: NavHostController,
     currentRoute: String?,
-    workManager: WorkManager,
     viewModelMain: ViewModelMain,
     isExpandedScreen: Boolean
 ){
@@ -306,36 +299,19 @@ fun NavigationGraph(
     val context = LocalContext.current
     val dataStore = DataStoreManager(context)
 
-    val lineTest = listOf(
-        MainSettingLine(title = "WORKER : ", value = viewModelMain.state.collectAsState().value.statusTest),
-        MainSettingLine(title = "갱신시간 : ", value = dataStore.getDataStoreString(DataStoreManager.TEST_TIME).collectAsState(initial = "").value ?: ""),
-        MainSettingLine(title = "호출 횟수 : ", value = dataStore.getDataStoreString(DataStoreManager.FCM_COUNT_TEST).collectAsState(initial = "").value ?: ""),
-        MainSettingLine(title = "금일 호출 횟수 : ", dataStore.getDataStoreString(DataStoreManager.FCM_COUNT_TEST_TODAY).collectAsState(initial = "").value ?: ""),
-        MainSettingLine(title = "호출 주기 : ", value = dataStore.getDataStoreString(DataStoreManager.TIMEMILL_TEST).collectAsState(initial = "").value ?: ""),
-    )
-
     val lineBest = listOf(
-        MainSettingLine(title = "WORKER : ", value = viewModelMain.state.collectAsState().value.statusBest),
-        MainSettingLine(title = "갱신시간 : ", value = dataStore.getDataStoreString(DataStoreManager.BESTWORKER_TIME).collectAsState(initial = "").value ?: ""),
-        MainSettingLine(title = "호출 횟수 : ", value = dataStore.getDataStoreString(DataStoreManager.FCM_COUNT_BEST).collectAsState(initial = "").value ?: ""),
-        MainSettingLine(title = "금일 호출 횟수 : ", dataStore.getDataStoreString(DataStoreManager.FCM_COUNT_BEST_TODAY).collectAsState(initial = "").value ?: ""),
-        MainSettingLine(title = "호출 주기 : ", value = dataStore.getDataStoreString(DataStoreManager.TIMEMILL_BEST).collectAsState(initial = "").value ?: ""),
+        MainSettingLine(title = "네이버 시리즈 웹툰 : ", value = dataStore.getDataStoreString(DataStoreManager.BEST_NAVER_SERIES_COMIC).collectAsState(initial = "").value ?: ""),
+        MainSettingLine(title = "네이버 시리즈 소설 : ", value = dataStore.getDataStoreString(DataStoreManager.BEST_NAVER_SERIES_NOVEL).collectAsState(initial = "").value ?: ""),
     )
 
     val lineJson = listOf(
-        MainSettingLine(title = "WORKER : ", value = viewModelMain.state.collectAsState().value.statusJson),
-        MainSettingLine(title = "갱신시간 : ", value = dataStore.getDataStoreString(DataStoreManager.JSONWORKER_TIME).collectAsState(initial = "").value ?: ""),
-        MainSettingLine(title = "호출 횟수 : ", value = dataStore.getDataStoreString(DataStoreManager.FCM_COUNT_JSON).collectAsState(initial = "").value ?: ""),
-        MainSettingLine(title = "금일 호출 횟수 : ", dataStore.getDataStoreString(DataStoreManager.FCM_COUNT_JSON_TODAY).collectAsState(initial = "").value ?: ""),
-        MainSettingLine(title = "호출 주기 : ", value = dataStore.getDataStoreString(DataStoreManager.TIMEMILL_JSON).collectAsState(initial = "").value ?: ""),
+        MainSettingLine(title = "네이버 시리즈 웹툰 : ", value = dataStore.getDataStoreString(DataStoreManager.JSON_NAVER_SERIES_COMIC).collectAsState(initial = "").value ?: ""),
+        MainSettingLine(title = "네이버 시리즈 소설 : ", value = dataStore.getDataStoreString(DataStoreManager.JSON_NAVER_SERIES_NOVEL).collectAsState(initial = "").value ?: ""),
     )
 
     val lineTrophy = listOf(
-        MainSettingLine(title = "WORKER : ", value = viewModelMain.state.collectAsState().value.statusTrophy),
-        MainSettingLine(title = "갱신시간 : ", value = dataStore.getDataStoreString(DataStoreManager.TROPHYWORKER_TIME).collectAsState(initial = "").value ?: ""),
-        MainSettingLine(title = "호출 횟수 : ", value = dataStore.getDataStoreString(DataStoreManager.FCM_COUNT_TROPHY).collectAsState(initial = "").value ?: ""),
-        MainSettingLine(title = "금일 호출 횟수 : ", dataStore.getDataStoreString(DataStoreManager.FCM_COUNT_TROPHY_TODAY).collectAsState(initial = "").value ?: ""),
-        MainSettingLine(title = "호출 주기 : ", value = dataStore.getDataStoreString(DataStoreManager.TIMEMILL_TROPHY).collectAsState(initial = "").value ?: ""),
+        MainSettingLine(title = "네이버 시리즈 웹툰 : ", value = dataStore.getDataStoreString(DataStoreManager.TROPHY_NAVER_SERIES_COMIC).collectAsState(initial = "").value ?: ""),
+        MainSettingLine(title = "네이버 시리즈 소설 : ", value = dataStore.getDataStoreString(DataStoreManager.TROPHY_NAVER_SERIES_NOVEL).collectAsState(initial = "").value ?: ""),
     )
 
     NavHost(
@@ -346,14 +322,10 @@ fun NavigationGraph(
             ScreenMainSetting(
                 viewModelMain = viewModelMain,
                 isExpandedScreen = isExpandedScreen,
-                lineTest = lineTest,
                 lineBest = lineBest,
                 lineJson = lineJson,
                 lineTrophy = lineTrophy
             )
-        }
-        composable(ScreemBottomItem.FCM.screenRoute) {
-            ScreenMainFCM(lineTest = lineTest)
         }
         composable(ScreemBottomItem.BEST.screenRoute) {
             ScreenMainBest(lineBest = lineBest)

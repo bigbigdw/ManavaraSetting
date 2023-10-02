@@ -29,6 +29,7 @@ import com.bigbigdw.manavarasetting.ui.theme.color8E8E8E
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.util.FCM
 import com.bigbigdw.manavarasetting.util.NaverSeriesComicGenre
+import com.bigbigdw.manavarasetting.util.NaverSeriesNovelGenre
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenreKor
@@ -175,7 +176,9 @@ fun ContentsJson(lineJson: List<MainSettingLine>) {
 fun ContentsBestJsonList(
     setDetailPage: (Boolean) -> Unit,
     setDetailMenu: (String) -> Unit,
-    setDetailPageType: (String) -> Unit,
+    setDetailPlatform: (String) -> Unit,
+    setDetailGenre: (String) -> Unit,
+    setDetailType: (String) -> Unit,
     type : String,
 ) {
 
@@ -185,17 +188,38 @@ fun ContentsBestJsonList(
         itemList.add(MainSettingLine(title = "$type JSON ${getNaverSeriesGenreKor(j)}", value = getNaverSeriesGenre(j)))
     }
 
-    ItemTabletTitle(str = "네이버 시리즈", isTopPadding = false)
+    ItemTabletTitle(str = "네이버 시리즈 웹툰")
 
     TabletContentWrap {
-        itemList.forEachIndexed { index, item ->
+        NaverSeriesComicGenre.forEachIndexed { index, _ ->
             ItemMainTabletContent(
-                title = item.title,
-                isLast = itemList.size - 1 == index,
+                title = "네이버 시리즈 ${getNaverSeriesGenreKor(NaverSeriesComicGenre[index])}",
+                isLast = NaverSeriesComicGenre.size - 1 == index,
                 onClick = {
                     setDetailPage(true)
-                    setDetailMenu(item.title)
-                    setDetailPageType(item.value)
+                    setDetailMenu("NAVER_SERIES $type ${getNaverSeriesGenre(NaverSeriesComicGenre[index])}")
+                    setDetailPlatform("NAVER_SERIES")
+                    setDetailGenre(getNaverSeriesGenre(NaverSeriesComicGenre[index]))
+                    setDetailType("COMIC")
+                }
+            )
+        }
+    }
+
+
+    ItemTabletTitle(str = "네이버 시리즈 소설")
+
+    TabletContentWrap {
+        NaverSeriesNovelGenre.forEachIndexed { index, _ ->
+            ItemMainTabletContent(
+                title = "네이버 시리즈 ${getNaverSeriesGenreKor(NaverSeriesNovelGenre[index])}",
+                isLast = NaverSeriesNovelGenre.size - 1 == index,
+                onClick = {
+                    setDetailPage(true)
+                    setDetailMenu("NAVER_SERIES $type ${getNaverSeriesGenre(NaverSeriesNovelGenre[index])}")
+                    setDetailPlatform("NAVER_SERIES")
+                    setDetailGenre(getNaverSeriesGenre(NaverSeriesNovelGenre[index]))
+                    setDetailType("NOVEL")
                 }
             )
         }

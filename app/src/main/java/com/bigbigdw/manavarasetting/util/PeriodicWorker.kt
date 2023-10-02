@@ -1,9 +1,12 @@
 package com.bigbigdw.manavarasetting.util
 
+import android.util.Log
+import androidx.work.BackoffPolicy
 import androidx.work.Constraints
 import androidx.work.Data
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.firebase.FirebaseWorkManager
@@ -25,6 +28,11 @@ object PeriodicWorker {
 
         val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(repeatInterval, timeMill)
             .addTag("${tag}_${platform}_${type}")
+            .setBackoffCriteria(
+                BackoffPolicy.LINEAR,
+                PeriodicWorkRequest.MIN_PERIODIC_FLEX_MILLIS,
+                TimeUnit.MILLISECONDS
+            )
             .setInputData(inputData)
             .setConstraints(
                 Constraints.Builder()
@@ -35,29 +43,17 @@ object PeriodicWorker {
             )
             .build()
 
-        var currentUser :  FirebaseUser? = null
+        val currentUser :  FirebaseUser?
         val auth: FirebaseAuth = Firebase.auth
 
         currentUser = auth.currentUser
 
         if(currentUser?.uid == "A8uh2QkVQaV3Q3rE8SgBNKzV6VH2"){
             workManager.enqueueUniquePeriodicWork(
-                tag,
-                ExistingPeriodicWorkPolicy.UPDATE,
+                "${tag}_${platform}_${type}",
+                ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,
                 workRequest
             )
-
-            val mRootRef = FirebaseDatabase.getInstance().reference.child("WORKER")
-
-            val time = repeatInterval.toString()
-
-            val unit = if(timeMill == TimeUnit.HOURS){
-                "시간"
-            } else {
-                "분"
-            }
-
-            mRootRef.child("TIMEMILL_${tag}").setValue("${time}${unit} 마다")
         }
     }
 
@@ -69,9 +65,19 @@ object PeriodicWorker {
         workManager.cancelAllWork()
     }
 
-    fun checkWorker(workManager: WorkManager, tag: String) : String {
+    fun checkWorker(workManager: WorkManager, tag: String, platform : String, type: String) : String {
 
-        val status = workManager.getWorkInfosByTag(tag).get()
+        val status = workManager.getWorkInfosByTag("${tag}_${platform}_${type}").get()
+
+
+//        Log.d("checkWorker", workManager.lastCancelAllTimeMillis.toString())
+
+        if (status.isNullOrEmpty()) {
+
+            Log.d("checkWorker", "${tag}_${platform}_${type}  활성화 되지 않음")
+        } else {
+            Log.d("checkWorker", "${tag}_${platform}_${type} ${status[0].state.name}")
+        }
 
         return if (status.isNullOrEmpty()) {
             "활성화 되지 않음"

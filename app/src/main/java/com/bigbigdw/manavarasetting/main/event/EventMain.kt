@@ -6,12 +6,6 @@ import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
 
 sealed interface EventMain {
     object Loaded : EventMain
-    class GetDataStoreWorker(
-        val statusTest: String,
-        val statusBet: String,
-        val statusJson: String,
-        val statusTrophy: String,
-    ) : EventMain
 
     class SetFcmAlertList(
         val fcmAlertList : ArrayList<FCMAlert> = ArrayList(),
@@ -37,15 +31,14 @@ sealed interface EventMain {
         val fcmBestList : ArrayList<FCMAlert> = ArrayList(),
         val fcmJsonList : ArrayList<FCMAlert> = ArrayList(),
         val fcmTrophyList : ArrayList<FCMAlert> = ArrayList(),
+        val fcmBestCount : Int = 0,
+        val fcmJsonCount : Int = 0,
+        val fcmTrophyCount : Int = 0,
     ) : EventMain
 }
 
 data class StateMain(
     val Loaded: Boolean = false,
-    val statusTest: String = "",
-    val statusBest: String = "",
-    val statusJson: String = "",
-    val statusTrophy: String = "",
     val fcmAlertList : ArrayList<FCMAlert> = ArrayList(),
     val fcmNoticeList : ArrayList<FCMAlert> = ArrayList(),
     val setBestBookList : ArrayList<ItemBookInfo> = ArrayList(),
@@ -54,4 +47,7 @@ data class StateMain(
     val fcmTrophyList : ArrayList<FCMAlert> = ArrayList(),
     val bestListWeek : ArrayList<ArrayList<ItemBookInfo>> = ArrayList(),
     val trophyList : ArrayList<ItemBestInfo> = ArrayList(),
+    val fcmBestCount : Int = 0,
+    val fcmJsonCount : Int = 0,
+    val fcmTrophyCount : Int = 0,
 )

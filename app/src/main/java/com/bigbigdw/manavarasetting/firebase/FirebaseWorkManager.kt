@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager
+import com.bigbigdw.manavarasetting.util.DataStoreManager
 import com.bigbigdw.manavarasetting.util.BestRef
 import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.MiningSource
@@ -46,8 +46,6 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
         val min = DBDate.dateMMDDHHMM().substring(10, 12)
 
         val workerName = inputData.getString(WORKER) + "_" + inputData.getString(PLATFORM) + "_" + inputData.getString(TYPE)
-
-        Log.d("WORKER!!!!WORKER", "workerName ==$workerName inputData.getString(WORKER) ==${inputData.getString(WORKER)} inputData.getString(PLATFORM) ==${inputData.getString(PLATFORM)} inputData.getString(TYPE) ==${inputData.getString(TYPE)}")
 
         if (inputData.getString(WORKER).equals("BEST")) {
 
@@ -104,32 +102,71 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
             threadPool.close()
 
         } else if (inputData.getString(WORKER).equals("JSON")) {
-            runBlocking {
-                for (j in NaverSeriesComicGenre) {
-                    launch {
-                        uploadJsonArrayToStorageDay(
-                            platform = inputData.getString(PLATFORM) ?: "",
-                            genre = getNaverSeriesGenre(j),
-                            type = inputData.getString(TYPE) ?: ""
-                        )
-                    }
 
+            if (inputData.getString(PLATFORM).equals("NAVER_SERIES")) {
+
+                runBlocking {
+                    if (inputData.getString(PLATFORM).equals("COMIC")) {
+
+                        for (j in NaverSeriesComicGenre) {
+                            launch {
+                                uploadJsonArrayToStorageDay(
+                                    platform = inputData.getString(PLATFORM) ?: "",
+                                    genre = getNaverSeriesGenre(j),
+                                    type = inputData.getString(TYPE) ?: ""
+                                )
+                            }
+
+                        }
+
+                    } else {
+                        for (j in NaverSeriesNovelGenre) {
+                            launch {
+                                uploadJsonArrayToStorageDay(
+                                    platform = inputData.getString(PLATFORM) ?: "",
+                                    genre = getNaverSeriesGenre(j),
+                                    type = inputData.getString(TYPE) ?: ""
+                                )
+                            }
+
+                        }
+                    }
                 }
+
             }
 
         } else if (inputData.getString(WORKER).equals("TROPHY")) {
 
-            runBlocking {
-                for (j in NaverSeriesComicGenre) {
-                    launch {
-                        calculateTrophy(
-                            platform = inputData.getString(PLATFORM) ?: "",
-                            genre = getNaverSeriesGenre(j),
-                            type = inputData.getString(TYPE) ?: ""
-                        )
-                    }
+            if (inputData.getString(PLATFORM).equals("NAVER_SERIES")) {
 
+                runBlocking {
+                    if (inputData.getString(PLATFORM).equals("COMIC")) {
+
+                        for (j in NaverSeriesComicGenre) {
+                            launch {
+                                calculateTrophy(
+                                    platform = inputData.getString(PLATFORM) ?: "",
+                                    genre = getNaverSeriesGenre(j),
+                                    type = inputData.getString(TYPE) ?: ""
+                                )
+                            }
+
+                        }
+
+                    } else {
+                        for (j in NaverSeriesNovelGenre) {
+                            launch {
+                                calculateTrophy(
+                                    platform = inputData.getString(PLATFORM) ?: "",
+                                    genre = getNaverSeriesGenre(j),
+                                    type = inputData.getString(TYPE) ?: ""
+                                )
+                            }
+
+                        }
+                    }
                 }
+
             }
 
         } else if (inputData.getString(WORKER).equals("TEST")) {
@@ -138,9 +175,9 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
         }
 
         postFCM(
-            data = "$workerName 가 갱신되었습니다",
+            data = "$workerName 최신화 완료",
             time = "${year}.${month}.${day} ${hour}:${min}",
-            activity = inputData.getString(WORKER) ?: ""
+            activity = inputData.getString(WORKER) ?: "",
         )
 
         return Result.success()
@@ -157,7 +194,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
 
         miningAlert("마나바라 세팅", "$time $data", "ALERT", activity = activity)
 
-        setDataStore(activity = activity)
+        setDataStore(data = data)
 
         val call = Retrofit.Builder()
             .baseUrl("https://fcm.googleapis.com")

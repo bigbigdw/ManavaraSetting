@@ -30,15 +30,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.firebase.DataFCMBodyNotification
-import com.bigbigdw.manavarasetting.firebase.FCMAlert
 import com.bigbigdw.manavarasetting.main.model.MainSettingLine
-import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager
+import com.bigbigdw.manavarasetting.util.DataStoreManager
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color898989
@@ -49,9 +47,7 @@ import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import java.util.concurrent.TimeUnit
 
 @Composable
-fun ScreenMainFCM(
-    lineTest: List<MainSettingLine>
-) {
+fun ScreenMainFCM() {
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -75,14 +71,14 @@ fun ScreenMainFCM(
 
             MainHeader(image = R.drawable.icon_fcm, title = "FCM 현황")
 
-            ContentsFCM(lineTest = lineTest)
+            ContentsFCM()
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ContentsFCM(lineTest: List<MainSettingLine>) {
+fun ContentsFCM() {
 
     val context = LocalContext.current
     val dataStore = DataStoreManager(context)
@@ -96,16 +92,16 @@ fun ContentsFCM(lineTest: List<MainSettingLine>) {
                 repeatInterval = 15,
                 tag = "TEST",
                 timeMill = TimeUnit.MINUTES,
-                platform = "NAVER_SERIES",
-                type = "COMIC"
+                platform = "",
+                type = ""
             )
         }),
         MainSettingLine(title = "WORKER 취소", onClick = {
             PeriodicWorker.cancelWorker(
                 workManager = workManager,
                 tag = "TEST",
-                platform = "NAVER_SERIES",
-                type = "COMIC"
+                platform = "",
+                type = ""
             )
         })
     )
@@ -220,18 +216,6 @@ fun ContentsFCM(lineTest: List<MainSettingLine>) {
         }
     }
 
-    ItemTabletTitle(str = "테스트 현황")
-
-    TabletContentWrap {
-        lineTest.forEachIndexed { index, item ->
-            ItemMainTabletContent(
-                title = item.title,
-                value = item.value,
-                isLast = lineTest.size - 1 == index
-            )
-        }
-    }
-
     ItemTabletTitle(str = "FCM 매니저")
 
     TabletContentWrap {
@@ -251,8 +235,6 @@ fun ContentsFCM(lineTest: List<MainSettingLine>) {
 fun ContentsFCMList(viewModelMain: ViewModelMain, child : String){
 
     val context = LocalContext.current
-
-    viewModelMain.getDataStoreFCMCount(context = context)
 
     val fcmAlertList = when (child) {
         "ALERT" -> {

@@ -244,9 +244,10 @@ fun ItemMainTabletContent(
             contentPadding = PaddingValues(
                 start = 0.dp,
                 top = 6.dp,
-                end = 6.dp,
-                bottom = 0.dp,
+                end = 0.dp,
+                bottom = 6.dp,
             ),
+            shape = RoundedCornerShape(0.dp),
             onClick = { onClick() },
             content = {
                 Row(
@@ -302,7 +303,7 @@ fun ItemMainSettingSingleTablet(
                 colorF7F7F7
             }
         ),
-        shape = RoundedCornerShape(50),
+        shape = RoundedCornerShape(50.dp),
         onClick = {
             setMenu(title)
             onClick()

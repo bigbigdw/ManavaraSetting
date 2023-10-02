@@ -1,6 +1,5 @@
 package com.bigbigdw.manavarasetting.main.screen
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,14 +20,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.main.model.MainSettingLine
 import com.bigbigdw.manavarasetting.ui.theme.color000000
-import com.bigbigdw.manavarasetting.ui.theme.color8E8E8E
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.util.BestRef
 import com.bigbigdw.manavarasetting.util.DBDate
@@ -119,7 +116,15 @@ fun ContentsBest(lineBest: List<MainSettingLine>) {
                 platform = "NAVER_SERIES",
                 type = "NOVEL"
             )
-        })
+        }),
+        MainSettingLine(title = "WORKER 확인", onClick = {
+            PeriodicWorker.checkWorker(
+                workManager = workManager,
+                tag = "BEST",
+                platform = "NAVER_SERIES",
+                type = "NOVEL"
+            )
+        }),
     )
 
     TabletContentWrap {
@@ -132,7 +137,31 @@ fun ContentsBest(lineBest: List<MainSettingLine>) {
         }
     }
 
-    Spacer(modifier = Modifier.size(16.dp))
+    ItemTabletTitle(str = "베스트 현황")
+
+    TabletContentWrap {
+        lineBest.forEachIndexed { index, item ->
+            ItemMainTabletContent(
+                title = item.title,
+                value = item.value,
+                isLast = lineBest.size - 1 == index
+            )
+        }
+    }
+
+    Spacer(modifier = Modifier.size(60.dp))
+}
+
+@Composable
+fun ContentsBestList(
+    setDetailPage: (Boolean) -> Unit,
+    setDetailMenu: (String) -> Unit,
+    setDetailPlatform: (String) -> Unit,
+    setDetailGenre: (String) -> Unit,
+    setDetailType: (String) -> Unit,
+) {
+
+    val context = LocalContext.current
 
     TabletContentWrapBtn(
         onClick = {
@@ -154,7 +183,6 @@ fun ContentsBest(lineBest: List<MainSettingLine>) {
 
                     repeat(5) { i ->
                         launch(threadPool) {
-                            Log.d("!!!!!!!", "pageCount = ${i + 1} genre = $j")
                             MiningSource.miningNaverSeriesComic(pageCount = i + 1, genre = j)
                         }
                     }
@@ -172,7 +200,7 @@ fun ContentsBest(lineBest: List<MainSettingLine>) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "베스트 리스트 웹툰 수동 갱신",
+                    text = "네이버 시리즈 웹툰 수동 갱신",
                     color = color000000,
                     fontSize = 18.sp,
                 )
@@ -183,8 +211,6 @@ fun ContentsBest(lineBest: List<MainSettingLine>) {
 
     TabletContentWrapBtn(
         onClick = {
-
-//            MiningSource.miningNaverSeriesNovel(pageCount = 1, genre = "ALL")
 
             for (j in NaverSeriesNovelGenre) {
 
@@ -211,7 +237,7 @@ fun ContentsBest(lineBest: List<MainSettingLine>) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "베스트 리스트 웹소설 수동 갱신",
+                    text = "네이버 시리즈 웹소설 수동 갱신",
                     color = color000000,
                     fontSize = 18.sp,
                 )
@@ -220,46 +246,37 @@ fun ContentsBest(lineBest: List<MainSettingLine>) {
         isContinue = false
     )
 
-    ItemTabletTitle(str = "베스트 현황")
+    ItemTabletTitle(str = "네이버 시리즈 웹툰")
 
     TabletContentWrap {
-        lineBest.forEachIndexed { index, item ->
+        NaverSeriesComicGenre.forEachIndexed { index, _ ->
             ItemMainTabletContent(
-                title = item.title,
-                value = item.value,
-                isLast = lineBest.size - 1 == index
+                title = "네이버 시리즈 ${getNaverSeriesGenreKor(NaverSeriesComicGenre[index])}",
+                isLast = NaverSeriesComicGenre.size - 1 == index,
+                onClick = {
+                    setDetailPage(true)
+                    setDetailMenu("NAVER_SERIES 베스트 리스트 ${getNaverSeriesGenre(NaverSeriesComicGenre[index])}")
+                    setDetailPlatform("NAVER_SERIES")
+                    setDetailGenre(getNaverSeriesGenre(NaverSeriesComicGenre[index]))
+                    setDetailType("COMIC")
+                }
             )
         }
     }
 
-    Spacer(modifier = Modifier.size(60.dp))
-}
-
-@Composable
-fun ContentsBestList(
-    setDetailPage: (Boolean) -> Unit,
-    setDetailMenu: (String) -> Unit,
-    setDetailPageType: (String) -> Unit,
-) {
-
-
-    val itemList = ArrayList<MainSettingLine>()
-
-    for (j in NaverSeriesComicGenre) {
-        itemList.add(MainSettingLine(title = "네이버 시리즈 베스트 리스트 ${getNaverSeriesGenreKor(j)}", value = getNaverSeriesGenre(j)))
-    }
-
-    ItemTabletTitle(str = "네이버 시리즈", isTopPadding = false)
+    ItemTabletTitle(str = "네이버 시리즈 소설")
 
     TabletContentWrap {
-        itemList.forEachIndexed { index, item ->
+        NaverSeriesNovelGenre.forEachIndexed { index, _ ->
             ItemMainTabletContent(
-                title = item.title,
-                isLast = itemList.size - 1 == index,
+                title = "네이버 시리즈 ${getNaverSeriesGenreKor(NaverSeriesNovelGenre[index])}",
+                isLast = NaverSeriesNovelGenre.size - 1 == index,
                 onClick = {
                     setDetailPage(true)
-                    setDetailMenu(item.title)
-                    setDetailPageType(item.value)
+                    setDetailMenu("NAVER_SERIES 베스트 리스트 ${getNaverSeriesGenre(NaverSeriesNovelGenre[index])}")
+                    setDetailPlatform("NAVER_SERIES")
+                    setDetailGenre(getNaverSeriesGenre(NaverSeriesNovelGenre[index]))
+                    setDetailType("NOVEL")
                 }
             )
         }

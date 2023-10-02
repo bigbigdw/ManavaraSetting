@@ -7,9 +7,6 @@ import android.util.Log
 import com.bigbigdw.manavarasetting.firebase.FCMAlert
 import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
-import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -63,38 +60,84 @@ val WeekKor = arrayListOf(
 )
 
 fun getNaverSeriesGenre(genre : String) : String {
-    if(genre == "ALL"){
-        return "ALL"
-    } else if(genre == "99"){
-        return "MELO"
-    } else if(genre == "93"){
-        return "DRAMA"
-    } else if(genre == "90"){
-        return "YOUNG"
-    } else if(genre == "88"){
-        return "ACTION"
-    }else if(genre == "107"){
-        return "BL"
-    } else {
-        return "없음"
+    when (genre) {
+        "ALL" -> {
+            return "ALL"
+        }
+        "99" -> {
+            return "MELO"
+        }
+        "93" -> {
+            return "DRAMA"
+        }
+        "90" -> {
+            return "YOUNG"
+        }
+        "88" -> {
+            return "ACTION"
+        }
+        "107" -> {
+            return "BL"
+        }
+        "201" -> {
+            return "ROMANCE"
+        }
+        "207" -> {
+            return "ROMANCE_FANTASY"
+        }
+        "202" -> {
+            return "FANTASY"
+        }
+        "208" -> {
+            return "MODERN_FANTASY"
+        }
+        "206" -> {
+            return "MARTIAL_ARTS"
+        }
+        else -> {
+            return "없음"
+        }
     }
 }
 
 fun getNaverSeriesGenreKor(genre : String) : String {
-    if(genre == "ALL"){
-        return "전체"
-    } else if(genre == "99"){
-        return "멜로"
-    } else if(genre == "93"){
-        return "드라마"
-    } else if(genre == "90"){
-        return "소년"
-    } else if(genre == "88"){
-        return "액션"
-    }else if(genre == "107"){
-        return "BL"
-    } else {
-        return "없음"
+    return when (genre) {
+        "ALL" -> {
+            "전체"
+        }
+        "99" -> {
+            "멜로"
+        }
+        "93" -> {
+            "드라마"
+        }
+        "90" -> {
+            "소년"
+        }
+        "88" -> {
+            "액션"
+        }
+        "107" -> {
+            "BL"
+        }
+        "201" -> {
+            "로맨스"
+        }
+        "207" -> {
+            "로판"
+        }
+        "202" -> {
+            "판타지"
+        }
+        "208" -> {
+            "현판"
+        }
+        "206" -> {
+            "무협"
+        }
+        else -> {
+            "없음"
+        }
     }
 }
 
@@ -182,7 +225,7 @@ fun uploadJsonFile() {
 }
 
 
-fun setDataStore(activity: String){
+fun setDataStore(data: String){
     val mRootRef = FirebaseDatabase.getInstance().reference.child("WORKER")
 
     val year = DBDate.dateMMDDHHMM().substring(0,4)
@@ -191,27 +234,9 @@ fun setDataStore(activity: String){
     val hour = DBDate.dateMMDDHHMM().substring(8,10)
     val min = DBDate.dateMMDDHHMM().substring(10,12)
 
-    var currentUser :  FirebaseUser? = null
-    currentUser = Firebase.auth.currentUser
+    val child = data.replace(" 최신화 완료", "")
 
-    if(activity.contains("TROPHY")){
-
-        mRootRef.child("WORKER_TROPHY").setValue("${year}.${month}.${day} ${hour}:${min}")
-        mRootRef.child("UID_TROPHY").setValue(currentUser?.uid ?: "NONE")
-
-    } else if(activity.contains("JSON")){
-
-        mRootRef.child("WORKER_JSON").setValue("${year}.${month}.${day} ${hour}:${min}")
-        mRootRef.child("UID_JSON").setValue(currentUser?.uid ?: "NONE")
-
-    } else if(activity.contains("BEST")){
-
-        mRootRef.child("WORKER_BEST").setValue("${year}.${month}.${day} ${hour}:${min}")
-        mRootRef.child("UID_BEST").setValue(currentUser?.uid ?: "NONE")
-    } else {
-        mRootRef.child("WORKER_TEST").setValue("${year}.${month}.${day} ${hour}:${min}")
-        mRootRef.child("UID_TEST").setValue(currentUser?.uid ?: "NONE")
-    }
+    mRootRef.child(child).setValue("${year}.${month}.${day} ${hour}:${min}")
 }
 
 fun updateWorker(context: Context, update: () -> Unit){
@@ -224,94 +249,16 @@ fun updateWorker(context: Context, update: () -> Unit){
 
                 val dataStore = DataStoreManager(context)
 
-                val workerTest: String? = dataSnapshot.child("WORKER_TEST").getValue(String::class.java)
-                val workerBest: String? = dataSnapshot.child("WORKER_BEST").getValue(String::class.java)
-                val workerJson: String? = dataSnapshot.child("WORKER_JSON").getValue(String::class.java)
-                val workerTrophy: String? = dataSnapshot.child("WORKER_TROPHY").getValue(String::class.java)
-
                 CoroutineScope(Dispatchers.IO).launch {
-                    dataStore.setDataStoreString(DataStoreManager.TEST_TIME, workerTest ?: "")
-                    dataStore.setDataStoreString(DataStoreManager.BESTWORKER_TIME, workerBest ?: "")
-                    dataStore.setDataStoreString(DataStoreManager.JSONWORKER_TIME, workerJson ?: "")
-                    dataStore.setDataStoreString(DataStoreManager.TROPHYWORKER_TIME, workerTrophy ?: "")
-                    update()
-                }
+                    dataStore.setDataStoreString(DataStoreManager.BEST_NAVER_SERIES_COMIC, dataSnapshot.child("BEST_NAVER_SERIES_COMIC").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.BEST_NAVER_SERIES_NOVEL, dataSnapshot.child("BEST_NAVER_SERIES_NOVEL").getValue(String::class.java) ?: "")
 
-            } else {
-                Log.d("HIHI", "FALSE")
-            }
-        }
+                    dataStore.setDataStoreString(DataStoreManager.JSON_NAVER_SERIES_COMIC, dataSnapshot.child("JSON_NAVER_SERIES_COMIC").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.JSON_NAVER_SERIES_NOVEL, dataSnapshot.child("JSON_NAVER_SERIES_NOVEL").getValue(String::class.java) ?: "")
 
-        override fun onCancelled(databaseError: DatabaseError) {}
-    })
-}
+                    dataStore.setDataStoreString(DataStoreManager.TROPHY_NAVER_SERIES_COMIC, dataSnapshot.child("TROPHY_NAVER_SERIES_COMIC").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.TROPHY_NAVER_SERIES_NOVEL, dataSnapshot.child("TROPHY_NAVER_SERIES_NOVEL").getValue(String::class.java) ?: "")
 
-fun updateFcmCount(context: Context, update: () -> Unit){
-    val mRootRef = FirebaseDatabase.getInstance().reference.child("MESSAGE").child("ALERT")
-
-    val year = DBDate.dateMMDDHHMM().substring(0,4)
-    val month = DBDate.dateMMDDHHMM().substring(4,6)
-    val day = DBDate.dateMMDDHHMM().substring(6,8)
-
-    var numFcm = 0
-    var numFcmToday = 0
-    var numBest = 0
-    var numBestToday = 0
-    var numJson = 0
-    var numJsonToday = 0
-    var numTrophy = 0
-    var numTrophyToday = 0
-
-    val dataStore = DataStoreManager(context)
-
-    mRootRef.addListenerForSingleValueEvent(object :
-        ValueEventListener {
-        override fun onDataChange(dataSnapshot: DataSnapshot) {
-            if(dataSnapshot.exists()){
-
-                for(item in dataSnapshot.children){
-                    val fcm: FCMAlert? = dataSnapshot.child(item.key ?: "").getValue(FCMAlert::class.java)
-
-                    if(fcm?.body?.contains("테스트") == true){
-                        numFcm += 1
-
-                        if(fcm.body.contains("${year}.${month}.${day}")){
-                            numFcmToday += 1
-                        }
-                    } else if (fcm?.activity?.contains("BEST") == true) {
-                        numBest += 1
-
-                        if (fcm.body.contains("${year}.${month}.${day}")) {
-                            numBestToday += 1
-                        }
-                    } else if (fcm?.activity?.contains("JSON") == true) {
-
-                        numJson += 1
-
-                        if (fcm.body.contains("${year}.${month}.${day}")) {
-                            numJsonToday += 1
-                        }
-                    } else if (fcm?.activity?.contains("TROPHY") == true) {
-                        numTrophy += 1
-
-                        if (fcm.body.contains("${year}.${month}.${day}")) {
-                            numTrophyToday += 1
-                        }
-                    } else {
-                        Log.d("HIHIHIHI", "item = $item")
-                    }
-
-                }
-
-                CoroutineScope(Dispatchers.IO).launch {
-                    dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_TEST, numFcm.toString())
-                    dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_TEST_TODAY, numFcmToday.toString())
-                    dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_BEST, numBest.toString())
-                    dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_BEST_TODAY, numBestToday.toString())
-                    dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_JSON, numJson.toString())
-                    dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_JSON_TODAY, numJsonToday.toString())
-                    dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_TROPHY, numTrophy.toString())
-                    dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_TROPHY_TODAY, numTrophyToday.toString())
                     update()
                 }
 

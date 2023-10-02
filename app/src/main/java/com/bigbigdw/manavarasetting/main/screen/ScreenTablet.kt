@@ -9,19 +9,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -32,21 +27,22 @@ import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.main.model.MainSettingLine
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
-import com.bigbigdw.manavarasetting.ui.theme.color8E8E8E
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
 
 @Composable
 fun ScreenTablet(
     title: String,
-    lineTest: List<MainSettingLine>,
     lineBest: List<MainSettingLine>,
     lineJson: List<MainSettingLine>,
     lineTrophy: List<MainSettingLine>,
     viewModelMain: ViewModelMain,
     setDetailPage: (Boolean) -> Unit,
     setDetailMenu: (String) -> Unit,
-    setDetailPageType: (String) -> Unit
+    setDetailPlatform: (String) -> Unit,
+    setDetailGenre: (String) -> Unit,
+    setDetailType: (String) -> Unit,
+    lineCount: List<MainSettingLine>
 ) {
 
     Box(
@@ -81,15 +77,15 @@ fun ScreenTablet(
             when (title) {
                 "세팅바라 현황" -> {
                     ContentsSetting(
-                        lineTest = lineTest,
                         lineBest = lineBest,
                         lineJson = lineJson,
                         lineTrophy = lineTrophy,
-                        viewModelMain = viewModelMain
+                        viewModelMain = viewModelMain,
+                        lineCount = lineCount
                     )
                 }
                 "FCM 관리" -> {
-                    ContentsFCM(lineTest = lineTest)
+                    ContentsFCM()
                 }
                 "FCM 공지사항 리스트" -> {
                     ContentsFCMList(viewModelMain = viewModelMain, child = "NOTICE")
@@ -104,7 +100,9 @@ fun ScreenTablet(
                     ContentsBestList(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
-                        setDetailPageType = setDetailPageType
+                        setDetailPlatform = setDetailPlatform,
+                        setDetailGenre = setDetailGenre,
+                        setDetailType = setDetailType,
                     )
                 }
                 "베스트 최신화 현황" -> {
@@ -117,32 +115,40 @@ fun ScreenTablet(
                     ContentsBestJsonList(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
-                        setDetailPageType = setDetailPageType,
-                        type = "투데이 베스트"
+                        type = "JSON 투데이 베스트",
+                        setDetailPlatform = setDetailPlatform,
+                        setDetailGenre = setDetailGenre,
+                        setDetailType = setDetailType,
                     )
                 }
                 "JSON 주간 베스트 현황" -> {
                     ContentsBestJsonList(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
-                        setDetailPageType = setDetailPageType,
-                        type = "주간 베스트"
+                        type = "JSON 주간 베스트",
+                        setDetailPlatform = setDetailPlatform,
+                        setDetailGenre = setDetailGenre,
+                        setDetailType = setDetailType,
                     )
                 }
                 "JSON 월간 베스트 현황" -> {
                     ContentsBestJsonList(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
-                        setDetailPageType = setDetailPageType,
-                        type = "월간 베스트"
+                        type = "JSON 월간 베스트",
+                        setDetailPlatform = setDetailPlatform,
+                        setDetailGenre = setDetailGenre,
+                        setDetailType = setDetailType,
                     )
                 }
                 "JSON 주간 현황" -> {
                     ContentsBestJsonList(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
-                        setDetailPageType = setDetailPageType,
-                        type = "주간"
+                        type = "주간",
+                        setDetailPlatform = setDetailPlatform,
+                        setDetailGenre = setDetailGenre,
+                        setDetailType = setDetailType,
                     )
                 }
 
@@ -150,16 +156,20 @@ fun ScreenTablet(
                     ContentsBestJsonList(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
-                        setDetailPageType = setDetailPageType,
-                        type = "주간 트로피"
+                        type = "JSON 주간 트로피",
+                        setDetailPlatform = setDetailPlatform,
+                        setDetailGenre = setDetailGenre,
+                        setDetailType = setDetailType,
                     )
                 }
                 "JSON 월간 트로피 현황" -> {
                     ContentsBestJsonList(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
-                        setDetailPageType = setDetailPageType,
-                        type = "월간 트로피"
+                        type = "JSON 월간 트로피",
+                        setDetailPlatform = setDetailPlatform,
+                        setDetailGenre = setDetailGenre,
+                        setDetailType = setDetailType,
                     )
                 }
                 "JSON 최신화 현황" -> {
@@ -172,16 +182,20 @@ fun ScreenTablet(
                     ContentsBestJsonList(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
-                        setDetailPageType = setDetailPageType,
-                        type = "트로피 주간"
+                        type = "트로피 주간",
+                        setDetailPlatform = setDetailPlatform,
+                        setDetailGenre = setDetailGenre,
+                        setDetailType = setDetailType,
                     )
                 }
                 "트로피 월간 토탈 리스트" -> {
                     ContentsBestJsonList(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
-                        setDetailPageType = setDetailPageType,
-                        type = "트로피 월간"
+                        type = "트로피 월간",
+                        setDetailPlatform = setDetailPlatform,
+                        setDetailGenre = setDetailGenre,
+                        setDetailType = setDetailType,
                     )
                 }
                 "트로피 최신화 현황" -> {
@@ -194,18 +208,18 @@ fun ScreenTablet(
 
 @Composable
 fun ContentsSetting(
-    lineTest: List<MainSettingLine>,
     lineBest: List<MainSettingLine>,
     lineJson: List<MainSettingLine>,
     lineTrophy: List<MainSettingLine>,
-    viewModelMain : ViewModelMain
+    viewModelMain: ViewModelMain,
+    lineCount: List<MainSettingLine>
 ) {
 
     val context = LocalContext.current
     val workManager = WorkManager.getInstance(context)
 
     TabletContentWrapBtn(
-        onClick = { viewModelMain.getDataStoreStatus(context = context, workManager = workManager) },
+        onClick = { viewModelMain.getDataStoreStatus(context = context) },
         content = {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -222,7 +236,7 @@ fun ContentsSetting(
     )
 
     TabletContentWrapBtn(
-        onClick = { viewModelMain.getDataStoreFCMCount(context = context) },
+        onClick = { viewModelMain.getDataStoreFCMCount() },
         content = {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -326,18 +340,6 @@ fun ContentsSetting(
         isContinue = false
     )
 
-    ItemTabletTitle(str = "테스트 현황")
-
-    TabletContentWrap {
-        lineTest.forEachIndexed { index, item ->
-            ItemMainTabletContent(
-                title = item.title,
-                value = item.value,
-                isLast = lineTrophy.size - 1 == index
-            )
-        }
-    }
-
     ItemTabletTitle(str = "베스트 현황")
 
     TabletContentWrap {
@@ -362,15 +364,7 @@ fun ContentsSetting(
         }
     }
 
-    Spacer(modifier = Modifier.size(16.dp))
-
-    Text(
-        modifier = Modifier.padding(32.dp, 8.dp),
-        text = "트로피 현황",
-        fontSize = 16.sp,
-        color = color8E8E8E,
-        fontWeight = FontWeight(weight = 700)
-    )
+    ItemTabletTitle(str =  "트로피 현황")
 
     TabletContentWrap {
         lineTrophy.forEachIndexed { index, item ->
@@ -378,6 +372,18 @@ fun ContentsSetting(
                 title = item.title,
                 value = item.value,
                 isLast = lineTrophy.size - 1 == index
+            )
+        }
+    }
+
+    ItemTabletTitle(str =  "최신화 횟수 현황")
+
+    TabletContentWrap {
+        lineCount.forEachIndexed { index, item ->
+            ItemMainTabletContent(
+                title = item.title,
+                value = item.value,
+                isLast = lineCount.size - 1 == index
             )
         }
     }

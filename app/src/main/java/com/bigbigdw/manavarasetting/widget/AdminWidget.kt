@@ -34,23 +34,13 @@ import androidx.glance.layout.size
 import androidx.glance.layout.wrapContentSize
 import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
-import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager
-import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.BESTWORKER_TIME
-import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.FCM_COUNT_BEST
-import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.FCM_COUNT_BEST_TODAY
-import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.FCM_COUNT_JSON
-import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.FCM_COUNT_JSON_TODAY
-import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.FCM_COUNT_TEST
-import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.FCM_COUNT_TEST_TODAY
-import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.FCM_COUNT_TROPHY
-import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.FCM_COUNT_TROPHY_TODAY
-import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.JSONWORKER_TIME
-import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.TEST_TIME
-import com.bigbigdw.manavarasetting.main.viewModels.DataStoreManager.Companion.TROPHYWORKER_TIME
+import com.bigbigdw.manavarasetting.util.DataStoreManager
 import com.bigbigdw.manavarasetting.ui.theme.color4186e1
 import com.bigbigdw.manavarasetting.ui.theme.colorB3000000
+import com.bigbigdw.manavarasetting.util.DataStoreManager.Companion.BEST_NAVER_SERIES_COMIC
+import com.bigbigdw.manavarasetting.util.DataStoreManager.Companion.JSON_NAVER_SERIES_COMIC
+import com.bigbigdw.manavarasetting.util.DataStoreManager.Companion.TROPHY_NAVER_SERIES_COMIC
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
-import com.bigbigdw.manavarasetting.util.updateFcmCount
 import com.bigbigdw.manavarasetting.util.updateWorker
 import com.bigbigdw.manavarasetting.widget.ManavaraSettingWidget.paramWorkerInterval
 import com.bigbigdw.manavarasetting.widget.ManavaraSettingWidget.paramWorkerStatus
@@ -92,22 +82,9 @@ fun ScreenWidget(context: Context) {
 
     val dataStore = DataStoreManager(context)
 
-    val TEST_TIME = dataStore.getDataStoreString(TEST_TIME).collectAsState(initial = "")
-    val BESTWORKER_TIME = dataStore.getDataStoreString(BESTWORKER_TIME).collectAsState(initial = "")
-    val JSONWORKER_TIME = dataStore.getDataStoreString(JSONWORKER_TIME).collectAsState(initial = "")
-    val TROPHYWORKER_TIME = dataStore.getDataStoreString(TROPHYWORKER_TIME).collectAsState(initial = "")
-
-    val FCM_COUNT_TEST = dataStore.getDataStoreString(FCM_COUNT_TEST).collectAsState(initial = "")
-    val FCM_COUNT_TEST_TODAY = dataStore.getDataStoreString(FCM_COUNT_TEST_TODAY).collectAsState(initial = "")
-
-    val FCM_COUNT_BEST = dataStore.getDataStoreString(FCM_COUNT_BEST).collectAsState(initial = "")
-    val FCM_COUNT_BEST_TODAY = dataStore.getDataStoreString(FCM_COUNT_BEST_TODAY).collectAsState(initial = "")
-
-    val FCM_COUNT_JSON = dataStore.getDataStoreString(FCM_COUNT_JSON).collectAsState(initial = "")
-    val FCM_COUNT_JSON_TODAY = dataStore.getDataStoreString(FCM_COUNT_JSON_TODAY).collectAsState(initial = "")
-
-    val FCM_COUNT_TROPHY = dataStore.getDataStoreString(FCM_COUNT_TROPHY).collectAsState(initial = "")
-    val FCM_COUNT_TROPHY_TODAY = dataStore.getDataStoreString(FCM_COUNT_TROPHY_TODAY).collectAsState(initial = "")
+    val BESTWORKER_TIME = dataStore.getDataStoreString(BEST_NAVER_SERIES_COMIC).collectAsState(initial = "")
+    val JSONWORKER_TIME = dataStore.getDataStoreString(JSON_NAVER_SERIES_COMIC).collectAsState(initial = "")
+    val TROPHYWORKER_TIME = dataStore.getDataStoreString(TROPHY_NAVER_SERIES_COMIC).collectAsState(initial = "")
 
     Column(
         modifier = GlanceModifier
@@ -145,32 +122,6 @@ fun ScreenWidget(context: Context) {
 
         Spacer(modifier = GlanceModifier.size(8.dp))
 
-        Column(
-            modifier = GlanceModifier
-                .wrapContentSize()
-                .padding(8.dp),
-            verticalAlignment = Alignment.Top,
-            horizontalAlignment = Alignment.Start,
-        ) {
-            ItemMainSetting(
-                image = R.drawable.icon_setting_wht,
-                titleWorker = "테스트 WORKER : ",
-                valueWorker = TEST_TIME.value ?: "알 수 없음",
-            )
-
-            ItemMainSetting(
-                image = R.drawable.icon_setting_wht,
-                titleWorker = "테스트 호출 횟수 : ",
-                valueWorker = FCM_COUNT_TEST.value ?: "알 수 없음",
-            )
-
-            ItemMainSetting(
-                image = R.drawable.icon_setting_wht,
-                titleWorker = "테스트 금일 호출 횟수 : ",
-                valueWorker = FCM_COUNT_TEST_TODAY.value ?: "알 수 없음",
-            )
-
-        }
 
         Column(
             modifier = GlanceModifier
@@ -183,18 +134,6 @@ fun ScreenWidget(context: Context) {
                 image = R.drawable.icon_best_wht,
                 titleWorker = "베스트 WORKER : ",
                 valueWorker = BESTWORKER_TIME.value ?: "알 수 없음",
-            )
-
-            ItemMainSetting(
-                image = R.drawable.icon_best_wht,
-                titleWorker = "베스트 호출 횟수 : ",
-                valueWorker = FCM_COUNT_BEST.value ?: "알 수 없음",
-            )
-
-            ItemMainSetting(
-                image = R.drawable.icon_best_wht,
-                titleWorker = "베스트 금일 호출 횟수 : ",
-                valueWorker = FCM_COUNT_BEST_TODAY.value ?: "알 수 없음",
             )
 
         }
@@ -212,18 +151,6 @@ fun ScreenWidget(context: Context) {
                 valueWorker = JSONWORKER_TIME.value ?: "알 수 없음",
             )
 
-            ItemMainSetting(
-                image = R.drawable.icon_json_wht,
-                titleWorker = "JSON 호출 횟수 : ",
-                valueWorker = FCM_COUNT_JSON.value ?: "알 수 없음",
-            )
-
-            ItemMainSetting(
-                image = R.drawable.icon_json_wht,
-                titleWorker = "JSON 금일 호출 횟수 : ",
-                valueWorker = FCM_COUNT_JSON_TODAY.value ?: "알 수 없음",
-            )
-
         }
 
         Column(
@@ -237,18 +164,6 @@ fun ScreenWidget(context: Context) {
                 image = R.drawable.icon_trophy_wht,
                 titleWorker = "트로피 WORKER : ",
                 valueWorker = TROPHYWORKER_TIME.value ?: "알 수 없음",
-            )
-
-            ItemMainSetting(
-                image = R.drawable.icon_trophy_wht,
-                titleWorker = "트로피 호출 횟수 : ",
-                valueWorker = FCM_COUNT_TROPHY.value ?: "알 수 없음",
-            )
-
-            ItemMainSetting(
-                image = R.drawable.icon_trophy_wht,
-                titleWorker = "트로피 금일 호출 횟수 : ",
-                valueWorker = FCM_COUNT_TROPHY_TODAY.value ?: "알 수 없음",
             )
 
             Spacer(modifier = GlanceModifier.size(8.dp))
@@ -302,12 +217,6 @@ class WidgetUpdate : ActionCallback {
     ) {
 
         updateWorker(context = context, update = {
-            CoroutineScope(Dispatchers.IO).launch {
-                ManavaraSettingWidget.update(context, glanceId)
-            }
-        })
-
-        updateFcmCount(context = context, update = {
             CoroutineScope(Dispatchers.IO).launch {
                 ManavaraSettingWidget.update(context, glanceId)
             }

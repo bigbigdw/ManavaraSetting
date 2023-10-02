@@ -4,15 +4,13 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.firebase.FCMAlert
 import com.bigbigdw.manavarasetting.main.event.EventMain
 import com.bigbigdw.manavarasetting.main.event.StateMain
 import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
-import com.bigbigdw.manavarasetting.util.BestRef
 import com.bigbigdw.manavarasetting.util.DBDate
-import com.bigbigdw.manavarasetting.util.PeriodicWorker
+import com.bigbigdw.manavarasetting.util.DataStoreManager
 import com.bigbigdw.manavarasetting.util.convertBestItemDataAnalyzeJson
 import com.bigbigdw.manavarasetting.util.convertBestItemDataJson
 import com.google.firebase.auth.FirebaseAuth
@@ -38,7 +36,6 @@ import org.json.JSONArray
 import java.nio.charset.Charset
 import java.util.Collections
 import javax.inject.Inject
-import kotlin.reflect.typeOf
 
 class ViewModelMain @Inject constructor() : ViewModel() {
 
@@ -56,15 +53,6 @@ class ViewModelMain @Inject constructor() : ViewModel() {
         return when(event){
             EventMain.Loaded -> {
                 current.copy(Loaded = true)
-            }
-
-            is EventMain.GetDataStoreWorker -> {
-                current.copy(
-                    statusTest = event.statusTest,
-                    statusBest = event.statusBet,
-                    statusJson = event.statusJson,
-                    statusTrophy = event.statusTrophy,
-                )
             }
 
             is EventMain.SetFcmAlertList -> {
@@ -86,6 +74,9 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                     fcmBestList = event.fcmBestList,
                     fcmJsonList = event.fcmJsonList,
                     fcmTrophyList = event.fcmTrophyList,
+                    fcmBestCount = event.fcmBestCount,
+                    fcmJsonCount = event.fcmJsonCount,
+                    fcmTrophyCount = event.fcmTrophyCount,
                 )
             }
 
@@ -107,7 +98,7 @@ class ViewModelMain @Inject constructor() : ViewModel() {
         }
     }
 
-    fun getDataStoreStatus(context : Context, workManager: WorkManager){
+    fun getDataStoreStatus(context: Context){
         val mRootRef = FirebaseDatabase.getInstance().reference.child("WORKER")
 
         mRootRef.addListenerForSingleValueEvent(object :
@@ -117,49 +108,15 @@ class ViewModelMain @Inject constructor() : ViewModel() {
 
                     val dataStore = DataStoreManager(context)
 
-                    val workerTest: String? = dataSnapshot.child("WORKER_TEST").getValue(String::class.java)
-                    val workerBest: String? = dataSnapshot.child("WORKER_BEST").getValue(String::class.java)
-                    val workerJson: String? = dataSnapshot.child("WORKER_JSON").getValue(String::class.java)
-                    val workerTrophy: String? = dataSnapshot.child("WORKER_TROPHY").getValue(String::class.java)
-
-                    val timeMillTest: String? = dataSnapshot.child("TIMEMILL_TEST").getValue(String::class.java)
-                    val timeMillBest: String? = dataSnapshot.child("TIMEMILL_BEST").getValue(String::class.java)
-                    val timeMillJson: String? = dataSnapshot.child("TIMEMILL_JSON").getValue(String::class.java)
-                    val timeMillTrophy: String? = dataSnapshot.child("TIMEMILL_TROPHY").getValue(String::class.java)
-
                     viewModelScope.launch {
-                        dataStore.setDataStoreString(DataStoreManager.TEST_TIME, workerTest ?: "")
-                        dataStore.setDataStoreString(DataStoreManager.BESTWORKER_TIME, workerBest ?: "")
-                        dataStore.setDataStoreString(DataStoreManager.JSONWORKER_TIME, workerJson ?: "")
-                        dataStore.setDataStoreString(DataStoreManager.TROPHYWORKER_TIME, workerTrophy ?: "")
+                        dataStore.setDataStoreString(DataStoreManager.BEST_NAVER_SERIES_COMIC, dataSnapshot.child("BEST_NAVER_SERIES_COMIC").getValue(String::class.java) ?: "")
+                        dataStore.setDataStoreString(DataStoreManager.BEST_NAVER_SERIES_NOVEL, dataSnapshot.child("BEST_NAVER_SERIES_NOVEL").getValue(String::class.java) ?: "")
 
-                        dataStore.setDataStoreString(DataStoreManager.TIMEMILL_TEST, timeMillTest ?: "")
-                        dataStore.setDataStoreString(DataStoreManager.TIMEMILL_BEST, timeMillBest ?: "")
-                        dataStore.setDataStoreString(DataStoreManager.TIMEMILL_JSON, timeMillJson ?: "")
-                        dataStore.setDataStoreString(DataStoreManager.TIMEMILL_TROPHY, timeMillTrophy ?: "")
+                        dataStore.setDataStoreString(DataStoreManager.JSON_NAVER_SERIES_COMIC, dataSnapshot.child("JSON_NAVER_SERIES_COMIC").getValue(String::class.java) ?: "")
+                        dataStore.setDataStoreString(DataStoreManager.JSON_NAVER_SERIES_NOVEL, dataSnapshot.child("JSON_NAVER_SERIES_NOVEL").getValue(String::class.java) ?: "")
 
-//                        _sideEffects.send("Worker 최신화가 완료되었습니다")
-
-                        events.send(
-                            EventMain.GetDataStoreWorker(
-                                statusTest = PeriodicWorker.checkWorker(
-                                    workManager = workManager,
-                                    tag = "TEST"
-                                ),
-                                statusBet = PeriodicWorker.checkWorker(
-                                    workManager = workManager,
-                                    tag = "BEST"
-                                ),
-                                statusJson = PeriodicWorker.checkWorker(
-                                    workManager = workManager,
-                                    tag = "JSON"
-                                ),
-                                statusTrophy = PeriodicWorker.checkWorker(
-                                    workManager = workManager,
-                                    tag = "TROPHY"
-                                ),
-                            )
-                        )
+                        dataStore.setDataStoreString(DataStoreManager.TROPHY_NAVER_SERIES_COMIC, dataSnapshot.child("TROPHY_NAVER_SERIES_COMIC").getValue(String::class.java) ?: "")
+                        dataStore.setDataStoreString(DataStoreManager.TROPHY_NAVER_SERIES_NOVEL, dataSnapshot.child("TROPHY_NAVER_SERIES_NOVEL").getValue(String::class.java) ?: "")
 
                     }
 
@@ -172,27 +129,20 @@ class ViewModelMain @Inject constructor() : ViewModel() {
         })
     }
 
-    fun getDataStoreFCMCount(context: Context){
+    fun getDataStoreFCMCount() {
         val mRootRef = FirebaseDatabase.getInstance().reference.child("MESSAGE").child("ALERT")
-
-        val year = DBDate.dateMMDDHHMM().substring(0,4)
-        val month = DBDate.dateMMDDHHMM().substring(4,6)
-        val day = DBDate.dateMMDDHHMM().substring(6,8)
-
-        var numFcm = 0
-        var numFcmToday = 0
-        var numBest = 0
-        var numBestToday = 0
-        var numJson = 0
-        var numJsonToday = 0
-        var numTrophy = 0
-        var numTrophyToday = 0
-
-        val dataStore = DataStoreManager(context)
 
         var fcmBestList = ArrayList<FCMAlert>()
         var fcmJsonList = ArrayList<FCMAlert>()
         var fcmTrophyList = ArrayList<FCMAlert>()
+
+        var fcmBestCount : Int = 0
+        var fcmJsonCount : Int = 0
+        var fcmTrophyCount : Int = 0
+
+        val year = DBDate.dateMMDDHHMM().substring(0,4)
+        val month = DBDate.dateMMDDHHMM().substring(4,6)
+        val day = DBDate.dateMMDDHHMM().substring(6,8)
 
         mRootRef.addListenerForSingleValueEvent(object :
             ValueEventListener {
@@ -202,37 +152,27 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                     for(item in dataSnapshot.children){
                         val fcm: FCMAlert? = dataSnapshot.child(item.key ?: "").getValue(FCMAlert::class.java)
 
-                        if(fcm?.body?.contains("테스트") == true){
-                            numFcm += 1
-
-                            if(fcm.body.contains("${year}.${month}.${day}")){
-                                numFcmToday += 1
-                            }
-                        } else if (fcm?.activity?.contains("BEST") == true) {
-                            numBest += 1
-
+                        if (fcm?.activity?.contains("BEST") == true) {
                             fcmBestList.add(fcm)
 
-                            if (fcm.body.contains("${year}.${month}.${day}")) {
-                                numBestToday += 1
+                            if(fcm.body.contains("${year}.${month}.${day}")){
+                                fcmBestCount += 1
                             }
+
                         } else if (fcm?.activity?.contains("JSON") == true) {
-
-                            numJson += 1
-
                             fcmJsonList.add(fcm)
 
-                            if (fcm.body.contains("${year}.${month}.${day}")) {
-                                numJsonToday += 1
+                            if(fcm.body.contains("${year}.${month}.${day}")){
+                                fcmJsonCount += 1
                             }
-                        } else if (fcm?.activity?.contains("TROPHY") == true) {
-                            numTrophy += 1
 
+                        } else if (fcm?.activity?.contains("TROPHY") == true) {
                             fcmTrophyList.add(fcm)
 
-                            if (fcm.body.contains("${year}.${month}.${day}")) {
-                                numTrophyToday += 1
+                            if(fcm.body.contains("${year}.${month}.${day}")){
+                                fcmTrophyCount += 1
                             }
+
                         } else {
                             Log.d("HIHIHIHI", "item = $item")
                         }
@@ -252,20 +192,15 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                     }
 
                     viewModelScope.launch {
-                        dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_TEST, numFcm.toString())
-                        dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_TEST_TODAY, numFcmToday.toString())
-                        dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_BEST, numBest.toString())
-                        dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_BEST_TODAY, numBestToday.toString())
-                        dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_JSON, numJson.toString())
-                        dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_JSON_TODAY, numJsonToday.toString())
-                        dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_TROPHY, numTrophy.toString())
-                        dataStore.setDataStoreString(DataStoreManager.FCM_COUNT_TROPHY_TODAY, numTrophyToday.toString())
 
                         events.send(
                             EventMain.SetFCMList(
                                 fcmBestList = fcmBestList,
                                 fcmJsonList = fcmJsonList,
                                 fcmTrophyList = fcmTrophyList,
+                                fcmBestCount = fcmBestCount,
+                                fcmJsonCount = fcmJsonCount,
+                                fcmTrophyCount = fcmTrophyCount,
                             )
                         )
 
