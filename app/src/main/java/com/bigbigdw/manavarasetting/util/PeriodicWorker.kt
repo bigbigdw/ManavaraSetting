@@ -26,7 +26,7 @@ object PeriodicWorker {
             .putString(FirebaseWorkManager.TYPE, type)
             .build()
 
-        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(repeatInterval, timeMill)
+        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(1, TimeUnit.HOURS)
             .addTag("${tag}_${platform}_${type}")
             .setBackoffCriteria(
                 BackoffPolicy.LINEAR,
@@ -51,7 +51,7 @@ object PeriodicWorker {
         if(currentUser?.uid == "A8uh2QkVQaV3Q3rE8SgBNKzV6VH2"){
             workManager.enqueueUniquePeriodicWork(
                 "${tag}_${platform}_${type}",
-                ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,
+                ExistingPeriodicWorkPolicy.KEEP,
                 workRequest
             )
         }

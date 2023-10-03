@@ -73,6 +73,7 @@ import com.bigbigdw.manavarasetting.ui.theme.color64C157
 import com.bigbigdw.manavarasetting.ui.theme.color79B4F8
 import com.bigbigdw.manavarasetting.ui.theme.color7C81FF
 import com.bigbigdw.manavarasetting.ui.theme.color80BF78
+import com.bigbigdw.manavarasetting.ui.theme.color8F8F8F
 import com.bigbigdw.manavarasetting.ui.theme.color91CEC7
 import com.bigbigdw.manavarasetting.ui.theme.color998DF9
 import com.bigbigdw.manavarasetting.ui.theme.colorABD436
@@ -664,5 +665,91 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
             onClick = {onClick()}
         )
 
+        TabletBorderLine()
+
+        ItemMainSettingSingleTablet(
+            containerColor = color8F8F8F,
+            image = R.drawable.icon_setting_wht,
+            title = "위험 옵션",
+            body = "건들면 돌이킬 수 없는 옵션 관리",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = {onClick()}
+        )
+
     }
+}
+
+@Composable
+fun ContentsDangerOption(viewModelMain: ViewModelMain){
+
+    TabletContentWrapBtn(
+        onClick = { viewModelMain.resetBest(str = "ALERT") },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "WORKER ALERT 초기화",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = { viewModelMain.resetBest(str = "BEST") },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "BEST 초기화",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = { viewModelMain.resetBest(str = "BOOK") },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "BOOK 초기화",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = { viewModelMain.resetBest(str = "BOOK") },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "DATA 초기화",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(60.dp))
 }

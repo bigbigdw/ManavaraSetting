@@ -201,6 +201,9 @@ fun ScreenTablet(
                 "트로피 최신화 현황" -> {
                     ContentsFCMList(viewModelMain = viewModelMain, child = "TROPHY")
                 }
+                "위험 옵션" -> {
+                    ContentsDangerOption(viewModelMain = viewModelMain)
+                }
             }
         }
     }
@@ -269,75 +272,6 @@ fun ContentsSetting(
                 )
             }
         }
-    )
-
-    TabletContentWrapBtn(
-        onClick = { viewModelMain.resetBest(str = "BEST") },
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "BEST 초기화",
-                    color = color000000,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = { viewModelMain.resetBest(str = "BOOK") },
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "BOOK 초기화",
-                    color = color000000,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = { viewModelMain.resetBest(str = "BOOK") },
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "DATA 초기화",
-                    color = color000000,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = { viewModelMain.resetBest(str = "ALERT") },
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "WORKER ALERT 초기화",
-                    color = color000000,
-                    fontSize = 18.sp,
-                )
-            }
-        },
-        isContinue = false
     )
 
     ItemTabletTitle(str = "베스트 현황")
