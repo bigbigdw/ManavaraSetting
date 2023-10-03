@@ -174,7 +174,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
         } else if (inputData.getString(WORKER).equals("TEST")) {
             postFCM(data = "테스트", time = "${year}.${month}.${day} ${hour}:${min}")
 
-        } else if (inputData.getString(WORKER).equals("MINING")) {
+        } else if (inputData.getString(WORKER)?.contains("MINING_COMIC") == true) {
 
             val threadPool = Executors.newFixedThreadPool(5).asCoroutineDispatcher()
 
@@ -193,6 +193,47 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                     val miningJobs = List(5) { i ->
                         async(threadPool) {
                             MiningSource.miningNaverSeriesComic(pageCount = i + 1, genre = j)
+                        }
+                    }
+
+                    miningJobs.awaitAll()
+
+                    launch {
+                        uploadJsonArrayToStorageDay(
+                            platform = inputData.getString(PLATFORM) ?: "",
+                            genre = getNaverSeriesGenre(j),
+                            type = inputData.getString(TYPE) ?: ""
+                        )
+                    }
+
+                    launch {
+                        calculateTrophy(
+                            platform = inputData.getString(PLATFORM) ?: "",
+                            genre = getNaverSeriesGenre(j),
+                            type = inputData.getString(TYPE) ?: ""
+                        )
+                    }
+                }
+            }
+        } else if (inputData.getString(WORKER)?.contains("MINING_NOVEL") == true) {
+
+            val threadPool = Executors.newFixedThreadPool(5).asCoroutineDispatcher()
+
+            runBlocking {
+                for (j in NaverSeriesNovelGenre) {
+                    if (DBDate.getDayOfWeekAsNumber() == 0) {
+                        BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = inputData.getString(TYPE) ?: "")
+                            .child("TROPHY_WEEK").removeValue()
+                    }
+
+                    if (DBDate.datedd() == "01") {
+                        BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = inputData.getString(TYPE) ?: "")
+                            .child("TROPHY_MONTH").removeValue()
+                    }
+
+                    val miningJobs = List(5) { i ->
+                        async(threadPool) {
+                            MiningSource.miningNaverSeriesNovel(pageCount = i + 1, genre = j)
                         }
                     }
 

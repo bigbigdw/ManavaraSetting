@@ -83,6 +83,8 @@ import com.bigbigdw.manavarasetting.ui.theme.colorF17666
 import com.bigbigdw.manavarasetting.ui.theme.colorF17FA0
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.ui.theme.colorFDC24E
+import com.bigbigdw.manavarasetting.util.PeriodicWorker
+import java.util.concurrent.TimeUnit
 
 @Composable
 fun ScreenMain(
@@ -677,6 +679,16 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
             onClick = {onClick()}
         )
 
+        ItemMainSettingSingleTablet(
+            containerColor = color8F8F8F,
+            image = R.drawable.icon_setting_wht,
+            title = "실험실",
+            body = "일단 기능 만들고 질러보는 공간",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = {onClick()}
+        )
+
     }
 }
 
@@ -744,6 +756,67 @@ fun ContentsDangerOption(viewModelMain: ViewModelMain){
             ) {
                 Text(
                     text = "DATA 초기화",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.size(60.dp))
+}
+
+@Composable
+fun ContentsDangerLabs() {
+
+    val context = LocalContext.current
+    val workManager = WorkManager.getInstance(context)
+
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                repeatInterval = 15,
+                tag = "MINING_COMIC",
+                timeMill = TimeUnit.MINUTES,
+                platform = "",
+                type = ""
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "WORKER COMIC 실행",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                repeatInterval = 15,
+                tag = "MINING_NOVEL",
+                timeMill = TimeUnit.MINUTES,
+                platform = "",
+                type = ""
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "WORKER NOVEL 실험",
                     color = color000000,
                     fontSize = 18.sp,
                 )

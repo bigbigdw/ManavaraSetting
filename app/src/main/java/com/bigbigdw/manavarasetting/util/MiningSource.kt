@@ -37,7 +37,7 @@ object MiningSource {
                 )
             }
 
-            Log.d("!!!!!!!@@@@@@", "pageCount = $pageCount genre = $genre")
+            Log.d("MINING_TEST", "miningNaverSeriesComic")
 
         } catch (exception: Exception) {
             Log.d("EXCEPTION!!!!", "NAVER TODAY")

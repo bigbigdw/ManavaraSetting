@@ -237,6 +237,8 @@ fun uploadJsonArrayToStorageDay(platform: String, genre: String, type: String) {
     val jsonArrayRef =
         storageRef.child("${platform}/${type}/${genre}/DAY/${DBDate.dateMMDD()}.json")
 
+    Log.d("MINING_TEST", "uploadJsonArrayToStorageDay")
+
     route.addListenerForSingleValueEvent(object :
         ValueEventListener {
         override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -250,7 +252,6 @@ fun uploadJsonArrayToStorageDay(platform: String, genre: String, type: String) {
                 }
 
                 val jsonArrayByteArray = jsonArray.toString().toByteArray(Charsets.UTF_8)
-
 
                 jsonArrayRef.putBytes(jsonArrayByteArray)
                     .addOnSuccessListener {
@@ -280,6 +281,8 @@ fun calculateTrophy(platform: String, genre: String, type: String) {
 
     val todayFile = todayFileRef.getBytes(1024 * 1024)
     val yesterdayFile = yesterdayFileRef.getBytes(1024 * 1024)
+
+    Log.d("MINING_TEST", "calculateTrophy")
 
     yesterdayFile.addOnSuccessListener { yesterdayBytes ->
         val yesterdayJson = Json { ignoreUnknownKeys = true }
