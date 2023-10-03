@@ -17,6 +17,8 @@ import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageDay
 import com.bigbigdw.massmath.Firebase.FirebaseService
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import retrofit2.Call
@@ -172,10 +174,51 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
         } else if (inputData.getString(WORKER).equals("TEST")) {
             postFCM(data = "테스트", time = "${year}.${month}.${day} ${hour}:${min}")
 
+        } else if (inputData.getString(WORKER).equals("MINING")) {
+
+            val threadPool = Executors.newFixedThreadPool(5).asCoroutineDispatcher()
+
+            runBlocking {
+                for (j in NaverSeriesComicGenre) {
+                    if (DBDate.getDayOfWeekAsNumber() == 0) {
+                        BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = inputData.getString(TYPE) ?: "")
+                            .child("TROPHY_WEEK").removeValue()
+                    }
+
+                    if (DBDate.datedd() == "01") {
+                        BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = inputData.getString(TYPE) ?: "")
+                            .child("TROPHY_MONTH").removeValue()
+                    }
+
+                    val miningJobs = List(5) { i ->
+                        async(threadPool) {
+                            MiningSource.miningNaverSeriesComic(pageCount = i + 1, genre = j)
+                        }
+                    }
+
+                    miningJobs.awaitAll()
+
+                    launch {
+                        uploadJsonArrayToStorageDay(
+                            platform = inputData.getString(PLATFORM) ?: "",
+                            genre = getNaverSeriesGenre(j),
+                            type = inputData.getString(TYPE) ?: ""
+                        )
+                    }
+
+                    launch {
+                        calculateTrophy(
+                            platform = inputData.getString(PLATFORM) ?: "",
+                            genre = getNaverSeriesGenre(j),
+                            type = inputData.getString(TYPE) ?: ""
+                        )
+                    }
+                }
+            }
         }
 
         postFCM(
-            data = "$workerName 최신화 완료",
+            data = "$workerName 완료",
             time = "${year}.${month}.${day} ${hour}:${min}",
             activity = inputData.getString(WORKER) ?: "",
         )
