@@ -94,6 +94,8 @@ import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import com.bigbigdw.manavarasetting.util.calculateTrophy
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
 import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageDay
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -847,7 +849,11 @@ fun ContentsDangerLabs(viewModelMain: ViewModelMain) {
             runBlocking {
                 for (j in NaverSeriesComicGenre) {
                     if (DBDate.getDayOfWeekAsNumber() == 0) {
-                        BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "COMIC")
+                        BestRef.setBestRef(
+                            platform = "NAVER_SERIES",
+                            genre = j,
+                            type = "COMIC"
+                        )
                             .child("TROPHY_MONTH").removeValue()
                     }
 
@@ -904,12 +910,16 @@ fun ContentsDangerLabs(viewModelMain: ViewModelMain) {
             runBlocking {
                 for (j in NaverSeriesNovelGenre) {
                     if (DBDate.getDayOfWeekAsNumber() == 0) {
-                        BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "COMIC")
+                        BestRef.setBestRef(
+                            platform = "NAVER_SERIES",
+                            genre = j,
+                            type = "NOVEL"
+                        )
                             .child("TROPHY_MONTH").removeValue()
                     }
 
                     if (DBDate.datedd() == "01") {
-                        BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "COMIC")
+                        BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "NOVEL")
                             .child("TROPHY_MONTH").removeValue()
                     }
 
