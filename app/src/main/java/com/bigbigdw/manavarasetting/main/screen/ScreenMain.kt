@@ -48,6 +48,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -782,7 +783,7 @@ fun ContentsDangerOption(viewModelMain: ViewModelMain){
 }
 
 @Composable
-fun ContentsDangerLabs() {
+fun ContentsDangerLabs(viewModelMain: ViewModelMain) {
 
     val context = LocalContext.current
     val workManager = WorkManager.getInstance(context)
@@ -952,6 +953,55 @@ fun ContentsDangerLabs() {
             }
         }
     )
+
+    TabletContentWrapBtn(
+        onClick = {
+            viewModelMain.checkWorker(
+                workManager = workManager,
+                tag = "MINING_COMIC",
+                platform = "NAVER_SERIES",
+                type = "COMIC"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "WORKER COMIC 체크",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            viewModelMain.checkWorker(
+                workManager = workManager,
+                tag = "MINING_NOVEL",
+                platform = "NAVER_SERIES",
+                type = "NOVEL"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "WORKER NOVEL 체크",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
 
     Spacer(modifier = Modifier.size(60.dp))
 }

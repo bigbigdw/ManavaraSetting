@@ -205,7 +205,7 @@ fun ScreenTablet(
                     ContentsDangerOption(viewModelMain = viewModelMain)
                 }
                 "실험실" -> {
-                    ContentsDangerLabs()
+                    ContentsDangerLabs(viewModelMain = viewModelMain)
                 }
             }
         }
