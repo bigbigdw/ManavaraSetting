@@ -55,6 +55,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
+import com.bigbigdw.manavarasetting.firebase.FirebaseWorkManager
 import com.bigbigdw.manavarasetting.main.model.MainSettingLine
 import com.bigbigdw.manavarasetting.util.DataStoreManager
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
@@ -83,7 +84,21 @@ import com.bigbigdw.manavarasetting.ui.theme.colorF17666
 import com.bigbigdw.manavarasetting.ui.theme.colorF17FA0
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.ui.theme.colorFDC24E
+import com.bigbigdw.manavarasetting.util.BestRef
+import com.bigbigdw.manavarasetting.util.DBDate
+import com.bigbigdw.manavarasetting.util.MiningSource
+import com.bigbigdw.manavarasetting.util.NaverSeriesComicGenre
+import com.bigbigdw.manavarasetting.util.NaverSeriesNovelGenre
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
+import com.bigbigdw.manavarasetting.util.calculateTrophy
+import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
+import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageDay
+import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 @Composable
@@ -779,8 +794,8 @@ fun ContentsDangerLabs() {
                 repeatInterval = 15,
                 tag = "MINING_COMIC",
                 timeMill = TimeUnit.MINUTES,
-                platform = "",
-                type = ""
+                platform = "NAVER_SERIES",
+                type = "COMIC"
             )
         },
         content = {
@@ -805,8 +820,8 @@ fun ContentsDangerLabs() {
                 repeatInterval = 15,
                 tag = "MINING_NOVEL",
                 timeMill = TimeUnit.MINUTES,
-                platform = "",
-                type = ""
+                platform = "NAVER_SERIES",
+                type = "NOVEL"
             )
         },
         content = {
@@ -817,6 +832,120 @@ fun ContentsDangerLabs() {
             ) {
                 Text(
                     text = "WORKER NOVEL 실험",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            val threadPool = Executors.newFixedThreadPool(5).asCoroutineDispatcher()
+
+            runBlocking {
+                for (j in NaverSeriesComicGenre) {
+                    if (DBDate.getDayOfWeekAsNumber() == 0) {
+                        BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "COMIC")
+                            .child("TROPHY_MONTH").removeValue()
+                    }
+
+                    if (DBDate.datedd() == "01") {
+                        BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "COMIC")
+                            .child("TROPHY_MONTH").removeValue()
+                    }
+
+                    val miningJobs = List(5) { i ->
+                        async(threadPool) {
+                            MiningSource.miningNaverSeriesComic(pageCount = i + 1, genre = j)
+                        }
+                    }
+
+                    miningJobs.awaitAll()
+
+                    launch {
+                        uploadJsonArrayToStorageDay(
+                            platform = "NAVER_SERIES",
+                            genre = getNaverSeriesGenre(j),
+                            type = "COMIC"
+                        )
+                    }
+
+                    launch {
+                        calculateTrophy(
+                            platform = "NAVER_SERIES",
+                            genre = getNaverSeriesGenre(j),
+                            type = "COMIC"
+                        )
+                    }
+                }
+            }
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "WORKER COMIC 수동",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            val threadPool = Executors.newFixedThreadPool(5).asCoroutineDispatcher()
+
+            runBlocking {
+                for (j in NaverSeriesNovelGenre) {
+                    if (DBDate.getDayOfWeekAsNumber() == 0) {
+                        BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "COMIC")
+                            .child("TROPHY_MONTH").removeValue()
+                    }
+
+                    if (DBDate.datedd() == "01") {
+                        BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "COMIC")
+                            .child("TROPHY_MONTH").removeValue()
+                    }
+
+                    val miningJobs = List(5) { i ->
+                        async(threadPool) {
+                            MiningSource.miningNaverSeriesNovel(pageCount = i + 1, genre = j)
+                        }
+                    }
+
+                    miningJobs.awaitAll()
+
+                    launch {
+                        uploadJsonArrayToStorageDay(
+                            platform = "NAVER_SERIES",
+                            genre = getNaverSeriesGenre(j),
+                            type = "NOVEL"
+                        )
+                    }
+
+                    launch {
+                        calculateTrophy(
+                            platform = "NAVER_SERIES",
+                            genre = getNaverSeriesGenre(j),
+                            type = "NOVEL"
+                        )
+                    }
+                }
+            }
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "WORKER NOVEL 수동",
                     color = color000000,
                     fontSize = 18.sp,
                 )
