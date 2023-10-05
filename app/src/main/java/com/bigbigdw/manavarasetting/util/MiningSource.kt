@@ -6,6 +6,7 @@ import com.bigbigdw.manavarasetting.util.DBDate.dateMMDD
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.google.gson.JsonArray
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.jsoup.Jsoup
@@ -90,7 +91,7 @@ object MiningSource {
         }.start()
     }
 
-    fun mining(genre: String, platform: String, type: String){
+    fun mining(genre: String, platform: String, type: String, genreDir: String){
 
         try {
 
@@ -98,7 +99,7 @@ object MiningSource {
             val storageRef = storage.reference
 
             val yesterdayFileRef =
-                storageRef.child("${platform}/${type}/${genre}/DAY/${DBDate.dateYesterday()}.json")
+                storageRef.child("${platform}/${type}/${genreDir}/DAY/${DBDate.dateYesterday()}.json")
 
             val yesterdayFile = yesterdayFileRef.getBytes(1024 * 1024)
 
@@ -116,22 +117,24 @@ object MiningSource {
                 for (item in yesterdayItemList) {
                     yesterDayItemMap[item.bookCode] = item
                 }
-
-                doMining(
-                    genre = genre,
-                    platform = platform,
-                    type = type,
-                    yesterDayItemMap = yesterDayItemMap
-                )
+                runBlocking {
+                    doMining(
+                        genre = genre,
+                        platform = platform,
+                        type = type,
+                        yesterDayItemMap = yesterDayItemMap
+                    )
+                }
 
             }.addOnFailureListener {
-
-                doMining(
-                    genre = genre,
-                    platform = platform,
-                    type = type,
-                    yesterDayItemMap = mutableMapOf()
-                )
+                runBlocking {
+                    doMining(
+                        genre = genre,
+                        platform = platform,
+                        type = type,
+                        yesterDayItemMap = mutableMapOf()
+                    )
+                }
 
             }
         } catch (exception: Exception) {

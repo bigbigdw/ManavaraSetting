@@ -11,6 +11,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.google.gson.JsonArray
 import com.google.gson.JsonParser
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import java.nio.charset.Charset
@@ -695,26 +696,31 @@ private fun doResultMining(
     itemBookInfoList: JsonArray,
     itemBestInfoList: JsonArray
 ) {
-    makeTodayJson(
-        platform = platform,
-        genre = genre,
-        type = type,
-        todayArray = itemBookInfoList
-    )
 
-    uploadJsonTrophyWeek(
-        platform = platform,
-        genre = genre,
-        type = type,
-        itemBestInfoList = itemBestInfoList
-    )
-
-    uploadJsonTrophyMonth(
-        platform = platform,
-        genre = genre,
-        type = type,
-        itemBestInfoList = itemBestInfoList
-    )
+    runBlocking {
+        makeTodayJson(
+            platform = platform,
+            genre = genre,
+            type = type,
+            todayArray = itemBookInfoList
+        )
+    }
+    runBlocking {
+        uploadJsonTrophyWeek(
+            platform = platform,
+            genre = genre,
+            type = type,
+            itemBestInfoList = itemBestInfoList
+        )
+    }
+    runBlocking {
+        uploadJsonTrophyMonth(
+            platform = platform,
+            genre = genre,
+            type = type,
+            itemBestInfoList = itemBestInfoList
+        )
+    }
 }
 
 fun makeTodayJson(
@@ -770,6 +776,7 @@ private fun uploadWeekJson(
                 type = type,
                 todayArray = todayArray
             )
+
         }
 
         .addOnFailureListener {

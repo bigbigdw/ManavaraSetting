@@ -279,7 +279,8 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                             MiningSource.mining(
                                 genre = j,
                                 platform = "NAVER_SERIES",
-                                type = "COMIC"
+                                type = "COMIC",
+                                genreDir = getNaverSeriesGenre(j)
                             )
                         }
                     }
@@ -303,7 +304,8 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                             MiningSource.mining(
                                 genre = j,
                                 platform = "NAVER_SERIES",
-                                type = "NOVEL"
+                                type = "NOVEL",
+                                genreDir = getNaverSeriesGenre(j)
                             )
                         }
                     }
@@ -312,7 +314,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
         }
 
         postFCM(
-            data = "$workerName 완료",
+            data = workerName,
             time = "${year}.${month}.${day} ${hour}:${min}",
             activity = inputData.getString(WORKER) ?: "",
         )

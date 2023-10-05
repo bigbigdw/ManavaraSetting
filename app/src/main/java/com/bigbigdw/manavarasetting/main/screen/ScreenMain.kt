@@ -1029,6 +1029,7 @@ fun ContentsDangerLabs(viewModelMain: ViewModelMain) {
 
                     MiningSource.mining(
                         genre = j,
+                        genreDir = getNaverSeriesGenre(j),
                         platform = "NAVER_SERIES",
                         type = "COMIC"
                     )
@@ -1072,7 +1073,8 @@ fun ContentsDangerLabs(viewModelMain: ViewModelMain) {
                     MiningSource.mining(
                         genre = j,
                         platform = "NAVER_SERIES",
-                        type = "NOVEL"
+                        type = "NOVEL",
+                        genreDir = getNaverSeriesGenre(j)
                     )
                 }
             }
