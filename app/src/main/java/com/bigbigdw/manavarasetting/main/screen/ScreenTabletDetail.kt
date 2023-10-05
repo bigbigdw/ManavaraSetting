@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
@@ -38,21 +39,16 @@ fun ScreenTabletDetail(
     getDetailType: String,
 ) {
 
-    Box(
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
+            .padding(0.dp, 0.dp, 16.dp, 0.dp)
+            .semantics { contentDescription = "Overview Screen" },
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(0.dp, 0.dp, 16.dp, 0.dp)
-                .background(color = colorF6F6F6)
-                .verticalScroll(rememberScrollState())
-                .semantics { contentDescription = "Overview Screen" },
-        ) {
 
-            Spacer(modifier = Modifier.size(16.dp))
+        item { Spacer(modifier = Modifier.size(16.dp)) }
 
+        item {
             Text(
                 modifier = Modifier
                     .padding(24.dp, 0.dp, 0.dp, 0.dp)
@@ -64,7 +60,9 @@ fun ScreenTabletDetail(
                 color = color000000,
                 fontWeight = FontWeight(weight = 700)
             )
+        }
 
+        item {
             if (getDetailMenu.contains("베스트 리스트")) {
                 ContentsBestListDetail(
                     viewModelMain = viewModelMain,

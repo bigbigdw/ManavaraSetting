@@ -50,13 +50,14 @@ object BestRef {
         return mRootRef.child("DATA").child(type).child(platform).child(genre).child(bookCode).child(DBDate.year()).child(DBDate.month()).child(DBDate.datedd())
     }
 
-    fun setBookListDataBestAnalyze(ref: MutableMap<String?, Any>): ItemBestInfo {
+    fun setItemBestInfoRef(ref: MutableMap<String?, Any>): ItemBestInfo {
         return ItemBestInfo(
             number = ref["current"] as Int,
             info1 = ref["info1"] as String,
             total = ref["current"] as Int,
             totalCount = ref["current"] as Int,
             bookCode = ref["bookCode"] as String,
+            currentDiff = ref["currentDiff"] as Int,
         )
     }
 
@@ -64,7 +65,7 @@ object BestRef {
         return mRootRef.child("BEST").child(type).child(platform).child(genre)
     }
 
-    fun setBookListDataBest(ref: MutableMap<String?, Any>): ItemBookInfo {
+    fun setItemBookInfoRef(ref: MutableMap<String?, Any>): ItemBookInfo {
         return ItemBookInfo(
             writer = ref["writerName"] as String,
             title = ref["subject"] as String,
@@ -75,6 +76,13 @@ object BestRef {
             info1 = ref["info1"] as String,
             info2 = ref["info2"] as String,
             info3 = ref["info3"] as String,
+            total = ref["total"] as Int,
+            totalCount = ref["totalCount"] as Int,
+            totalWeek = ref["totalWeek"] as Int,
+            totalWeekCount = ref["totalWeekCount"] as Int,
+            totalMonth = ref["totalMonth"] as Int,
+            totalMonthCount = ref["totalMonthCount"] as Int,
+            currentDiff = ref["currentDiff"] as Int,
         )
     }
 }

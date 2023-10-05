@@ -30,8 +30,8 @@ object PeriodicWorker {
             .addTag("${tag}_${platform}_${type}")
             .setBackoffCriteria(
                 BackoffPolicy.LINEAR,
-                PeriodicWorkRequest.MIN_PERIODIC_FLEX_MILLIS,
-                TimeUnit.MILLISECONDS
+                PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS,
+                TimeUnit.MINUTES
             )
             .setInputData(inputData)
             .setConstraints(

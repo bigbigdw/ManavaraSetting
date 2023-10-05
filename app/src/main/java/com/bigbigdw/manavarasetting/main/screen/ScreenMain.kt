@@ -48,7 +48,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -56,7 +55,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
-import com.bigbigdw.manavarasetting.firebase.FirebaseWorkManager
 import com.bigbigdw.manavarasetting.main.model.MainSettingLine
 import com.bigbigdw.manavarasetting.util.DataStoreManager
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
@@ -94,8 +92,6 @@ import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import com.bigbigdw.manavarasetting.util.calculateTrophy
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
 import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageDay
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -1012,6 +1008,141 @@ fun ContentsDangerLabs(viewModelMain: ViewModelMain) {
         }
     )
 
+    TabletContentWrapBtn(
+        onClick = {
+
+            runBlocking {
+                for (j in NaverSeriesComicGenre) {
+                    if (DBDate.getDayOfWeekAsNumber() == 0) {
+                        BestRef.setBestRef(
+                            platform = "NAVER_SERIES",
+                            genre = j,
+                            type = "COMIC"
+                        )
+                            .child("TROPHY_MONTH").removeValue()
+                    }
+
+                    if (DBDate.datedd() == "01") {
+                        BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "COMIC")
+                            .child("TROPHY_MONTH").removeValue()
+                    }
+
+                    MiningSource.mining(
+                        genre = j,
+                        platform = "NAVER_SERIES",
+                        type = "COMIC"
+                    )
+                }
+            }
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "NAVER_SERIES COMIC 원큐",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+
+            runBlocking {
+                for (j in NaverSeriesNovelGenre) {
+                    if (DBDate.getDayOfWeekAsNumber() == 0) {
+                        BestRef.setBestRef(
+                            platform = "NAVER_SERIES",
+                            genre = j,
+                            type = "NOVEL"
+                        )
+                            .child("TROPHY_MONTH").removeValue()
+                    }
+
+                    if (DBDate.datedd() == "01") {
+                        BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "NOVEL")
+                            .child("TROPHY_MONTH").removeValue()
+                    }
+
+                    MiningSource.mining(
+                        genre = j,
+                        platform = "NAVER_SERIES",
+                        type = "NOVEL"
+                    )
+                }
+            }
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "NAVER_SERIES NOVEL 원큐",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                repeatInterval = 15,
+                tag = "MINING",
+                timeMill = TimeUnit.MINUTES,
+                platform = "NAVER_SERIES",
+                type = "COMIC"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "WORKER NAVER_SERIES COMIC 실행",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                repeatInterval = 15,
+                tag = "MINING",
+                timeMill = TimeUnit.MINUTES,
+                platform = "NAVER_SERIES",
+                type = "NOVEL"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "WORKER NAVER_SERIES NOVEL 실행",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
 
     Spacer(modifier = Modifier.size(60.dp))
 }

@@ -234,8 +234,6 @@ fun ContentsFCM() {
 @Composable
 fun ContentsFCMList(viewModelMain: ViewModelMain, child : String){
 
-    val context = LocalContext.current
-
     val fcmAlertList = when (child) {
         "ALERT" -> {
             viewModelMain.getFCMList(child = child)

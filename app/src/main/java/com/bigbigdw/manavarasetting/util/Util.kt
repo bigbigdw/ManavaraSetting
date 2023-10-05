@@ -4,22 +4,17 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.icu.text.SimpleDateFormat
 import android.util.Log
-import com.bigbigdw.manavarasetting.firebase.FCMAlert
 import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
-import com.google.gson.Gson
 import com.google.gson.JsonObject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONObject
-import java.io.ByteArrayInputStream
 import java.util.Calendar
 import java.util.Date
 
@@ -142,7 +137,7 @@ fun getNaverSeriesGenreKor(genre : String) : String {
 }
 
 @SuppressLint("SuspiciousIndentation")
-fun convertBestItemData(bestItemData : ItemBookInfo) : JsonObject {
+fun convertItemBook(bestItemData : ItemBookInfo) : JsonObject {
     val jsonObject = JsonObject()
         jsonObject.addProperty("writer", bestItemData.writer)
         jsonObject.addProperty("title", bestItemData.title)
@@ -159,11 +154,12 @@ fun convertBestItemData(bestItemData : ItemBookInfo) : JsonObject {
         jsonObject.addProperty("totalWeekCount", bestItemData.totalWeekCount)
         jsonObject.addProperty("totalMonth", bestItemData.totalMonth)
         jsonObject.addProperty("totalMonthCount", bestItemData.totalMonthCount)
+        jsonObject.addProperty("currentDiff", bestItemData.currentDiff)
     return jsonObject
 }
 
 @SuppressLint("SuspiciousIndentation")
-fun convertBestItemDataJson(jsonObject: JSONObject): ItemBookInfo {
+fun convertItemBookJson(jsonObject: JSONObject): ItemBookInfo {
 
     return ItemBookInfo(
         writer = jsonObject.optString("writer"),
@@ -181,10 +177,11 @@ fun convertBestItemDataJson(jsonObject: JSONObject): ItemBookInfo {
         totalWeekCount = jsonObject.optInt("totalWeekCount"),
         totalMonth = jsonObject.optInt("totalMonth"),
         totalMonthCount = jsonObject.optInt("totalMonthCount"),
+        currentDiff = jsonObject.optInt("currentDiff"),
     )
 }
 
-fun convertBestItemDataAnalyzeJson(jsonObject : JSONObject) : ItemBestInfo {
+fun convertItemBestJson(jsonObject : JSONObject) : ItemBestInfo {
 
     return ItemBestInfo(
         number = jsonObject.optInt("number"),
@@ -192,36 +189,19 @@ fun convertBestItemDataAnalyzeJson(jsonObject : JSONObject) : ItemBestInfo {
         total = jsonObject.optInt("total"),
         totalCount = jsonObject.optInt("totalCount"),
         bookCode = jsonObject.optString("bookCode"),
+        currentDiff = jsonObject.optInt("currentDiff"),
     )
 }
 
-fun convertBestItemDataAnalyze(bestItemData : ItemBestInfo) : JsonObject {
+fun convertItemBest(bestItemData : ItemBestInfo) : JsonObject {
     val jsonObject = JsonObject()
     jsonObject.addProperty("number", bestItemData.number)
     jsonObject.addProperty("info1", bestItemData.info1)
     jsonObject.addProperty("total", bestItemData.total)
     jsonObject.addProperty("totalCount", bestItemData.totalCount)
     jsonObject.addProperty("bookCode", bestItemData.bookCode)
+    jsonObject.addProperty("currentDiff", bestItemData.currentDiff)
     return jsonObject
-}
-
-fun uploadJsonFile() {
-    val storage = Firebase.storage
-    val storageRef = storage.reference
-    val jsonFileRef = storageRef.child("your_folder/your_json_file.json") // 저장할 경로 및 파일 이름 지정
-
-    val json = Gson().toJson(ItemBookInfo()) // Gson 라이브러리를 사용하여 객체를 JSON으로 변환
-
-    // JSON 문자열을 바이트 배열로 변환
-    val jsonBytes = ByteArrayInputStream(json.toByteArray(Charsets.UTF_8))
-
-    val uploadTask = jsonFileRef.putStream(jsonBytes)
-
-    uploadTask.addOnSuccessListener {
-        // 업로드 성공 시 처리
-    }.addOnFailureListener {
-        // 업로드 실패 시 처리
-    }
 }
 
 
@@ -269,6 +249,35 @@ fun updateWorker(context: Context, update: () -> Unit){
 
         override fun onCancelled(databaseError: DatabaseError) {}
     })
+}
+
+fun checkMiningTrophyValue(yesterDayItem: ItemBookInfo) : ItemBookInfo{
+
+    yesterDayItem.totalWeek = if (DBDate.getYesterdayDayOfWeek() == 7) {
+        1
+    } else {
+        yesterDayItem.totalWeek
+    }
+
+    yesterDayItem.totalWeekCount = if (DBDate.getYesterdayDayOfWeek() == 7) {
+        1
+    } else {
+        yesterDayItem.totalWeekCount
+    }
+
+    yesterDayItem.totalMonth = if (DBDate.datedd() == "01") {
+        1
+    } else {
+        yesterDayItem.totalMonth
+    }
+
+    yesterDayItem.totalMonthCount = if (DBDate.getYesterdayDayOfWeek() == 7) {
+        1
+    } else {
+        yesterDayItem.totalMonthCount
+    }
+
+    return yesterDayItem
 }
 
 

@@ -256,6 +256,59 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                     }
                 }
             }
+        } else if (inputData.getString(WORKER) == "MINING") {
+
+            if(inputData.getString(PLATFORM) == "NAVER_SERIES"){
+                if (inputData.getString(TYPE) == "COMIC"){
+                    runBlocking {
+                        for (j in NaverSeriesComicGenre) {
+                            if (DBDate.getDayOfWeekAsNumber() == 0) {
+                                BestRef.setBestRef(
+                                    platform = "NAVER_SERIES",
+                                    genre = j,
+                                    type = "COMIC"
+                                )
+                                    .child("TROPHY_MONTH").removeValue()
+                            }
+
+                            if (DBDate.datedd() == "01") {
+                                BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "COMIC")
+                                    .child("TROPHY_MONTH").removeValue()
+                            }
+
+                            MiningSource.mining(
+                                genre = j,
+                                platform = "NAVER_SERIES",
+                                type = "COMIC"
+                            )
+                        }
+                    }
+                } else {
+                    runBlocking {
+                        for (j in NaverSeriesNovelGenre) {
+                            if (DBDate.getDayOfWeekAsNumber() == 0) {
+                                BestRef.setBestRef(
+                                    platform = "NAVER_SERIES",
+                                    genre = j,
+                                    type = "NOVEL"
+                                )
+                                    .child("TROPHY_MONTH").removeValue()
+                            }
+
+                            if (DBDate.datedd() == "01") {
+                                BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "NOVEL")
+                                    .child("TROPHY_MONTH").removeValue()
+                            }
+
+                            MiningSource.mining(
+                                genre = j,
+                                platform = "NAVER_SERIES",
+                                type = "NOVEL"
+                            )
+                        }
+                    }
+                }
+            }
         }
 
         postFCM(

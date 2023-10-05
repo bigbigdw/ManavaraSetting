@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
@@ -45,25 +46,19 @@ fun ScreenTablet(
     lineCount: List<MainSettingLine>
 ) {
 
-    Box(
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-
+            .padding(0.dp, 0.dp, 16.dp, 0.dp)
+            .background(color = colorF6F6F6)
+            .semantics { contentDescription = "Overview Screen" },
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(0.dp, 0.dp, 16.dp, 0.dp)
-                .background(color = colorF6F6F6)
-                .verticalScroll(rememberScrollState())
-                .semantics { contentDescription = "Overview Screen" },
-        ) {
 
-            Spacer(modifier = Modifier.size(16.dp))
+        item { Spacer(modifier = Modifier.size(16.dp)) }
 
+        item {
             Text(
-                modifier = Modifier
-                    .clickable {
+                modifier = Modifier.clickable {
                         setDetailPage(false)
                     },
                 text = title,
@@ -71,9 +66,11 @@ fun ScreenTablet(
                 color = color000000,
                 fontWeight = FontWeight(weight = 700)
             )
+        }
 
-            Spacer(modifier = Modifier.size(16.dp))
+        item { Spacer(modifier = Modifier.size(16.dp)) }
 
+        item {
             when (title) {
                 "세팅바라 현황" -> {
                     ContentsSetting(

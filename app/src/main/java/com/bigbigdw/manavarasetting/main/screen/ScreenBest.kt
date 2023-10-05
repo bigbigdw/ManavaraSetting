@@ -37,10 +37,7 @@ import com.bigbigdw.manavarasetting.util.NaverSeriesNovelGenre
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenreKor
-import kotlinx.coroutines.asCoroutineDispatcher
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 @Composable
@@ -205,8 +202,6 @@ fun ContentsBestList(
     TabletContentWrapBtn(
         onClick = {
 
-            val threadPool = Executors.newFixedThreadPool(5).asCoroutineDispatcher()
-
             runBlocking {
                 for (j in NaverSeriesComicGenre) {
 
@@ -220,15 +215,9 @@ fun ContentsBestList(
                             .child("TROPHY_MONTH").removeValue()
                     }
 
-                    repeat(5) { i ->
-                        launch(threadPool) {
-                            MiningSource.miningNaverSeriesComic(pageCount = i + 1, genre = j)
-                        }
-                    }
+                    MiningSource.miningNaverSeriesComic(pageCount = 1, genre = j)
                 }
             }
-
-            threadPool.close()
 
             FCM.postFCMAlertTest(context = context, message = "베스트 리스트가 갱신되었습니다")
         },

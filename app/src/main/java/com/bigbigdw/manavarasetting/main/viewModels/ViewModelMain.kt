@@ -13,8 +13,8 @@ import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
 import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.DataStoreManager
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
-import com.bigbigdw.manavarasetting.util.convertBestItemDataAnalyzeJson
-import com.bigbigdw.manavarasetting.util.convertBestItemDataJson
+import com.bigbigdw.manavarasetting.util.convertItemBestJson
+import com.bigbigdw.manavarasetting.util.convertItemBookJson
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -341,7 +341,7 @@ class ViewModelMain @Inject constructor() : ViewModel() {
 
                         try{
                             val jsonObject = jsonArrayItem.getJSONObject(j)
-                            itemList.add(convertBestItemDataJson(jsonObject))
+                            itemList.add(convertItemBookJson(jsonObject))
                         }catch (e : Exception){
                             itemList.add(ItemBookInfo())
                         }
@@ -381,7 +381,7 @@ class ViewModelMain @Inject constructor() : ViewModel() {
             for (i in 0 until jsonArray.length()) {
 
                 val jsonObject = jsonArray.getJSONObject(i)
-                itemList.add(convertBestItemDataAnalyzeJson(jsonObject))
+                itemList.add(convertItemBestJson(jsonObject))
             }
 
             val cmpAsc: java.util.Comparator<ItemBestInfo> =
