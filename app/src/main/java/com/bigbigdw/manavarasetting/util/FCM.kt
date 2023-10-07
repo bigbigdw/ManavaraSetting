@@ -9,6 +9,7 @@ import com.bigbigdw.manavarasetting.firebase.DataFCMBodyData
 import com.bigbigdw.manavarasetting.firebase.DataFCMBodyNotification
 import com.bigbigdw.manavarasetting.firebase.FCMAlert
 import com.bigbigdw.manavarasetting.firebase.FWorkManagerResult
+import com.bigbigdw.manavarasetting.util.DBDate.dateMMDDHHMM
 import com.bigbigdw.manavarasetting.util.DataStoreManager.Companion.FCM_TOKEN
 import com.bigbigdw.massmath.Firebase.FirebaseService
 import com.google.android.gms.tasks.OnCompleteListener
@@ -23,6 +24,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object FCM {
+
     fun postFCMAlertTest(context: Context, message : String) {
 
         val year = DBDate.dateMMDDHHMM().substring(0,4)

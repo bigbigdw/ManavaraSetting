@@ -39,14 +39,8 @@ import com.bigbigdw.manavarasetting.ui.theme.color1CE3EE
 import com.bigbigdw.manavarasetting.ui.theme.colorFFFFFF
 import com.bigbigdw.manavarasetting.util.DataStoreManager
 import com.bigbigdw.manavarasetting.ui.theme.colorB3000000
-import com.bigbigdw.manavarasetting.util.DataStoreManager.Companion.BEST_NAVER_SERIES_COMIC
-import com.bigbigdw.manavarasetting.util.DataStoreManager.Companion.BEST_NAVER_SERIES_NOVEL
-import com.bigbigdw.manavarasetting.util.DataStoreManager.Companion.JSON_NAVER_SERIES_COMIC
-import com.bigbigdw.manavarasetting.util.DataStoreManager.Companion.JSON_NAVER_SERIES_NOVEL
-import com.bigbigdw.manavarasetting.util.DataStoreManager.Companion.TROPHY_NAVER_SERIES_COMIC
-import com.bigbigdw.manavarasetting.util.DataStoreManager.Companion.TROPHY_NAVER_SERIES_NOVEL
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
-import com.bigbigdw.manavarasetting.util.updateWorker
+import com.bigbigdw.manavarasetting.util.getDataStoreStatus
 import com.bigbigdw.manavarasetting.widget.ManavaraSettingWidget.paramWorkerInterval
 import com.bigbigdw.manavarasetting.widget.ManavaraSettingWidget.paramWorkerStatus
 import com.bigbigdw.manavarasetting.widget.ManavaraSettingWidget.paramWorkerTag
@@ -87,13 +81,8 @@ fun ScreenWidget(context: Context) {
 
     val dataStore = DataStoreManager(context)
 
-    val BEST_NAVER_SERIES_COMIC = dataStore.getDataStoreString(BEST_NAVER_SERIES_COMIC).collectAsState(initial = "")
-    val JSON_NAVER_SERIES_COMIC = dataStore.getDataStoreString(JSON_NAVER_SERIES_COMIC).collectAsState(initial = "")
-    val TROPHY_NAVER_SERIES_COMIC = dataStore.getDataStoreString(TROPHY_NAVER_SERIES_COMIC).collectAsState(initial = "")
-
-    val BEST_NAVER_SERIES_NOVEL = dataStore.getDataStoreString(BEST_NAVER_SERIES_NOVEL).collectAsState(initial = "")
-    val JSON_NAVER_SERIES_NOVEL = dataStore.getDataStoreString(JSON_NAVER_SERIES_NOVEL).collectAsState(initial = "")
-    val TROPHY_NAVER_SERIES_NOVEL = dataStore.getDataStoreString(TROPHY_NAVER_SERIES_NOVEL).collectAsState(initial = "")
+    val MINING_NAVER_SERIES_COMIC = dataStore.getDataStoreString(DataStoreManager.MINING_NAVER_SERIES_COMIC).collectAsState(initial = "")
+    val MINING_NAVER_SERIES_NOVEL = dataStore.getDataStoreString(DataStoreManager.MINING_NAVER_SERIES_NOVEL).collectAsState(initial = "")
 
     Column(
         modifier = GlanceModifier
@@ -144,51 +133,6 @@ fun ScreenWidget(context: Context) {
 
             Spacer(modifier = GlanceModifier.size(4.dp))
 
-            Column(
-                modifier = GlanceModifier
-                    .wrapContentSize()
-                    .padding(2.dp),
-                verticalAlignment = Alignment.Top,
-                horizontalAlignment = Alignment.Start,
-            ) {
-                ItemMainSetting(
-                    image = R.drawable.icon_best_wht,
-                    titleWorker = "베스트 : ",
-                    valueWorker = BEST_NAVER_SERIES_COMIC.value ?: "알 수 없음",
-                )
-
-            }
-
-            Column(
-                modifier = GlanceModifier
-                    .wrapContentSize()
-                    .padding(2.dp),
-                verticalAlignment = Alignment.Top,
-                horizontalAlignment = Alignment.Start,
-            ) {
-                ItemMainSetting(
-                    image = R.drawable.icon_json_wht,
-                    titleWorker = "JSON : ",
-                    valueWorker = JSON_NAVER_SERIES_COMIC.value ?: "알 수 없음",
-                )
-
-            }
-
-            Column(
-                modifier = GlanceModifier
-                    .wrapContentSize()
-                    .padding(2.dp),
-                verticalAlignment = Alignment.Top,
-                horizontalAlignment = Alignment.Start,
-            ) {
-                ItemMainSetting(
-                    image = R.drawable.icon_trophy_wht,
-                    titleWorker = "트로피 : ",
-                    valueWorker = TROPHY_NAVER_SERIES_COMIC.value ?: "알 수 없음",
-                )
-
-                Spacer(modifier = GlanceModifier.size(8.dp))
-            }
         }
 
         Column(modifier = GlanceModifier.padding(8.dp)){
@@ -205,51 +149,8 @@ fun ScreenWidget(context: Context) {
 
             Spacer(modifier = GlanceModifier.size(4.dp))
 
-            Column(
-                modifier = GlanceModifier
-                    .wrapContentSize()
-                    .padding(2.dp),
-                verticalAlignment = Alignment.Top,
-                horizontalAlignment = Alignment.Start,
-            ) {
-                ItemMainSetting(
-                    image = R.drawable.icon_best_wht,
-                    titleWorker = "베스트 : ",
-                    valueWorker = BEST_NAVER_SERIES_NOVEL.value ?: "알 수 없음",
-                )
 
-            }
 
-            Column(
-                modifier = GlanceModifier
-                    .wrapContentSize()
-                    .padding(2.dp),
-                verticalAlignment = Alignment.Top,
-                horizontalAlignment = Alignment.Start,
-            ) {
-                ItemMainSetting(
-                    image = R.drawable.icon_json_wht,
-                    titleWorker = "JSON : ",
-                    valueWorker = JSON_NAVER_SERIES_NOVEL.value ?: "알 수 없음",
-                )
-
-            }
-
-            Column(
-                modifier = GlanceModifier
-                    .wrapContentSize()
-                    .padding(2.dp),
-                verticalAlignment = Alignment.Top,
-                horizontalAlignment = Alignment.Start,
-            ) {
-                ItemMainSetting(
-                    image = R.drawable.icon_trophy_wht,
-                    titleWorker = "트로피 : ",
-                    valueWorker = TROPHY_NAVER_SERIES_NOVEL.value ?: "알 수 없음",
-                )
-
-                Spacer(modifier = GlanceModifier.size(8.dp))
-            }
         }
     }
 }
@@ -299,7 +200,7 @@ class WidgetUpdate : ActionCallback {
         parameters: ActionParameters
     ) {
 
-        updateWorker(context = context, update = {
+        getDataStoreStatus(context = context, update = {
             CoroutineScope(Dispatchers.IO).launch {
                 ManavaraSettingWidget.update(context, glanceId)
             }

@@ -100,36 +100,7 @@ class ViewModelMain @Inject constructor() : ViewModel() {
         }
     }
 
-    fun getDataStoreStatus(context: Context){
-        val mRootRef = FirebaseDatabase.getInstance().reference.child("WORKER")
 
-        mRootRef.addListenerForSingleValueEvent(object :
-            ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if(dataSnapshot.exists()){
-
-                    val dataStore = DataStoreManager(context)
-
-                    viewModelScope.launch {
-                        dataStore.setDataStoreString(DataStoreManager.BEST_NAVER_SERIES_COMIC, dataSnapshot.child("BEST_NAVER_SERIES_COMIC").getValue(String::class.java) ?: "")
-                        dataStore.setDataStoreString(DataStoreManager.BEST_NAVER_SERIES_NOVEL, dataSnapshot.child("BEST_NAVER_SERIES_NOVEL").getValue(String::class.java) ?: "")
-
-                        dataStore.setDataStoreString(DataStoreManager.JSON_NAVER_SERIES_COMIC, dataSnapshot.child("JSON_NAVER_SERIES_COMIC").getValue(String::class.java) ?: "")
-                        dataStore.setDataStoreString(DataStoreManager.JSON_NAVER_SERIES_NOVEL, dataSnapshot.child("JSON_NAVER_SERIES_NOVEL").getValue(String::class.java) ?: "")
-
-                        dataStore.setDataStoreString(DataStoreManager.TROPHY_NAVER_SERIES_COMIC, dataSnapshot.child("TROPHY_NAVER_SERIES_COMIC").getValue(String::class.java) ?: "")
-                        dataStore.setDataStoreString(DataStoreManager.TROPHY_NAVER_SERIES_NOVEL, dataSnapshot.child("TROPHY_NAVER_SERIES_NOVEL").getValue(String::class.java) ?: "")
-
-                    }
-
-                } else {
-                    Log.d("HIHI", "FALSE")
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
-    }
 
     fun getDataStoreFCMCount() {
         val mRootRef = FirebaseDatabase.getInstance().reference.child("MESSAGE").child("ALERT")

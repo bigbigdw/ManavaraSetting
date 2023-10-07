@@ -16,15 +16,22 @@ class DataStoreManager(private val context: Context) {
 
         val FCM_TOKEN = stringPreferencesKey("FCM_TOKEN")
 
-        val BEST_NAVER_SERIES_COMIC = stringPreferencesKey("BEST_NAVER_SERIES_COMIC")
-        val BEST_NAVER_SERIES_NOVEL = stringPreferencesKey("BEST_NAVER_SERIES_NOVEL")
+        val MINING_NAVER_SERIES_COMIC = stringPreferencesKey("MINING_NAVER_SERIES_COMIC")
+        val MINING_NAVER_SERIES_NOVEL = stringPreferencesKey("MINING_NAVER_SERIES_NOVEL")
 
-        val JSON_NAVER_SERIES_COMIC = stringPreferencesKey("JSON_NAVER_SERIES_COMIC")
-        val JSON_NAVER_SERIES_NOVEL = stringPreferencesKey("JSON_NAVER_SERIES_NOVEL")
+        val STATUS_NAVER_SERIES_COMIC_ACTION = stringPreferencesKey("STATUS_NAVER_SERIES_COMIC_ACTION")
+        val STATUS_NAVER_SERIES_COMIC_ALL = stringPreferencesKey("STATUS_NAVER_SERIES_COMIC_ALL")
+        val STATUS_NAVER_SERIES_COMIC_BL = stringPreferencesKey("STATUS_NAVER_SERIES_COMIC_ALL")
+        val STATUS_NAVER_SERIES_COMIC_DRAMA = stringPreferencesKey("STATUS_NAVER_SERIES_COMIC_DRAMA")
+        val STATUS_NAVER_SERIES_COMIC_MELO = stringPreferencesKey("STATUS_NAVER_SERIES_COMIC_MELO")
+        val STATUS_NAVER_SERIES_COMIC_YOUNG = stringPreferencesKey("STATUS_NAVER_SERIES_COMIC_YOUNG")
 
-        val TROPHY_NAVER_SERIES_COMIC = stringPreferencesKey("TROPHY_NAVER_SERIES_COMIC")
-        val TROPHY_NAVER_SERIES_NOVEL = stringPreferencesKey("TROPHY_NAVER_SERIES_NOVEL")
-
+        val STATUS_NAVER_SERIES_NOVEL_ALL = stringPreferencesKey("STATUS_NAVER_SERIES_NOVEL_ALL")
+        val STATUS_NAVER_SERIES_NOVEL_FANTASY = stringPreferencesKey("STATUS_NAVER_SERIES_NOVEL_FANTASY")
+        val STATUS_NAVER_SERIES_NOVEL_MARTIAL_ARTS = stringPreferencesKey("STATUS_NAVER_SERIES_NOVEL_MARTIAL_ARTS")
+        val STATUS_NAVER_SERIES_NOVEL_MODERN_FANTASY = stringPreferencesKey("STATUS_NAVER_SERIES_NOVEL_MODERN_FANTASY")
+        val STATUS_NAVER_SERIES_NOVEL_ROMANCE = stringPreferencesKey("STATUS_NAVER_SERIES_NOVEL_ROMANCE")
+        val STATUS_NAVER_SERIES_NOVEL_ROMANCE_FANTASY = stringPreferencesKey("STATUS_NAVER_SERIES_NOVEL_ROMANCE_FANTASY")
     }
 
     fun getDataStoreString(key : Preferences.Key<String>): Flow<String?> {

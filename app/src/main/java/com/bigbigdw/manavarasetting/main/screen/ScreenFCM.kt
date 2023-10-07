@@ -243,15 +243,6 @@ fun ContentsFCMList(viewModelMain: ViewModelMain, child : String){
             viewModelMain.getFCMList(child = child)
             viewModelMain.state.collectAsState().value.fcmNoticeList
         }
-        "BEST" -> {
-            viewModelMain.state.collectAsState().value.fcmBestList
-        }
-        "JSON" -> {
-            viewModelMain.state.collectAsState().value.fcmJsonList
-        }
-        "TROPHY" -> {
-            viewModelMain.state.collectAsState().value.fcmTrophyList
-        }
         else -> {
             viewModelMain.state.collectAsState().value.fcmAlertList
         }

@@ -55,7 +55,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
-import com.bigbigdw.manavarasetting.main.model.MainSettingLine
 import com.bigbigdw.manavarasetting.util.DataStoreManager
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
@@ -78,11 +77,12 @@ import com.bigbigdw.manavarasetting.ui.theme.color91CEC7
 import com.bigbigdw.manavarasetting.ui.theme.color998DF9
 import com.bigbigdw.manavarasetting.ui.theme.colorABD436
 import com.bigbigdw.manavarasetting.ui.theme.colorDCDCDD
-import com.bigbigdw.manavarasetting.ui.theme.colorea927C
+import com.bigbigdw.manavarasetting.ui.theme.colorEA927C
 import com.bigbigdw.manavarasetting.ui.theme.colorF17666
 import com.bigbigdw.manavarasetting.ui.theme.colorF17FA0
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.ui.theme.colorFDC24E
+import com.bigbigdw.manavarasetting.ui.theme.colorNAVER
 import com.bigbigdw.manavarasetting.util.BestRef
 import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.MiningSource
@@ -90,7 +90,10 @@ import com.bigbigdw.manavarasetting.util.NaverSeriesComicGenre
 import com.bigbigdw.manavarasetting.util.NaverSeriesNovelGenre
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import com.bigbigdw.manavarasetting.util.calculateTrophy
+import com.bigbigdw.manavarasetting.util.getDataStoreStatus
+import com.bigbigdw.manavarasetting.util.getNaverSeriesComicArray
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
+import com.bigbigdw.manavarasetting.util.getNaverSeriesNovelArray
 import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageDay
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.async
@@ -118,7 +121,7 @@ fun ScreenMain(
     val context = LocalContext.current
     val workManager = WorkManager.getInstance(context)
 
-    if(!isExpandedScreen){
+    if (!isExpandedScreen) {
         ScreenMainMobile(
             navController = navController,
             currentRoute = currentRoute,
@@ -128,8 +131,6 @@ fun ScreenMain(
     } else {
         ScreenMainTablet(
             navController = navController,
-            currentRoute = currentRoute,
-            workManager = workManager,
             viewModelMain = viewModelMain,
             isExpandedScreen = isExpandedScreen
         )
@@ -138,14 +139,11 @@ fun ScreenMain(
 
 @Composable
 fun ScreenMainTablet(
-    currentRoute : String?,
     navController: NavHostController,
-    workManager: WorkManager,
     viewModelMain: ViewModelMain,
     isExpandedScreen: Boolean
 ) {
-    Row{
-//        TableAppNavRail(currentRoute = currentRoute ?: "", navController = navController)
+    Row {
         NavigationGraph(
             navController = navController,
             viewModelMain = viewModelMain,
@@ -161,7 +159,7 @@ fun ScreenMainMobile(
     currentRoute: String?,
     viewModelMain: ViewModelMain,
     isExpandedScreen: Boolean
-){
+) {
 
     val modalSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
@@ -316,21 +314,6 @@ fun NavigationGraph(
     val context = LocalContext.current
     val dataStore = DataStoreManager(context)
 
-    val lineBest = listOf(
-        MainSettingLine(title = "네이버 시리즈 웹툰 : ", value = dataStore.getDataStoreString(DataStoreManager.BEST_NAVER_SERIES_COMIC).collectAsState(initial = "").value ?: ""),
-        MainSettingLine(title = "네이버 시리즈 소설 : ", value = dataStore.getDataStoreString(DataStoreManager.BEST_NAVER_SERIES_NOVEL).collectAsState(initial = "").value ?: ""),
-    )
-
-    val lineJson = listOf(
-        MainSettingLine(title = "네이버 시리즈 웹툰 : ", value = dataStore.getDataStoreString(DataStoreManager.JSON_NAVER_SERIES_COMIC).collectAsState(initial = "").value ?: ""),
-        MainSettingLine(title = "네이버 시리즈 소설 : ", value = dataStore.getDataStoreString(DataStoreManager.JSON_NAVER_SERIES_NOVEL).collectAsState(initial = "").value ?: ""),
-    )
-
-    val lineTrophy = listOf(
-        MainSettingLine(title = "네이버 시리즈 웹툰 : ", value = dataStore.getDataStoreString(DataStoreManager.TROPHY_NAVER_SERIES_COMIC).collectAsState(initial = "").value ?: ""),
-        MainSettingLine(title = "네이버 시리즈 소설 : ", value = dataStore.getDataStoreString(DataStoreManager.TROPHY_NAVER_SERIES_NOVEL).collectAsState(initial = "").value ?: ""),
-    )
-
     NavHost(
         navController = navController,
         startDestination = ScreemBottomItem.SETTING.screenRoute
@@ -339,22 +322,19 @@ fun NavigationGraph(
             ScreenMainSetting(
                 viewModelMain = viewModelMain,
                 isExpandedScreen = isExpandedScreen,
-                lineBest = lineBest,
-                lineJson = lineJson,
-                lineTrophy = lineTrophy
             )
         }
         composable(ScreemBottomItem.FCM.screenRoute) {
             ScreenMainFCM()
         }
         composable(ScreemBottomItem.BEST.screenRoute) {
-            ScreenMainBest(viewModelMain = viewModelMain, lineBest = lineBest)
+            ScreenMainBest(viewModelMain = viewModelMain)
         }
         composable(ScreemBottomItem.JSON.screenRoute) {
-            ScreenMainJson(viewModelMain = viewModelMain, lineJson = lineJson)
+            ScreenMainJson(viewModelMain = viewModelMain)
         }
         composable(ScreemBottomItem.TROPHY.screenRoute) {
-            ScreenMainTrophy(viewModelMain = viewModelMain,lineTrophy = lineTrophy)
+            ScreenMainTrophy(viewModelMain = viewModelMain)
         }
     }
 }
@@ -469,7 +449,7 @@ fun TableAppNavRail(
 }
 
 @Composable
-fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> Unit){
+fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> Unit) {
 
     Column(
         modifier = Modifier
@@ -500,7 +480,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
             body = "Periodic Worker 현황",
             setMenu = setMenu,
             getMenu = getMenu,
-            onClick = {onClick()}
+            onClick = { onClick() }
         )
 
         TabletBorderLine()
@@ -512,7 +492,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
             body = "FCM 테스트 & 공지사항 등록 & 토큰 획득",
             setMenu = setMenu,
             getMenu = getMenu,
-            onClick = {onClick()}
+            onClick = { onClick() }
         )
 
         ItemMainSettingSingleTablet(
@@ -522,7 +502,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
             body = "NOTICE 리스트 확인",
             setMenu = setMenu,
             getMenu = getMenu,
-            onClick = {onClick()}
+            onClick = { onClick() }
         )
 
         ItemMainSettingSingleTablet(
@@ -532,61 +512,51 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
             body = "ALERT 리스트 확인",
             setMenu = setMenu,
             getMenu = getMenu,
-            onClick = {onClick()}
+            onClick = { onClick() }
         )
 
         TabletBorderLine()
 
         ItemMainSettingSingleTablet(
-            containerColor = colorea927C,
+            containerColor = colorEA927C,
             image = R.drawable.icon_best_wht,
-            title = "베스트 리스트 관리",
-            body = "베스트 리스트 수동 갱신 & Worker",
+            title = "웹소설 베스트 리스트",
+            body = "웹소설 플랫폼 베스트 리스트 확인",
             setMenu = setMenu,
             getMenu = getMenu,
-            onClick = {onClick()}
+            onClick = { onClick() }
         )
 
         ItemMainSettingSingleTablet(
             containerColor = colorABD436,
             image = R.drawable.icon_best_wht,
-            title = "베스트 BOOK 리스트",
-            body = "장르별 작품 리스트 확인",
+            title = "웹툰 베스트 리스트",
+            body = "웹툰 플랫폼 베스트 리스트 확인",
             setMenu = setMenu,
             getMenu = getMenu,
-            onClick = {onClick()}
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = colorF17FA0,
-            image = R.drawable.icon_best_wht,
-            title = "베스트 최신화 현황",
-            body = "시간별 베스트 갱신 현황",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = {onClick()}
+            onClick = { onClick() }
         )
 
         TabletBorderLine()
 
         ItemMainSettingSingleTablet(
-            containerColor = color21C2EC,
+            containerColor = colorF17FA0,
             image = R.drawable.icon_json_wht,
             title = "JSON 관리",
             body = "JSON 베스트 수동 갱신 & Worker 관리",
             setMenu = setMenu,
             getMenu = getMenu,
-            onClick = {onClick()}
+            onClick = { onClick() }
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color31C3AE,
+            containerColor = color21C2EC,
             image = R.drawable.icon_json_wht,
             title = "JSON 투데이 베스트 현황",
             body = "WEEK 투데이 확인",
             setMenu = setMenu,
             getMenu = getMenu,
-            onClick = {onClick()}
+            onClick = { onClick() }
         )
 
         ItemMainSettingSingleTablet(
@@ -596,7 +566,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
             body = "WEEK 베스트 확인",
             setMenu = setMenu,
             getMenu = getMenu,
-            onClick = {onClick()}
+            onClick = { onClick() }
         )
 
         ItemMainSettingSingleTablet(
@@ -606,7 +576,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
             body = "MONTH 베스트 확인",
             setMenu = setMenu,
             getMenu = getMenu,
-            onClick = {onClick()}
+            onClick = { onClick() }
         )
 
         ItemMainSettingSingleTablet(
@@ -616,7 +586,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
             body = "장르별 주간 JSON 확인",
             setMenu = setMenu,
             getMenu = getMenu,
-            onClick = {onClick()}
+            onClick = { onClick() }
         )
 
         ItemMainSettingSingleTablet(
@@ -626,7 +596,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
             body = "장르별 월간 JSON 확인",
             setMenu = setMenu,
             getMenu = getMenu,
-            onClick = {onClick()}
+            onClick = { onClick() }
         )
 
         ItemMainSettingSingleTablet(
@@ -636,7 +606,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
             body = "시간별 JSON 갱신 현황",
             setMenu = setMenu,
             getMenu = getMenu,
-            onClick = {onClick()}
+            onClick = { onClick() }
         )
 
         TabletBorderLine()
@@ -648,7 +618,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
             body = "트로피 수동 정산 & Worker 관리",
             setMenu = setMenu,
             getMenu = getMenu,
-            onClick = {onClick()}
+            onClick = { onClick() }
         )
 
         ItemMainSettingSingleTablet(
@@ -658,7 +628,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
             body = "장르별 주간 트로피 리스트 확인",
             setMenu = setMenu,
             getMenu = getMenu,
-            onClick = {onClick()}
+            onClick = { onClick() }
         )
 
         ItemMainSettingSingleTablet(
@@ -668,7 +638,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
             body = "장르별 월간 트로피 리스트 확인",
             setMenu = setMenu,
             getMenu = getMenu,
-            onClick = {onClick()}
+            onClick = { onClick() }
         )
 
         ItemMainSettingSingleTablet(
@@ -678,7 +648,31 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
             body = "시간별 트로피 최신화 현황",
             setMenu = setMenu,
             getMenu = getMenu,
-            onClick = {onClick()}
+            onClick = { onClick() }
+        )
+
+        TabletBorderLine()
+
+        ItemMainSettingSingleTablet(
+            containerColor = colorNAVER,
+            image = R.drawable.logo_naver,
+            title = "네이버 시리즈 웹툰",
+            body = "네이버 시리즈 웹툰 관리",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        TabletBorderLine()
+
+        ItemMainSettingSingleTablet(
+            containerColor = colorNAVER,
+            image = R.drawable.logo_naver,
+            title = "네이버 시리즈 웹소설",
+            body = "네이버 시리즈 웹소설 관리",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
         )
 
         TabletBorderLine()
@@ -690,7 +684,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
             body = "건들면 돌이킬 수 없는 옵션 관리",
             setMenu = setMenu,
             getMenu = getMenu,
-            onClick = {onClick()}
+            onClick = { onClick() }
         )
 
         ItemMainSettingSingleTablet(
@@ -700,14 +694,14 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick : () -> 
             body = "일단 기능 만들고 질러보는 공간",
             setMenu = setMenu,
             getMenu = getMenu,
-            onClick = {onClick()}
+            onClick = { onClick() }
         )
 
     }
 }
 
 @Composable
-fun ContentsDangerOption(viewModelMain: ViewModelMain){
+fun ContentsDangerOption(viewModelMain: ViewModelMain) {
 
     TabletContentWrapBtn(
         onClick = { viewModelMain.resetBest(str = "ALERT") },
@@ -1145,6 +1139,156 @@ fun ContentsDangerLabs(viewModelMain: ViewModelMain) {
             }
         }
     )
+
+    Spacer(modifier = Modifier.size(60.dp))
+}
+
+@Composable
+fun ContentsPlatformNaverSeriesComic() {
+
+    val context = LocalContext.current
+    getDataStoreStatus(context = context, update = {})
+    val workManager = WorkManager.getInstance(context)
+    val dataStore = DataStoreManager(context)
+
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                repeatInterval = 15,
+                tag = "MINING",
+                timeMill = TimeUnit.MINUTES,
+                platform = "NAVER_SERIES",
+                type = "COMIC"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.logo_naver),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "NAVER_SERIES COMIC",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {},
+        content = {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = spannableString(
+                    textFront = "최신화 현황 : ", color = color000000,
+                    textEnd = dataStore.getDataStoreString(
+                        DataStoreManager.MINING_NAVER_SERIES_COMIC
+                    ).collectAsState(initial = "").value ?: "",
+                ),
+                color = color000000,
+                fontSize = 18.sp,
+                textAlign = TextAlign.Start
+            )
+        }
+    )
+
+    TabletContentWrap {
+        getNaverSeriesComicArray(context).forEachIndexed { index, item ->
+            ItemMainTabletContent(
+                title = item.title,
+                value = item.value,
+                isLast = getNaverSeriesComicArray(context).size - 1 == index
+            )
+        }
+    }
+
+    Spacer(modifier = Modifier.size(60.dp))
+}
+
+@Composable
+fun ContentsPlatformNaverSeriesNovel() {
+
+    val context = LocalContext.current
+    getDataStoreStatus(context = context, update = {})
+    val workManager = WorkManager.getInstance(context)
+    val dataStore = DataStoreManager(context)
+
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                repeatInterval = 15,
+                tag = "MINING",
+                timeMill = TimeUnit.MINUTES,
+                platform = "NAVER_SERIES",
+                type = "NOVEL"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.logo_naver),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "NAVER_SERIES NOVEL",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {},
+        content = {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = spannableString(
+                    textFront = "최신화 현황 : ", color = color000000,
+                    textEnd = dataStore.getDataStoreString(
+                        DataStoreManager.MINING_NAVER_SERIES_NOVEL
+                    ).collectAsState(initial = "").value ?: "",
+                ),
+                color = color000000,
+                fontSize = 18.sp,
+                textAlign = TextAlign.Start
+            )
+        }
+    )
+
+    TabletContentWrap {
+        getNaverSeriesNovelArray(context).forEachIndexed { index, item ->
+            ItemMainTabletContent(
+                title = item.title,
+                value = item.value,
+                isLast = getNaverSeriesNovelArray(context).size - 1 == index
+            )
+        }
+    }
 
     Spacer(modifier = Modifier.size(60.dp))
 }

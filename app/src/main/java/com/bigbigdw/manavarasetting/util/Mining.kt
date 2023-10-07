@@ -6,6 +6,7 @@ import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
 import com.bigbigdw.manavarasetting.util.MiningSource.miningNaverSeriesComic
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -327,7 +328,7 @@ fun calculateTrophy(platform: String, genre: String, type: String) {
             for (item in itemList) {
                 if (yesterDatItemMap.containsKey(item.bookCode)) {
 
-                    val total = yesterDatItemMap[item.bookCode]?.current ?: 0
+//                    val total = yesterDatItemMap[item.bookCode]?.current ?: 0
                     val totalCount = (yesterDatItemMap[item.bookCode]?.totalCount ?: 0)
 
                     val totalWeek = if (DBDate.getYesterdayDayOfWeek() == 7) {
@@ -355,19 +356,19 @@ fun calculateTrophy(platform: String, genre: String, type: String) {
                     }
 
                     val bestListAnalyze = ItemBestInfo(
-                        number = item.current,
+//                        number = item.current,
                         info1 = item.info1,
-                        total = total + item.current,
+//                        total = total + item.current,
                         totalCount = totalCount + 1,
                         bookCode = item.bookCode
                     )
 
                     val bestItemData = item.copy(
-                        total = total + item.current,
+//                        total = total + item.current,
                         totalCount = totalCount + 1,
-                        totalWeek = totalWeek + item.current,
+//                        totalWeek = totalWeek + item.current,
                         totalWeekCount = totalWeekCount + 1,
-                        totalMonth = totalMonth + item.current,
+//                        totalMonth = totalMonth + item.current,
                         totalMonthCount = totalMonthCount + 1
                     )
 
@@ -451,19 +452,19 @@ fun calculateTrophy(platform: String, genre: String, type: String) {
             // JSON 배열 사용
             for (item in itemList) {
                 val bestListAnalyze = ItemBestInfo(
-                    number = item.current,
+//                    number = item.current,
                     info1 = item.info1,
-                    total = item.current,
+//                    total = item.current,
                     totalCount = 1,
                     bookCode = item.bookCode
                 )
 
                 val bestItemData = item.copy(
-                    total = item.current,
+//                    total = item.current,
                     totalCount = 1,
-                    totalWeek = item.current,
+//                    totalWeek = item.current,
                     totalWeekCount = 1,
-                    totalMonth = item.current,
+//                    totalMonth = item.current,
                     totalMonthCount = 1
                 )
 
@@ -846,17 +847,36 @@ private fun makeWeekJson(
 
     val indexNum = DBDate.getDayOfWeekAsNumber()
 
-    weekArray.set(indexNum, todayArray)
+    val clonedWeekArray = weekArray.deepCopy()
 
-    val jsonBytes = weekArray.toString().toByteArray(Charsets.UTF_8)
+    clonedWeekArray.set(indexNum, todayArray)
 
-    jsonWeekRef.putBytes(jsonBytes)
-        .addOnSuccessListener {
-            Log.d("makeWeekJson", "jsonWeekRef 성공")
-        }.addOnFailureListener {
-            Log.d("makeWeekJson", "jsonWeekRef 실패")
-        }
+    val mRootRef = FirebaseDatabase.getInstance().reference.child("WORKER")
 
+
+    try{
+        val jsonBytes = clonedWeekArray.toString().toByteArray(Charsets.UTF_8)
+
+        jsonWeekRef.putBytes(jsonBytes)
+            .addOnSuccessListener {
+                Log.d("makeWeekJson", "jsonWeekRef 성공")
+                mRootRef.child("STATUS_${platform}_${type}_${genre}").setValue("성공")
+            }.addOnFailureListener {
+                Log.d("makeWeekJson", "jsonWeekRef 실패")
+                mRootRef.child("STATUS_${platform}_${type}_${genre}").setValue("실패 $it")
+            }
+
+
+    } catch (e : Exception){
+
+        val year = DBDate.dateMMDDHHMM().substring(0,4)
+        val month = DBDate.dateMMDDHHMM().substring(4,6)
+        val day = DBDate.dateMMDDHHMM().substring(6,8)
+        val hour = DBDate.dateMMDDHHMM().substring(8,10)
+        val min = DBDate.dateMMDDHHMM().substring(10,12)
+
+        mRootRef.child("STATUS_${platform}_${type}_${genre}").setValue("실패 ${year}.${month}.${day} ${hour}:${min}")
+    }
 }
 
 private fun makeMonthJson(

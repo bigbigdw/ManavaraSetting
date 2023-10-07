@@ -24,22 +24,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
-import com.bigbigdw.manavarasetting.main.model.MainSettingLine
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.util.FCM
 import com.bigbigdw.manavarasetting.util.NaverSeriesComicGenre
-import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import com.bigbigdw.manavarasetting.util.calculateTrophy
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import java.util.concurrent.TimeUnit
 
 @Composable
 fun ScreenMainTrophy(
-    lineTrophy: List<MainSettingLine>,
     viewModelMain: ViewModelMain
 ) {
 
@@ -65,111 +61,21 @@ fun ScreenMainTrophy(
 
             MainHeader(image = R.drawable.icon_trophy, title = "트로피 최신화 현황")
 
-            ContentsTrophy(viewModelMain = viewModelMain, lineTrophy = lineTrophy)
+            ContentsTrophy(viewModelMain = viewModelMain)
         }
     }
 }
 
 @Composable
-fun ContentsTrophy(lineTrophy: List<MainSettingLine> , viewModelMain: ViewModelMain) {
+fun ContentsTrophy( viewModelMain: ViewModelMain) {
 
     val context = LocalContext.current
     val workManager = WorkManager.getInstance(context)
 
-    val itemNaverSeriesComic = listOf(
-        MainSettingLine(title = "WORKER 시작", onClick = {
-            PeriodicWorker.doWorker(
-                workManager = workManager,
-                repeatInterval = 5,
-                tag = "TROPHY",
-                timeMill = TimeUnit.HOURS,
-                platform = "NAVER_SERIES",
-                type = "COMIC"
-            )
-
-            viewModelMain.getDataStoreStatus(context = context)
-        }),
-        MainSettingLine(title = "WORKER 취소", onClick = {
-            PeriodicWorker.cancelWorker(
-                workManager = workManager,
-                tag = "TROPHY",
-                platform = "NAVER_SERIES",
-                type = "COMIC"
-            )
-
-            viewModelMain.getDataStoreStatus(context = context)
-        }),
-        MainSettingLine(title = "WORKER 확인", onClick = {
-            viewModelMain.checkWorker(
-                workManager = workManager,
-                tag = "TROPHY",
-                platform = "NAVER_SERIES",
-                type = "COMIC"
-            )
-
-            viewModelMain.getDataStoreStatus(context = context)
-        }),
-    )
-
-    val itemNaverSeriesNovel = listOf(
-        MainSettingLine(title = "WORKER 시작", onClick = {
-            PeriodicWorker.doWorker(
-                workManager = workManager,
-                repeatInterval = 5,
-                tag = "TROPHY",
-                timeMill = TimeUnit.HOURS,
-                platform = "NAVER_SERIES",
-                type = "NOVEL"
-            )
-
-            viewModelMain.getDataStoreStatus(context = context)
-        }),
-        MainSettingLine(title = "WORKER 취소", onClick = {
-            PeriodicWorker.cancelWorker(
-                workManager = workManager,
-                tag = "TROPHY",
-                platform = "NAVER_SERIES",
-                type = "NOVEL"
-            )
-
-            viewModelMain.getDataStoreStatus(context = context)
-        }),
-        MainSettingLine(title = "WORKER 확인", onClick = {
-            viewModelMain.checkWorker(
-                workManager = workManager,
-                tag = "TROPHY",
-                platform = "NAVER_SERIES",
-                type = "NOVEL"
-            )
-
-            viewModelMain.getDataStoreStatus(context = context)
-        }),
-    )
-
 
     ItemTabletTitle(str = "네이버 시리즈 웹툰", isTopPadding = false)
 
-    TabletContentWrap {
-        itemNaverSeriesComic.forEachIndexed { index, item ->
-            ItemMainTabletContent(
-                title = item.title,
-                isLast = itemNaverSeriesComic.size - 1 == index,
-                onClick = item.onClick
-            )
-        }
-    }
-
     ItemTabletTitle(str = "네이버 시리즈 웹소설")
-
-    TabletContentWrap {
-        itemNaverSeriesNovel.forEachIndexed { index, item ->
-            ItemMainTabletContent(
-                title = item.title,
-                isLast = itemNaverSeriesNovel.size - 1 == index,
-                onClick = item.onClick
-            )
-        }
-    }
 
     Spacer(modifier = Modifier.size(16.dp))
 
@@ -206,16 +112,6 @@ fun ContentsTrophy(lineTrophy: List<MainSettingLine> , viewModelMain: ViewModelM
     )
 
     ItemTabletTitle(str = "트로피 정산 현황")
-
-    TabletContentWrap {
-        lineTrophy.forEachIndexed { index, item ->
-            ItemMainTabletContent(
-                title = item.title,
-                value = item.value,
-                isLast = lineTrophy.size - 1 == index
-            )
-        }
-    }
 
     Spacer(modifier = Modifier.size(60.dp))
 }

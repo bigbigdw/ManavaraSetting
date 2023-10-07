@@ -31,7 +31,7 @@ val color8E8E8E = Color(android.graphics.Color.parseColor("#8e8e8e"))
 val color4AD7CF = Color(android.graphics.Color.parseColor("#4ad7cf"))
 val color5372DE = Color(android.graphics.Color.parseColor("#5372de"))
 val color998DF9 = Color(android.graphics.Color.parseColor("#998df9"))
-val colorea927C = Color(android.graphics.Color.parseColor("#ea927c"))
+val colorEA927C = Color(android.graphics.Color.parseColor("#ea927c"))
 val colorABD436 = Color(android.graphics.Color.parseColor("#abd436"))
 val colorF17FA0 = Color(android.graphics.Color.parseColor("#f17fa0"))
 val color21C2EC = Color(android.graphics.Color.parseColor("#21c2ec"))
@@ -56,4 +56,6 @@ val color8F8F8F = Color(android.graphics.Color.parseColor("#8f8f8f"))
 val colorFFFFFF = Color(android.graphics.Color.parseColor("#FFFFFF"))
 
 val color1CE3EE = Color(android.graphics.Color.parseColor("#1ce3ee"))
+
+val colorNAVER = Color(android.graphics.Color.parseColor("#00e063"))
 

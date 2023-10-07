@@ -52,10 +52,11 @@ object BestRef {
 
     fun setItemBestInfoRef(ref: MutableMap<String?, Any>): ItemBestInfo {
         return ItemBestInfo(
-            number = ref["current"] as Int,
+            number = ref["number"] as Int,
+            point = ref["point"] as Int,
             info1 = ref["info1"] as String,
-            total = ref["current"] as Int,
-            totalCount = ref["current"] as Int,
+            total = ref["point"] as Int,
+            totalCount = ref["point"] as Int,
             bookCode = ref["bookCode"] as String,
             currentDiff = ref["currentDiff"] as Int,
         )
@@ -71,7 +72,8 @@ object BestRef {
             title = ref["subject"] as String,
             bookImg = ref["bookImg"] as String,
             bookCode = ref["bookCode"] as String,
-            current = ref["current"] as Int,
+            number = ref["number"] as Int,
+            point = ref["point"] as Int,
             type = ref["type"] as String,
             info1 = ref["info1"] as String,
             info2 = ref["info2"] as String,

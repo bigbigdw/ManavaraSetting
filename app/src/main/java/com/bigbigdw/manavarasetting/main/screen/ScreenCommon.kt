@@ -555,7 +555,8 @@ fun ItemTabletBestList(item : ItemBookInfo, isLast: Boolean){
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = spannableString(textFront = "헌재 스코어 : ", color = color000000, textEnd = item.current.toString()),
+//                        text = spannableString(textFront = "헌재 스코어 : ", color = color000000, textEnd = item.current.toString()),
+                        text = "",
                         color = color8E8E8E,
                         fontSize = 16.sp,
                     )

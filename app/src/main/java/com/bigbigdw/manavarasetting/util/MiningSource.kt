@@ -164,7 +164,7 @@ object MiningSource {
 
                 for (i in naverSeries.indices) {
                     val bookCode = naverSeries.select(".comic_cont a")[i].absUrl("href").replace("https://series.naver.com/comic/detail.series?productNo=", "")
-                    val current = (naverSeries.size * (pageCount - 1)) + i
+                    val point = (naverSeries.size * 5) - ((naverSeries.size * (pageCount - 1)) + i)
 
                     val yesterDayItem = checkMiningTrophyValue(yesterDatItemMap[bookCode] ?: ItemBookInfo())
 
@@ -175,19 +175,20 @@ object MiningSource {
                     NaverRef["info1"] = naverSeries.select(".comic_cont .info .score_num")[i].text()
                     NaverRef["info2"] = naverSeries[i].select(".comic_cont .info .ellipsis")[1]?.text() ?: ""
                     NaverRef["info3"] = naverSeries.select(".comic_cont .dsc")[i].text()
-                    NaverRef["current"] = current
+                    NaverRef["number"] = ((naverSeries.size * (pageCount - 1)) + i)
+                    NaverRef["point"] = point
 
-                    NaverRef["total"] = yesterDayItem.current + current
+                    NaverRef["total"] = yesterDayItem.point + point
                     NaverRef["totalCount"] = yesterDayItem.totalCount + 1
-                    NaverRef["totalWeek"] = yesterDayItem.totalWeek + current
+                    NaverRef["totalWeek"] = yesterDayItem.totalWeek + point
                     NaverRef["totalWeekCount"] = yesterDayItem.totalWeekCount + 1
-                    NaverRef["totalMonth"] = yesterDayItem.totalMonth + current
+                    NaverRef["totalMonth"] = yesterDayItem.totalMonth + point
                     NaverRef["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
                     NaverRef["currentDiff"] =
                         if (yesterDatItemMap[bookCode]?.currentDiff != null) {
-                            (yesterDatItemMap[bookCode]?.currentDiff ?: 0) - current
+                            (yesterDatItemMap[bookCode]?.currentDiff ?: 0) - ((naverSeries.size * (pageCount - 1)) + i)
                         } else {
-                            current
+                            ((naverSeries.size * (pageCount - 1)) + i)
                         }
 
                     NaverRef["date"] = dateMMDD()
@@ -232,7 +233,7 @@ object MiningSource {
 
                 for (i in naverSeries.indices) {
                     val bookCode = naverSeries.select(".comic_cont a")[i].absUrl("href").replace("https://series.naver.com/novel/detail.series?productNo=", "")
-                    val current = (naverSeries.size * (pageCount - 1)) + i
+                    val point = (naverSeries.size * 5) - ((naverSeries.size * (pageCount - 1)) + i)
 
                     val yesterDayItem = checkMiningTrophyValue(yesterDatItemMap[bookCode] ?: ItemBookInfo())
 
@@ -243,19 +244,20 @@ object MiningSource {
                     NaverRef["info1"] = naverSeries.select(".comic_cont .info .score_num")[i].text()
                     NaverRef["info2"] = naverSeries[i].select(".comic_cont .info .ellipsis")[1]?.text() ?: ""
                     NaverRef["info3"] = naverSeries.select(".comic_cont .dsc")[i].text()
-                    NaverRef["current"] = current
+                    NaverRef["number"] = ((naverSeries.size * (pageCount - 1)) + i)
+                    NaverRef["point"] = point
 
-                    NaverRef["total"] = yesterDayItem.current + current
+                    NaverRef["total"] = yesterDayItem.point + point
                     NaverRef["totalCount"] = yesterDayItem.totalCount + 1
-                    NaverRef["totalWeek"] = yesterDayItem.totalWeek + current
+                    NaverRef["totalWeek"] = yesterDayItem.totalWeek + point
                     NaverRef["totalWeekCount"] = yesterDayItem.totalWeekCount + 1
-                    NaverRef["totalMonth"] = yesterDayItem.totalMonth + current
+                    NaverRef["totalMonth"] = yesterDayItem.totalMonth + point
                     NaverRef["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
                     NaverRef["currentDiff"] =
                         if (yesterDatItemMap[bookCode]?.currentDiff != null) {
-                            (yesterDatItemMap[bookCode]?.currentDiff ?: 0) - current
+                            (yesterDatItemMap[bookCode]?.currentDiff ?: 0) - ((naverSeries.size * (pageCount - 1)) + i)
                         } else {
-                            current
+                            ((naverSeries.size * (pageCount - 1)) + i)
                         }
 
                     NaverRef["date"] = dateMMDD()

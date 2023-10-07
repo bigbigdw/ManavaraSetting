@@ -30,14 +30,12 @@ import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.main.model.MainSettingLine
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
+import com.bigbigdw.manavarasetting.util.getDataStoreStatus
 
 @Composable
 fun ScreenMainSetting(
     viewModelMain: ViewModelMain,
-    isExpandedScreen: Boolean,
-    lineBest: List<MainSettingLine>,
-    lineJson: List<MainSettingLine>,
-    lineTrophy: List<MainSettingLine>,
+    isExpandedScreen: Boolean
 ) {
 
     val context = LocalContext.current
@@ -45,7 +43,7 @@ fun ScreenMainSetting(
     var isInit by remember { mutableStateOf(false) }
 
     if(!isInit){
-        viewModelMain.getDataStoreStatus(context = context)
+        getDataStoreStatus(context = context, update = {})
         viewModelMain.getDataStoreFCMCount()
         isInit = true
     }
@@ -93,26 +91,18 @@ fun ScreenMainSetting(
                 } else {
                     ScreenTablet(
                         title = getMenu,
-                        lineBest = lineBest,
-                        lineJson = lineJson,
-                        lineTrophy = lineTrophy,
                         viewModelMain = viewModelMain,
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         setDetailPlatform = setDetailPlatform,
                         setDetailGenre = setDetailGenre,
-                        setDetailType = setDetailType,
-                        lineCount = lineCount
+                        setDetailType = setDetailType
                     )
                 }
 
             } else {
                 ScreenSettingMobile(
                     viewModelMain = viewModelMain,
-                    lineBest = lineBest,
-                    lineJson = lineJson,
-                    lineTrophy = lineTrophy,
-                    lineCount = lineCount
                 )
             }
         }
@@ -122,10 +112,6 @@ fun ScreenMainSetting(
 @Composable
 fun ScreenSettingMobile(
     viewModelMain: ViewModelMain,
-    lineBest: List<MainSettingLine>,
-    lineJson: List<MainSettingLine>,
-    lineTrophy: List<MainSettingLine>,
-    lineCount: List<MainSettingLine>,
 ) {
 
     Column(
@@ -150,11 +136,7 @@ fun ScreenSettingMobile(
         ContentsDangerLabs(viewModelMain = viewModelMain)
 
         ContentsSetting(
-            lineBest = lineBest,
-            lineJson = lineJson,
-            lineTrophy = lineTrophy,
-            viewModelMain = viewModelMain,
-            lineCount = lineCount
+            viewModelMain = viewModelMain
         )
     }
 }

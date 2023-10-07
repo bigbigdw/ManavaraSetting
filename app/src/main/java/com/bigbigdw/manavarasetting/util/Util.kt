@@ -2,10 +2,12 @@ package com.bigbigdw.manavarasetting.util
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.icu.text.SimpleDateFormat
 import android.util.Log
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
+import com.bigbigdw.manavarasetting.main.model.MainSettingLine
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -15,16 +17,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONObject
-import java.util.Calendar
-import java.util.Date
-
-
-@SuppressLint("SimpleDateFormat")
-fun dateMMDDHHMM(): String {
-    val currentTime: Date = Calendar.getInstance().time
-    val format = SimpleDateFormat("YYYYMMddHHmm")
-    return format.format(currentTime).toString()
-}
 
 val NaverSeriesComicGenre = arrayListOf(
     "ALL",
@@ -90,7 +82,7 @@ fun getNaverSeriesGenre(genre : String) : String {
             return "MARTIAL_ARTS"
         }
         else -> {
-            return "없음"
+            return genre
         }
     }
 }
@@ -131,7 +123,7 @@ fun getNaverSeriesGenreKor(genre : String) : String {
             "무협"
         }
         else -> {
-            "없음"
+            genre
         }
     }
 }
@@ -147,7 +139,8 @@ fun convertItemBook(bestItemData : ItemBookInfo) : JsonObject {
         jsonObject.addProperty("info1", bestItemData.info1)
         jsonObject.addProperty("info2", bestItemData.info2)
         jsonObject.addProperty("info3", bestItemData.info3)
-        jsonObject.addProperty("current", bestItemData.current)
+        jsonObject.addProperty("number", bestItemData.number)
+        jsonObject.addProperty("point", bestItemData.point)
         jsonObject.addProperty("total", bestItemData.total)
         jsonObject.addProperty("totalCount", bestItemData.totalCount)
         jsonObject.addProperty("totalWeek", bestItemData.totalWeek)
@@ -170,7 +163,8 @@ fun convertItemBookJson(jsonObject: JSONObject): ItemBookInfo {
         info1 = jsonObject.optString("info1"),
         info2 = jsonObject.optString("info2"),
         info3 = jsonObject.optString("info3"),
-        current = jsonObject.optInt("current"),
+        point = jsonObject.optInt("point"),
+        number = jsonObject.optInt("number"),
         total = jsonObject.optInt("total"),
         totalCount = jsonObject.optInt("totalCount"),
         totalWeek = jsonObject.optInt("totalWeek"),
@@ -184,6 +178,7 @@ fun convertItemBookJson(jsonObject: JSONObject): ItemBookInfo {
 fun convertItemBestJson(jsonObject : JSONObject) : ItemBestInfo {
 
     return ItemBestInfo(
+        point = jsonObject.optInt("point"),
         number = jsonObject.optInt("number"),
         info1 = jsonObject.optString("info1"),
         total = jsonObject.optInt("total"),
@@ -196,6 +191,7 @@ fun convertItemBestJson(jsonObject : JSONObject) : ItemBestInfo {
 fun convertItemBest(bestItemData : ItemBestInfo) : JsonObject {
     val jsonObject = JsonObject()
     jsonObject.addProperty("number", bestItemData.number)
+    jsonObject.addProperty("point", bestItemData.point)
     jsonObject.addProperty("info1", bestItemData.info1)
     jsonObject.addProperty("total", bestItemData.total)
     jsonObject.addProperty("totalCount", bestItemData.totalCount)
@@ -219,25 +215,33 @@ fun setDataStore(data: String){
     mRootRef.child(child).setValue("${year}.${month}.${day} ${hour}:${min}")
 }
 
-fun updateWorker(context: Context, update: () -> Unit){
-    val workerRef = FirebaseDatabase.getInstance().reference.child("WORKER")
+fun getDataStoreStatus(context: Context, update : () -> Unit){
+    val mRootRef = FirebaseDatabase.getInstance().reference.child("WORKER")
 
-    workerRef.addListenerForSingleValueEvent(object :
+    mRootRef.addListenerForSingleValueEvent(object :
         ValueEventListener {
         override fun onDataChange(dataSnapshot: DataSnapshot) {
-            if (dataSnapshot.exists()) {
+            if(dataSnapshot.exists()){
 
                 val dataStore = DataStoreManager(context)
 
                 CoroutineScope(Dispatchers.IO).launch {
-                    dataStore.setDataStoreString(DataStoreManager.BEST_NAVER_SERIES_COMIC, dataSnapshot.child("BEST_NAVER_SERIES_COMIC").getValue(String::class.java) ?: "")
-                    dataStore.setDataStoreString(DataStoreManager.BEST_NAVER_SERIES_NOVEL, dataSnapshot.child("BEST_NAVER_SERIES_NOVEL").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.MINING_NAVER_SERIES_COMIC, dataSnapshot.child("MINING_NAVER_SERIES_COMIC").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.MINING_NAVER_SERIES_NOVEL, dataSnapshot.child("MINING_NAVER_SERIES_NOVEL").getValue(String::class.java) ?: "")
 
-                    dataStore.setDataStoreString(DataStoreManager.JSON_NAVER_SERIES_COMIC, dataSnapshot.child("JSON_NAVER_SERIES_COMIC").getValue(String::class.java) ?: "")
-                    dataStore.setDataStoreString(DataStoreManager.JSON_NAVER_SERIES_NOVEL, dataSnapshot.child("JSON_NAVER_SERIES_NOVEL").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_NAVER_SERIES_COMIC_ACTION, dataSnapshot.child("STATUS_NAVER_SERIES_COMIC_ACTION").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_NAVER_SERIES_COMIC_ALL, dataSnapshot.child("STATUS_NAVER_SERIES_COMIC_ALL").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_NAVER_SERIES_COMIC_BL, dataSnapshot.child("STATUS_NAVER_SERIES_COMIC_BL").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_NAVER_SERIES_COMIC_DRAMA, dataSnapshot.child("STATUS_NAVER_SERIES_COMIC_DRAMA").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_NAVER_SERIES_COMIC_MELO, dataSnapshot.child("STATUS_NAVER_SERIES_COMIC_MELO").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_NAVER_SERIES_COMIC_YOUNG, dataSnapshot.child("STATUS_NAVER_SERIES_COMIC_YOUNG").getValue(String::class.java) ?: "")
 
-                    dataStore.setDataStoreString(DataStoreManager.TROPHY_NAVER_SERIES_COMIC, dataSnapshot.child("TROPHY_NAVER_SERIES_COMIC").getValue(String::class.java) ?: "")
-                    dataStore.setDataStoreString(DataStoreManager.TROPHY_NAVER_SERIES_NOVEL, dataSnapshot.child("TROPHY_NAVER_SERIES_NOVEL").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_NAVER_SERIES_NOVEL_ALL, dataSnapshot.child("STATUS_NAVER_SERIES_NOVEL_ALL").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_NAVER_SERIES_NOVEL_FANTASY, dataSnapshot.child("STATUS_NAVER_SERIES_NOVEL_FANTASY").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_NAVER_SERIES_NOVEL_MARTIAL_ARTS, dataSnapshot.child("STATUS_NAVER_SERIES_NOVEL_MARTIAL_ARTS").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_NAVER_SERIES_NOVEL_MODERN_FANTASY, dataSnapshot.child("STATUS_NAVER_SERIES_NOVEL_MODERN_FANTASY").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_NAVER_SERIES_NOVEL_ROMANCE, dataSnapshot.child("STATUS_NAVER_SERIES_NOVEL_ROMANCE").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_NAVER_SERIES_NOVEL_ROMANCE_FANTASY, dataSnapshot.child("STATUS_NAVER_SERIES_NOVEL_ROMANCE_FANTASY").getValue(String::class.java) ?: "")
 
                     update()
                 }
@@ -280,6 +284,120 @@ fun checkMiningTrophyValue(yesterDayItem: ItemBookInfo) : ItemBookInfo{
     return yesterDayItem
 }
 
+@Composable
+fun getNaverSeriesComicArray(context: Context): ArrayList<MainSettingLine> {
 
+    val dataStore = DataStoreManager(context)
+
+    val array = ArrayList<MainSettingLine>()
+
+    array.add(
+        MainSettingLine(
+            title = "시리즈 웹툰 액션 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_NAVER_SERIES_COMIC_ACTION
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    array.add(
+        MainSettingLine(
+            title = "시리즈 웹툰 전체 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_NAVER_SERIES_COMIC_ALL
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    array.add(
+        MainSettingLine(
+            title = "시리즈 웹툰 BL : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_NAVER_SERIES_COMIC_BL
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    array.add(
+        MainSettingLine(
+            title = "시리즈 웹툰 드라마 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_NAVER_SERIES_COMIC_DRAMA
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    array.add(
+        MainSettingLine(
+            title = "시리즈 웹툰 멜로 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_NAVER_SERIES_COMIC_MELO
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    array.add(
+        MainSettingLine(
+            title = "시리즈 웹툰 소년 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_NAVER_SERIES_COMIC_YOUNG
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    return array
+}
+
+@Composable
+fun getNaverSeriesNovelArray(context: Context): ArrayList<MainSettingLine> {
+
+    val dataStore = DataStoreManager(context)
+
+    val array = ArrayList<MainSettingLine>()
+
+    array.add(
+        MainSettingLine(
+            title = "시리즈 웹소설 전체 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_NAVER_SERIES_NOVEL_ALL
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    array.add(
+        MainSettingLine(
+            title = "시리즈 웹소설 판타지 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_NAVER_SERIES_NOVEL_FANTASY
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    array.add(
+        MainSettingLine(
+            title = "시리즈 웹소설 무협 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_NAVER_SERIES_NOVEL_MARTIAL_ARTS
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    array.add(
+        MainSettingLine(
+            title = "시리즈 웹소설 모판 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_NAVER_SERIES_NOVEL_MODERN_FANTASY
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    array.add(
+        MainSettingLine(
+            title = "시리즈 웹소설 로맨스 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_NAVER_SERIES_NOVEL_ROMANCE
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    array.add(
+        MainSettingLine(
+            title = "시리즈 웹소설 로판 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_NAVER_SERIES_NOVEL_ROMANCE_FANTASY
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    return array
+}
 
 

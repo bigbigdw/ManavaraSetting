@@ -1,49 +1,46 @@
 package com.bigbigdw.manavarasetting.main.screen
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.work.WorkManager
-import com.bigbigdw.manavarasetting.main.model.MainSettingLine
+import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
+import java.util.concurrent.TimeUnit
 
 @Composable
 fun ScreenTablet(
     title: String,
-    lineBest: List<MainSettingLine>,
-    lineJson: List<MainSettingLine>,
-    lineTrophy: List<MainSettingLine>,
     viewModelMain: ViewModelMain,
     setDetailPage: (Boolean) -> Unit,
     setDetailMenu: (String) -> Unit,
     setDetailPlatform: (String) -> Unit,
     setDetailGenre: (String) -> Unit,
-    setDetailType: (String) -> Unit,
-    lineCount: List<MainSettingLine>
+    setDetailType: (String) -> Unit
 ) {
 
     LazyColumn(
@@ -74,11 +71,7 @@ fun ScreenTablet(
             when (title) {
                 "세팅바라 현황" -> {
                     ContentsSetting(
-                        lineBest = lineBest,
-                        lineJson = lineJson,
-                        lineTrophy = lineTrophy,
-                        viewModelMain = viewModelMain,
-                        lineCount = lineCount
+                        viewModelMain = viewModelMain
                     )
                 }
                 "FCM 관리" -> {
@@ -90,11 +83,17 @@ fun ScreenTablet(
                 "FCM 알림 리스트" -> {
                     ContentsFCMList(viewModelMain = viewModelMain, child = "ALERT")
                 }
-                "베스트 리스트 관리" -> {
-                    ContentsBest(lineBest = lineBest, viewModelMain = viewModelMain)
+                "웹소설 베스트 리스트" -> {
+                    ContentsBestListNovel(
+                        setDetailPage = setDetailPage,
+                        setDetailMenu = setDetailMenu,
+                        setDetailPlatform = setDetailPlatform,
+                        setDetailGenre = setDetailGenre,
+                        setDetailType = setDetailType,
+                    )
                 }
-                "베스트 BOOK 리스트" -> {
-                    ContentsBestList(
+                "웹툰 베스트 리스트" -> {
+                    ContentsBestListComic(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         setDetailPlatform = setDetailPlatform,
@@ -106,7 +105,7 @@ fun ScreenTablet(
                     ContentsFCMList(viewModelMain = viewModelMain, child = "BEST")
                 }
                 "JSON 관리" -> {
-                    ContentsJson(viewModelMain = viewModelMain, lineJson = lineJson)
+                    ContentsJson(viewModelMain = viewModelMain)
                 }
                 "JSON 투데이 베스트 현황" -> {
                     ContentsBestJsonList(
@@ -173,7 +172,7 @@ fun ScreenTablet(
                     ContentsFCMList(viewModelMain = viewModelMain, child = "JSON")
                 }
                 "트로피 정산 관리" -> {
-                    ContentsTrophy(viewModelMain = viewModelMain,lineTrophy = lineTrophy)
+                    ContentsTrophy(viewModelMain = viewModelMain)
                 }
                 "트로피 주간 토탈 리스트" -> {
                     ContentsBestJsonList(
@@ -198,6 +197,12 @@ fun ScreenTablet(
                 "트로피 최신화 현황" -> {
                     ContentsFCMList(viewModelMain = viewModelMain, child = "TROPHY")
                 }
+                "네이버 시리즈 웹툰" -> {
+                    ContentsPlatformNaverSeriesComic()
+                }
+                "네이버 시리즈 웹소설" -> {
+                    ContentsPlatformNaverSeriesNovel()
+                }
                 "위험 옵션" -> {
                     ContentsDangerOption(viewModelMain = viewModelMain)
                 }
@@ -211,26 +216,41 @@ fun ScreenTablet(
 
 @Composable
 fun ContentsSetting(
-    lineBest: List<MainSettingLine>,
-    lineJson: List<MainSettingLine>,
-    lineTrophy: List<MainSettingLine>,
-    viewModelMain: ViewModelMain,
-    lineCount: List<MainSettingLine>
+    viewModelMain: ViewModelMain
 ) {
 
     val context = LocalContext.current
     val workManager = WorkManager.getInstance(context)
 
     TabletContentWrapBtn(
-        onClick = { viewModelMain.getDataStoreStatus(context = context) },
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                repeatInterval = 15,
+                tag = "MINING",
+                timeMill = TimeUnit.MINUTES,
+                platform = "NAVER_SERIES",
+                type = "COMIC"
+            )
+        },
         content = {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                Image(
+                    painter = painterResource(id = R.drawable.logo_naver),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
                 Text(
-                    text = "WORKER 최신화",
+                    text = "NAVER_SERIES COMIC",
                     color = color000000,
                     fontSize = 18.sp,
                 )
@@ -239,15 +259,35 @@ fun ContentsSetting(
     )
 
     TabletContentWrapBtn(
-        onClick = { viewModelMain.getDataStoreFCMCount() },
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                repeatInterval = 15,
+                tag = "MINING",
+                timeMill = TimeUnit.MINUTES,
+                platform = "NAVER_SERIES",
+                type = "NOVEL"
+            )
+        },
         content = {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically
             ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo_naver),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
                 Text(
-                    text = "FCM 카운트 최신화",
+                    text = "NAVER_SERIES NOVEL",
                     color = color000000,
                     fontSize = 18.sp,
                 )
@@ -273,54 +313,6 @@ fun ContentsSetting(
             }
         }
     )
-
-    ItemTabletTitle(str = "베스트 현황")
-
-    TabletContentWrap {
-        lineBest.forEachIndexed { index, item ->
-            ItemMainTabletContent(
-                title = item.title,
-                value = item.value,
-                isLast = lineTrophy.size - 1 == index
-            )
-        }
-    }
-
-    ItemTabletTitle(str = "JSON 현황")
-
-    TabletContentWrap {
-        lineJson.forEachIndexed { index, item ->
-            ItemMainTabletContent(
-                title = item.title,
-                value = item.value,
-                isLast = lineTrophy.size - 1 == index
-            )
-        }
-    }
-
-    ItemTabletTitle(str =  "트로피 현황")
-
-    TabletContentWrap {
-        lineTrophy.forEachIndexed { index, item ->
-            ItemMainTabletContent(
-                title = item.title,
-                value = item.value,
-                isLast = lineTrophy.size - 1 == index
-            )
-        }
-    }
-
-    ItemTabletTitle(str =  "최신화 횟수 현황")
-
-    TabletContentWrap {
-        lineCount.forEachIndexed { index, item ->
-            ItemMainTabletContent(
-                title = item.title,
-                value = item.value,
-                isLast = lineCount.size - 1 == index
-            )
-        }
-    }
 
     Spacer(modifier = Modifier.size(60.dp))
 }
