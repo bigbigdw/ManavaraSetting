@@ -740,6 +740,21 @@ fun doMining(
                 itemBestInfoList = itemBestInfoList
             )
         }
+    } else if(platform == "NAVER_CHALLENGE") {
+        MiningSource.miningNaverChallenge(
+            genre = genre,
+            platform = platform,
+            type = type,
+            yesterDatItemMap = yesterDayItemMap
+        ) { itemBookInfoList, itemBestInfoList ->
+            doResultMining(
+                genre = getChallengeGenre(genre),
+                platform = platform,
+                type = type,
+                itemBookInfoList = itemBookInfoList,
+                itemBestInfoList = itemBestInfoList
+            )
+        }
     }
 }
 

@@ -256,11 +256,14 @@ fun ScreenTablet(
                 "조아라 프리미엄 웹소설" -> {
                     ContentsPlatformJoaraPremiumNovel(viewModelMain = viewModelMain)
                 }
+                "챌린지 리그 웹소설" -> {
+                    ContentsPlatformChallengeNovel(viewModelMain = viewModelMain)
+                }
                 "위험 옵션" -> {
                     ContentsDangerOption(viewModelMain = viewModelMain)
                 }
                 "실험실" -> {
-                    ContentsDangerLabs(viewModelMain = viewModelMain)
+                    ContentsDangerLabs()
                 }
             }
         }
@@ -452,6 +455,43 @@ fun ContentsSetting(
 
                 Text(
                     text = "JOARA_PREMIUM NOVEL",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                repeatInterval = 15,
+                tag = "MINING",
+                timeMill = TimeUnit.MINUTES,
+                platform = "NAVER_CHALLENGE",
+                type = "NOVEL"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo_naver_challenge),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "NAVER_CHALLENGE NOVEL",
                     color = color000000,
                     fontSize = 18.sp,
                 )

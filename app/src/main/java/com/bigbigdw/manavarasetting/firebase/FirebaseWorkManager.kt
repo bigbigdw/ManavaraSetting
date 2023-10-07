@@ -6,12 +6,14 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.bigbigdw.manavarasetting.util.DataStoreManager
 import com.bigbigdw.manavarasetting.util.BestRef
+import com.bigbigdw.manavarasetting.util.ChallengeGenre
 import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.JoaraGenre
 import com.bigbigdw.manavarasetting.util.MiningSource
 import com.bigbigdw.manavarasetting.util.NaverSeriesComicGenre
 import com.bigbigdw.manavarasetting.util.NaverSeriesNovelGenre
 import com.bigbigdw.manavarasetting.util.calculateTrophy
+import com.bigbigdw.manavarasetting.util.getChallengeGenre
 import com.bigbigdw.manavarasetting.util.getJoaraGenre
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
 import com.bigbigdw.manavarasetting.util.setDataStore
@@ -389,6 +391,34 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                             genreDir = getJoaraGenre(j),
                             context = applicationContext
                         )
+                    }
+                }
+            } else if (inputData.getString(PLATFORM)?.contains("NAVER_CHALLENGE") == true) {
+                runBlocking {
+                    runBlocking {
+                        for (j in ChallengeGenre) {
+                            if (DBDate.getDayOfWeekAsNumber() == 0) {
+                                BestRef.setBestRef(
+                                    inputData.getString(PLATFORM) ?: "",
+                                    genre = j,
+                                    type = inputData.getString(TYPE) ?: "",
+                                )
+                                    .child("TROPHY_MONTH").removeValue()
+                            }
+
+                            if (DBDate.datedd() == "01") {
+                                BestRef.setBestRef(platform = inputData.getString(PLATFORM) ?: "", genre = j, type = inputData.getString(TYPE) ?: "")
+                                    .child("TROPHY_MONTH").removeValue()
+                            }
+
+                            MiningSource.mining(
+                                genre = j,
+                                platform = inputData.getString(PLATFORM) ?: "",
+                                type = inputData.getString(TYPE) ?: "",
+                                genreDir = getChallengeGenre(j),
+                                context = applicationContext
+                            )
+                        }
                     }
                 }
             }

@@ -189,7 +189,7 @@ fun ContentsBestJsonListNovel(
 
     Spacer(modifier = Modifier.size(16.dp))
 
-    ItemTabletTitle(str = "조아라 노블레스 소설", isTopPadding = false)
+    ItemTabletTitle(str = "조아라 노블레스", isTopPadding = false)
 
     TabletContentWrap {
         JoaraGenre.forEachIndexed { index, _ ->
@@ -209,7 +209,7 @@ fun ContentsBestJsonListNovel(
 
     Spacer(modifier = Modifier.size(16.dp))
 
-    ItemTabletTitle(str = "조아라 프리미엄 소설", isTopPadding = false)
+    ItemTabletTitle(str = "조아라 프리미엄", isTopPadding = false)
 
     TabletContentWrap {
         JoaraGenre.forEachIndexed { index, _ ->
@@ -220,6 +220,26 @@ fun ContentsBestJsonListNovel(
                     setDetailPage(true)
                     setDetailMenu("JOARA_PREMIUM 베스트 리스트 ${getJoaraGenre(JoaraGenre[index])}")
                     setDetailPlatform("JOARA_PREMIUM")
+                    setDetailGenre(getJoaraGenre(JoaraGenre[index]))
+                    setDetailType("NOVEL")
+                }
+            )
+        }
+    }
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    ItemTabletTitle(str = "챌린지 리그", isTopPadding = false)
+
+    TabletContentWrap {
+        JoaraGenre.forEachIndexed { index, _ ->
+            ItemMainTabletContent(
+                title = "챌린지 리그 ${getJoaraGenreKor(JoaraGenre[index])}",
+                isLast = JoaraGenre.size - 1 == index,
+                onClick = {
+                    setDetailPage(true)
+                    setDetailMenu("NAVER_CHALLENGE 챌린지 리그 ${getJoaraGenre(JoaraGenre[index])}")
+                    setDetailPlatform("NAVER_CHALLENGE")
                     setDetailGenre(getJoaraGenre(JoaraGenre[index]))
                     setDetailType("NOVEL")
                 }

@@ -306,6 +306,7 @@ fun getDataStoreStatus(context: Context, update : () -> Unit){
                     dataStore.setDataStoreString(DataStoreManager.MINING_JOARA_NOVEL, dataSnapshot.child("MINING_NAVER_SERIES_NOVEL").getValue(String::class.java) ?: "")
                     dataStore.setDataStoreString(DataStoreManager.MINING_JOARA_PREMIUM_NOVEL, dataSnapshot.child("MINING_JOARA_PREMIUM_NOVEL").getValue(String::class.java) ?: "")
                     dataStore.setDataStoreString(DataStoreManager.MINING_JOARA_NOBLESS_NOVEL, dataSnapshot.child("MINING_JOARA_NOBLESS_NOVEL").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.MINING_NAVER_CHALLENGE_NOVEL, dataSnapshot.child("MINING_NAVER_CHALLENGE_NOVEL").getValue(String::class.java) ?: "")
 
                     dataStore.setDataStoreString(DataStoreManager.STATUS_NAVER_SERIES_COMIC_ACTION, dataSnapshot.child("STATUS_NAVER_SERIES_COMIC_ACTION").getValue(String::class.java) ?: "")
                     dataStore.setDataStoreString(DataStoreManager.STATUS_NAVER_SERIES_COMIC_ALL, dataSnapshot.child("STATUS_NAVER_SERIES_COMIC_ALL").getValue(String::class.java) ?: "")
@@ -341,6 +342,13 @@ fun getDataStoreStatus(context: Context, update : () -> Unit){
                     dataStore.setDataStoreString(DataStoreManager.STATUS_JOARA_NOBLESS_NOVEL_MODREN_FANTAGY, dataSnapshot.child("STATUS_JOARA_NOBLESS_NOVEL_MODREN_FANTAGY").getValue(String::class.java) ?: "")
                     dataStore.setDataStoreString(DataStoreManager.STATUS_JOARA_NOBLESS_NOVEL_ROMANCE, dataSnapshot.child("STATUS_JOARA_NOBLESS_NOVEL_ROMANCE").getValue(String::class.java) ?: "")
                     dataStore.setDataStoreString(DataStoreManager.STATUS_JOARA_NOBLESS_NOVEL_ROMANCE_FANTAGY, dataSnapshot.child("STATUS_JOARA_NOBLESS_NOVEL_ROMANCE_FANTAGY").getValue(String::class.java) ?: "")
+
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_NAVER_CHALLENGE_NOVEL_FANTAGY, dataSnapshot.child("STATUS_NAVER_CHALLENGE_NOVEL_FANTAGY").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_NAVER_CHALLENGE_NOVEL_MARTIAL_ARTS, dataSnapshot.child("STATUS_NAVER_CHALLENGE_NOVEL_MARTIAL_ARTS").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_NAVER_CHALLENGE_NOVEL_MODERN_FANTAGY, dataSnapshot.child("STATUS_NAVER_CHALLENGE_NOVEL_MODERN_FANTAGY").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_NAVER_CHALLENGE_NOVEL_MYSTERY, dataSnapshot.child("STATUS_NAVER_CHALLENGE_NOVEL_MYSTERY").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_NAVER_CHALLENGE_NOVEL_ROMANCE, dataSnapshot.child("STATUS_NAVER_CHALLENGE_NOVEL_ROMANCE").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_NAVER_CHALLENGE_NOVEL_ROMANCE_FANTAGY, dataSnapshot.child("STATUS_NAVER_CHALLENGE_NOVEL_ROMANCE_FANTAGY").getValue(String::class.java) ?: "")
 
                     update()
                 }
@@ -673,5 +681,96 @@ fun getJoaraNoblessNovelArray(context: Context): ArrayList<MainSettingLine> {
     return array
 }
 
+val ChallengeGenre = arrayListOf(
+    "101",
+    "109",
+    "102",
+    "110",
+    "103",
+    "104",
+)
 
+fun getChallengeGenre(genre : String) : String {
+    when (genre) {
+        "101" -> {
+            return "ROMANCE"
+        }
+        "109" -> {
+            return "ROMANCE_FANTAGY"
+        }
+        "102" -> {
+            return "FANTAGY"
+        }
+        "110" -> {
+            return "MODERN_FANTAGY"
+        }
+        "103" -> {
+            return "MARTIAL_ARTS"
+        }
+        "104" -> {
+            return "MYSTERY"
+        }
+        else -> {
+            return genre
+        }
+    }
+}
+
+@Composable
+fun getNaverChallengeNovelArray(context: Context): ArrayList<MainSettingLine> {
+
+    val dataStore = DataStoreManager(context)
+
+    val array = ArrayList<MainSettingLine>()
+
+    array.add(
+        MainSettingLine(
+            title = "챌린지 리그 전체 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_NAVER_CHALLENGE_NOVEL_FANTAGY
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    array.add(
+        MainSettingLine(
+            title = "챌린지 리그 무협 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_NAVER_CHALLENGE_NOVEL_MARTIAL_ARTS
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    array.add(
+        MainSettingLine(
+            title = "챌린지 리그 현판 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_NAVER_CHALLENGE_NOVEL_MODERN_FANTAGY
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    array.add(
+        MainSettingLine(
+            title = "챌린지 리그 미스테리 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_NAVER_CHALLENGE_NOVEL_MYSTERY
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    array.add(
+        MainSettingLine(
+            title = "챌린지 리그 로맨스 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_NAVER_CHALLENGE_NOVEL_ROMANCE
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    array.add(
+        MainSettingLine(
+            title = "챌린지 리그 로판 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_NAVER_CHALLENGE_NOVEL_ROMANCE_FANTAGY
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    return array
+}
 

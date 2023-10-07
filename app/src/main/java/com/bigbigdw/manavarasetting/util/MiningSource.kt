@@ -209,7 +209,7 @@ object MiningSource {
                         if (yesterDatItemMap[bookCode]?.currentDiff != null) {
                             (yesterDatItemMap[bookCode]?.currentDiff ?: 0) - ((naverSeries.size * (pageCount - 1)) + i)
                         } else {
-                            ((naverSeries.size * (pageCount - 1)) + i)
+                            0
                         }
 
                     ref["date"] = dateMMDD()
@@ -278,7 +278,7 @@ object MiningSource {
                         if (yesterDatItemMap[bookCode]?.currentDiff != null) {
                             (yesterDatItemMap[bookCode]?.currentDiff ?: 0) - ((naverSeries.size * (pageCount - 1)) + i)
                         } else {
-                            ((naverSeries.size * (pageCount - 1)) + i)
+                            0
                         }
 
                     ref["date"] = dateMMDD()
@@ -367,7 +367,7 @@ object MiningSource {
                                 if (yesterDatItemMap[bookCode]?.currentDiff != null) {
                                     (yesterDatItemMap[bookCode]?.currentDiff ?: 0) - number
                                 } else {
-                                    number
+                                    0
                                 }
 
                             ref["date"] = dateMMDD()
@@ -389,5 +389,74 @@ object MiningSource {
                     }
                 }
             })
+    }
+
+    fun miningNaverChallenge(
+        genre: String,
+        platform: String,
+        type: String,
+        yesterDatItemMap: MutableMap<String, ItemBookInfo>,
+        callBack: (JsonArray, JsonArray) -> Unit
+    ){
+        Thread{
+
+            val itemBookInfoList = JsonArray()
+            val itemBestInfoList = JsonArray()
+
+            for(pageCount in 1..5) {
+                val doc: Document = Jsoup.connect("https://novel.naver.com/challenge/ranking?genre=${genre}&periodType=DAILY").post()
+                val naverSeries: Elements = doc.select(".ranking_wrap_left .ranking_list li")
+                val ref: MutableMap<String?, Any> = HashMap()
+
+                for (i in naverSeries.indices) {
+                    val bookCode = naverSeries.select("a")[i].absUrl("href").replace("https://novel.naver.com/challenge/list?novelId=", "")
+                    val point = naverSeries.size - i
+
+                    val yesterDayItem = checkMiningTrophyValue(yesterDatItemMap[bookCode] ?: ItemBookInfo())
+
+                    ref["writerName"] = naverSeries.select(".info_group .author")[i].text()
+                    ref["subject"] = naverSeries.select(".title_group .title")[i].text()
+                    ref["bookImg"] = naverSeries.select("div img")[i].absUrl("src")
+                    ref["bookCode"] = bookCode
+                    ref["cntRecom"] = naverSeries.select(".score_area")[i].text().replace("별점", "")
+                    ref["cntPageRead"] = naverSeries[i].select(".info_group .count").next().first()!!.text()
+                    ref["cntFavorite"] = naverSeries.select(".meta_data_group .count")[i].text()
+                    ref["cntChapter"] = naverSeries[i].select(".info_group .count").first()!!.text()
+                    ref["number"] = ((naverSeries.size * (pageCount - 1)) + i)
+                    ref["point"] = point
+
+                    ref["total"] = yesterDayItem.point + point
+                    ref["totalCount"] = yesterDayItem.totalCount + 1
+                    ref["totalWeek"] = yesterDayItem.totalWeek + point
+                    ref["totalWeekCount"] = yesterDayItem.totalWeekCount + 1
+                    ref["totalMonth"] = yesterDayItem.totalMonth + point
+                    ref["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
+                    ref["currentDiff"] =
+                        if (yesterDatItemMap[bookCode]?.currentDiff != null) {
+                            (yesterDatItemMap[bookCode]?.currentDiff ?: 0) - ((naverSeries.size * (pageCount - 1)) + i)
+                        } else {
+                            0
+                        }
+
+                    ref["date"] = dateMMDD()
+                    ref["type"] = platform
+
+                    miningValue(
+                        ref = ref,
+                        num = (naverSeries.size * (pageCount - 1)) + i,
+                        platform = platform,
+                        genre = getChallengeGenre(genre),
+                        type = type
+                    )
+
+                    itemBookInfoList.add(convertItemBook(BestRef.setItemBookInfoRef(ref)))
+                    itemBestInfoList.add(convertItemBest(BestRef.setItemBestInfoRef(ref)))
+                }
+
+                callBack.invoke(itemBookInfoList, itemBestInfoList)
+
+            }
+
+        }.start()
     }
 }
