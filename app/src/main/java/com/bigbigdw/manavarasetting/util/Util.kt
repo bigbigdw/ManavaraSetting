@@ -303,7 +303,7 @@ fun getDataStoreStatus(context: Context, update : () -> Unit){
                 CoroutineScope(Dispatchers.IO).launch {
                     dataStore.setDataStoreString(DataStoreManager.MINING_NAVER_SERIES_COMIC, dataSnapshot.child("MINING_NAVER_SERIES_COMIC").getValue(String::class.java) ?: "")
                     dataStore.setDataStoreString(DataStoreManager.MINING_NAVER_SERIES_NOVEL, dataSnapshot.child("MINING_NAVER_SERIES_NOVEL").getValue(String::class.java) ?: "")
-                    dataStore.setDataStoreString(DataStoreManager.MINING_JOARA_NOVEL, dataSnapshot.child("MINING_NAVER_SERIES_NOVEL").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.MINING_JOARA_NOVEL, dataSnapshot.child("MINING_JOARA_NOVEL").getValue(String::class.java) ?: "")
                     dataStore.setDataStoreString(DataStoreManager.MINING_JOARA_PREMIUM_NOVEL, dataSnapshot.child("MINING_JOARA_PREMIUM_NOVEL").getValue(String::class.java) ?: "")
                     dataStore.setDataStoreString(DataStoreManager.MINING_JOARA_NOBLESS_NOVEL, dataSnapshot.child("MINING_JOARA_NOBLESS_NOVEL").getValue(String::class.java) ?: "")
                     dataStore.setDataStoreString(DataStoreManager.MINING_NAVER_CHALLENGE_NOVEL, dataSnapshot.child("MINING_NAVER_CHALLENGE_NOVEL").getValue(String::class.java) ?: "")

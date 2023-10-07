@@ -52,6 +52,7 @@ fun ScreenMainWebtoon() {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -69,7 +70,7 @@ fun ScreenMainWebtoon() {
                     .height(80.dp)
             )
 
-            MainHeader(image = R.drawable.icon_webtoon, title = "웹툰 현황")
+            MainHeader(image = R.drawable.icon_novel, title = "웹소설 현황")
 
             ContentsNovel()
 
@@ -100,7 +101,7 @@ fun ScreenMainNovel() {
                     .height(80.dp)
             )
 
-            MainHeader(image = R.drawable.icon_novel, title = "웹소설 현황")
+            MainHeader(image = R.drawable.icon_webtoon, title = "웹툰 현황")
 
             ContentsWebtoon()
 
@@ -112,38 +113,7 @@ fun ContentsNovel() {
 
     val context = LocalContext.current
     val dataStore = DataStoreManager(context)
-
-    TabletContentWrapBtn(
-        onClick = {},
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_naver),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = spannableString(
-                        textFront = "네이버 시리즈 웹툰 : ", color = color000000,
-                        textEnd = dataStore.getDataStoreString(
-                            DataStoreManager.MINING_NAVER_SERIES_COMIC
-                        ).collectAsState(initial = "").value ?: "",
-                    ),
-                    color = color20459E,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
+    getDataStoreStatus(context = context, update = {})
 
     TabletContentWrapBtn(
         onClick = {},
@@ -250,6 +220,38 @@ fun ContentsNovel() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
+                    painter = painterResource(id = R.drawable.logo_naver),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = spannableString(
+                        textFront = "네이버 시리즈 웹소설 : ", color = color000000,
+                        textEnd = dataStore.getDataStoreString(
+                            DataStoreManager.MINING_NAVER_SERIES_NOVEL
+                        ).collectAsState(initial = "").value ?: "",
+                    ),
+                    color = color20459E,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {},
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
                     painter = painterResource(id = R.drawable.logo_naver_challenge),
                     contentDescription = null,
                     modifier = Modifier
@@ -263,7 +265,7 @@ fun ContentsNovel() {
                     text = spannableString(
                         textFront = "네이버 챌린지 : ", color = color000000,
                         textEnd = dataStore.getDataStoreString(
-                            DataStoreManager.MINING_JOARA_NOBLESS_NOVEL
+                            DataStoreManager.MINING_NAVER_CHALLENGE_NOVEL
                         ).collectAsState(initial = "").value ?: "",
                     ),
                     color = color20459E,
@@ -281,6 +283,7 @@ fun ContentsWebtoon() {
 
     val context = LocalContext.current
     val dataStore = DataStoreManager(context)
+    getDataStoreStatus(context = context, update = {})
 
     TabletContentWrapBtn(
         onClick = {},
@@ -302,9 +305,9 @@ fun ContentsWebtoon() {
 
                 Text(
                     text = spannableString(
-                        textFront = "네이버 시리즈 웹소설 : ", color = color000000,
+                        textFront = "네이버 시리즈 웹툰 : ", color = color000000,
                         textEnd = dataStore.getDataStoreString(
-                            DataStoreManager.MINING_NAVER_SERIES_NOVEL
+                            DataStoreManager.MINING_NAVER_SERIES_COMIC
                         ).collectAsState(initial = "").value ?: "",
                     ),
                     color = color20459E,
@@ -836,7 +839,7 @@ fun ContentsPlatformChallengeNovel(viewModelMain : ViewModelMain) {
                 text = spannableString(
                     textFront = "최신화 현황 : ", color = color000000,
                     textEnd = dataStore.getDataStoreString(
-                        DataStoreManager.MINING_JOARA_NOBLESS_NOVEL
+                        DataStoreManager.MINING_NAVER_CHALLENGE_NOVEL
                     ).collectAsState(initial = "").value ?: "",
                 ),
                 color = color000000,
