@@ -924,6 +924,11 @@ private fun makeWeekJson(
 
     val mRootRef = FirebaseDatabase.getInstance().reference.child("WORKER")
 
+    val year = DBDate.dateMMDDHHMM().substring(0,4)
+    val month = DBDate.dateMMDDHHMM().substring(4,6)
+    val day = DBDate.dateMMDDHHMM().substring(6,8)
+    val hour = DBDate.dateMMDDHHMM().substring(8,10)
+    val min = DBDate.dateMMDDHHMM().substring(10,12)
 
     try{
         val jsonBytes = clonedWeekArray.toString().toByteArray(Charsets.UTF_8)
@@ -931,7 +936,7 @@ private fun makeWeekJson(
         jsonWeekRef.putBytes(jsonBytes)
             .addOnSuccessListener {
                 Log.d("makeWeekJson", "jsonWeekRef 성공")
-                mRootRef.child("STATUS_${platform}_${type}_${genre}").setValue("성공")
+                mRootRef.child("STATUS_${platform}_${type}_${genre}").setValue("성공 ${year}.${month}.${day} ${hour}:${min}")
             }.addOnFailureListener {
                 Log.d("makeWeekJson", "jsonWeekRef 실패")
                 mRootRef.child("STATUS_${platform}_${type}_${genre}").setValue("실패 $it")
@@ -939,12 +944,6 @@ private fun makeWeekJson(
 
 
     } catch (e : Exception){
-
-        val year = DBDate.dateMMDDHHMM().substring(0,4)
-        val month = DBDate.dateMMDDHHMM().substring(4,6)
-        val day = DBDate.dateMMDDHHMM().substring(6,8)
-        val hour = DBDate.dateMMDDHHMM().substring(8,10)
-        val min = DBDate.dateMMDDHHMM().substring(10,12)
 
         mRootRef.child("STATUS_${platform}_${type}_${genre}").setValue("실패 ${year}.${month}.${day} ${hour}:${min}")
     }

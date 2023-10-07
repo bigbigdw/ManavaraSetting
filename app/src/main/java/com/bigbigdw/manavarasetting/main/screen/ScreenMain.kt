@@ -28,8 +28,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.NavigationRail
-import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -71,6 +69,7 @@ import com.bigbigdw.manavarasetting.ui.theme.color555b68
 import com.bigbigdw.manavarasetting.ui.theme.color64C157
 import com.bigbigdw.manavarasetting.ui.theme.color79B4F8
 import com.bigbigdw.manavarasetting.ui.theme.color7C81FF
+import com.bigbigdw.manavarasetting.ui.theme.color808CF8
 import com.bigbigdw.manavarasetting.ui.theme.color80BF78
 import com.bigbigdw.manavarasetting.ui.theme.color8AA6BD
 import com.bigbigdw.manavarasetting.ui.theme.color8F8F8F
@@ -84,6 +83,7 @@ import com.bigbigdw.manavarasetting.ui.theme.colorF17666
 import com.bigbigdw.manavarasetting.ui.theme.colorF17FA0
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.ui.theme.colorFDC24E
+import com.bigbigdw.manavarasetting.ui.theme.colorFFAC59
 import com.bigbigdw.manavarasetting.ui.theme.colorJOARA
 import com.bigbigdw.manavarasetting.ui.theme.colorNAVER
 import com.bigbigdw.manavarasetting.ui.theme.colorNOBLESS
@@ -245,9 +245,8 @@ fun BottomNavScreen(navController: NavHostController, currentRoute: String?) {
     val items = listOf(
         ScreemBottomItem.SETTING,
         ScreemBottomItem.FCM,
-        ScreemBottomItem.BEST,
-        ScreemBottomItem.JSON,
-        ScreemBottomItem.TROPHY,
+        ScreemBottomItem.NOVEL,
+        ScreemBottomItem.WEBTOON
     )
 
     BottomNavigation(
@@ -304,7 +303,6 @@ fun NavigationGraph(
 ) {
 
     val context = LocalContext.current
-    val dataStore = DataStoreManager(context)
 
     NavHost(
         navController = navController,
@@ -319,14 +317,11 @@ fun NavigationGraph(
         composable(ScreemBottomItem.FCM.screenRoute) {
             ScreenMainFCM()
         }
-        composable(ScreemBottomItem.BEST.screenRoute) {
-            ScreenMainBest(viewModelMain = viewModelMain)
+        composable(ScreemBottomItem.NOVEL.screenRoute) {
+            ScreenMainWebtoon()
         }
-        composable(ScreemBottomItem.JSON.screenRoute) {
-            ScreenMainJson(viewModelMain = viewModelMain)
-        }
-        composable(ScreemBottomItem.TROPHY.screenRoute) {
-            ScreenMainTrophy(viewModelMain = viewModelMain)
+        composable(ScreemBottomItem.WEBTOON.screenRoute) {
+            ScreenMainNovel()
         }
     }
 }
@@ -369,75 +364,6 @@ fun MainHeader(image: Int, title: String) {
         color = color000000
     )
     Spacer(modifier = Modifier.size(22.dp))
-}
-
-@Composable
-fun TableAppNavRail(
-    currentRoute: String,
-    navController: NavHostController
-) {
-
-    val items = listOf(
-        ScreemBottomItem.SETTING,
-        ScreemBottomItem.FCM,
-        ScreemBottomItem.BEST,
-        ScreemBottomItem.JSON,
-        ScreemBottomItem.TROPHY,
-    )
-
-    NavigationRail(
-        header = {
-            Image(
-                contentScale = ContentScale.FillWidth,
-                painter = painterResource(id = R.drawable.ic_launcher),
-                contentDescription = null,
-                modifier = Modifier
-                    .height(48.dp)
-                    .width(48.dp)
-            )
-        },
-        modifier = Modifier.background(color = color1E1E20)
-    ) {
-        Spacer(Modifier.weight(1f))
-
-        items.forEach { item ->
-            NavigationRailItem(
-                selected = currentRoute == item.screenRoute,
-                onClick = {
-                    navController.navigate(item.screenRoute) {
-                        navController.graph.startDestinationRoute?.let {
-                            popUpTo(it) { saveState = true }
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                },
-                icon = {
-                    androidx.compose.material3.Icon(
-                        painter = if (currentRoute == item.screenRoute) {
-                            painterResource(id = item.iconOn)
-                        } else {
-                            painterResource(id = item.iconOff)
-                        },
-                        contentDescription = item.title,
-                        modifier = Modifier
-                            .width(26.dp)
-                            .height(26.dp)
-                    )
-                },
-                label = {
-                    Text(
-                        text = item.title,
-                        fontSize = 13.sp,
-                        color = color1E4394
-                    )
-                },
-                alwaysShowLabel = false
-            )
-        }
-
-        Spacer(Modifier.weight(1f))
-    }
 }
 
 @Composable
@@ -511,8 +437,8 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
 
         ItemMainSettingSingleTablet(
             containerColor = colorEA927C,
-            image = R.drawable.icon_best_wht,
-            title = "웹소설 베스트 리스트",
+            image = R.drawable.icon_novel_wht,
+            title = "웹소설 현황",
             body = "웹소설 플랫폼 베스트 리스트 확인",
             setMenu = setMenu,
             getMenu = getMenu,
@@ -522,14 +448,12 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         ItemMainSettingSingleTablet(
             containerColor = colorABD436,
             image = R.drawable.icon_best_wht,
-            title = "웹툰 베스트 리스트",
-            body = "웹툰 플랫폼 베스트 리스트 확인",
+            title = "웹소설 베스트 리스트",
+            body = "웹소설 플랫폼 베스트 리스트 확인",
             setMenu = setMenu,
             getMenu = getMenu,
             onClick = { onClick() }
         )
-
-        TabletBorderLine()
 
         ItemMainSettingSingleTablet(
             containerColor = colorF17FA0,
@@ -544,16 +468,6 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         ItemMainSettingSingleTablet(
             containerColor = color21C2EC,
             image = R.drawable.icon_json_wht,
-            title = "웹툰 JSON 투데이",
-            body = "웹툰 플랫폼 JSON 베스트 투데이",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = color31C3AE,
-            image = R.drawable.icon_json_wht,
             title = "웹소설 JSON 주간",
             body = "웹소설 플랫폼 JSON 베스트 주간",
             setMenu = setMenu,
@@ -562,17 +476,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color7C81FF,
-            image = R.drawable.icon_json_wht,
-            title = "웹툰 JSON 주간",
-            body = "웹툰 플랫폼 JSON 베스트 주간",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = color64C157,
+            containerColor = color31C3AE,
             image = R.drawable.icon_json_wht,
             title = "웹소설 JSON 월간",
             body = "웹툰 플랫폼 JSON 베스트 월간",
@@ -582,17 +486,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = colorF17666,
-            image = R.drawable.icon_json_wht,
-            title = "웹툰 JSON 월간",
-            body = "웹툰 플랫폼 JSON 베스트 월간",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = color536FD2,
+            containerColor = color7C81FF,
             image = R.drawable.icon_json_wht,
             title = "웹소설 JSON 주간 트로피",
             body = "웹소설 플랫폼 JSON 주간 트로피",
@@ -602,17 +496,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color4996E8,
-            image = R.drawable.icon_json_wht,
-            title = "웹툰 JSON 주간 트로피",
-            body = "웹툰 플랫폼 JSON 주간 트로피",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = colorFDC24E,
+            containerColor = color64C157,
             image = R.drawable.icon_json_wht,
             title = "웹소설 JSON 월간 트로피",
             body = "웹툰 플랫폼 JSON 베스트 월간",
@@ -622,19 +506,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color80BF78,
-            image = R.drawable.icon_json_wht,
-            title = "웹툰 JSON 월간 트로피",
-            body = "장르별 월간 JSON 확인",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
-        )
-
-        TabletBorderLine()
-
-        ItemMainSettingSingleTablet(
-            containerColor = color91CEC7,
+            containerColor = colorF17666,
             image = R.drawable.icon_trophy_wht,
             title = "웹소설 트로피 주간 토탈",
             body = "트로피 수동 정산 & Worker 관리",
@@ -644,17 +516,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color79B4F8,
-            image = R.drawable.icon_trophy_wht,
-            title = "웹툰 트로피 주간 토탈",
-            body = "장르별 주간 트로피 리스트 확인",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = color8AA6BD,
+            containerColor = color536FD2,
             image = R.drawable.icon_trophy_wht,
             title = "웹소설 트로피 월간 토탈",
             body = "장르별 월간 트로피 리스트 확인",
@@ -663,15 +525,6 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             onClick = { onClick() }
         )
 
-        ItemMainSettingSingleTablet(
-            containerColor = color2EA259,
-            image = R.drawable.icon_trophy_wht,
-            title = "웹툰 트로피 월간 토탈",
-            body = "시간별 트로피 최신화 현황",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
-        )
 
         TabletBorderLine()
 
@@ -721,6 +574,97 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             image = R.drawable.logo_naver,
             title = "네이버 시리즈 웹소설",
             body = "네이버 시리즈 웹소설 관리",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        TabletBorderLine()
+
+        ItemMainSettingSingleTablet(
+            containerColor = color4996E8,
+            image = R.drawable.icon_webtoon_wht,
+            title = "웹툰 현황",
+            body = "웹툰 플랫폼 베스트 리스트 확인",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = colorFDC24E,
+            image = R.drawable.icon_best_wht,
+            title = "웹툰 베스트 리스트",
+            body = "웹툰 플랫폼 베스트 리스트 확인",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color80BF78,
+            image = R.drawable.icon_json_wht,
+            title = "웹툰 JSON 투데이",
+            body = "웹툰 플랫폼 JSON 베스트 투데이",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color91CEC7,
+            image = R.drawable.icon_json_wht,
+            title = "웹툰 JSON 주간",
+            body = "웹툰 플랫폼 JSON 베스트 주간",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+        ItemMainSettingSingleTablet(
+            containerColor = color79B4F8,
+            image = R.drawable.icon_json_wht,
+            title = "웹툰 JSON 월간",
+            body = "웹툰 플랫폼 JSON 베스트 월간",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color8AA6BD,
+            image = R.drawable.icon_json_wht,
+            title = "웹툰 JSON 주간 트로피",
+            body = "웹툰 플랫폼 JSON 주간 트로피",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color2EA259,
+            image = R.drawable.icon_json_wht,
+            title = "웹툰 JSON 월간 트로피",
+            body = "장르별 월간 JSON 확인",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color808CF8,
+            image = R.drawable.icon_trophy_wht,
+            title = "웹툰 트로피 주간 토탈",
+            body = "장르별 주간 트로피 리스트 확인",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = colorFFAC59,
+            image = R.drawable.icon_trophy_wht,
+            title = "웹툰 트로피 월간 토탈",
+            body = "시간별 트로피 최신화 현황",
             setMenu = setMenu,
             getMenu = getMenu,
             onClick = { onClick() }

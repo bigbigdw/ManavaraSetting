@@ -265,6 +265,12 @@ fun ScreenTablet(
                 "실험실" -> {
                     ContentsDangerLabs()
                 }
+                "웹툰 현황" -> {
+                    ContentsWebtoon()
+                }
+                "웹소설 현황" -> {
+                    ContentsNovel()
+                }
             }
         }
     }
