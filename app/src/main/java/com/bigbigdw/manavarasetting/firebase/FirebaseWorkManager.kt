@@ -7,10 +7,12 @@ import androidx.work.WorkerParameters
 import com.bigbigdw.manavarasetting.util.DataStoreManager
 import com.bigbigdw.manavarasetting.util.BestRef
 import com.bigbigdw.manavarasetting.util.DBDate
+import com.bigbigdw.manavarasetting.util.JoaraGenre
 import com.bigbigdw.manavarasetting.util.MiningSource
 import com.bigbigdw.manavarasetting.util.NaverSeriesComicGenre
 import com.bigbigdw.manavarasetting.util.NaverSeriesNovelGenre
 import com.bigbigdw.manavarasetting.util.calculateTrophy
+import com.bigbigdw.manavarasetting.util.getJoaraGenre
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
 import com.bigbigdw.manavarasetting.util.setDataStore
 import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageDay
@@ -47,7 +49,10 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
         val hour = DBDate.dateMMDDHHMM().substring(8, 10)
         val min = DBDate.dateMMDDHHMM().substring(10, 12)
 
-        val workerName = inputData.getString(WORKER) + "_" + inputData.getString(PLATFORM) + "_" + inputData.getString(TYPE)
+        val workerName =
+            inputData.getString(WORKER) + "_" + inputData.getString(PLATFORM) + "_" + inputData.getString(
+                TYPE
+            )
 
         if (inputData.getString(WORKER).equals("BEST")) {
 
@@ -55,24 +60,35 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
 
             runBlocking {
 
-                if(inputData.getString(PLATFORM).equals("NAVER_SERIES")){
+                if (inputData.getString(PLATFORM).equals("NAVER_SERIES")) {
 
-                    if(inputData.getString(PLATFORM).equals("COMIC")){
+                    if (inputData.getString(PLATFORM).equals("COMIC")) {
 
                         for (j in NaverSeriesComicGenre) {
                             if (DBDate.getDayOfWeekAsNumber() == 0) {
-                                BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = inputData.getString(TYPE) ?: "")
+                                BestRef.setBestRef(
+                                    platform = "NAVER_SERIES",
+                                    genre = j,
+                                    type = inputData.getString(TYPE) ?: ""
+                                )
                                     .child("TROPHY_WEEK").removeValue()
                             }
 
                             if (DBDate.datedd() == "01") {
-                                BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = inputData.getString(TYPE) ?: "")
+                                BestRef.setBestRef(
+                                    platform = "NAVER_SERIES",
+                                    genre = j,
+                                    type = inputData.getString(TYPE) ?: ""
+                                )
                                     .child("TROPHY_MONTH").removeValue()
                             }
 
                             repeat(5) { i ->
                                 launch(threadPool) {
-                                    MiningSource.miningNaverSeriesComic(pageCount = i + 1, genre = j)
+                                    MiningSource.miningNaverSeriesComic(
+                                        pageCount = i + 1,
+                                        genre = j
+                                    )
                                 }
                             }
                         }
@@ -80,18 +96,29 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                     } else {
                         for (j in NaverSeriesNovelGenre) {
                             if (DBDate.getDayOfWeekAsNumber() == 0) {
-                                BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = inputData.getString(TYPE) ?: "")
+                                BestRef.setBestRef(
+                                    platform = "NAVER_SERIES",
+                                    genre = j,
+                                    type = inputData.getString(TYPE) ?: ""
+                                )
                                     .child("TROPHY_WEEK").removeValue()
                             }
 
                             if (DBDate.datedd() == "01") {
-                                BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = inputData.getString(TYPE) ?: "")
+                                BestRef.setBestRef(
+                                    platform = "NAVER_SERIES",
+                                    genre = j,
+                                    type = inputData.getString(TYPE) ?: ""
+                                )
                                     .child("TROPHY_MONTH").removeValue()
                             }
 
                             repeat(5) { i ->
                                 launch(threadPool) {
-                                    MiningSource.miningNaverSeriesNovel(pageCount = i + 1, genre = j)
+                                    MiningSource.miningNaverSeriesNovel(
+                                        pageCount = i + 1,
+                                        genre = j
+                                    )
                                 }
                             }
                         }
@@ -181,12 +208,20 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
             runBlocking {
                 for (j in NaverSeriesComicGenre) {
                     if (DBDate.getDayOfWeekAsNumber() == 0) {
-                        BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = inputData.getString(TYPE) ?: "")
+                        BestRef.setBestRef(
+                            platform = "NAVER_SERIES",
+                            genre = j,
+                            type = inputData.getString(TYPE) ?: ""
+                        )
                             .child("TROPHY_WEEK").removeValue()
                     }
 
                     if (DBDate.datedd() == "01") {
-                        BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = inputData.getString(TYPE) ?: "")
+                        BestRef.setBestRef(
+                            platform = "NAVER_SERIES",
+                            genre = j,
+                            type = inputData.getString(TYPE) ?: ""
+                        )
                             .child("TROPHY_MONTH").removeValue()
                     }
 
@@ -222,12 +257,20 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
             runBlocking {
                 for (j in NaverSeriesNovelGenre) {
                     if (DBDate.getDayOfWeekAsNumber() == 0) {
-                        BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = inputData.getString(TYPE) ?: "")
+                        BestRef.setBestRef(
+                            platform = "NAVER_SERIES",
+                            genre = j,
+                            type = inputData.getString(TYPE) ?: ""
+                        )
                             .child("TROPHY_WEEK").removeValue()
                     }
 
                     if (DBDate.datedd() == "01") {
-                        BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = inputData.getString(TYPE) ?: "")
+                        BestRef.setBestRef(
+                            platform = "NAVER_SERIES",
+                            genre = j,
+                            type = inputData.getString(TYPE) ?: ""
+                        )
                             .child("TROPHY_MONTH").removeValue()
                     }
 
@@ -258,8 +301,8 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
             }
         } else if (inputData.getString(WORKER) == "MINING") {
 
-            if(inputData.getString(PLATFORM) == "NAVER_SERIES"){
-                if (inputData.getString(TYPE) == "COMIC"){
+            if (inputData.getString(PLATFORM) == "NAVER_SERIES") {
+                if (inputData.getString(TYPE) == "COMIC") {
                     runBlocking {
                         for (j in NaverSeriesComicGenre) {
                             if (DBDate.getDayOfWeekAsNumber() == 0) {
@@ -272,7 +315,11 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                             }
 
                             if (DBDate.datedd() == "01") {
-                                BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "COMIC")
+                                BestRef.setBestRef(
+                                    platform = "NAVER_SERIES",
+                                    genre = j,
+                                    type = "COMIC"
+                                )
                                     .child("TROPHY_MONTH").removeValue()
                             }
 
@@ -280,16 +327,17 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                                 genre = j,
                                 platform = "NAVER_SERIES",
                                 type = "COMIC",
-                                genreDir = getNaverSeriesGenre(j)
+                                genreDir = getNaverSeriesGenre(j),
+                                context = applicationContext
                             )
                         }
                     }
-                } else {
+                } else if (inputData.getString(PLATFORM) == "JOARA") {
                     runBlocking {
-                        for (j in NaverSeriesNovelGenre) {
+                        for (j in JoaraGenre) {
                             if (DBDate.getDayOfWeekAsNumber() == 0) {
                                 BestRef.setBestRef(
-                                    platform = "NAVER_SERIES",
+                                    platform = "JOARA",
                                     genre = j,
                                     type = "NOVEL"
                                 )
@@ -297,15 +345,80 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                             }
 
                             if (DBDate.datedd() == "01") {
-                                BestRef.setBestRef(platform = "NAVER_SERIES", genre = j, type = "NOVEL")
+                                BestRef.setBestRef(
+                                    platform = "JOARA",
+                                    genre = j,
+                                    type = "NOVEL"
+                                )
                                     .child("TROPHY_MONTH").removeValue()
                             }
 
                             MiningSource.mining(
                                 genre = j,
-                                platform = "NAVER_SERIES",
+                                platform = "JOARA",
                                 type = "NOVEL",
-                                genreDir = getNaverSeriesGenre(j)
+                                genreDir = getJoaraGenre(j),
+                                context = applicationContext
+                            )
+                        }
+                    }
+                } else if (inputData.getString(PLATFORM) == "JOARA_PREMIUM") {
+                    runBlocking {
+                        for (j in JoaraGenre) {
+                            if (DBDate.getDayOfWeekAsNumber() == 0) {
+                                BestRef.setBestRef(
+                                    platform = "JOARA_PREMIUM",
+                                    genre = j,
+                                    type = "NOVEL"
+                                )
+                                    .child("TROPHY_MONTH").removeValue()
+                            }
+
+                            if (DBDate.datedd() == "01") {
+                                BestRef.setBestRef(
+                                    platform = "JOARA_PREMIUM",
+                                    genre = j,
+                                    type = "NOVEL"
+                                )
+                                    .child("TROPHY_MONTH").removeValue()
+                            }
+
+                            MiningSource.mining(
+                                genre = j,
+                                platform = "JOARA_PREMIUM",
+                                type = "NOVEL",
+                                genreDir = getJoaraGenre(j),
+                                context = applicationContext
+                            )
+                        }
+                    }
+                } else if (inputData.getString(PLATFORM) == "JOARA_NOBLESS") {
+                    runBlocking {
+                        for (j in JoaraGenre) {
+                            if (DBDate.getDayOfWeekAsNumber() == 0) {
+                                BestRef.setBestRef(
+                                    platform = "JOARA_NOBLESS",
+                                    genre = j,
+                                    type = "NOVEL"
+                                )
+                                    .child("TROPHY_MONTH").removeValue()
+                            }
+
+                            if (DBDate.datedd() == "01") {
+                                BestRef.setBestRef(
+                                    platform = "JOARA_NOBLESS",
+                                    genre = j,
+                                    type = "NOVEL"
+                                )
+                                    .child("TROPHY_MONTH").removeValue()
+                            }
+
+                            MiningSource.mining(
+                                genre = j,
+                                platform = "JOARA_NOBLESS",
+                                type = "NOVEL",
+                                genreDir = getJoaraGenre(j),
+                                context = applicationContext
                             )
                         }
                     }
@@ -328,7 +441,11 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
             "/topics/adminAll",
             "high",
             DataFCMBodyData("마나바라 세팅", data),
-            DataFCMBodyNotification(title = "마나바라 세팅", body = "$time $data", click_action = "best"),
+            DataFCMBodyNotification(
+                title = "마나바라 세팅",
+                body = "$time $data",
+                click_action = "best"
+            ),
         )
 
         miningAlert("마나바라 세팅", "$time $data", "ALERT", activity = activity)
@@ -361,7 +478,12 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
         })
     }
 
-    private fun miningAlert(title: String, message: String, child: String, activity: String = "") {
+    private fun miningAlert(
+        title: String,
+        message: String,
+        child: String,
+        activity: String = ""
+    ) {
         FirebaseDatabase.getInstance().reference.child("MESSAGE").child(child)
             .child(DBDate.dateMMDDHHMM()).setValue(
                 FCMAlert(

@@ -82,15 +82,23 @@ import com.bigbigdw.manavarasetting.ui.theme.colorF17666
 import com.bigbigdw.manavarasetting.ui.theme.colorF17FA0
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.ui.theme.colorFDC24E
+import com.bigbigdw.manavarasetting.ui.theme.colorJOARA
 import com.bigbigdw.manavarasetting.ui.theme.colorNAVER
+import com.bigbigdw.manavarasetting.ui.theme.colorNOBLESS
+import com.bigbigdw.manavarasetting.ui.theme.colorPREMIUM
 import com.bigbigdw.manavarasetting.util.BestRef
 import com.bigbigdw.manavarasetting.util.DBDate
+import com.bigbigdw.manavarasetting.util.JoaraGenre
 import com.bigbigdw.manavarasetting.util.MiningSource
 import com.bigbigdw.manavarasetting.util.NaverSeriesComicGenre
 import com.bigbigdw.manavarasetting.util.NaverSeriesNovelGenre
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import com.bigbigdw.manavarasetting.util.calculateTrophy
 import com.bigbigdw.manavarasetting.util.getDataStoreStatus
+import com.bigbigdw.manavarasetting.util.getJoaraGenre
+import com.bigbigdw.manavarasetting.util.getJoaraNoblessNovelArray
+import com.bigbigdw.manavarasetting.util.getJoaraNovelArray
+import com.bigbigdw.manavarasetting.util.getJoaraPremiumNovelArray
 import com.bigbigdw.manavarasetting.util.getNaverSeriesComicArray
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
 import com.bigbigdw.manavarasetting.util.getNaverSeriesNovelArray
@@ -654,10 +662,42 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         TabletBorderLine()
 
         ItemMainSettingSingleTablet(
+            containerColor = colorJOARA,
+            image = R.drawable.logo_joara,
+            title = "조아라 웹소설",
+            body = "조아라 웹소설 관리",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+
+        ItemMainSettingSingleTablet(
+            containerColor = colorPREMIUM,
+            image = R.drawable.logo_joara_premium,
+            title = "조아라 프리미엄 웹소설",
+            body = "조아라 프리미엄 웹소설 관리",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = colorNOBLESS,
+            image = R.drawable.logo_joara_nobless,
+            title = "조아라 노블레스 웹소설",
+            body = "조아라 노블레스 웹소설 관리",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+
+        ItemMainSettingSingleTablet(
             containerColor = colorNAVER,
             image = R.drawable.logo_naver,
-            title = "네이버 시리즈 웹툰",
-            body = "네이버 시리즈 웹툰 관리",
+            title = "네이버 시리즈 웹소설",
+            body = "네이버 시리즈 웹소설 관리",
             setMenu = setMenu,
             getMenu = getMenu,
             onClick = { onClick() }
@@ -668,8 +708,8 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         ItemMainSettingSingleTablet(
             containerColor = colorNAVER,
             image = R.drawable.logo_naver,
-            title = "네이버 시리즈 웹소설",
-            body = "네이버 시리즈 웹소설 관리",
+            title = "네이버 시리즈 웹툰",
+            body = "네이버 시리즈 웹툰 관리",
             setMenu = setMenu,
             getMenu = getMenu,
             onClick = { onClick() }
@@ -1023,9 +1063,10 @@ fun ContentsDangerLabs(viewModelMain: ViewModelMain) {
 
                     MiningSource.mining(
                         genre = j,
-                        genreDir = getNaverSeriesGenre(j),
                         platform = "NAVER_SERIES",
-                        type = "COMIC"
+                        type = "COMIC",
+                        genreDir = getNaverSeriesGenre(j),
+                        context = context
                     )
                 }
             }
@@ -1068,7 +1109,8 @@ fun ContentsDangerLabs(viewModelMain: ViewModelMain) {
                         genre = j,
                         platform = "NAVER_SERIES",
                         type = "NOVEL",
-                        genreDir = getNaverSeriesGenre(j)
+                        genreDir = getNaverSeriesGenre(j),
+                        context = context
                     )
                 }
             }
@@ -1081,6 +1123,138 @@ fun ContentsDangerLabs(viewModelMain: ViewModelMain) {
             ) {
                 Text(
                     text = "NAVER_SERIES NOVEL 원큐",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+
+            runBlocking {
+                for (j in JoaraGenre) {
+                    if (DBDate.getDayOfWeekAsNumber() == 0) {
+                        BestRef.setBestRef(
+                            platform = "JOARA",
+                            genre = j,
+                            type = "NOVEL"
+                        )
+                            .child("TROPHY_MONTH").removeValue()
+                    }
+
+                    if (DBDate.datedd() == "01") {
+                        BestRef.setBestRef(platform = "JOARA", genre = j, type = "NOVEL")
+                            .child("TROPHY_MONTH").removeValue()
+                    }
+
+                    MiningSource.mining(
+                        genre = j,
+                        platform = "JOARA",
+                        type = "NOVEL",
+                        genreDir = getJoaraGenre(j),
+                        context = context
+                    )
+                }
+            }
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "JOARA NOVEL 원큐",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+
+            runBlocking {
+                for (j in JoaraGenre) {
+                    if (DBDate.getDayOfWeekAsNumber() == 0) {
+                        BestRef.setBestRef(
+                            platform = "JOARA_PREMIUM",
+                            genre = j,
+                            type = "NOVEL"
+                        )
+                            .child("TROPHY_MONTH").removeValue()
+                    }
+
+                    if (DBDate.datedd() == "01") {
+                        BestRef.setBestRef(platform = "JOARA_PREMIUM", genre = j, type = "NOVEL")
+                            .child("TROPHY_MONTH").removeValue()
+                    }
+
+                    MiningSource.mining(
+                        genre = j,
+                        platform = "JOARA_PREMIUM",
+                        type = "NOVEL",
+                        genreDir = getJoaraGenre(j),
+                        context = context
+                    )
+                }
+            }
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "JOARA_PREMIUM NOVEL 원큐",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+
+            runBlocking {
+                for (j in JoaraGenre) {
+                    if (DBDate.getDayOfWeekAsNumber() == 0) {
+                        BestRef.setBestRef(
+                            platform = "JOARA_NOBLESS",
+                            genre = j,
+                            type = "NOVEL"
+                        )
+                            .child("TROPHY_MONTH").removeValue()
+                    }
+
+                    if (DBDate.datedd() == "01") {
+                        BestRef.setBestRef(platform = "JOARA_NOBLESS", genre = j, type = "NOVEL")
+                            .child("TROPHY_MONTH").removeValue()
+                    }
+
+                    MiningSource.mining(
+                        genre = j,
+                        platform = "JOARA_NOBLESS",
+                        type = "NOVEL",
+                        genreDir = getJoaraGenre(j),
+                        context = context
+                    )
+                }
+            }
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "JOARA_NOBLESS NOVEL 원큐",
                     color = color000000,
                     fontSize = 18.sp,
                 )
@@ -1281,11 +1455,236 @@ fun ContentsPlatformNaverSeriesNovel() {
     )
 
     TabletContentWrap {
-        getNaverSeriesNovelArray(context).forEachIndexed { index, item ->
+        getJoaraNovelArray(context).forEachIndexed { index, item ->
             ItemMainTabletContent(
                 title = item.title,
                 value = item.value,
-                isLast = getNaverSeriesNovelArray(context).size - 1 == index
+                isLast = getJoaraNovelArray(context).size - 1 == index
+            )
+        }
+    }
+
+    Spacer(modifier = Modifier.size(60.dp))
+}
+
+@Composable
+fun ContentsPlatformJoaraNovel() {
+
+    val context = LocalContext.current
+    getDataStoreStatus(context = context, update = {})
+    val workManager = WorkManager.getInstance(context)
+    val dataStore = DataStoreManager(context)
+
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                repeatInterval = 15,
+                tag = "MINING",
+                timeMill = TimeUnit.MINUTES,
+                platform = "JOARA",
+                type = "NOVEL"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.logo_joara),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "JOARA NOVEL",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {},
+        content = {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = spannableString(
+                    textFront = "최신화 현황 : ", color = color000000,
+                    textEnd = dataStore.getDataStoreString(
+                        DataStoreManager.MINING_NAVER_SERIES_NOVEL
+                    ).collectAsState(initial = "").value ?: "",
+                ),
+                color = color000000,
+                fontSize = 18.sp,
+                textAlign = TextAlign.Start
+            )
+        }
+    )
+
+    TabletContentWrap {
+        getJoaraPremiumNovelArray(context).forEachIndexed { index, item ->
+            ItemMainTabletContent(
+                title = item.title,
+                value = item.value,
+                isLast = getJoaraPremiumNovelArray(context).size - 1 == index
+            )
+        }
+    }
+
+    Spacer(modifier = Modifier.size(60.dp))
+}
+
+@Composable
+fun ContentsPlatformJoaraPremiumNovel() {
+
+    val context = LocalContext.current
+    getDataStoreStatus(context = context, update = {})
+    val workManager = WorkManager.getInstance(context)
+    val dataStore = DataStoreManager(context)
+
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                repeatInterval = 15,
+                tag = "MINING",
+                timeMill = TimeUnit.MINUTES,
+                platform = "JOARA_PREMIUM",
+                type = "NOVEL"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.logo_joara_premium),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "JOARA_PREMIUM NOVEL",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {},
+        content = {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = spannableString(
+                    textFront = "최신화 현황 : ", color = color000000,
+                    textEnd = dataStore.getDataStoreString(
+                        DataStoreManager.MINING_JOARA_PREMIUM_NOVEL
+                    ).collectAsState(initial = "").value ?: "",
+                ),
+                color = color000000,
+                fontSize = 18.sp,
+                textAlign = TextAlign.Start
+            )
+        }
+    )
+
+    TabletContentWrap {
+        getJoaraPremiumNovelArray(context).forEachIndexed { index, item ->
+            ItemMainTabletContent(
+                title = item.title,
+                value = item.value,
+                isLast = getJoaraPremiumNovelArray(context).size - 1 == index
+            )
+        }
+    }
+
+    Spacer(modifier = Modifier.size(60.dp))
+}
+
+@Composable
+fun ContentsPlatformJoaraNoblessNovel() {
+
+    val context = LocalContext.current
+    getDataStoreStatus(context = context, update = {})
+    val workManager = WorkManager.getInstance(context)
+    val dataStore = DataStoreManager(context)
+
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                repeatInterval = 15,
+                tag = "MINING",
+                timeMill = TimeUnit.MINUTES,
+                platform = "JOARA_NOBLESS",
+                type = "NOVEL"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.logo_joara_nobless),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "JOARA_NOBLESS NOVEL",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {},
+        content = {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = spannableString(
+                    textFront = "최신화 현황 : ", color = color000000,
+                    textEnd = dataStore.getDataStoreString(
+                        DataStoreManager.MINING_JOARA_NOBLESS_NOVEL
+                    ).collectAsState(initial = "").value ?: "",
+                ),
+                color = color000000,
+                fontSize = 18.sp,
+                textAlign = TextAlign.Start
+            )
+        }
+    )
+
+    TabletContentWrap {
+        getJoaraNoblessNovelArray(context).forEachIndexed { index, item ->
+            ItemMainTabletContent(
+                title = item.title,
+                value = item.value,
+                isLast = getJoaraNoblessNovelArray(context).size - 1 == index
             )
         }
     }

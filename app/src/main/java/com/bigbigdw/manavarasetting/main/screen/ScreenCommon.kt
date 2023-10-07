@@ -574,41 +574,41 @@ fun ItemTabletBestList(item : ItemBookInfo, isLast: Boolean){
                     )
                 }
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = spannableString(textFront = "작품 정보1 : ", color = color000000, textEnd = item.info1),
-                        color = color8E8E8E,
-                        fontSize = 16.sp,
-                    )
-                }
+//                Row(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    horizontalArrangement = Arrangement.Start,
+//                    verticalAlignment = Alignment.CenterVertically
+//                ) {
+//                    Text(
+//                        text = spannableString(textFront = "작품 정보1 : ", color = color000000, textEnd = item.info1),
+//                        color = color8E8E8E,
+//                        fontSize = 16.sp,
+//                    )
+//                }
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = spannableString(textFront = "작품 정보2 : ", color = color000000, textEnd = item.info2),
-                        color = color8E8E8E,
-                        fontSize = 16.sp,
-                    )
-                }
+//                Row(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    horizontalArrangement = Arrangement.Start,
+//                    verticalAlignment = Alignment.CenterVertically
+//                ) {
+//                    Text(
+//                        text = spannableString(textFront = "작품 정보2 : ", color = color000000, textEnd = item.info2),
+//                        color = color8E8E8E,
+//                        fontSize = 16.sp,
+//                    )
+//                }
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = spannableString(textFront = "작품 정보3 : ", color = color000000, textEnd = item.info3),
-                        color = color8E8E8E,
-                        fontSize = 16.sp,
-                    )
-                }
+//                Row(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    horizontalArrangement = Arrangement.Start,
+//                    verticalAlignment = Alignment.CenterVertically
+//                ) {
+//                    Text(
+//                        text = spannableString(textFront = "작품 정보3 : ", color = color000000, textEnd = item.info3),
+//                        color = color8E8E8E,
+//                        fontSize = 16.sp,
+//                    )
+//                }
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -776,17 +776,17 @@ fun ItemTabletTrophyList(item : ItemBestInfo, isLast: Boolean){
             )
         }
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = spannableString(textFront = "작품 정보1 : ", color = color000000, textEnd = item.info1),
-                color = color8E8E8E,
-                fontSize = 16.sp,
-            )
-        }
+//        Row(
+//            modifier = Modifier.fillMaxWidth(),
+//            horizontalArrangement = Arrangement.Start,
+//            verticalAlignment = Alignment.CenterVertically
+//        ) {
+//            Text(
+//                text = spannableString(textFront = "작품 정보1 : ", color = color000000, textEnd = item.info1),
+//                color = color8E8E8E,
+//                fontSize = 16.sp,
+//            )
+//        }
 
         Row(
             modifier = Modifier.fillMaxWidth(),

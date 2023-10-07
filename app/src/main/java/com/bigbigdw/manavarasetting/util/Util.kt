@@ -87,6 +87,41 @@ fun getNaverSeriesGenre(genre : String) : String {
     }
 }
 
+fun getJoaraGenre(genre : String) : String {
+    when (genre) {
+        "0" -> {
+            return "ALL"
+        }
+        "1" -> {
+            return "FANTAGY"
+        }
+        "2" -> {
+            return "MARTIAL_ARTS"
+        }
+        "5" -> {
+            return "MODREN_FANTAGY"
+        }
+        "22" -> {
+            return "ROMANCE_FANTAGY"
+        }
+        "25" -> {
+            return "ROMANCE"
+        }
+        else -> {
+            return genre
+        }
+    }
+}
+
+val JoaraGenre = arrayListOf(
+    "0",
+    "1",
+    "25",
+    "2",
+    "5",
+    "22",
+)
+
 fun getNaverSeriesGenreKor(genre : String) : String {
     return when (genre) {
         "ALL" -> {
@@ -136,9 +171,12 @@ fun convertItemBook(bestItemData : ItemBookInfo) : JsonObject {
         jsonObject.addProperty("bookImg", bestItemData.bookImg)
         jsonObject.addProperty("bookCode", bestItemData.bookCode)
         jsonObject.addProperty("type", bestItemData.type)
-        jsonObject.addProperty("info1", bestItemData.info1)
-        jsonObject.addProperty("info2", bestItemData.info2)
-        jsonObject.addProperty("info3", bestItemData.info3)
+        jsonObject.addProperty("intro", bestItemData.intro)
+        jsonObject.addProperty("cntPageRead", bestItemData.cntPageRead)
+        jsonObject.addProperty("cntFavorite", bestItemData.cntFavorite)
+        jsonObject.addProperty("cntRecom", bestItemData.cntRecom)
+        jsonObject.addProperty("cntTotalComment", bestItemData.cntTotalComment)
+        jsonObject.addProperty("cntChapter", bestItemData.cntChapter)
         jsonObject.addProperty("number", bestItemData.number)
         jsonObject.addProperty("point", bestItemData.point)
         jsonObject.addProperty("total", bestItemData.total)
@@ -160,9 +198,12 @@ fun convertItemBookJson(jsonObject: JSONObject): ItemBookInfo {
         bookImg = jsonObject.optString("bookImg"),
         bookCode = jsonObject.optString("bookCode"),
         type = jsonObject.optString("type"),
-        info1 = jsonObject.optString("info1"),
-        info2 = jsonObject.optString("info2"),
-        info3 = jsonObject.optString("info3"),
+        intro = jsonObject.optString("intro"),
+        cntPageRead = jsonObject.optString("cntPageRead"),
+        cntFavorite = jsonObject.optString("cntFavorite"),
+        cntRecom = jsonObject.optString("cntRecom"),
+        cntTotalComment = jsonObject.optString("cntTotalComment"),
+        cntChapter = jsonObject.optString("cntChapter"),
         point = jsonObject.optInt("point"),
         number = jsonObject.optInt("number"),
         total = jsonObject.optInt("total"),
@@ -180,7 +221,10 @@ fun convertItemBestJson(jsonObject : JSONObject) : ItemBestInfo {
     return ItemBestInfo(
         point = jsonObject.optInt("point"),
         number = jsonObject.optInt("number"),
-        info1 = jsonObject.optString("info1"),
+        cntPageRead = jsonObject.optString("cntPageRead"),
+        cntFavorite = jsonObject.optString("cntFavorite"),
+        cntRecom = jsonObject.optString("cntRecom"),
+        cntTotalComment = jsonObject.optString("cntTotalComment"),
         total = jsonObject.optInt("total"),
         totalCount = jsonObject.optInt("totalCount"),
         bookCode = jsonObject.optString("bookCode"),
@@ -192,7 +236,10 @@ fun convertItemBest(bestItemData : ItemBestInfo) : JsonObject {
     val jsonObject = JsonObject()
     jsonObject.addProperty("number", bestItemData.number)
     jsonObject.addProperty("point", bestItemData.point)
-    jsonObject.addProperty("info1", bestItemData.info1)
+    jsonObject.addProperty("cntPageRead", bestItemData.cntPageRead)
+    jsonObject.addProperty("cntFavorite", bestItemData.cntFavorite)
+    jsonObject.addProperty("cntRecom", bestItemData.cntRecom)
+    jsonObject.addProperty("cntTotalComment", bestItemData.cntTotalComment)
     jsonObject.addProperty("total", bestItemData.total)
     jsonObject.addProperty("totalCount", bestItemData.totalCount)
     jsonObject.addProperty("bookCode", bestItemData.bookCode)
@@ -228,6 +275,9 @@ fun getDataStoreStatus(context: Context, update : () -> Unit){
                 CoroutineScope(Dispatchers.IO).launch {
                     dataStore.setDataStoreString(DataStoreManager.MINING_NAVER_SERIES_COMIC, dataSnapshot.child("MINING_NAVER_SERIES_COMIC").getValue(String::class.java) ?: "")
                     dataStore.setDataStoreString(DataStoreManager.MINING_NAVER_SERIES_NOVEL, dataSnapshot.child("MINING_NAVER_SERIES_NOVEL").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.MINING_JOARA_NOVEL, dataSnapshot.child("MINING_NAVER_SERIES_NOVEL").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.MINING_JOARA_PREMIUM_NOVEL, dataSnapshot.child("MINING_JOARA_PREMIUM_NOVEL").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.MINING_JOARA_NOBLESS_NOVEL, dataSnapshot.child("MINING_JOARA_NOBLESS_NOVEL").getValue(String::class.java) ?: "")
 
                     dataStore.setDataStoreString(DataStoreManager.STATUS_NAVER_SERIES_COMIC_ACTION, dataSnapshot.child("STATUS_NAVER_SERIES_COMIC_ACTION").getValue(String::class.java) ?: "")
                     dataStore.setDataStoreString(DataStoreManager.STATUS_NAVER_SERIES_COMIC_ALL, dataSnapshot.child("STATUS_NAVER_SERIES_COMIC_ALL").getValue(String::class.java) ?: "")
@@ -242,6 +292,27 @@ fun getDataStoreStatus(context: Context, update : () -> Unit){
                     dataStore.setDataStoreString(DataStoreManager.STATUS_NAVER_SERIES_NOVEL_MODERN_FANTASY, dataSnapshot.child("STATUS_NAVER_SERIES_NOVEL_MODERN_FANTASY").getValue(String::class.java) ?: "")
                     dataStore.setDataStoreString(DataStoreManager.STATUS_NAVER_SERIES_NOVEL_ROMANCE, dataSnapshot.child("STATUS_NAVER_SERIES_NOVEL_ROMANCE").getValue(String::class.java) ?: "")
                     dataStore.setDataStoreString(DataStoreManager.STATUS_NAVER_SERIES_NOVEL_ROMANCE_FANTASY, dataSnapshot.child("STATUS_NAVER_SERIES_NOVEL_ROMANCE_FANTASY").getValue(String::class.java) ?: "")
+
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_JOARA_NOVEL_ALL, dataSnapshot.child("STATUS_JOARA_NOVEL_ALL").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_JOARA_NOVEL_FANTAGY, dataSnapshot.child("STATUS_JOARA_NOVEL_FANTAGY").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_JOARA_NOVEL_MARTIAL_ARTS, dataSnapshot.child("STATUS_JOARA_NOVEL_MARTIAL_ARTS").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_JOARA_NOVEL_MODREN_FANTAGY, dataSnapshot.child("STATUS_JOARA_NOVEL_MODREN_FANTAGY").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_JOARA_NOVEL_ROMANCE, dataSnapshot.child("STATUS_JOARA_NOVEL_ROMANCE").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_JOARA_NOVEL_ROMANCE_FANTAGY, dataSnapshot.child("STATUS_JOARA_NOVEL_ROMANCE_FANTAGY").getValue(String::class.java) ?: "")
+
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_JOARA_PREMIUM_NOVEL_ALL, dataSnapshot.child("STATUS_JOARA_PREMIUM_NOVEL_ALL").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_JOARA_PREMIUM_NOVEL_FANTAGY, dataSnapshot.child("STATUS_JOARA_PREMIUM_NOVEL_FANTAGY").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_JOARA_PREMIUM_NOVEL_MARTIAL_ARTS, dataSnapshot.child("STATUS_JOARA_PREMIUM_NOVEL_MARTIAL_ARTS").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_JOARA_PREMIUM_NOVEL_MODREN_FANTAGY, dataSnapshot.child("STATUS_JOARA_PREMIUM_NOVEL_MODREN_FANTAGY").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_JOARA_PREMIUM_NOVEL_ROMANCE, dataSnapshot.child("STATUS_JOARA_PREMIUM_NOVEL_ROMANCE").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_JOARA_PREMIUM_NOVEL_ROMANCE_FANTAGY, dataSnapshot.child("STATUS_JOARA_PREMIUM_NOVEL_ROMANCE_FANTAGY").getValue(String::class.java) ?: "")
+
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_JOARA_NOBLESS_NOVEL_ALL, dataSnapshot.child("STATUS_JOARA_NOBLESS_NOVEL_ALL").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_JOARA_NOBLESS_NOVEL_FANTAGY, dataSnapshot.child("STATUS_JOARA_NOBLESS_NOVEL_FANTAGY").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_JOARA_NOBLESS_NOVEL_MARTIAL_ARTS, dataSnapshot.child("STATUS_JOARA_NOBLESS_NOVEL_MARTIAL_ARTS").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_JOARA_NOBLESS_NOVEL_MODREN_FANTAGY, dataSnapshot.child("STATUS_JOARA_NOBLESS_NOVEL_MODREN_FANTAGY").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_JOARA_NOBLESS_NOVEL_ROMANCE, dataSnapshot.child("STATUS_JOARA_NOBLESS_NOVEL_ROMANCE").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.STATUS_JOARA_NOBLESS_NOVEL_ROMANCE_FANTAGY, dataSnapshot.child("STATUS_JOARA_NOBLESS_NOVEL_ROMANCE_FANTAGY").getValue(String::class.java) ?: "")
 
                     update()
                 }
@@ -399,5 +470,180 @@ fun getNaverSeriesNovelArray(context: Context): ArrayList<MainSettingLine> {
 
     return array
 }
+
+@Composable
+fun getJoaraNovelArray(context: Context): ArrayList<MainSettingLine> {
+
+    val dataStore = DataStoreManager(context)
+
+    val array = ArrayList<MainSettingLine>()
+
+    array.add(
+        MainSettingLine(
+            title = "시리즈 웹소설 전체 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_JOARA_NOVEL_ALL
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    array.add(
+        MainSettingLine(
+            title = "시리즈 웹소설 판타지 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_JOARA_NOVEL_FANTAGY
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    array.add(
+        MainSettingLine(
+            title = "시리즈 웹소설 무협 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_JOARA_NOVEL_MARTIAL_ARTS
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    array.add(
+        MainSettingLine(
+            title = "시리즈 웹소설 모판 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_JOARA_NOVEL_MODREN_FANTAGY
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    array.add(
+        MainSettingLine(
+            title = "시리즈 웹소설 로맨스 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_JOARA_NOVEL_ROMANCE
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    array.add(
+        MainSettingLine(
+            title = "시리즈 웹소설 로판 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_JOARA_NOVEL_ROMANCE_FANTAGY
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    return array
+}
+
+@Composable
+fun getJoaraPremiumNovelArray(context: Context): ArrayList<MainSettingLine> {
+
+    val dataStore = DataStoreManager(context)
+
+    val array = ArrayList<MainSettingLine>()
+
+    array.add(
+        MainSettingLine(
+            title = "시리즈 웹소설 전체 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_JOARA_PREMIUM_NOVEL_ALL
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    array.add(
+        MainSettingLine(
+            title = "시리즈 웹소설 판타지 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_JOARA_PREMIUM_NOVEL_FANTAGY
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    array.add(
+        MainSettingLine(
+            title = "시리즈 웹소설 무협 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_JOARA_PREMIUM_NOVEL_MARTIAL_ARTS
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    array.add(
+        MainSettingLine(
+            title = "시리즈 웹소설 모판 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_JOARA_PREMIUM_NOVEL_MODREN_FANTAGY
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    array.add(
+        MainSettingLine(
+            title = "시리즈 웹소설 로맨스 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_JOARA_PREMIUM_NOVEL_ROMANCE
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    array.add(
+        MainSettingLine(
+            title = "시리즈 웹소설 로판 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_JOARA_PREMIUM_NOVEL_ROMANCE_FANTAGY
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    return array
+}
+
+@Composable
+fun getJoaraNoblessNovelArray(context: Context): ArrayList<MainSettingLine> {
+
+    val dataStore = DataStoreManager(context)
+
+    val array = ArrayList<MainSettingLine>()
+
+    array.add(
+        MainSettingLine(
+            title = "시리즈 웹소설 전체 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_JOARA_NOBLESS_NOVEL_ALL
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    array.add(
+        MainSettingLine(
+            title = "시리즈 웹소설 판타지 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_JOARA_NOBLESS_NOVEL_FANTAGY
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    array.add(
+        MainSettingLine(
+            title = "시리즈 웹소설 무협 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_JOARA_NOBLESS_NOVEL_MARTIAL_ARTS
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    array.add(
+        MainSettingLine(
+            title = "시리즈 웹소설 모판 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_JOARA_NOBLESS_NOVEL_MODREN_FANTAGY
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    array.add(
+        MainSettingLine(
+            title = "시리즈 웹소설 로맨스 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_JOARA_NOBLESS_NOVEL_ROMANCE
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    array.add(
+        MainSettingLine(
+            title = "시리즈 웹소설 로판 : ", value = dataStore.getDataStoreString(
+                DataStoreManager.STATUS_JOARA_NOBLESS_NOVEL_ROMANCE_FANTAGY
+            ).collectAsState(initial = "").value ?: ""
+        )
+    )
+
+    return array
+}
+
 
 

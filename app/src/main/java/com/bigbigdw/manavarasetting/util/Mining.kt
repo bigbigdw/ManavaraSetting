@@ -1,5 +1,6 @@
 package com.bigbigdw.manavarasetting.util
 
+import android.content.Context
 import android.util.Log
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
@@ -357,7 +358,7 @@ fun calculateTrophy(platform: String, genre: String, type: String) {
 
                     val bestListAnalyze = ItemBestInfo(
 //                        number = item.current,
-                        info1 = item.info1,
+//                        info1 = item.info1,
 //                        total = total + item.current,
                         totalCount = totalCount + 1,
                         bookCode = item.bookCode
@@ -453,7 +454,7 @@ fun calculateTrophy(platform: String, genre: String, type: String) {
             for (item in itemList) {
                 val bestListAnalyze = ItemBestInfo(
 //                    number = item.current,
-                    info1 = item.info1,
+//                    info1 = item.info1,
 //                    total = item.current,
                     totalCount = 1,
                     bookCode = item.bookCode
@@ -649,6 +650,7 @@ private fun uploadJsonArrayToStorageTrophyMonth(
 }
 
 fun doMining(
+    context : Context,
     genre: String,
     platform: String,
     type: String,
@@ -686,6 +688,57 @@ fun doMining(
                     itemBestInfoList = itemBestInfoList
                 )
             }
+        }
+    } else if(platform == "JOARA") {
+        MiningSource.miningJoara(
+            context = context,
+            mining = "",
+            genre = genre,
+            platform = platform,
+            type = type,
+            yesterDatItemMap = yesterDayItemMap
+        ) { itemBookInfoList, itemBestInfoList ->
+            doResultMining(
+                genre = getJoaraGenre(genre),
+                platform = platform,
+                type = type,
+                itemBookInfoList = itemBookInfoList,
+                itemBestInfoList = itemBestInfoList
+            )
+        }
+    } else if(platform == "JOARA_PREMIUM") {
+        MiningSource.miningJoara(
+            context = context,
+            mining = "premium",
+            genre = genre,
+            platform = platform,
+            type = type,
+            yesterDatItemMap = yesterDayItemMap
+        ) { itemBookInfoList, itemBestInfoList ->
+            doResultMining(
+                genre = getJoaraGenre(genre),
+                platform = platform,
+                type = type,
+                itemBookInfoList = itemBookInfoList,
+                itemBestInfoList = itemBestInfoList
+            )
+        }
+    } else if(platform == "JOARA_NOBLESS") {
+        MiningSource.miningJoara(
+            context = context,
+            mining = "nobless",
+            genre = genre,
+            platform = platform,
+            type = type,
+            yesterDatItemMap = yesterDayItemMap
+        ) { itemBookInfoList, itemBestInfoList ->
+            doResultMining(
+                genre = getJoaraGenre(genre),
+                platform = platform,
+                type = type,
+                itemBookInfoList = itemBookInfoList,
+                itemBestInfoList = itemBestInfoList
+            )
         }
     }
 }
