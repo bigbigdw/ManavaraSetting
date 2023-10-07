@@ -319,7 +319,7 @@ object MiningSource {
         param["page"] = 1
         param["best"] = "today"
         param["store"] = mining
-        param["category"] = getJoaraGenre(genre)
+        param["category"] = genre
         param["offset"] = "100"
 
         val itemBookInfoList = JsonArray()

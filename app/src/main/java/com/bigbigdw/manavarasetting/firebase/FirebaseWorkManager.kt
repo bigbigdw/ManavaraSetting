@@ -307,124 +307,93 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                         for (j in NaverSeriesComicGenre) {
                             if (DBDate.getDayOfWeekAsNumber() == 0) {
                                 BestRef.setBestRef(
-                                    platform = "NAVER_SERIES",
+                                    platform = inputData.getString(PLATFORM) ?: "",
                                     genre = j,
-                                    type = "COMIC"
+                                    type = inputData.getString(TYPE) ?: "",
                                 )
                                     .child("TROPHY_MONTH").removeValue()
                             }
 
                             if (DBDate.datedd() == "01") {
                                 BestRef.setBestRef(
-                                    platform = "NAVER_SERIES",
+                                    platform = inputData.getString(PLATFORM) ?: "",
                                     genre = j,
-                                    type = "COMIC"
+                                    type = inputData.getString(TYPE) ?: "",
                                 )
                                     .child("TROPHY_MONTH").removeValue()
                             }
 
                             MiningSource.mining(
                                 genre = j,
-                                platform = "NAVER_SERIES",
-                                type = "COMIC",
+                                platform = inputData.getString(PLATFORM) ?: "",
+                                type = inputData.getString(TYPE) ?: "",
                                 genreDir = getNaverSeriesGenre(j),
                                 context = applicationContext
                             )
                         }
                     }
-                } else if (inputData.getString(PLATFORM) == "JOARA") {
+                } else {
                     runBlocking {
-                        for (j in JoaraGenre) {
+                        for (j in NaverSeriesNovelGenre) {
                             if (DBDate.getDayOfWeekAsNumber() == 0) {
                                 BestRef.setBestRef(
-                                    platform = "JOARA",
+                                    platform = inputData.getString(PLATFORM) ?: "",
                                     genre = j,
-                                    type = "NOVEL"
+                                    type = inputData.getString(TYPE) ?: "",
                                 )
                                     .child("TROPHY_MONTH").removeValue()
                             }
 
                             if (DBDate.datedd() == "01") {
                                 BestRef.setBestRef(
-                                    platform = "JOARA",
+                                    platform = inputData.getString(PLATFORM) ?: "",
                                     genre = j,
-                                    type = "NOVEL"
+                                    type = inputData.getString(TYPE) ?: "",
                                 )
                                     .child("TROPHY_MONTH").removeValue()
                             }
 
                             MiningSource.mining(
                                 genre = j,
-                                platform = "JOARA",
-                                type = "NOVEL",
-                                genreDir = getJoaraGenre(j),
-                                context = applicationContext
-                            )
-                        }
-                    }
-                } else if (inputData.getString(PLATFORM) == "JOARA_PREMIUM") {
-                    runBlocking {
-                        for (j in JoaraGenre) {
-                            if (DBDate.getDayOfWeekAsNumber() == 0) {
-                                BestRef.setBestRef(
-                                    platform = "JOARA_PREMIUM",
-                                    genre = j,
-                                    type = "NOVEL"
-                                )
-                                    .child("TROPHY_MONTH").removeValue()
-                            }
-
-                            if (DBDate.datedd() == "01") {
-                                BestRef.setBestRef(
-                                    platform = "JOARA_PREMIUM",
-                                    genre = j,
-                                    type = "NOVEL"
-                                )
-                                    .child("TROPHY_MONTH").removeValue()
-                            }
-
-                            MiningSource.mining(
-                                genre = j,
-                                platform = "JOARA_PREMIUM",
-                                type = "NOVEL",
-                                genreDir = getJoaraGenre(j),
-                                context = applicationContext
-                            )
-                        }
-                    }
-                } else if (inputData.getString(PLATFORM) == "JOARA_NOBLESS") {
-                    runBlocking {
-                        for (j in JoaraGenre) {
-                            if (DBDate.getDayOfWeekAsNumber() == 0) {
-                                BestRef.setBestRef(
-                                    platform = "JOARA_NOBLESS",
-                                    genre = j,
-                                    type = "NOVEL"
-                                )
-                                    .child("TROPHY_MONTH").removeValue()
-                            }
-
-                            if (DBDate.datedd() == "01") {
-                                BestRef.setBestRef(
-                                    platform = "JOARA_NOBLESS",
-                                    genre = j,
-                                    type = "NOVEL"
-                                )
-                                    .child("TROPHY_MONTH").removeValue()
-                            }
-
-                            MiningSource.mining(
-                                genre = j,
-                                platform = "JOARA_NOBLESS",
-                                type = "NOVEL",
-                                genreDir = getJoaraGenre(j),
+                                platform = inputData.getString(PLATFORM) ?: "",
+                                type = inputData.getString(TYPE) ?: "",
+                                genreDir = getNaverSeriesGenre(j),
                                 context = applicationContext
                             )
                         }
                     }
                 }
+            } else if (inputData.getString(PLATFORM)?.contains("JOARA") == true) {
+                runBlocking {
+                    for (j in JoaraGenre) {
+                        if (DBDate.getDayOfWeekAsNumber() == 0) {
+                            BestRef.setBestRef(
+                                platform = inputData.getString(PLATFORM) ?: "",
+                                genre = j,
+                                type = inputData.getString(TYPE) ?: "",
+                            ).child("TROPHY_MONTH").removeValue()
+                        }
+
+                        if (DBDate.datedd() == "01") {
+                            BestRef.setBestRef(
+                                platform = inputData.getString(PLATFORM) ?: "",
+                                genre = j,
+                                type = inputData.getString(TYPE) ?: "",
+                            ).child("TROPHY_MONTH").removeValue()
+                        }
+
+                        MiningSource.mining(
+                            genre = j,
+                            platform = inputData.getString(PLATFORM) ?: "",
+                            type = inputData.getString(TYPE) ?: "",
+                            genreDir = getJoaraGenre(j),
+                            context = applicationContext
+                        )
+                    }
+                }
             }
         }
+
 
         postFCM(
             data = workerName,

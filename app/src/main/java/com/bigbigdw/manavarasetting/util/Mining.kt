@@ -793,6 +793,7 @@ fun makeTodayJson(
 
     jsonArrayRef.putBytes(jsonArrayByteArray)
         .addOnSuccessListener {
+            Log.d("MANANVARA_MINING", "makeTodayJson addOnSuccessListener == $it")
 
             uploadWeekJson(
                 platform = platform,
@@ -800,6 +801,8 @@ fun makeTodayJson(
                 type = type,
                 todayArray = todayArray
             )
+        }.addOnFailureListener {
+            Log.d("MANANVARA_MINING", "makeTodayJson addOnFailureListener == $it")
         }
 }
 
