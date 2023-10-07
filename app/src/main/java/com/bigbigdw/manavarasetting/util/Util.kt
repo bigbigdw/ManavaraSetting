@@ -87,6 +87,32 @@ fun getNaverSeriesGenre(genre : String) : String {
     }
 }
 
+fun getJoaraGenreKor(genre : String) : String {
+    when (genre) {
+        "0" -> {
+            return "전체"
+        }
+        "1" -> {
+            return "판타지"
+        }
+        "2" -> {
+            return "무협"
+        }
+        "5" -> {
+            return "모판"
+        }
+        "22" -> {
+            return "로판"
+        }
+        "25" -> {
+            return "로맨스"
+        }
+        else -> {
+            return genre
+        }
+    }
+}
+
 fun getJoaraGenre(genre : String) : String {
     when (genre) {
         "0" -> {
@@ -162,6 +188,8 @@ fun getNaverSeriesGenreKor(genre : String) : String {
         }
     }
 }
+
+
 
 @SuppressLint("SuspiciousIndentation")
 fun convertItemBook(bestItemData : ItemBookInfo) : JsonObject {

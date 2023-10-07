@@ -61,6 +61,7 @@ import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color1E1E20
 import com.bigbigdw.manavarasetting.ui.theme.color1E4394
 import com.bigbigdw.manavarasetting.ui.theme.color21C2EC
+import com.bigbigdw.manavarasetting.ui.theme.color2EA259
 import com.bigbigdw.manavarasetting.ui.theme.color31C3AE
 import com.bigbigdw.manavarasetting.ui.theme.color4996E8
 import com.bigbigdw.manavarasetting.ui.theme.color4AD7CF
@@ -72,11 +73,13 @@ import com.bigbigdw.manavarasetting.ui.theme.color64C157
 import com.bigbigdw.manavarasetting.ui.theme.color79B4F8
 import com.bigbigdw.manavarasetting.ui.theme.color7C81FF
 import com.bigbigdw.manavarasetting.ui.theme.color80BF78
+import com.bigbigdw.manavarasetting.ui.theme.color8AA6BD
 import com.bigbigdw.manavarasetting.ui.theme.color8F8F8F
 import com.bigbigdw.manavarasetting.ui.theme.color91CEC7
 import com.bigbigdw.manavarasetting.ui.theme.color998DF9
 import com.bigbigdw.manavarasetting.ui.theme.colorABD436
 import com.bigbigdw.manavarasetting.ui.theme.colorDCDCDD
+import com.bigbigdw.manavarasetting.ui.theme.colorE9E9E9
 import com.bigbigdw.manavarasetting.ui.theme.colorEA927C
 import com.bigbigdw.manavarasetting.ui.theme.colorF17666
 import com.bigbigdw.manavarasetting.ui.theme.colorF17FA0
@@ -550,8 +553,8 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         ItemMainSettingSingleTablet(
             containerColor = colorF17FA0,
             image = R.drawable.icon_json_wht,
-            title = "JSON 관리",
-            body = "JSON 베스트 수동 갱신 & Worker 관리",
+            title = "웹소설 JSON 투데이",
+            body = "웹소설 플랫폼 JSON 베스트 투데이",
             setMenu = setMenu,
             getMenu = getMenu,
             onClick = { onClick() }
@@ -560,8 +563,18 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         ItemMainSettingSingleTablet(
             containerColor = color21C2EC,
             image = R.drawable.icon_json_wht,
-            title = "JSON 투데이 베스트 현황",
-            body = "WEEK 투데이 확인",
+            title = "웹툰 JSON 투데이",
+            body = "웹툰 플랫폼 JSON 베스트 투데이",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color31C3AE,
+            image = R.drawable.icon_json_wht,
+            title = "웹소설 JSON 주간",
+            body = "웹소설 플랫폼 JSON 베스트 주간",
             setMenu = setMenu,
             getMenu = getMenu,
             onClick = { onClick() }
@@ -570,8 +583,8 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         ItemMainSettingSingleTablet(
             containerColor = color7C81FF,
             image = R.drawable.icon_json_wht,
-            title = "JSON 주간 베스트 현황",
-            body = "WEEK 베스트 확인",
+            title = "웹툰 JSON 주간",
+            body = "웹툰 플랫폼 JSON 베스트 주간",
             setMenu = setMenu,
             getMenu = getMenu,
             onClick = { onClick() }
@@ -580,8 +593,8 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         ItemMainSettingSingleTablet(
             containerColor = color64C157,
             image = R.drawable.icon_json_wht,
-            title = "JSON 월간 베스트 현황",
-            body = "MONTH 베스트 확인",
+            title = "웹소설 JSON 월간",
+            body = "웹툰 플랫폼 JSON 베스트 월간",
             setMenu = setMenu,
             getMenu = getMenu,
             onClick = { onClick() }
@@ -590,8 +603,8 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         ItemMainSettingSingleTablet(
             containerColor = colorF17666,
             image = R.drawable.icon_json_wht,
-            title = "JSON 주간 트로피 현황",
-            body = "장르별 주간 JSON 확인",
+            title = "웹툰 JSON 월간",
+            body = "웹툰 플랫폼 JSON 베스트 월간",
             setMenu = setMenu,
             getMenu = getMenu,
             onClick = { onClick() }
@@ -600,8 +613,8 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         ItemMainSettingSingleTablet(
             containerColor = color536FD2,
             image = R.drawable.icon_json_wht,
-            title = "JSON 월간 트로피 현황",
-            body = "장르별 월간 JSON 확인",
+            title = "웹소설 JSON 주간 트로피",
+            body = "웹소설 플랫폼 JSON 주간 트로피",
             setMenu = setMenu,
             getMenu = getMenu,
             onClick = { onClick() }
@@ -610,8 +623,28 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         ItemMainSettingSingleTablet(
             containerColor = color4996E8,
             image = R.drawable.icon_json_wht,
-            title = "JSON 최신화 현황",
-            body = "시간별 JSON 갱신 현황",
+            title = "웹툰 JSON 주간 트로피",
+            body = "웹툰 플랫폼 JSON 주간 트로피",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = colorFDC24E,
+            image = R.drawable.icon_json_wht,
+            title = "웹소설 JSON 월간 트로피",
+            body = "웹툰 플랫폼 JSON 베스트 월간",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color80BF78,
+            image = R.drawable.icon_json_wht,
+            title = "웹툰 JSON 월간 트로피",
+            body = "장르별 월간 JSON 확인",
             setMenu = setMenu,
             getMenu = getMenu,
             onClick = { onClick() }
@@ -620,30 +653,10 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         TabletBorderLine()
 
         ItemMainSettingSingleTablet(
-            containerColor = colorFDC24E,
-            image = R.drawable.icon_trophy_wht,
-            title = "트로피 정산 관리",
-            body = "트로피 수동 정산 & Worker 관리",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = color80BF78,
-            image = R.drawable.icon_trophy_wht,
-            title = "트로피 주간 토탈 리스트",
-            body = "장르별 주간 트로피 리스트 확인",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
-        )
-
-        ItemMainSettingSingleTablet(
             containerColor = color91CEC7,
             image = R.drawable.icon_trophy_wht,
-            title = "트로피 월간 토탈 리스트",
-            body = "장르별 월간 트로피 리스트 확인",
+            title = "웹소설 트로피 주간 토탈",
+            body = "트로피 수동 정산 & Worker 관리",
             setMenu = setMenu,
             getMenu = getMenu,
             onClick = { onClick() }
@@ -652,7 +665,27 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         ItemMainSettingSingleTablet(
             containerColor = color79B4F8,
             image = R.drawable.icon_trophy_wht,
-            title = "트로피 최신화 현황",
+            title = "웹툰 트로피 주간 토탈",
+            body = "장르별 주간 트로피 리스트 확인",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color8AA6BD,
+            image = R.drawable.icon_trophy_wht,
+            title = "웹소설 트로피 월간 토탈",
+            body = "장르별 월간 트로피 리스트 확인",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color2EA259,
+            image = R.drawable.icon_trophy_wht,
+            title = "웹툰 트로피 월간 토탈",
             body = "시간별 트로피 최신화 현황",
             setMenu = setMenu,
             getMenu = getMenu,
@@ -1318,12 +1351,15 @@ fun ContentsDangerLabs(viewModelMain: ViewModelMain) {
 }
 
 @Composable
-fun ContentsPlatformNaverSeriesComic() {
+fun ContentsPlatformNaverSeriesComic(viewModelMain: ViewModelMain) {
 
     val context = LocalContext.current
     getDataStoreStatus(context = context, update = {})
     val workManager = WorkManager.getInstance(context)
     val dataStore = DataStoreManager(context)
+
+    viewModelMain.getFCMList(child = "ALERT", activity = "NAVER_SERIES COMIC")
+    val fcmAlertList = viewModelMain.state.collectAsState().value.fcmAlertList
 
     TabletContentWrapBtn(
         onClick = {
@@ -1389,11 +1425,29 @@ fun ContentsPlatformNaverSeriesComic() {
         }
     }
 
+    Spacer(modifier = Modifier.size(16.dp))
+
+    TabletContentWrap {
+        Spacer(modifier = Modifier.size(8.dp))
+
+        fcmAlertList.forEachIndexed { index, item ->
+            ItemTabletFCMList(
+                item = item,
+                isLast = fcmAlertList.size - 1 == index
+            )
+        }
+
+        Spacer(modifier = Modifier.size(8.dp))
+    }
+
     Spacer(modifier = Modifier.size(60.dp))
 }
 
 @Composable
-fun ContentsPlatformNaverSeriesNovel() {
+fun ContentsPlatformNaverSeriesNovel(viewModelMain: ViewModelMain) {
+
+    viewModelMain.getFCMList(child = "ALERT", activity = "NAVER_SERIES NOVEL")
+    val fcmAlertList = viewModelMain.state.collectAsState().value.fcmAlertList
 
     val context = LocalContext.current
     getDataStoreStatus(context = context, update = {})
@@ -1464,16 +1518,34 @@ fun ContentsPlatformNaverSeriesNovel() {
         }
     }
 
+    Spacer(modifier = Modifier.size(16.dp))
+
+    TabletContentWrap {
+        Spacer(modifier = Modifier.size(8.dp))
+
+        fcmAlertList.forEachIndexed { index, item ->
+            ItemTabletFCMList(
+                item = item,
+                isLast = fcmAlertList.size - 1 == index
+            )
+        }
+
+        Spacer(modifier = Modifier.size(8.dp))
+    }
+
     Spacer(modifier = Modifier.size(60.dp))
 }
 
 @Composable
-fun ContentsPlatformJoaraNovel() {
+fun ContentsPlatformJoaraNovel(viewModelMain : ViewModelMain) {
 
     val context = LocalContext.current
     getDataStoreStatus(context = context, update = {})
     val workManager = WorkManager.getInstance(context)
     val dataStore = DataStoreManager(context)
+
+    viewModelMain.getFCMList(child = "ALERT", activity = "JOARA NOVEL")
+    val fcmAlertList = viewModelMain.state.collectAsState().value.fcmAlertList
 
     TabletContentWrapBtn(
         onClick = {
@@ -1539,16 +1611,34 @@ fun ContentsPlatformJoaraNovel() {
         }
     }
 
+    Spacer(modifier = Modifier.size(16.dp))
+
+    TabletContentWrap {
+        Spacer(modifier = Modifier.size(8.dp))
+
+        fcmAlertList.forEachIndexed { index, item ->
+            ItemTabletFCMList(
+                item = item,
+                isLast = fcmAlertList.size - 1 == index
+            )
+        }
+
+        Spacer(modifier = Modifier.size(8.dp))
+    }
+
     Spacer(modifier = Modifier.size(60.dp))
 }
 
 @Composable
-fun ContentsPlatformJoaraPremiumNovel() {
+fun ContentsPlatformJoaraPremiumNovel(viewModelMain : ViewModelMain) {
 
     val context = LocalContext.current
     getDataStoreStatus(context = context, update = {})
     val workManager = WorkManager.getInstance(context)
     val dataStore = DataStoreManager(context)
+
+    viewModelMain.getFCMList(child = "ALERT", activity = "JOARA_PREMIUM NOVEL")
+    val fcmAlertList = viewModelMain.state.collectAsState().value.fcmAlertList
 
     TabletContentWrapBtn(
         onClick = {
@@ -1614,16 +1704,34 @@ fun ContentsPlatformJoaraPremiumNovel() {
         }
     }
 
+    Spacer(modifier = Modifier.size(16.dp))
+
+    TabletContentWrap {
+        Spacer(modifier = Modifier.size(8.dp))
+
+        fcmAlertList.forEachIndexed { index, item ->
+            ItemTabletFCMList(
+                item = item,
+                isLast = fcmAlertList.size - 1 == index
+            )
+        }
+
+        Spacer(modifier = Modifier.size(8.dp))
+    }
+
     Spacer(modifier = Modifier.size(60.dp))
 }
 
 @Composable
-fun ContentsPlatformJoaraNoblessNovel() {
+fun ContentsPlatformJoaraNoblessNovel(viewModelMain : ViewModelMain) {
 
     val context = LocalContext.current
     getDataStoreStatus(context = context, update = {})
     val workManager = WorkManager.getInstance(context)
     val dataStore = DataStoreManager(context)
+
+    viewModelMain.getFCMList(child = "ALERT", activity = "JOARA_NOBLESS NOVEL")
+    val fcmAlertList = viewModelMain.state.collectAsState().value.fcmAlertList
 
     TabletContentWrapBtn(
         onClick = {
@@ -1687,6 +1795,21 @@ fun ContentsPlatformJoaraNoblessNovel() {
                 isLast = getJoaraNoblessNovelArray(context).size - 1 == index
             )
         }
+    }
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    TabletContentWrap {
+        Spacer(modifier = Modifier.size(8.dp))
+
+        fcmAlertList.forEachIndexed { index, item ->
+            ItemTabletFCMList(
+                item = item,
+                isLast = fcmAlertList.size - 1 == index
+            )
+        }
+
+        Spacer(modifier = Modifier.size(8.dp))
     }
 
     Spacer(modifier = Modifier.size(60.dp))

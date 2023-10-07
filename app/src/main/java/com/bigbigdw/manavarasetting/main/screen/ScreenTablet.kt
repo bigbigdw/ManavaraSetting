@@ -101,14 +101,8 @@ fun ScreenTablet(
                         setDetailType = setDetailType,
                     )
                 }
-                "베스트 최신화 현황" -> {
-                    ContentsFCMList(viewModelMain = viewModelMain, child = "BEST")
-                }
-                "JSON 관리" -> {
-                    ContentsJson(viewModelMain = viewModelMain)
-                }
-                "JSON 투데이 베스트 현황" -> {
-                    ContentsBestJsonList(
+                "웹툰 JSON 투데이" -> {
+                    ContentsBestJsonListComic(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         type = "JSON 투데이 베스트",
@@ -117,8 +111,18 @@ fun ScreenTablet(
                         setDetailType = setDetailType,
                     )
                 }
-                "JSON 주간 베스트 현황" -> {
-                    ContentsBestJsonList(
+                "웹소설 JSON 투데이" -> {
+                    ContentsBestJsonListNovel(
+                        setDetailPage = setDetailPage,
+                        setDetailMenu = setDetailMenu,
+                        type = "JSON 투데이 베스트",
+                        setDetailPlatform = setDetailPlatform,
+                        setDetailGenre = setDetailGenre,
+                        setDetailType = setDetailType,
+                    )
+                }
+                "웹소설 JSON 주간" -> {
+                    ContentsBestJsonListNovel(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         type = "JSON 주간 베스트",
@@ -127,8 +131,18 @@ fun ScreenTablet(
                         setDetailType = setDetailType,
                     )
                 }
-                "JSON 월간 베스트 현황" -> {
-                    ContentsBestJsonList(
+                "웹툰 JSON 주간" -> {
+                    ContentsBestJsonListComic(
+                        setDetailPage = setDetailPage,
+                        setDetailMenu = setDetailMenu,
+                        type = "JSON 주간 베스트",
+                        setDetailPlatform = setDetailPlatform,
+                        setDetailGenre = setDetailGenre,
+                        setDetailType = setDetailType,
+                    )
+                }
+                "웹소설 JSON 월간" -> {
+                    ContentsBestJsonListNovel(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         type = "JSON 월간 베스트",
@@ -137,19 +151,18 @@ fun ScreenTablet(
                         setDetailType = setDetailType,
                     )
                 }
-                "JSON 주간 현황" -> {
-                    ContentsBestJsonList(
+                "웹툰 JSON 월간" -> {
+                    ContentsBestJsonListComic(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
-                        type = "주간",
+                        type = "JSON 월간 베스트",
                         setDetailPlatform = setDetailPlatform,
                         setDetailGenre = setDetailGenre,
                         setDetailType = setDetailType,
                     )
                 }
-
-                "JSON 주간 트로피 현황" -> {
-                    ContentsBestJsonList(
+                "웹소설 JSON 주간 트로피" -> {
+                    ContentsBestJsonListNovel(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         type = "JSON 주간 트로피",
@@ -158,8 +171,18 @@ fun ScreenTablet(
                         setDetailType = setDetailType,
                     )
                 }
-                "JSON 월간 트로피 현황" -> {
-                    ContentsBestJsonList(
+                "웹툰 JSON 주간 트로피" -> {
+                    ContentsBestJsonListNovel(
+                        setDetailPage = setDetailPage,
+                        setDetailMenu = setDetailMenu,
+                        type = "JSON 주간 트로피",
+                        setDetailPlatform = setDetailPlatform,
+                        setDetailGenre = setDetailGenre,
+                        setDetailType = setDetailType,
+                    )
+                }
+                "웹소설 JSON 월간 트로피" -> {
+                    ContentsBestJsonListNovel(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         type = "JSON 월간 트로피",
@@ -168,14 +191,18 @@ fun ScreenTablet(
                         setDetailType = setDetailType,
                     )
                 }
-                "JSON 최신화 현황" -> {
-                    ContentsFCMList(viewModelMain = viewModelMain, child = "JSON")
+                "웹툰 JSON 월간 트로피" -> {
+                    ContentsBestJsonListNovel(
+                        setDetailPage = setDetailPage,
+                        setDetailMenu = setDetailMenu,
+                        type = "JSON 월간 트로피",
+                        setDetailPlatform = setDetailPlatform,
+                        setDetailGenre = setDetailGenre,
+                        setDetailType = setDetailType,
+                    )
                 }
-                "트로피 정산 관리" -> {
-                    ContentsTrophy(viewModelMain = viewModelMain)
-                }
-                "트로피 주간 토탈 리스트" -> {
-                    ContentsBestJsonList(
+                "웹소설 트로피 주간 토탈" -> {
+                    ContentsBestJsonListNovel(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         type = "트로피 주간",
@@ -184,8 +211,18 @@ fun ScreenTablet(
                         setDetailType = setDetailType,
                     )
                 }
-                "트로피 월간 토탈 리스트" -> {
-                    ContentsBestJsonList(
+                "웹툰 트로피 주간 토탈" -> {
+                    ContentsBestJsonListComic(
+                        setDetailPage = setDetailPage,
+                        setDetailMenu = setDetailMenu,
+                        type = "트로피 주간",
+                        setDetailPlatform = setDetailPlatform,
+                        setDetailGenre = setDetailGenre,
+                        setDetailType = setDetailType,
+                    )
+                }
+                "웹소설 트로피 월간 토탈" -> {
+                    ContentsBestJsonListNovel(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         type = "트로피 월간",
@@ -194,23 +231,30 @@ fun ScreenTablet(
                         setDetailType = setDetailType,
                     )
                 }
-                "트로피 최신화 현황" -> {
-                    ContentsFCMList(viewModelMain = viewModelMain, child = "TROPHY")
+                "웹툰 트로피 월간 토탈" -> {
+                    ContentsBestJsonListComic(
+                        setDetailPage = setDetailPage,
+                        setDetailMenu = setDetailMenu,
+                        type = "트로피 월간",
+                        setDetailPlatform = setDetailPlatform,
+                        setDetailGenre = setDetailGenre,
+                        setDetailType = setDetailType,
+                    )
                 }
                 "네이버 시리즈 웹툰" -> {
-                    ContentsPlatformNaverSeriesComic()
+                    ContentsPlatformNaverSeriesComic(viewModelMain = viewModelMain)
                 }
                 "네이버 시리즈 웹소설" -> {
-                    ContentsPlatformNaverSeriesNovel()
+                    ContentsPlatformNaverSeriesNovel(viewModelMain = viewModelMain)
                 }
                 "조아라 웹소설" -> {
-                    ContentsPlatformJoaraNovel()
+                    ContentsPlatformJoaraNovel(viewModelMain = viewModelMain)
                 }
                 "조아라 노블레스 웹소설" -> {
-                    ContentsPlatformJoaraNoblessNovel()
+                    ContentsPlatformJoaraNoblessNovel(viewModelMain = viewModelMain)
                 }
                 "조아라 프리미엄 웹소설" -> {
-                    ContentsPlatformJoaraPremiumNovel()
+                    ContentsPlatformJoaraPremiumNovel(viewModelMain = viewModelMain)
                 }
                 "위험 옵션" -> {
                     ContentsDangerOption(viewModelMain = viewModelMain)

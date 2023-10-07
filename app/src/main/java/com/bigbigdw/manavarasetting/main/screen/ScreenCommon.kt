@@ -555,8 +555,7 @@ fun ItemTabletBestList(item : ItemBookInfo, isLast: Boolean){
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-//                        text = spannableString(textFront = "헌재 스코어 : ", color = color000000, textEnd = item.current.toString()),
-                        text = "",
+                        text = spannableString(textFront = "헌재 스코어 : ", color = color000000, textEnd = item.number.toString()),
                         color = color8E8E8E,
                         fontSize = 16.sp,
                     )
@@ -574,41 +573,89 @@ fun ItemTabletBestList(item : ItemBookInfo, isLast: Boolean){
                     )
                 }
 
-//                Row(
-//                    modifier = Modifier.fillMaxWidth(),
-//                    horizontalArrangement = Arrangement.Start,
-//                    verticalAlignment = Alignment.CenterVertically
-//                ) {
-//                    Text(
-//                        text = spannableString(textFront = "작품 정보1 : ", color = color000000, textEnd = item.info1),
-//                        color = color8E8E8E,
-//                        fontSize = 16.sp,
-//                    )
-//                }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = spannableString(textFront = "조회 수 : ", color = color000000, textEnd = item.cntPageRead),
+                        color = color8E8E8E,
+                        fontSize = 16.sp,
+                    )
+                }
 
-//                Row(
-//                    modifier = Modifier.fillMaxWidth(),
-//                    horizontalArrangement = Arrangement.Start,
-//                    verticalAlignment = Alignment.CenterVertically
-//                ) {
-//                    Text(
-//                        text = spannableString(textFront = "작품 정보2 : ", color = color000000, textEnd = item.info2),
-//                        color = color8E8E8E,
-//                        fontSize = 16.sp,
-//                    )
-//                }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = spannableString(textFront = "선호작 수 : ", color = color000000, textEnd = item.cntFavorite),
+                        color = color8E8E8E,
+                        fontSize = 16.sp,
+                    )
+                }
 
-//                Row(
-//                    modifier = Modifier.fillMaxWidth(),
-//                    horizontalArrangement = Arrangement.Start,
-//                    verticalAlignment = Alignment.CenterVertically
-//                ) {
-//                    Text(
-//                        text = spannableString(textFront = "작품 정보3 : ", color = color000000, textEnd = item.info3),
-//                        color = color8E8E8E,
-//                        fontSize = 16.sp,
-//                    )
-//                }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = spannableString(textFront = "추천 수 : ", color = color000000, textEnd = item.cntRecom),
+                        color = color8E8E8E,
+                        fontSize = 16.sp,
+                    )
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = spannableString(textFront = "댓글 수 : ", color = color000000, textEnd = item.cntTotalComment),
+                        color = color8E8E8E,
+                        fontSize = 16.sp,
+                    )
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = spannableString(textFront = "회차 수 : ", color = color000000, textEnd = item.cntChapter),
+                        color = color8E8E8E,
+                        fontSize = 16.sp,
+                    )
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = spannableString(textFront = "스토리 : ", color = color000000, textEnd = item.intro),
+                        color = color8E8E8E,
+                        fontSize = 16.sp,
+                    )
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = spannableString(textFront = "점수 : ", color = color000000, textEnd = item.point.toString()),
+                        color = color8E8E8E,
+                        fontSize = 16.sp,
+                    )
+                }
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),

@@ -25,8 +25,11 @@ import com.bigbigdw.manavarasetting.main.model.MainSettingLine
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.util.FCM
+import com.bigbigdw.manavarasetting.util.JoaraGenre
 import com.bigbigdw.manavarasetting.util.NaverSeriesComicGenre
 import com.bigbigdw.manavarasetting.util.NaverSeriesNovelGenre
+import com.bigbigdw.manavarasetting.util.getJoaraGenre
+import com.bigbigdw.manavarasetting.util.getJoaraGenreKor
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenreKor
 import com.bigbigdw.manavarasetting.util.uploadJsonArrayToStorageDay
@@ -114,7 +117,7 @@ fun ContentsJson(viewModelMain: ViewModelMain) {
 }
 
 @Composable
-fun ContentsBestJsonList(
+fun ContentsBestJsonListComic(
     setDetailPage: (Boolean) -> Unit,
     setDetailMenu: (String) -> Unit,
     setDetailPlatform: (String) -> Unit,
@@ -129,7 +132,44 @@ fun ContentsBestJsonList(
         itemList.add(MainSettingLine(title = "$type JSON ${getNaverSeriesGenreKor(j)}", value = getNaverSeriesGenre(j)))
     }
 
-    ItemTabletTitle(str = "네이버 시리즈 웹툰")
+    ItemTabletTitle(str = "네이버 시리즈 소설", isTopPadding = false)
+
+    TabletContentWrap {
+        NaverSeriesNovelGenre.forEachIndexed { index, _ ->
+            ItemMainTabletContent(
+                title = "네이버 시리즈 ${getNaverSeriesGenreKor(NaverSeriesNovelGenre[index])}",
+                isLast = NaverSeriesNovelGenre.size - 1 == index,
+                onClick = {
+                    setDetailPage(true)
+                    setDetailMenu("NAVER_SERIES $type ${getNaverSeriesGenre(NaverSeriesNovelGenre[index])}")
+                    setDetailPlatform("NAVER_SERIES")
+                    setDetailGenre(getNaverSeriesGenre(NaverSeriesNovelGenre[index]))
+                    setDetailType("NOVEL")
+                }
+            )
+        }
+    }
+
+    Spacer(modifier = Modifier.size(60.dp))
+}
+
+@Composable
+fun ContentsBestJsonListNovel(
+    setDetailPage: (Boolean) -> Unit,
+    setDetailMenu: (String) -> Unit,
+    setDetailPlatform: (String) -> Unit,
+    setDetailGenre: (String) -> Unit,
+    setDetailType: (String) -> Unit,
+    type : String,
+) {
+
+    val itemList = ArrayList<MainSettingLine>()
+
+    for (j in NaverSeriesComicGenre) {
+        itemList.add(MainSettingLine(title = "$type JSON ${getNaverSeriesGenreKor(j)}", value = getNaverSeriesGenre(j)))
+    }
+
+    ItemTabletTitle(str = "네이버 시리즈 웹툰", isTopPadding = false)
 
     TabletContentWrap {
         NaverSeriesComicGenre.forEachIndexed { index, _ ->
@@ -147,19 +187,40 @@ fun ContentsBestJsonList(
         }
     }
 
+    Spacer(modifier = Modifier.size(16.dp))
 
-    ItemTabletTitle(str = "네이버 시리즈 소설")
+    ItemTabletTitle(str = "조아라 노블레스 소설", isTopPadding = false)
 
     TabletContentWrap {
-        NaverSeriesNovelGenre.forEachIndexed { index, _ ->
+        JoaraGenre.forEachIndexed { index, _ ->
             ItemMainTabletContent(
-                title = "네이버 시리즈 ${getNaverSeriesGenreKor(NaverSeriesNovelGenre[index])}",
-                isLast = NaverSeriesNovelGenre.size - 1 == index,
+                title = "조아라 노블레스 ${getJoaraGenreKor(JoaraGenre[index])}",
+                isLast = JoaraGenre.size - 1 == index,
                 onClick = {
                     setDetailPage(true)
-                    setDetailMenu("NAVER_SERIES $type ${getNaverSeriesGenre(NaverSeriesNovelGenre[index])}")
-                    setDetailPlatform("NAVER_SERIES")
-                    setDetailGenre(getNaverSeriesGenre(NaverSeriesNovelGenre[index]))
+                    setDetailMenu("JOARA_NOBLESS 베스트 리스트 ${getJoaraGenre(JoaraGenre[index])}")
+                    setDetailPlatform("JOARA_NOBLESS")
+                    setDetailGenre(getJoaraGenre(JoaraGenre[index]))
+                    setDetailType("NOVEL")
+                }
+            )
+        }
+    }
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    ItemTabletTitle(str = "조아라 프리미엄 소설", isTopPadding = false)
+
+    TabletContentWrap {
+        JoaraGenre.forEachIndexed { index, _ ->
+            ItemMainTabletContent(
+                title = "조아라 프리미엄 ${getJoaraGenreKor(JoaraGenre[index])}",
+                isLast = JoaraGenre.size - 1 == index,
+                onClick = {
+                    setDetailPage(true)
+                    setDetailMenu("JOARA_PREMIUM 베스트 리스트 ${getJoaraGenre(JoaraGenre[index])}")
+                    setDetailPlatform("JOARA_PREMIUM")
+                    setDetailGenre(getJoaraGenre(JoaraGenre[index]))
                     setDetailType("NOVEL")
                 }
             )

@@ -398,7 +398,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
         postFCM(
             data = workerName,
             time = "${year}.${month}.${day} ${hour}:${min}",
-            activity = inputData.getString(WORKER) ?: "",
+            activity = "${inputData.getString(PLATFORM)} ${inputData.getString(TYPE)}",
         )
 
         return Result.success()

@@ -133,8 +133,6 @@ fun ScreenSettingMobile(
 
         MainHeader(image = R.drawable.ic_launcher, title = "세팅바라 현황")
 
-        ContentsDangerLabs(viewModelMain = viewModelMain)
-
         ContentsSetting(
             viewModelMain = viewModelMain
         )

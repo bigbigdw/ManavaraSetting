@@ -23,8 +23,11 @@ import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
+import com.bigbigdw.manavarasetting.util.JoaraGenre
 import com.bigbigdw.manavarasetting.util.NaverSeriesComicGenre
 import com.bigbigdw.manavarasetting.util.NaverSeriesNovelGenre
+import com.bigbigdw.manavarasetting.util.getJoaraGenre
+import com.bigbigdw.manavarasetting.util.getJoaraGenreKor
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenre
 import com.bigbigdw.manavarasetting.util.getNaverSeriesGenreKor
 
@@ -85,6 +88,67 @@ fun ContentsBestListNovel(
             )
         }
     }
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    ItemTabletTitle(str = "조아라 소설", isTopPadding = false)
+
+    TabletContentWrap {
+        JoaraGenre.forEachIndexed { index, _ ->
+            ItemMainTabletContent(
+                title = "조아라 ${getJoaraGenreKor(JoaraGenre[index])}",
+                isLast = JoaraGenre.size - 1 == index,
+                onClick = {
+                    setDetailPage(true)
+                    setDetailMenu("JOARA 베스트 리스트 ${getJoaraGenre(JoaraGenre[index])}")
+                    setDetailPlatform("JOARA")
+                    setDetailGenre(getJoaraGenre(JoaraGenre[index]))
+                    setDetailType("NOVEL")
+                }
+            )
+        }
+    }
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    ItemTabletTitle(str = "조아라 노블레스 소설", isTopPadding = false)
+
+    TabletContentWrap {
+        JoaraGenre.forEachIndexed { index, _ ->
+            ItemMainTabletContent(
+                title = "조아라 노블레스 ${getJoaraGenreKor(JoaraGenre[index])}",
+                isLast = JoaraGenre.size - 1 == index,
+                onClick = {
+                    setDetailPage(true)
+                    setDetailMenu("JOARA_NOBLESS 베스트 리스트 ${getJoaraGenre(JoaraGenre[index])}")
+                    setDetailPlatform("JOARA_NOBLESS")
+                    setDetailGenre(getJoaraGenre(JoaraGenre[index]))
+                    setDetailType("NOVEL")
+                }
+            )
+        }
+    }
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    ItemTabletTitle(str = "조아라 프리미엄 소설", isTopPadding = false)
+
+    TabletContentWrap {
+        JoaraGenre.forEachIndexed { index, _ ->
+            ItemMainTabletContent(
+                title = "조아라 프리미엄 ${getJoaraGenreKor(JoaraGenre[index])}",
+                isLast = JoaraGenre.size - 1 == index,
+                onClick = {
+                    setDetailPage(true)
+                    setDetailMenu("JOARA_PREMIUM 베스트 리스트 ${getJoaraGenre(JoaraGenre[index])}")
+                    setDetailPlatform("JOARA_PREMIUM")
+                    setDetailGenre(getJoaraGenre(JoaraGenre[index]))
+                    setDetailType("NOVEL")
+                }
+            )
+        }
+    }
+
     Spacer(modifier = Modifier.size(60.dp))
 }
 

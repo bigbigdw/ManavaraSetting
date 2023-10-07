@@ -189,7 +189,7 @@ class ViewModelMain @Inject constructor() : ViewModel() {
         })
     }
 
-    fun getFCMList(child: String){
+    fun getFCMList(child: String, activity : String = ""){
 
         val mRootRef = FirebaseDatabase.getInstance().reference.child("MESSAGE").child(child)
 
@@ -202,8 +202,16 @@ class ViewModelMain @Inject constructor() : ViewModel() {
 
                     for(item in dataSnapshot.children){
                         val fcm: FCMAlert? = dataSnapshot.child(item.key ?: "").getValue(FCMAlert::class.java)
+
                         if (fcm != null) {
-                            fcmlist.add(fcm)
+
+                            if(activity.isNullOrEmpty()){
+                                fcmlist.add(fcm)
+                            } else {
+                                if(fcm.activity == activity){
+                                    fcmlist.add(fcm)
+                                }
+                            }
                         }
                     }
 
@@ -216,6 +224,8 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                         if(child == "ALERT"){
                             events.send(EventMain.SetFcmAlertList(fcmAlertList = fcmlist))
                         } else if (child == "NOTICE"){
+                            events.send(EventMain.SetFcmNoticeList(fcmNoticeList = fcmlist))
+                        } else {
                             events.send(EventMain.SetFcmNoticeList(fcmNoticeList = fcmlist))
                         }
                     }
