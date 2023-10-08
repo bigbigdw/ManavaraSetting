@@ -30,7 +30,6 @@ import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
-import java.util.concurrent.TimeUnit
 
 @Composable
 fun ScreenTablet(
@@ -39,7 +38,6 @@ fun ScreenTablet(
     setDetailPage: (Boolean) -> Unit,
     setDetailMenu: (String) -> Unit,
     setDetailPlatform: (String) -> Unit,
-    setDetailGenre: (String) -> Unit,
     setDetailType: (String) -> Unit
 ) {
 
@@ -70,9 +68,7 @@ fun ScreenTablet(
         item {
             when (title) {
                 "세팅바라 현황" -> {
-                    ContentsSetting(
-                        viewModelMain = viewModelMain
-                    )
+                    ContentsSetting()
                 }
                 "FCM 관리" -> {
                     ContentsFCM()
@@ -88,7 +84,6 @@ fun ScreenTablet(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         setDetailPlatform = setDetailPlatform,
-                        setDetailGenre = setDetailGenre,
                         setDetailType = setDetailType,
                     )
                 }
@@ -97,7 +92,6 @@ fun ScreenTablet(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         setDetailPlatform = setDetailPlatform,
-                        setDetailGenre = setDetailGenre,
                         setDetailType = setDetailType,
                     )
                 }
@@ -105,10 +99,9 @@ fun ScreenTablet(
                     ContentsBestJsonListComic(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
-                        type = "JSON 투데이 베스트",
                         setDetailPlatform = setDetailPlatform,
-                        setDetailGenre = setDetailGenre,
                         setDetailType = setDetailType,
+                        type = "JSON 투데이 베스트",
                     )
                 }
                 "웹소설 JSON 투데이" -> {
@@ -117,7 +110,6 @@ fun ScreenTablet(
                         setDetailMenu = setDetailMenu,
                         type = "JSON 투데이 베스트",
                         setDetailPlatform = setDetailPlatform,
-                        setDetailGenre = setDetailGenre,
                         setDetailType = setDetailType,
                     )
                 }
@@ -127,7 +119,6 @@ fun ScreenTablet(
                         setDetailMenu = setDetailMenu,
                         type = "JSON 주간 베스트",
                         setDetailPlatform = setDetailPlatform,
-                        setDetailGenre = setDetailGenre,
                         setDetailType = setDetailType,
                     )
                 }
@@ -135,10 +126,9 @@ fun ScreenTablet(
                     ContentsBestJsonListComic(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
-                        type = "JSON 주간 베스트",
                         setDetailPlatform = setDetailPlatform,
-                        setDetailGenre = setDetailGenre,
                         setDetailType = setDetailType,
+                        type = "JSON 주간 베스트",
                     )
                 }
                 "웹소설 JSON 월간" -> {
@@ -147,7 +137,6 @@ fun ScreenTablet(
                         setDetailMenu = setDetailMenu,
                         type = "JSON 월간 베스트",
                         setDetailPlatform = setDetailPlatform,
-                        setDetailGenre = setDetailGenre,
                         setDetailType = setDetailType,
                     )
                 }
@@ -155,10 +144,9 @@ fun ScreenTablet(
                     ContentsBestJsonListComic(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
-                        type = "JSON 월간 베스트",
                         setDetailPlatform = setDetailPlatform,
-                        setDetailGenre = setDetailGenre,
                         setDetailType = setDetailType,
+                        type = "JSON 월간 베스트",
                     )
                 }
                 "웹소설 JSON 주간 트로피" -> {
@@ -167,7 +155,6 @@ fun ScreenTablet(
                         setDetailMenu = setDetailMenu,
                         type = "JSON 주간 트로피",
                         setDetailPlatform = setDetailPlatform,
-                        setDetailGenre = setDetailGenre,
                         setDetailType = setDetailType,
                     )
                 }
@@ -177,7 +164,6 @@ fun ScreenTablet(
                         setDetailMenu = setDetailMenu,
                         type = "JSON 주간 트로피",
                         setDetailPlatform = setDetailPlatform,
-                        setDetailGenre = setDetailGenre,
                         setDetailType = setDetailType,
                     )
                 }
@@ -187,7 +173,6 @@ fun ScreenTablet(
                         setDetailMenu = setDetailMenu,
                         type = "JSON 월간 트로피",
                         setDetailPlatform = setDetailPlatform,
-                        setDetailGenre = setDetailGenre,
                         setDetailType = setDetailType,
                     )
                 }
@@ -197,7 +182,6 @@ fun ScreenTablet(
                         setDetailMenu = setDetailMenu,
                         type = "JSON 월간 트로피",
                         setDetailPlatform = setDetailPlatform,
-                        setDetailGenre = setDetailGenre,
                         setDetailType = setDetailType,
                     )
                 }
@@ -207,7 +191,6 @@ fun ScreenTablet(
                         setDetailMenu = setDetailMenu,
                         type = "트로피 주간",
                         setDetailPlatform = setDetailPlatform,
-                        setDetailGenre = setDetailGenre,
                         setDetailType = setDetailType,
                     )
                 }
@@ -215,10 +198,9 @@ fun ScreenTablet(
                     ContentsBestJsonListComic(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
-                        type = "트로피 주간",
                         setDetailPlatform = setDetailPlatform,
-                        setDetailGenre = setDetailGenre,
                         setDetailType = setDetailType,
+                        type = "트로피 주간",
                     )
                 }
                 "웹소설 트로피 월간 토탈" -> {
@@ -227,7 +209,6 @@ fun ScreenTablet(
                         setDetailMenu = setDetailMenu,
                         type = "트로피 월간",
                         setDetailPlatform = setDetailPlatform,
-                        setDetailGenre = setDetailGenre,
                         setDetailType = setDetailType,
                     )
                 }
@@ -235,10 +216,9 @@ fun ScreenTablet(
                     ContentsBestJsonListComic(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
-                        type = "트로피 월간",
                         setDetailPlatform = setDetailPlatform,
-                        setDetailGenre = setDetailGenre,
                         setDetailType = setDetailType,
+                        type = "트로피 월간",
                     )
                 }
                 "네이버 시리즈 웹툰" -> {
@@ -277,9 +257,7 @@ fun ScreenTablet(
 }
 
 @Composable
-fun ContentsSetting(
-    viewModelMain: ViewModelMain
-) {
+fun ContentsSetting() {
 
     val context = LocalContext.current
     val workManager = WorkManager.getInstance(context)
@@ -288,9 +266,8 @@ fun ContentsSetting(
         onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
-                repeatInterval = 15,
+                delayMills = 3,
                 tag = "MINING",
-                timeMill = TimeUnit.MINUTES,
                 platform = "NAVER_SERIES",
                 type = "COMIC"
             )
@@ -324,9 +301,8 @@ fun ContentsSetting(
         onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
-                repeatInterval = 15,
+                delayMills = 6,
                 tag = "MINING",
-                timeMill = TimeUnit.MINUTES,
                 platform = "NAVER_SERIES",
                 type = "NOVEL"
             )
@@ -361,9 +337,8 @@ fun ContentsSetting(
         onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
-                repeatInterval = 15,
+                delayMills = 9,
                 tag = "MINING",
-                timeMill = TimeUnit.MINUTES,
                 platform = "JOARA",
                 type = "NOVEL"
             )
@@ -398,9 +373,8 @@ fun ContentsSetting(
         onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
-                repeatInterval = 15,
+                delayMills = 12,
                 tag = "MINING",
-                timeMill = TimeUnit.MINUTES,
                 platform = "JOARA_NOBLESS",
                 type = "NOVEL"
             )
@@ -435,9 +409,8 @@ fun ContentsSetting(
         onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
-                repeatInterval = 15,
+                delayMills = 15,
                 tag = "MINING",
-                timeMill = TimeUnit.MINUTES,
                 platform = "JOARA_PREMIUM",
                 type = "NOVEL"
             )
@@ -472,9 +445,8 @@ fun ContentsSetting(
         onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
-                repeatInterval = 15,
+                delayMills = 18,
                 tag = "MINING",
-                timeMill = TimeUnit.MINUTES,
                 platform = "NAVER_CHALLENGE",
                 type = "NOVEL"
             )

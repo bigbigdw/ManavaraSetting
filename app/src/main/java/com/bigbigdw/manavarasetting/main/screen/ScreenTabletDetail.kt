@@ -1,10 +1,7 @@
 package com.bigbigdw.manavarasetting.main.screen
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -26,7 +22,6 @@ import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
-import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.util.WeekKor
 
 @Composable
@@ -35,7 +30,6 @@ fun ScreenTabletDetail(
     getDetailMenu: String,
     viewModelMain: ViewModelMain,
     getDetailPlatform: String,
-    getDetailGenre: String,
     getDetailType: String,
 ) {
 
@@ -68,7 +62,6 @@ fun ScreenTabletDetail(
                     viewModelMain = viewModelMain,
                     type = "BEST",
                     getDetailPlatform = getDetailPlatform,
-                    getDetailGenre = getDetailGenre,
                     getDetailType = getDetailType,
                 )
             } else if (getDetailMenu.contains("JSON 투데이 베스트")) {
@@ -76,7 +69,6 @@ fun ScreenTabletDetail(
                     viewModelMain = viewModelMain,
                     type = "JSON",
                     getDetailPlatform = getDetailPlatform,
-                    getDetailGenre = getDetailGenre,
                     getDetailType = getDetailType,
                 )
             }  else if (getDetailMenu.contains("JSON 주간 베스트")) {
@@ -84,7 +76,6 @@ fun ScreenTabletDetail(
                     viewModelMain = viewModelMain,
                     menu = "주간",
                     getDetailPlatform = getDetailPlatform,
-                    getDetailGenre = getDetailGenre,
                     getDetailType = getDetailType,
                 )
             }  else if (getDetailMenu.contains("JSON 월간 베스트")) {
@@ -92,7 +83,6 @@ fun ScreenTabletDetail(
                     viewModelMain = viewModelMain,
                     menu = "월간",
                     getDetailPlatform = getDetailPlatform,
-                    getDetailGenre = getDetailGenre,
                     getDetailType = getDetailType,
                 )
             } else if (getDetailMenu.contains("JSON 주간 트로피")) {
@@ -100,7 +90,6 @@ fun ScreenTabletDetail(
                     viewModelMain = viewModelMain,
                     menu = "주간",
                     getDetailPlatform = getDetailPlatform,
-                    getDetailGenre = getDetailGenre,
                     getDetailType = getDetailType,
                 )
             } else if (getDetailMenu.contains("JSON 월간 트로피")) {
@@ -108,7 +97,6 @@ fun ScreenTabletDetail(
                     viewModelMain = viewModelMain,
                     menu = "월간",
                     getDetailPlatform = getDetailPlatform,
-                    getDetailGenre = getDetailGenre,
                     getDetailType = getDetailType,
                 )
             } else if (getDetailMenu.contains("트로피 주간")) {
@@ -116,7 +104,6 @@ fun ScreenTabletDetail(
                     viewModelMain = viewModelMain,
                     menu = "주간",
                     getDetailPlatform = getDetailPlatform,
-                    getDetailGenre = getDetailGenre,
                     getDetailType = getDetailType,
                 )
             } else if (getDetailMenu.contains("트로피 월간")) {
@@ -124,7 +111,6 @@ fun ScreenTabletDetail(
                     viewModelMain = viewModelMain,
                     menu = "월간",
                     getDetailPlatform = getDetailPlatform,
-                    getDetailGenre = getDetailGenre,
                     getDetailType = getDetailType,
                 )
             }
@@ -137,14 +123,13 @@ fun ContentsBestListDetail(
     viewModelMain: ViewModelMain,
     type: String,
     getDetailPlatform: String,
-    getDetailGenre: String,
     getDetailType: String
 ) {
 
     if (type == "BEST") {
-        viewModelMain.getBestList(platform = getDetailPlatform, child = getDetailGenre, type = getDetailType)
+        viewModelMain.getBestList(platform = getDetailPlatform, type = getDetailType)
     } else {
-        viewModelMain.getBestJsonList(platform = getDetailPlatform, genre = getDetailGenre, type = getDetailType)
+        viewModelMain.getBestJsonList(platform = getDetailPlatform, type = getDetailType)
     }
 
     val bestList: ArrayList<ItemBookInfo> = viewModelMain.state.collectAsState().value.setBestBookList
@@ -172,11 +157,10 @@ fun ContentsBestListDetailWeek(
     viewModelMain: ViewModelMain,
     menu: String,
     getDetailPlatform: String,
-    getDetailGenre: String,
     getDetailType: String
 ) {
 
-    viewModelMain.getBestJsonWeekList(platform = getDetailPlatform, genre = getDetailGenre, menu = menu, type = getDetailType)
+    viewModelMain.getBestJsonWeekList(platform = getDetailPlatform, menu = menu, type = getDetailType)
 
     val bestWeekList: ArrayList<ArrayList<ItemBookInfo>> =
         viewModelMain.state.collectAsState().value.bestListWeek
@@ -226,11 +210,10 @@ fun ContentsBestListJsonTrophy(
     viewModelMain: ViewModelMain,
     menu: String,
     getDetailPlatform: String,
-    getDetailGenre: String,
     getDetailType: String
 ) {
 
-    viewModelMain.getBestJsonTrophyList(platform = getDetailPlatform, menu = menu, genre = getDetailGenre, type = getDetailType)
+    viewModelMain.getBestJsonTrophyList(platform = getDetailPlatform, menu = menu, type = getDetailType)
 
     val bestWeekList: ArrayList<ItemBestInfo> = viewModelMain.state.collectAsState().value.trophyList
 
@@ -257,11 +240,10 @@ fun ContentsBestListDetailTrophy(
     viewModelMain: ViewModelMain,
     menu: String,
     getDetailPlatform: String,
-    getDetailGenre: String,
     getDetailType: String
 ) {
 
-    viewModelMain.getBestTrophyList(platform = getDetailPlatform, menu = menu, genre = getDetailGenre, type = getDetailType)
+    viewModelMain.getBestTrophyList(platform = getDetailPlatform, menu = menu, type = getDetailType)
 
     val bestWeekList: ArrayList<ItemBestInfo> = viewModelMain.state.collectAsState().value.trophyList
 

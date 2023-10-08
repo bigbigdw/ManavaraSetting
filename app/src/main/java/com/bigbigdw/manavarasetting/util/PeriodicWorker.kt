@@ -13,12 +13,17 @@ import com.bigbigdw.manavarasetting.firebase.FirebaseWorkManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 import java.util.concurrent.TimeUnit
 
 object PeriodicWorker {
-    fun doWorker(workManager: WorkManager, repeatInterval: Long, tag: String, timeMill: TimeUnit, platform : String, type: String){
+    fun doWorker(
+        workManager: WorkManager,
+        delayMills: Long,
+        tag: String,
+        platform: String,
+        type: String
+    ){
 
         val inputData = Data.Builder()
             .putString(FirebaseWorkManager.WORKER, tag)
@@ -28,6 +33,7 @@ object PeriodicWorker {
 
         val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(2, TimeUnit.HOURS)
             .addTag("${tag}_${platform}_${type}")
+            .setInitialDelay(delayMills, TimeUnit.MINUTES)
             .setBackoffCriteria(
                 BackoffPolicy.LINEAR,
                 PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS,

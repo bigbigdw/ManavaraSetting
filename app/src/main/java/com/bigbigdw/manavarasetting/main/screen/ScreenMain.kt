@@ -52,7 +52,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
-import com.bigbigdw.manavarasetting.util.DataStoreManager
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color1E1E20
@@ -89,10 +88,8 @@ import com.bigbigdw.manavarasetting.ui.theme.colorNAVER
 import com.bigbigdw.manavarasetting.ui.theme.colorNOBLESS
 import com.bigbigdw.manavarasetting.ui.theme.colorPREMIUM
 import com.bigbigdw.manavarasetting.util.BestRef
-import com.bigbigdw.manavarasetting.util.ChallengeGenre
 import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.MiningSource
-import com.bigbigdw.manavarasetting.util.getChallengeGenre
 import kotlinx.coroutines.runBlocking
 
 @Composable
@@ -788,31 +785,25 @@ fun ContentsDangerLabs() {
 
     TabletContentWrapBtn(
         onClick = {
-
             runBlocking {
-                for (j in ChallengeGenre) {
-                    if (DBDate.getDayOfWeekAsNumber() == 0) {
-                        BestRef.setBestRef(
-                            platform = "NAVER_CHALLENGE",
-                            genre = j,
-                            type = "NOVEL"
-                        )
-                            .child("TROPHY_MONTH").removeValue()
-                    }
-
-                    if (DBDate.datedd() == "01") {
-                        BestRef.setBestRef(platform = "NAVER_CHALLENGE", genre = j, type = "NOVEL")
-                            .child("TROPHY_MONTH").removeValue()
-                    }
-
-                    MiningSource.mining(
-                        genre = j,
+                if (DBDate.getDayOfWeekAsNumber() == 0) {
+                    BestRef.setBestRef(
                         platform = "NAVER_CHALLENGE",
-                        type = "NOVEL",
-                        genreDir = getChallengeGenre(j),
-                        context = context
+                        type = "NOVEL"
                     )
+                        .child("TROPHY_MONTH").removeValue()
                 }
+
+                if (DBDate.datedd() == "01") {
+                    BestRef.setBestRef(platform = "NAVER_CHALLENGE", type = "NOVEL")
+                        .child("TROPHY_MONTH").removeValue()
+                }
+
+                MiningSource.mining(
+                    platform = "NAVER_CHALLENGE",
+                    type = "NOVEL",
+                    context = context
+                )
             }
         },
         content = {

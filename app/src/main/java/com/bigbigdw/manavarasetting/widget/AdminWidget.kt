@@ -3,7 +3,6 @@ package com.bigbigdw.manavarasetting.widget
 import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.datastore.preferences.core.intPreferencesKey
@@ -31,7 +30,6 @@ import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
 import androidx.glance.layout.size
-import androidx.glance.layout.wrapContentSize
 import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
 
@@ -44,7 +42,6 @@ import com.bigbigdw.manavarasetting.util.getDataStoreStatus
 import com.bigbigdw.manavarasetting.widget.ManavaraSettingWidget.paramWorkerInterval
 import com.bigbigdw.manavarasetting.widget.ManavaraSettingWidget.paramWorkerStatus
 import com.bigbigdw.manavarasetting.widget.ManavaraSettingWidget.paramWorkerTag
-import com.bigbigdw.manavarasetting.widget.ManavaraSettingWidget.paramWorkerTimeMill
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -225,9 +222,8 @@ class WidgetCallback : ActionCallback {
             if (parameters[paramWorkerStatus] == "DO") {
                 PeriodicWorker.doWorker(
                     workManager = workManager,
-                    repeatInterval = parameters[paramWorkerInterval] ?: 0,
+                    delayMills = parameters[paramWorkerInterval] ?: 0,
                     tag = parameters[paramWorkerTag] ?: "",
-                    timeMill = parameters[paramWorkerTimeMill] ?: TimeUnit.HOURS,
                     platform = "NAVER_SERIES",
                     type = "COMIC"
                 )

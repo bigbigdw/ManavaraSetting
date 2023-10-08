@@ -36,14 +36,6 @@ import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.util.DataStoreManager
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import com.bigbigdw.manavarasetting.util.getDataStoreStatus
-import com.bigbigdw.manavarasetting.util.getJoaraNoblessNovelArray
-import com.bigbigdw.manavarasetting.util.getJoaraNovelArray
-import com.bigbigdw.manavarasetting.util.getJoaraPremiumNovelArray
-import com.bigbigdw.manavarasetting.util.getNaverChallengeNovelArray
-import com.bigbigdw.manavarasetting.util.getNaverSeriesComicArray
-import com.bigbigdw.manavarasetting.util.getNaverSeriesNovelArray
-
-import java.util.concurrent.TimeUnit
 
 
 @Composable
@@ -334,9 +326,8 @@ fun ContentsPlatformNaverSeriesComic(viewModelMain: ViewModelMain) {
         onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
-                repeatInterval = 15,
+                delayMills = 15,
                 tag = "MINING",
-                timeMill = TimeUnit.MINUTES,
                 platform = "NAVER_SERIES",
                 type = "COMIC"
             )
@@ -384,16 +375,6 @@ fun ContentsPlatformNaverSeriesComic(viewModelMain: ViewModelMain) {
         }
     )
 
-    TabletContentWrap {
-        getNaverSeriesComicArray(context).forEachIndexed { index, item ->
-            ItemMainTabletContent(
-                title = item.title,
-                value = item.value,
-                isLast = getNaverSeriesComicArray(context).size - 1 == index
-            )
-        }
-    }
-
     Spacer(modifier = Modifier.size(16.dp))
 
     TabletContentWrap {
@@ -427,9 +408,8 @@ fun ContentsPlatformNaverSeriesNovel(viewModelMain: ViewModelMain) {
         onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
-                repeatInterval = 15,
+                delayMills = 15,
                 tag = "MINING",
-                timeMill = TimeUnit.MINUTES,
                 platform = "NAVER_SERIES",
                 type = "NOVEL"
             )
@@ -477,16 +457,6 @@ fun ContentsPlatformNaverSeriesNovel(viewModelMain: ViewModelMain) {
         }
     )
 
-    TabletContentWrap {
-        getNaverSeriesNovelArray(context).forEachIndexed { index, item ->
-            ItemMainTabletContent(
-                title = item.title,
-                value = item.value,
-                isLast = getNaverSeriesNovelArray(context).size - 1 == index
-            )
-        }
-    }
-
     Spacer(modifier = Modifier.size(16.dp))
 
     TabletContentWrap {
@@ -520,9 +490,8 @@ fun ContentsPlatformJoaraNovel(viewModelMain : ViewModelMain) {
         onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
-                repeatInterval = 15,
+                delayMills = 15,
                 tag = "MINING",
-                timeMill = TimeUnit.MINUTES,
                 platform = "JOARA",
                 type = "NOVEL"
             )
@@ -570,16 +539,6 @@ fun ContentsPlatformJoaraNovel(viewModelMain : ViewModelMain) {
         }
     )
 
-    TabletContentWrap {
-        getJoaraNovelArray(context).forEachIndexed { index, item ->
-            ItemMainTabletContent(
-                title = item.title,
-                value = item.value,
-                isLast = getJoaraNovelArray(context).size - 1 == index
-            )
-        }
-    }
-
     Spacer(modifier = Modifier.size(16.dp))
 
     TabletContentWrap {
@@ -613,9 +572,8 @@ fun ContentsPlatformJoaraPremiumNovel(viewModelMain : ViewModelMain) {
         onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
-                repeatInterval = 15,
+                delayMills = 15,
                 tag = "MINING",
-                timeMill = TimeUnit.MINUTES,
                 platform = "JOARA_PREMIUM",
                 type = "NOVEL"
             )
@@ -663,16 +621,6 @@ fun ContentsPlatformJoaraPremiumNovel(viewModelMain : ViewModelMain) {
         }
     )
 
-    TabletContentWrap {
-        getJoaraPremiumNovelArray(context).forEachIndexed { index, item ->
-            ItemMainTabletContent(
-                title = item.title,
-                value = item.value,
-                isLast = getJoaraPremiumNovelArray(context).size - 1 == index
-            )
-        }
-    }
-
     Spacer(modifier = Modifier.size(16.dp))
 
     TabletContentWrap {
@@ -706,9 +654,8 @@ fun ContentsPlatformJoaraNoblessNovel(viewModelMain : ViewModelMain) {
         onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
-                repeatInterval = 15,
+                delayMills = 15,
                 tag = "MINING",
-                timeMill = TimeUnit.MINUTES,
                 platform = "JOARA_NOBLESS",
                 type = "NOVEL"
             )
@@ -756,16 +703,6 @@ fun ContentsPlatformJoaraNoblessNovel(viewModelMain : ViewModelMain) {
         }
     )
 
-    TabletContentWrap {
-        getJoaraNoblessNovelArray(context).forEachIndexed { index, item ->
-            ItemMainTabletContent(
-                title = item.title,
-                value = item.value,
-                isLast = getJoaraNoblessNovelArray(context).size - 1 == index
-            )
-        }
-    }
-
     Spacer(modifier = Modifier.size(16.dp))
 
     TabletContentWrap {
@@ -799,9 +736,8 @@ fun ContentsPlatformChallengeNovel(viewModelMain : ViewModelMain) {
         onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
-                repeatInterval = 15,
+                delayMills = 15,
                 tag = "MINING",
-                timeMill = TimeUnit.MINUTES,
                 platform = "NAVER_CHALLENGE",
                 type = "NOVEL"
             )
@@ -848,16 +784,6 @@ fun ContentsPlatformChallengeNovel(viewModelMain : ViewModelMain) {
             )
         }
     )
-
-    TabletContentWrap {
-        getNaverChallengeNovelArray(context).forEachIndexed { index, item ->
-            ItemMainTabletContent(
-                title = item.title,
-                value = item.value,
-                isLast = getNaverChallengeNovelArray(context).size - 1 == index
-            )
-        }
-    }
 
     Spacer(modifier = Modifier.size(16.dp))
 

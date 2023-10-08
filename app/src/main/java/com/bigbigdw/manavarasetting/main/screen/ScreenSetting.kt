@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,7 +26,6 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.bigbigdw.manavarasetting.R
-import com.bigbigdw.manavarasetting.main.model.MainSettingLine
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.util.getDataStoreStatus
@@ -60,7 +58,6 @@ fun ScreenMainSetting(
                 val (getDetailPage, setDetailPage) = remember { mutableStateOf(false) }
                 val (getDetailMenu, setDetailMenu) = remember { mutableStateOf("") }
                 val (getDetailPlatform, setDetailPlatform) = remember { mutableStateOf("") }
-                val (getDetailGenre, setDetailGenre) = remember { mutableStateOf("") }
                 val (getDetailType, setDetailType) = remember { mutableStateOf("") }
 
                 ScreenTableList(setMenu = setMenu, getMenu = getMenu, onClick = {setDetailPage(false)})
@@ -76,7 +73,6 @@ fun ScreenMainSetting(
                         getDetailMenu = getDetailMenu,
                         viewModelMain = viewModelMain,
                         getDetailPlatform = getDetailPlatform,
-                        getDetailGenre = getDetailGenre,
                         getDetailType = getDetailType,
                     )
                 } else {
@@ -86,7 +82,6 @@ fun ScreenMainSetting(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         setDetailPlatform = setDetailPlatform,
-                        setDetailGenre = setDetailGenre,
                         setDetailType = setDetailType
                     )
                 }
@@ -124,9 +119,7 @@ fun ScreenSettingMobile(
 
         MainHeader(image = R.drawable.ic_launcher, title = "세팅바라 현황")
 
-        ContentsSetting(
-            viewModelMain = viewModelMain
-        )
+        ContentsSetting()
     }
 }
 

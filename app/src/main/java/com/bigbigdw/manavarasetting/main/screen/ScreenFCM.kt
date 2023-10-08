@@ -44,7 +44,6 @@ import com.bigbigdw.manavarasetting.ui.theme.color8E8E8E
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.util.FCM
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
-import java.util.concurrent.TimeUnit
 
 @Composable
 fun ScreenMainFCM() {
@@ -89,9 +88,8 @@ fun ContentsFCM() {
         MainSettingLine(title = "WORKER 시작", onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
-                repeatInterval = 15,
+                delayMills = 15,
                 tag = "TEST",
-                timeMill = TimeUnit.MINUTES,
                 platform = "",
                 type = ""
             )

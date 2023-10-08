@@ -20,7 +20,7 @@ import java.nio.charset.Charset
 
 object MiningSource {
 
-    fun getItemAPI(mContext: Context?): MutableMap<String?, Any> {
+    private fun getItemAPI(mContext: Context?): MutableMap<String?, Any> {
 
         val Param: MutableMap<String?, Any> = java.util.HashMap()
 
@@ -34,83 +34,8 @@ object MiningSource {
 
         return Param
     }
-    fun miningNaverSeriesComic(pageCount: Int, genre: String){
-        Thread {
-            try {
-                val doc: Document = Jsoup.connect("https://series.naver.com/comic/top100List.series?rankingTypeCode=DAILY&categoryCode=${genre}&page=${pageCount}").post()
-                val naverSeries: Elements = doc.select(".comic_top_lst li")
-                val NaverRef: MutableMap<String?, Any> = HashMap()
 
-                for (i in naverSeries.indices) {
-
-                    NaverRef["writerName"] = naverSeries[i].select(".comic_cont .info .ellipsis .author").first()?.text() ?: ""
-                    NaverRef["subject"] = naverSeries.select(".comic_cont h3 a")[i].text()
-                    NaverRef["bookImg"] = naverSeries.select("a img")[i].absUrl("src")
-                    NaverRef["bookCode"] = naverSeries.select(".comic_cont a")[i].absUrl("href").replace("https://series.naver.com/comic/detail.series?productNo=", "")
-                    NaverRef["info1"] = naverSeries.select(".comic_cont .info .score_num")[i].text()
-                    NaverRef["info2"] = naverSeries[i].select(".comic_cont .info .ellipsis")[1]?.text() ?: ""
-                    NaverRef["intro"] = naverSeries.select(".comic_cont .dsc")[i].text()
-                    NaverRef["current"] = (naverSeries.size * (pageCount - 1)) + i
-
-                    NaverRef["date"] = dateMMDD()
-                    NaverRef["type"] = "NAVER_SERIES"
-
-                    miningValue(
-                        ref = NaverRef,
-                        num = (naverSeries.size * (pageCount - 1)) + i,
-                        platform = "NAVER_SERIES",
-                        genre = getNaverSeriesGenre(genre),
-                        type = "COMIC"
-                    )
-                }
-
-                Log.d("MINING_TEST", "miningNaverSeriesComic")
-
-            } catch (exception: Exception) {
-                Log.d("EXCEPTION!!!!", "NAVER TODAY")
-            }
-        }.start()
-
-    }
-
-    fun miningNaverSeriesNovel(pageCount: Int, genre: String){
-
-        Thread {
-            try {
-                val doc: Document = Jsoup.connect("https://series.naver.com/novel/top100List.series?rankingTypeCode=DAILY&categoryCode=${genre}&page=${pageCount}").post()
-                val naverSeries: Elements = doc.select(".comic_top_lst li")
-                val NaverRef: MutableMap<String?, Any> = HashMap()
-
-                for (i in naverSeries.indices) {
-
-                    NaverRef["writerName"] = naverSeries[i].select(".comic_cont .info .ellipsis .author").first()?.text() ?: ""
-                    NaverRef["subject"] = naverSeries.select(".comic_cont h3 a")[i].text()
-                    NaverRef["bookImg"] = naverSeries.select("a img")[i].absUrl("src")
-                    NaverRef["bookCode"] = naverSeries.select(".comic_cont a")[i].absUrl("href").replace("https://series.naver.com/novel/detail.series?productNo=", "")
-                    NaverRef["info1"] = naverSeries.select(".comic_cont .info .score_num")[i].text()
-                    NaverRef["info2"] = naverSeries[i].select(".comic_cont .info .ellipsis")[1]?.text() ?: ""
-                    NaverRef["intro"] = naverSeries.select(".comic_cont .dsc")[i].text()
-                    NaverRef["current"] = (naverSeries.size * (pageCount - 1)) + i
-
-                    NaverRef["date"] = dateMMDD()
-                    NaverRef["type"] = "NAVER_SERIES"
-
-                    miningValue(
-                        ref = NaverRef,
-                        num = (naverSeries.size * (pageCount - 1)) + i,
-                        platform = "NAVER_SERIES",
-                        genre = getNaverSeriesGenre(genre),
-                        type = "NOVEL"
-                    )
-                }
-
-            } catch (exception: Exception) {
-                Log.d("EXCEPTION!!!!", "NAVER TODAY")
-            }
-        }.start()
-    }
-
-    fun mining(genre: String, platform: String, type: String, genreDir: String, context: Context){
+    fun mining(platform: String, type: String, context: Context){
 
         try {
 
@@ -118,7 +43,7 @@ object MiningSource {
             val storageRef = storage.reference
 
             val yesterdayFileRef =
-                storageRef.child("${platform}/${type}/${genreDir}/DAY/${DBDate.dateYesterday()}.json")
+                storageRef.child("${platform}/${type}/DAY/${DBDate.dateYesterday()}.json")
 
             val yesterdayFile = yesterdayFileRef.getBytes(1024 * 1024)
 
@@ -138,7 +63,6 @@ object MiningSource {
                 }
                 runBlocking {
                     doMining(
-                        genre = genre,
                         platform = platform,
                         type = type,
                         yesterDayItemMap = yesterDayItemMap,
@@ -149,7 +73,6 @@ object MiningSource {
             }.addOnFailureListener {
                 runBlocking {
                     doMining(
-                        genre = genre,
                         platform = platform,
                         type = type,
                         yesterDayItemMap = mutableMapOf(),
@@ -164,7 +87,6 @@ object MiningSource {
     }
 
     fun miningNaverSeriesComic(
-        genre: String,
         platform: String,
         type: String,
         yesterDatItemMap: MutableMap<String, ItemBookInfo>,
@@ -177,7 +99,7 @@ object MiningSource {
 
             for(pageCount in 1..5) {
                 val doc: Document =
-                    Jsoup.connect("https://series.naver.com/comic/top100List.series?rankingTypeCode=DAILY&categoryCode=${genre}&page=${pageCount + 1}")
+                    Jsoup.connect("https://series.naver.com/comic/top100List.series?rankingTypeCode=DAILY&categoryCode=ALL&page=${pageCount + 1}")
                         .post()
                 val naverSeries: Elements = doc.select(".comic_top_lst li")
                 val ref: MutableMap<String?, Any> = HashMap()
@@ -219,7 +141,6 @@ object MiningSource {
                         ref = ref,
                         num = (naverSeries.size * (pageCount - 1)) + i,
                         platform = platform,
-                        genre = getNaverSeriesGenre(genre),
                         type = type
                     )
 
@@ -235,7 +156,6 @@ object MiningSource {
     }
 
     fun miningNaverSeriesNovel(
-        genre: String,
         platform: String,
         type: String,
         yesterDatItemMap: MutableMap<String, ItemBookInfo>,
@@ -247,7 +167,7 @@ object MiningSource {
             val itemBestInfoList = JsonArray()
 
             for(pageCount in 1..5) {
-                val doc: Document = Jsoup.connect("https://series.naver.com/novel/top100List.series?rankingTypeCode=DAILY&categoryCode=${genre}&page=${pageCount}").post()
+                val doc: Document = Jsoup.connect("https://series.naver.com/novel/top100List.series?rankingTypeCode=DAILY&categoryCode=ALL&page=${pageCount}").post()
                 val naverSeries: Elements = doc.select(".comic_top_lst li")
                 val ref: MutableMap<String?, Any> = HashMap()
 
@@ -288,7 +208,6 @@ object MiningSource {
                         ref = ref,
                         num = (naverSeries.size * (pageCount - 1)) + i,
                         platform = platform,
-                        genre = getNaverSeriesGenre(genre),
                         type = type
                     )
 
@@ -306,7 +225,6 @@ object MiningSource {
     fun miningJoara(
         context: Context,
         mining: String,
-        genre: String,
         platform: String,
         type: String,
         yesterDatItemMap: MutableMap<String, ItemBookInfo>,
@@ -319,7 +237,7 @@ object MiningSource {
         param["page"] = 1
         param["best"] = "today"
         param["store"] = mining
-        param["category"] = genre
+        param["category"] = "0"
         param["offset"] = "100"
 
         val itemBookInfoList = JsonArray()
@@ -377,7 +295,6 @@ object MiningSource {
                                 ref = ref,
                                 num = number,
                                 platform = platform,
-                                genre = getJoaraGenre(genre),
                                 type = type
                             )
 
@@ -392,7 +309,6 @@ object MiningSource {
     }
 
     fun miningNaverChallenge(
-        genre: String,
         platform: String,
         type: String,
         yesterDatItemMap: MutableMap<String, ItemBookInfo>,
@@ -404,7 +320,7 @@ object MiningSource {
             val itemBestInfoList = JsonArray()
 
             for(pageCount in 1..5) {
-                val doc: Document = Jsoup.connect("https://novel.naver.com/challenge/ranking?genre=${genre}&periodType=DAILY").post()
+                val doc: Document = Jsoup.connect("https://novel.naver.com/challenge/ranking?genre=101&periodType=DAILY").post()
                 val naverSeries: Elements = doc.select(".ranking_wrap_left .ranking_list li")
                 val ref: MutableMap<String?, Any> = HashMap()
 
@@ -445,7 +361,6 @@ object MiningSource {
                         ref = ref,
                         num = (naverSeries.size * (pageCount - 1)) + i,
                         platform = platform,
-                        genre = getChallengeGenre(genre),
                         type = type
                     )
 
@@ -457,6 +372,72 @@ object MiningSource {
 
             }
 
+        }.start()
+    }
+
+    fun miningNaverBest(
+        genre: String,
+        platform: String,
+        type: String,
+        yesterDatItemMap: MutableMap<String, ItemBookInfo>,
+        callBack: (JsonArray, JsonArray) -> Unit
+    ) {
+        Thread{
+            val itemBookInfoList = JsonArray()
+            val itemBestInfoList = JsonArray()
+
+            for(pageCount in 1..5) {
+                val doc: Document = Jsoup.connect("https://novel.naver.com/best/ranking?genre=${genre}&periodType=DAILY").post()
+                val naverSeries: Elements = doc.select(".ranking_wrap_left .ranking_list li")
+                val ref: MutableMap<String?, Any> = HashMap()
+
+                for (i in naverSeries.indices) {
+                    val bookCode = naverSeries.select("a")[i].absUrl("href").replace("https://novel.naver.com/challenge/list?novelId=", "")
+                    val point = naverSeries.size - i
+
+                    val yesterDayItem = checkMiningTrophyValue(yesterDatItemMap[bookCode] ?: ItemBookInfo())
+
+                    ref["writerName"] = naverSeries.select(".info_group .author")[i].text()
+                    ref["subject"] = naverSeries.select(".title_group .title")[i].text()
+                    ref["bookImg"] = naverSeries.select("div img")[i].absUrl("src")
+                    ref["bookCode"] = bookCode
+                    ref["cntRecom"] = naverSeries.select(".score_area")[i].text().replace("별점", "")
+                    ref["cntPageRead"] = naverSeries[i].select(".info_group .count").next().first()!!.text()
+                    ref["cntFavorite"] = naverSeries.select(".meta_data_group .count")[i].text()
+                    ref["cntChapter"] = naverSeries[i].select(".info_group .count").first()!!.text()
+                    ref["number"] = ((naverSeries.size * (pageCount - 1)) + i)
+                    ref["point"] = point
+
+                    ref["total"] = yesterDayItem.point + point
+                    ref["totalCount"] = yesterDayItem.totalCount + 1
+                    ref["totalWeek"] = yesterDayItem.totalWeek + point
+                    ref["totalWeekCount"] = yesterDayItem.totalWeekCount + 1
+                    ref["totalMonth"] = yesterDayItem.totalMonth + point
+                    ref["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
+                    ref["currentDiff"] =
+                        if (yesterDatItemMap[bookCode]?.currentDiff != null) {
+                            (yesterDatItemMap[bookCode]?.currentDiff ?: 0) - ((naverSeries.size * (pageCount - 1)) + i)
+                        } else {
+                            0
+                        }
+
+                    ref["date"] = dateMMDD()
+                    ref["type"] = platform
+
+                    miningValue(
+                        ref = ref,
+                        num = (naverSeries.size * (pageCount - 1)) + i,
+                        platform = platform,
+                        type = type
+                    )
+
+                    itemBookInfoList.add(convertItemBook(BestRef.setItemBookInfoRef(ref)))
+                    itemBestInfoList.add(convertItemBest(BestRef.setItemBestInfoRef(ref)))
+                }
+
+                callBack.invoke(itemBookInfoList, itemBestInfoList)
+
+            }
         }.start()
     }
 }
