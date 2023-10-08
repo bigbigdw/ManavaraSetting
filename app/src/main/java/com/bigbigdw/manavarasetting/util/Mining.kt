@@ -158,6 +158,19 @@ fun doMining(
                 itemBestInfoList = itemBestInfoList
             )
         }
+    } else if(platform == "NAVER_BEST") {
+        MiningSource.miningNaverBest(
+            platform = platform,
+            type = type,
+            yesterDatItemMap = yesterDayItemMap
+        ) { itemBookInfoList, itemBestInfoList ->
+            doResultMining(
+                platform = platform,
+                type = type,
+                itemBookInfoList = itemBookInfoList,
+                itemBestInfoList = itemBestInfoList
+            )
+        }
     }
 }
 

@@ -40,7 +40,6 @@ fun ScreenLogin(doLogin : () -> Unit) {
             modifier = Modifier
                 .fillMaxSize()
                 .background(color = colorF6F6F6)
-                .verticalScroll(rememberScrollState())
                 .semantics { contentDescription = "Overview Screen" },
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -100,7 +99,6 @@ fun ScreenSplash() {
             modifier = Modifier
                 .fillMaxSize()
                 .background(color = colorF6F6F6)
-                .verticalScroll(rememberScrollState())
                 .semantics { contentDescription = "Overview Screen" },
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally

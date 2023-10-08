@@ -376,7 +376,6 @@ object MiningSource {
     }
 
     fun miningNaverBest(
-        genre: String,
         platform: String,
         type: String,
         yesterDatItemMap: MutableMap<String, ItemBookInfo>,
@@ -387,7 +386,7 @@ object MiningSource {
             val itemBestInfoList = JsonArray()
 
             for(pageCount in 1..5) {
-                val doc: Document = Jsoup.connect("https://novel.naver.com/best/ranking?genre=${genre}&periodType=DAILY").post()
+                val doc: Document = Jsoup.connect("https://novel.naver.com/best/ranking?genre=101&periodType=DAILY").post()
                 val naverSeries: Elements = doc.select(".ranking_wrap_left .ranking_list li")
                 val ref: MutableMap<String?, Any> = HashMap()
 

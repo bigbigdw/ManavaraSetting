@@ -372,7 +372,6 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             .fillMaxHeight()
             .background(color = colorF6F6F6)
             .padding(8.dp, 0.dp)
-            .verticalScroll(rememberScrollState())
             .semantics { contentDescription = "Overview Screen" },
     ) {
 

@@ -13,8 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -50,7 +48,6 @@ fun ScreenMainWebtoon() {
                 .fillMaxSize()
                 .background(color = colorF6F6F6)
                 .padding(16.dp, 0.dp)
-                .verticalScroll(rememberScrollState())
                 .semantics { contentDescription = "Overview Screen" },
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -81,7 +78,6 @@ fun ScreenMainNovel() {
                 .fillMaxSize()
                 .background(color = colorF6F6F6)
                 .padding(16.dp, 0.dp)
-                .verticalScroll(rememberScrollState())
                 .semantics { contentDescription = "Overview Screen" },
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -312,7 +308,7 @@ fun ContentsWebtoon() {
     Spacer(modifier = Modifier.size(60.dp))
 }
 @Composable
-fun ContentsPlatformNaverSeriesComic(viewModelMain: ViewModelMain) {
+fun ContentsNaverSeriesComic(viewModelMain: ViewModelMain) {
 
     val context = LocalContext.current
     getDataStoreStatus(context = context, update = {})
@@ -375,8 +371,6 @@ fun ContentsPlatformNaverSeriesComic(viewModelMain: ViewModelMain) {
         }
     )
 
-    Spacer(modifier = Modifier.size(16.dp))
-
     TabletContentWrap {
         Spacer(modifier = Modifier.size(8.dp))
 
@@ -394,7 +388,7 @@ fun ContentsPlatformNaverSeriesComic(viewModelMain: ViewModelMain) {
 }
 
 @Composable
-fun ContentsPlatformNaverSeriesNovel(viewModelMain: ViewModelMain) {
+fun ContentsNaverSeriesNovel(viewModelMain: ViewModelMain) {
 
     viewModelMain.getFCMList(child = "ALERT", activity = "NAVER_SERIES NOVEL")
     val fcmAlertList = viewModelMain.state.collectAsState().value.fcmAlertList
@@ -457,8 +451,6 @@ fun ContentsPlatformNaverSeriesNovel(viewModelMain: ViewModelMain) {
         }
     )
 
-    Spacer(modifier = Modifier.size(16.dp))
-
     TabletContentWrap {
         Spacer(modifier = Modifier.size(8.dp))
 
@@ -476,7 +468,7 @@ fun ContentsPlatformNaverSeriesNovel(viewModelMain: ViewModelMain) {
 }
 
 @Composable
-fun ContentsPlatformJoaraNovel(viewModelMain : ViewModelMain) {
+fun ContentsJoaraNovel(viewModelMain : ViewModelMain) {
 
     val context = LocalContext.current
     getDataStoreStatus(context = context, update = {})
@@ -539,8 +531,6 @@ fun ContentsPlatformJoaraNovel(viewModelMain : ViewModelMain) {
         }
     )
 
-    Spacer(modifier = Modifier.size(16.dp))
-
     TabletContentWrap {
         Spacer(modifier = Modifier.size(8.dp))
 
@@ -558,7 +548,7 @@ fun ContentsPlatformJoaraNovel(viewModelMain : ViewModelMain) {
 }
 
 @Composable
-fun ContentsPlatformJoaraPremiumNovel(viewModelMain : ViewModelMain) {
+fun ContentsJoaraPremiumNovel(viewModelMain : ViewModelMain) {
 
     val context = LocalContext.current
     getDataStoreStatus(context = context, update = {})
@@ -621,8 +611,6 @@ fun ContentsPlatformJoaraPremiumNovel(viewModelMain : ViewModelMain) {
         }
     )
 
-    Spacer(modifier = Modifier.size(16.dp))
-
     TabletContentWrap {
         Spacer(modifier = Modifier.size(8.dp))
 
@@ -640,7 +628,7 @@ fun ContentsPlatformJoaraPremiumNovel(viewModelMain : ViewModelMain) {
 }
 
 @Composable
-fun ContentsPlatformJoaraNoblessNovel(viewModelMain : ViewModelMain) {
+fun ContentsJoaraNoblessNovel(viewModelMain : ViewModelMain) {
 
     val context = LocalContext.current
     getDataStoreStatus(context = context, update = {})
@@ -703,8 +691,6 @@ fun ContentsPlatformJoaraNoblessNovel(viewModelMain : ViewModelMain) {
         }
     )
 
-    Spacer(modifier = Modifier.size(16.dp))
-
     TabletContentWrap {
         Spacer(modifier = Modifier.size(8.dp))
 
@@ -722,7 +708,7 @@ fun ContentsPlatformJoaraNoblessNovel(viewModelMain : ViewModelMain) {
 }
 
 @Composable
-fun ContentsPlatformChallengeNovel(viewModelMain : ViewModelMain) {
+fun ContentsNaverChallengeNovel(viewModelMain : ViewModelMain) {
 
     val context = LocalContext.current
     getDataStoreStatus(context = context, update = {})
@@ -784,8 +770,6 @@ fun ContentsPlatformChallengeNovel(viewModelMain : ViewModelMain) {
             )
         }
     )
-
-    Spacer(modifier = Modifier.size(16.dp))
 
     TabletContentWrap {
         Spacer(modifier = Modifier.size(8.dp))

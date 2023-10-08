@@ -3,7 +3,7 @@ package com.bigbigdw.manavarasetting.main.screen
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,19 +17,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
-import com.bigbigdw.manavarasetting.util.PeriodicWorker
 
 @Composable
 fun ScreenTablet(
@@ -101,25 +98,25 @@ fun ScreenTablet(
                         setDetailMenu = setDetailMenu,
                         setDetailPlatform = setDetailPlatform,
                         setDetailType = setDetailType,
-                        type = "JSON 투데이 베스트",
+                        type = "JSON 투데이",
                     )
                 }
                 "웹소설 JSON 투데이" -> {
                     ContentsBestJsonListNovel(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
-                        type = "JSON 투데이 베스트",
                         setDetailPlatform = setDetailPlatform,
                         setDetailType = setDetailType,
+                        type = "JSON 투데이",
                     )
                 }
                 "웹소설 JSON 주간" -> {
                     ContentsBestJsonListNovel(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
-                        type = "JSON 주간 베스트",
                         setDetailPlatform = setDetailPlatform,
                         setDetailType = setDetailType,
+                        type = "JSON 주간",
                     )
                 }
                 "웹툰 JSON 주간" -> {
@@ -128,16 +125,16 @@ fun ScreenTablet(
                         setDetailMenu = setDetailMenu,
                         setDetailPlatform = setDetailPlatform,
                         setDetailType = setDetailType,
-                        type = "JSON 주간 베스트",
+                        type = "JSON 주간",
                     )
                 }
                 "웹소설 JSON 월간" -> {
                     ContentsBestJsonListNovel(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
-                        type = "JSON 월간 베스트",
                         setDetailPlatform = setDetailPlatform,
                         setDetailType = setDetailType,
+                        type = "JSON 월간",
                     )
                 }
                 "웹툰 JSON 월간" -> {
@@ -146,7 +143,7 @@ fun ScreenTablet(
                         setDetailMenu = setDetailMenu,
                         setDetailPlatform = setDetailPlatform,
                         setDetailType = setDetailType,
-                        type = "JSON 월간 베스트",
+                        type = "JSON 월간",
                     )
                 }
                 "웹소설 JSON 주간 트로피" -> {
@@ -222,22 +219,22 @@ fun ScreenTablet(
                     )
                 }
                 "네이버 시리즈 웹툰" -> {
-                    ContentsPlatformNaverSeriesComic(viewModelMain = viewModelMain)
+                    ContentsNaverSeriesComic(viewModelMain = viewModelMain)
                 }
                 "네이버 시리즈 웹소설" -> {
-                    ContentsPlatformNaverSeriesNovel(viewModelMain = viewModelMain)
+                    ContentsNaverSeriesNovel(viewModelMain = viewModelMain)
                 }
                 "조아라 웹소설" -> {
-                    ContentsPlatformJoaraNovel(viewModelMain = viewModelMain)
+                    ContentsJoaraNovel(viewModelMain = viewModelMain)
                 }
                 "조아라 노블레스 웹소설" -> {
-                    ContentsPlatformJoaraNoblessNovel(viewModelMain = viewModelMain)
+                    ContentsJoaraNoblessNovel(viewModelMain = viewModelMain)
                 }
                 "조아라 프리미엄 웹소설" -> {
-                    ContentsPlatformJoaraPremiumNovel(viewModelMain = viewModelMain)
+                    ContentsJoaraPremiumNovel(viewModelMain = viewModelMain)
                 }
                 "챌린지 리그 웹소설" -> {
-                    ContentsPlatformChallengeNovel(viewModelMain = viewModelMain)
+                    ContentsNaverChallengeNovel(viewModelMain = viewModelMain)
                 }
                 "위험 옵션" -> {
                     ContentsDangerOption(viewModelMain = viewModelMain)
@@ -257,244 +254,101 @@ fun ScreenTablet(
 }
 
 @Composable
-fun ContentsSetting() {
+fun ScreenTabletDetail(
+    setDetailPage: (Boolean) -> Unit,
+    getDetailMenu: String,
+    viewModelMain: ViewModelMain,
+    getDetailPlatform: String,
+    getDetailType: String,
+) {
 
-    val context = LocalContext.current
-    val workManager = WorkManager.getInstance(context)
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(0.dp, 0.dp, 16.dp, 0.dp)
+            .semantics { contentDescription = "Overview Screen" },
+    ) {
 
-    TabletContentWrapBtn(
-        onClick = {
-            PeriodicWorker.doWorker(
-                workManager = workManager,
-                delayMills = 3,
-                tag = "MINING",
-                platform = "NAVER_SERIES",
-                type = "COMIC"
+        Spacer(modifier = Modifier.size(16.dp))
+
+        Row(verticalAlignment = Alignment.CenterVertically){
+            Image(
+                painter = painterResource(id = R.drawable.icon_arrow_left),
+                contentDescription = null,
+                modifier = Modifier
+                    .width(30.dp)
+                    .height(30.dp)
             )
-        },
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_naver),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
 
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = "NAVER_SERIES COMIC",
-                    color = color000000,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = {
-            PeriodicWorker.doWorker(
-                workManager = workManager,
-                delayMills = 6,
-                tag = "MINING",
-                platform = "NAVER_SERIES",
-                type = "NOVEL"
+            Text(
+                modifier = Modifier
+                    .padding(16.dp, 0.dp, 0.dp, 0.dp)
+                    .clickable {
+                        setDetailPage(false)
+                    },
+                text = getDetailMenu,
+                fontSize = 24.sp,
+                color = color000000,
+                fontWeight = FontWeight(weight = 700)
             )
-        },
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-
-                Image(
-                    painter = painterResource(id = R.drawable.logo_naver),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = "NAVER_SERIES NOVEL",
-                    color = color000000,
-                    fontSize = 18.sp,
-                )
-            }
         }
-    )
 
-    TabletContentWrapBtn(
-        onClick = {
-            PeriodicWorker.doWorker(
-                workManager = workManager,
-                delayMills = 9,
-                tag = "MINING",
-                platform = "JOARA",
-                type = "NOVEL"
+        if (getDetailMenu.contains("JSON 투데이")) {
+            ContentsBestListDetail(
+                viewModelMain = viewModelMain,
+                type = "JSON",
+                getDetailPlatform = getDetailPlatform,
+                getDetailType = getDetailType,
             )
-        },
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-
-                Image(
-                    painter = painterResource(id = R.drawable.logo_joara),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = "JOARA NOVEL",
-                    color = color000000,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = {
-            PeriodicWorker.doWorker(
-                workManager = workManager,
-                delayMills = 12,
-                tag = "MINING",
-                platform = "JOARA_NOBLESS",
-                type = "NOVEL"
+        }  else if (getDetailMenu.contains("JSON 주간")) {
+            ContentsBestListDetailWeek(
+                viewModelMain = viewModelMain,
+                menu = "주간",
+                getDetailPlatform = getDetailPlatform,
+                getDetailType = getDetailType,
             )
-        },
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-
-                Image(
-                    painter = painterResource(id = R.drawable.logo_joara_nobless),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = "JOARA_NOBLESS NOVEL",
-                    color = color000000,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = {
-            PeriodicWorker.doWorker(
-                workManager = workManager,
-                delayMills = 15,
-                tag = "MINING",
-                platform = "JOARA_PREMIUM",
-                type = "NOVEL"
+        }  else if (getDetailMenu.contains("JSON 월간")) {
+            ContentsBestListDetailWeek(
+                viewModelMain = viewModelMain,
+                menu = "월간",
+                getDetailPlatform = getDetailPlatform,
+                getDetailType = getDetailType,
             )
-        },
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-
-                Image(
-                    painter = painterResource(id = R.drawable.logo_joara_premium),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = "JOARA_PREMIUM NOVEL",
-                    color = color000000,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = {
-            PeriodicWorker.doWorker(
-                workManager = workManager,
-                delayMills = 18,
-                tag = "MINING",
-                platform = "NAVER_CHALLENGE",
-                type = "NOVEL"
+        } else if (getDetailMenu.contains("JSON 주간 트로피")) {
+            ContentsBestListJsonTrophy(
+                viewModelMain = viewModelMain,
+                menu = "주간",
+                getDetailPlatform = getDetailPlatform,
+                getDetailType = getDetailType,
             )
-        },
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-
-                Image(
-                    painter = painterResource(id = R.drawable.logo_naver_challenge),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = "NAVER_CHALLENGE NOVEL",
-                    color = color000000,
-                    fontSize = 18.sp,
-                )
-            }
+        } else if (getDetailMenu.contains("JSON 월간 트로피")) {
+            ContentsBestListJsonTrophy(
+                viewModelMain = viewModelMain,
+                menu = "월간",
+                getDetailPlatform = getDetailPlatform,
+                getDetailType = getDetailType,
+            )
+        } else if (getDetailMenu.contains("트로피 주간")) {
+            ContentsBestListDetailTrophy(
+                viewModelMain = viewModelMain,
+                menu = "주간",
+                getDetailPlatform = getDetailPlatform,
+                getDetailType = getDetailType,
+            )
+        } else if (getDetailMenu.contains("트로피 월간")) {
+            ContentsBestListDetailTrophy(
+                viewModelMain = viewModelMain,
+                menu = "월간",
+                getDetailPlatform = getDetailPlatform,
+                getDetailType = getDetailType,
+            )
+        } else if (getDetailMenu.contains("베스트")) {
+            ContentsBestListDetail(
+                viewModelMain = viewModelMain,
+                type = "BEST",
+                getDetailPlatform = getDetailPlatform,
+                getDetailType = getDetailType,
+            )
         }
-    )
-
-    TabletContentWrapBtn(
-        onClick = { PeriodicWorker.cancelAllWorker(
-            workManager = workManager,
-        ) },
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "모든 Worker 취소",
-                    color = color000000,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    Spacer(modifier = Modifier.size(60.dp))
+    }
 }
