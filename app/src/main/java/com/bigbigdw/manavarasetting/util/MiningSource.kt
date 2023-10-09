@@ -2,6 +2,7 @@ package com.bigbigdw.manavarasetting.util
 
 import android.content.Context
 import android.util.Log
+import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
 import com.bigbigdw.manavarasetting.util.DBDate.dateMMDD
 import com.bigbigdw.manavarasetting.retrofit.result.BestMoonpiaResult
@@ -388,7 +389,9 @@ object MiningSource {
         platform: String,
         type: String,
         yesterDayItemMap: MutableMap<String, ItemBookInfo>,
-        callBack: (JsonArray, JsonArray) -> Unit
+        totalBookItem: MutableMap<Int, ItemBookInfo>,
+        totalBestItem: MutableMap<Int, ItemBestInfo>,
+        callBack: (MutableMap<Int, ItemBookInfo>, MutableMap<Int, ItemBestInfo>) -> Unit,
     ) {
 
         for(page in 1..2){
@@ -400,9 +403,6 @@ object MiningSource {
                 param["tab"] = "bestsellers"
                 param["category"] = mining
                 param["page"] = page
-
-                val itemBookInfoList = JsonArray()
-                val itemBestInfoList = JsonArray()
 
                 apiRidi.getRidiRomance(
                     value = mining,
@@ -484,15 +484,15 @@ object MiningSource {
                                             type = type
                                         )
 
-                                        itemBookInfoList.add(convertItemBook(BestRef.setItemBookInfoRef(ref)))
-                                        itemBestInfoList.add(convertItemBest(BestRef.setItemBestInfoRef(ref)))
+                                        totalBookItem[number] = BestRef.setItemBookInfoRef(ref)
+                                        totalBestItem[number] = BestRef.setItemBestInfoRef(ref)
                                     }
 
 
                                 }
                             }
 
-                            callBack.invoke(itemBookInfoList, itemBestInfoList)
+                            callBack.invoke(totalBookItem, totalBestItem)
                         }
                     })
             } catch (exception: Exception) {
@@ -505,7 +505,9 @@ object MiningSource {
         platform: String,
         type: String,
         yesterDayItemMap: MutableMap<String, ItemBookInfo>,
-        callBack: (JsonArray, JsonArray) -> Unit
+        totalBookItem: MutableMap<Int, ItemBookInfo>,
+        totalBestItem: MutableMap<Int, ItemBestInfo>,
+        callBack: (MutableMap<Int, ItemBookInfo>, MutableMap<Int, ItemBestInfo>) -> Unit,
     ) {
 
         for(page in 1..4){
@@ -529,10 +531,6 @@ object MiningSource {
                         "183/0"
                     }
                 }
-
-                val itemBookInfoList = JsonArray()
-                val itemBestInfoList = JsonArray()
-
 
                 apiOneStory.getBestOneStore(
                     param,
@@ -585,13 +583,13 @@ object MiningSource {
                                         type = type
                                     )
 
-                                    itemBookInfoList.add(convertItemBook(BestRef.setItemBookInfoRef(ref)))
-                                    itemBestInfoList.add(convertItemBest(BestRef.setItemBestInfoRef(ref)))
+                                    totalBookItem[number] = BestRef.setItemBookInfoRef(ref)
+                                    totalBestItem[number] = BestRef.setItemBestInfoRef(ref)
 
                                 }
                             }
 
-                            callBack.invoke(itemBookInfoList, itemBestInfoList)
+                            callBack.invoke(totalBookItem, totalBestItem)
                         }
                     })
             } catch (exception: Exception) {
@@ -690,7 +688,9 @@ object MiningSource {
         platform: String,
         type: String,
         yesterDayItemMap: MutableMap<String, ItemBookInfo>,
-        callBack: (JsonArray, JsonArray) -> Unit
+        totalBookItem: MutableMap<Int, ItemBookInfo>,
+        totalBestItem: MutableMap<Int, ItemBestInfo>,
+        callBack: (MutableMap<Int, ItemBookInfo>, MutableMap<Int, ItemBestInfo>) -> Unit,
     ) {
 
         for(page in 1..4){
@@ -716,10 +716,6 @@ object MiningSource {
                     "78"
                 }
             }
-
-
-            val itemBookInfoList = JsonArray()
-            val itemBestInfoList = JsonArray()
 
             apiMoonPia.postMoonPiaBest(
                 param,
@@ -774,11 +770,11 @@ object MiningSource {
                                         type = type
                                     )
 
-                                    itemBookInfoList.add(convertItemBook(BestRef.setItemBookInfoRef(ref)))
-                                    itemBestInfoList.add(convertItemBest(BestRef.setItemBestInfoRef(ref)))
+                                    totalBookItem[number] = BestRef.setItemBookInfoRef(ref)
+                                    totalBestItem[number] = BestRef.setItemBestInfoRef(ref)
                                 }
 
-                                callBack.invoke(itemBookInfoList, itemBestInfoList)
+                                callBack.invoke(totalBookItem, totalBestItem)
                             }
                         }
 
@@ -791,7 +787,9 @@ object MiningSource {
         platform: String,
         type: String,
         yesterDayItemMap: MutableMap<String, ItemBookInfo>,
-        callBack: (JsonArray, JsonArray) -> Unit
+        totalBookItem: MutableMap<Int, ItemBookInfo>,
+        totalBestItem: MutableMap<Int, ItemBestInfo>,
+        callBack: (MutableMap<Int, ItemBookInfo>, MutableMap<Int, ItemBestInfo>) -> Unit,
     ) {
 
         for(page in 1..5){
@@ -801,16 +799,13 @@ object MiningSource {
             val param: MutableMap<String?, Any> = HashMap()
 
             param["page"] = page
-            param["lgctgrCd"] = "0007"
-            param["mdctgrCd"] = "all"
-            param["rookieYn"] = "N"
+            param["lgctgrCd"] = "all"
             param["over19Yn"] = "N"
-            param["type"] = "NEW"
+            param["sumtalkYn"] = "N"
+            param["rookieYn"] = "N"
+            param["statsClsfCd"] = "00073"
             param["freePblserlYn"] = "00431"
-            param["_"] = "1657262989944"
-
-            val itemBookInfoList = JsonArray()
-            val itemBestInfoList = JsonArray()
+            param["_"] = "1696853385623"
 
             apiToksoda.getBestList(
                 param,
@@ -839,7 +834,6 @@ object MiningSource {
                                 ref["cntFavorite"] = it[i].goodAllCnt
                                 ref["cntChapter"] = "총 ${it[i].whlEpsdCnt}화"
 
-
                                 ref["number"] = number
                                 ref["point"] = point
 
@@ -866,11 +860,11 @@ object MiningSource {
                                     type = type
                                 )
 
-                                itemBookInfoList.add(convertItemBook(BestRef.setItemBookInfoRef(ref)))
-                                itemBestInfoList.add(convertItemBest(BestRef.setItemBestInfoRef(ref)))
+                                totalBookItem[number] = BestRef.setItemBookInfoRef(ref)
+                                totalBestItem[number] = BestRef.setItemBestInfoRef(ref)
                             }
 
-                            callBack.invoke(itemBookInfoList, itemBestInfoList)
+                            callBack.invoke(totalBookItem, totalBestItem)
                         }
                     }
                 })

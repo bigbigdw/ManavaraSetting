@@ -2,9 +2,9 @@ package com.bigbigdw.manavarasetting.util
 
 import android.content.Context
 import android.util.Log
+import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
 import com.bigbigdw.manavarasetting.util.MiningSource.miningNaverSeriesComic
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.google.gson.JsonArray
@@ -174,49 +174,100 @@ fun doMining(
             )
         }
     } else if(platform == "RIDI_FANTAGY") {
+
+        val totalBookItem: MutableMap<Int, ItemBookInfo> = HashMap()
+        val totalBestItem: MutableMap<Int, ItemBestInfo> = HashMap()
+
         MiningSource.miningRidi(
             mining = "1750",
             platform = platform,
             type = type,
+            totalBookItem = totalBookItem,
+            totalBestItem = totalBestItem,
             yesterDayItemMap = yesterDayItemMap
-        ) { itemBookInfoList, itemBestInfoList ->
-            doResultMining(
-                platform = platform,
-                type = type,
-                itemBookInfoList = itemBookInfoList,
-                itemBestInfoList = itemBestInfoList
-            )
-        }
-    } else if(platform == "RIDI_ROMANCE") {
-        MiningSource.miningRidi(
-            mining = "1650",
-            platform = platform,
-            type = type,
-            yesterDayItemMap = yesterDayItemMap
-        ) { itemBookInfoList, itemBestInfoList ->
-            doResultMining(
-                platform = platform,
-                type = type,
-                itemBookInfoList = itemBookInfoList,
-                itemBestInfoList = itemBestInfoList
-            )
-        }
-    } else if(platform == "ONESTORY") {
+        ) { itemBook, itemBest ->
 
-        if(type == "COMIC"){
+            if(itemBook.size > 99 && itemBest.size > 99){
+                val itemBookInfoList = JsonArray()
+                val itemBestInfoList = JsonArray()
 
-        } else{
-            MiningSource.miningOnestory(
-                platform = platform,
-                type = type,
-                yesterDayItemMap = yesterDayItemMap
-            ) { itemBookInfoList, itemBestInfoList ->
+                for(item in 0 until itemBook.size){
+                    itemBookInfoList.add(convertItemBook(itemBook[item] ?: ItemBookInfo()))
+                    itemBestInfoList.add(convertItemBest(itemBest[item] ?: ItemBestInfo()))
+                }
+
                 doResultMining(
                     platform = platform,
                     type = type,
                     itemBookInfoList = itemBookInfoList,
                     itemBestInfoList = itemBestInfoList
                 )
+            }
+        }
+    } else if(platform == "RIDI_ROMANCE") {
+
+        val totalBookItem: MutableMap<Int, ItemBookInfo> = HashMap()
+        val totalBestItem: MutableMap<Int, ItemBestInfo> = HashMap()
+
+        MiningSource.miningRidi(
+            mining = "1650",
+            platform = platform,
+            type = type,
+            totalBookItem = totalBookItem,
+            totalBestItem = totalBestItem,
+            yesterDayItemMap = yesterDayItemMap
+        ) { itemBook, itemBest ->
+
+            if(itemBook.size > 99 && itemBest.size > 99){
+                val itemBookInfoList = JsonArray()
+                val itemBestInfoList = JsonArray()
+
+                for(item in 0 until itemBook.size){
+                    itemBookInfoList.add(convertItemBook(itemBook[item] ?: ItemBookInfo()))
+                    itemBestInfoList.add(convertItemBest(itemBest[item] ?: ItemBestInfo()))
+                }
+
+                doResultMining(
+                    platform = platform,
+                    type = type,
+                    itemBookInfoList = itemBookInfoList,
+                    itemBestInfoList = itemBestInfoList
+                )
+            }
+        }
+    } else if(platform == "ONESTORY") {
+
+        if(type == "COMIC"){
+
+        } else{
+
+            val totalBookItem: MutableMap<Int, ItemBookInfo> = HashMap()
+            val totalBestItem: MutableMap<Int, ItemBestInfo> = HashMap()
+
+            MiningSource.miningOnestory(
+                platform = platform,
+                type = type,
+                totalBookItem = totalBookItem,
+                totalBestItem = totalBestItem,
+                yesterDayItemMap = yesterDayItemMap
+            ) { itemBook, itemBest ->
+
+                if(itemBook.size > 99 && itemBest.size > 99){
+                    val itemBookInfoList = JsonArray()
+                    val itemBestInfoList = JsonArray()
+
+                    for(item in 0 until itemBook.size){
+                        itemBookInfoList.add(convertItemBook(itemBook[item] ?: ItemBookInfo()))
+                        itemBestInfoList.add(convertItemBest(itemBest[item] ?: ItemBestInfo()))
+                    }
+
+                    doResultMining(
+                        platform = platform,
+                        type = type,
+                        itemBookInfoList = itemBookInfoList,
+                        itemBestInfoList = itemBestInfoList
+                    )
+                }
             }
         }
 
@@ -234,31 +285,67 @@ fun doMining(
             )
         }
     } else if(platform == "MUNPIA") {
+
+        val totalBookItem: MutableMap<Int, ItemBookInfo> = HashMap()
+        val totalBestItem: MutableMap<Int, ItemBestInfo> = HashMap()
+
         MiningSource.miningMunpia(
             platform = platform,
             type = type,
+            totalBookItem = totalBookItem,
+            totalBestItem = totalBestItem,
             yesterDayItemMap = yesterDayItemMap
-        ) { itemBookInfoList, itemBestInfoList ->
-            doResultMining(
-                platform = platform,
-                type = type,
-                itemBookInfoList = itemBookInfoList,
-                itemBestInfoList = itemBestInfoList
-            )
+        ) { itemBook, itemBest ->
+
+            if(itemBook.size > 99 && itemBest.size > 99){
+                val itemBookInfoList = JsonArray()
+                val itemBestInfoList = JsonArray()
+
+                for(item in 0 until itemBook.size){
+                    itemBookInfoList.add(convertItemBook(itemBook[item] ?: ItemBookInfo()))
+                    itemBestInfoList.add(convertItemBest(itemBest[item] ?: ItemBestInfo()))
+                }
+
+                doResultMining(
+                    platform = platform,
+                    type = type,
+                    itemBookInfoList = itemBookInfoList,
+                    itemBestInfoList = itemBestInfoList
+                )
+            }
         }
     } else if(platform == "TOKSODA") {
+
+        val totalBookItem: MutableMap<Int, ItemBookInfo> = HashMap()
+        val totalBestItem: MutableMap<Int, ItemBestInfo> = HashMap()
+
         MiningSource.miningToksoda(
             platform = platform,
             type = type,
+            totalBookItem = totalBookItem,
+            totalBestItem = totalBestItem,
             yesterDayItemMap = yesterDayItemMap
-        ) { itemBookInfoList, itemBestInfoList ->
-            doResultMining(
-                platform = platform,
-                type = type,
-                itemBookInfoList = itemBookInfoList,
-                itemBestInfoList = itemBestInfoList
-            )
+        ) { itemBook, itemBest ->
+
+            if(itemBook.size > 99 && itemBest.size > 99){
+
+                val itemBookInfoList = JsonArray()
+                val itemBestInfoList = JsonArray()
+
+                for(item in 0 until itemBook.size){
+                    itemBookInfoList.add(convertItemBook(itemBook[item] ?: ItemBookInfo()))
+                    itemBestInfoList.add(convertItemBest(itemBest[item] ?: ItemBestInfo()))
+                }
+
+                doResultMining(
+                    platform = platform,
+                    type = type,
+                    itemBookInfoList = itemBookInfoList,
+                    itemBestInfoList = itemBestInfoList
+                )
+            }
         }
+
     }
 }
 
