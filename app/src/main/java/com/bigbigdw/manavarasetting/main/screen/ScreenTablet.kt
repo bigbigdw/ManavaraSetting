@@ -27,6 +27,7 @@ import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
+import com.bigbigdw.manavarasetting.util.DataStoreManager
 
 @Composable
 fun ScreenTablet(
@@ -219,22 +220,121 @@ fun ScreenTablet(
                     )
                 }
                 "네이버 시리즈 웹툰" -> {
-                    ContentsNaverSeriesComic(viewModelMain = viewModelMain)
+                    ContentsPlatform(
+                        viewModelMain = viewModelMain,
+                        platform = "NAVER_SERIES",
+                        type = "COMIC",
+                        key = DataStoreManager.MINING_JOARA_PREMIUM_NOVEL,
+                        logo = R.drawable.logo_naver
+                    )
                 }
                 "네이버 시리즈 웹소설" -> {
-                    ContentsNaverSeriesNovel(viewModelMain = viewModelMain)
+                    ContentsPlatform(
+                        viewModelMain = viewModelMain,
+                        platform = "NAVER_SERIES",
+                        type = "NOVEL",
+                        key = DataStoreManager.MINING_JOARA_PREMIUM_NOVEL,
+                        logo = R.drawable.logo_naver
+                    )
                 }
                 "조아라 웹소설" -> {
-                    ContentsJoaraNovel(viewModelMain = viewModelMain)
+                    ContentsPlatform(
+                        viewModelMain = viewModelMain,
+                        platform = "JOARA",
+                        type = "NOVEL",
+                        key = DataStoreManager.MINING_JOARA_PREMIUM_NOVEL,
+                        logo = R.drawable.logo_joara
+                    )
                 }
                 "조아라 노블레스 웹소설" -> {
-                    ContentsJoaraNoblessNovel(viewModelMain = viewModelMain)
+                    ContentsPlatform(
+                        viewModelMain = viewModelMain,
+                        platform = "JOARA_NOBLESS",
+                        type = "NOVEL",
+                        key = DataStoreManager.MINING_JOARA_PREMIUM_NOVEL,
+                        logo = R.drawable.logo_joara_nobless
+                    )
                 }
                 "조아라 프리미엄 웹소설" -> {
-                    ContentsJoaraPremiumNovel(viewModelMain = viewModelMain)
+                    ContentsPlatform(
+                        viewModelMain = viewModelMain,
+                        platform = "JOARA_PREMIUM",
+                        type = "NOVEL",
+                        key = DataStoreManager.MINING_JOARA_PREMIUM_NOVEL,
+                        logo = R.drawable.logo_joara_premium
+                    )
                 }
                 "챌린지 리그 웹소설" -> {
-                    ContentsNaverChallengeNovel(viewModelMain = viewModelMain)
+                    ContentsPlatform(
+                        viewModelMain = viewModelMain,
+                        platform = "NAVER_CHALLENGE",
+                        type = "NOVEL",
+                        key = DataStoreManager.MINING_NAVER_CHALLENGE_NOVEL,
+                        logo = R.drawable.logo_naver_challenge
+                    )
+                }
+                "베스트 리그 웹소설" -> {
+                    ContentsPlatform(
+                        viewModelMain = viewModelMain,
+                        platform = "NAVER_BEST",
+                        type = "NOVEL",
+                        key = DataStoreManager.MINING_NAVER_BEST_NOVEL,
+                        logo = R.drawable.logo_naver_challenge
+                    )
+                }
+                "리디 판타지 웹소설" -> {
+                    ContentsPlatform(
+                        viewModelMain = viewModelMain,
+                        platform = "RIDI_FANTAGY",
+                        type = "NOVEL",
+                        key = DataStoreManager.MINING_RIDI_FANTAGY_NOVEL,
+                        logo = R.drawable.logo_ridibooks
+                    )
+                }
+                "리디 로맨스 웹소설" -> {
+                    ContentsPlatform(
+                        viewModelMain = viewModelMain,
+                        platform = "RIDI_ROMANCE",
+                        type = "NOVEL",
+                        key = DataStoreManager.MINING_RIDI_ROMANCE_NOVEL,
+                        logo = R.drawable.logo_ridibooks
+                    )
+                }
+                "원스토리 웹소설" -> {
+                    ContentsPlatform(
+                        viewModelMain = viewModelMain,
+                        platform = "ONESTORY",
+                        type = "NOVEL",
+                        key = DataStoreManager.MINING_ONESTORY_NOVEL,
+                        logo = R.drawable.logo_onestore
+                    )
+                }
+                "카카오 스테이지 웹소설" -> {
+                    ContentsPlatform(
+                        viewModelMain = viewModelMain,
+                        platform = "KAKAO_STAGE",
+                        type = "NOVEL",
+                        key = DataStoreManager.MINING_KAKAO_STAGE_NOVEL,
+                        logo = R.drawable.logo_kakaostage
+                    )
+                }
+                "문피아 웹소설" -> {
+                    ContentsPlatform(
+                        viewModelMain = viewModelMain,
+                        platform = "MUNPIA",
+                        type = "NOVEL",
+                        key = DataStoreManager.MINING_MUNPIA_NOVEL,
+                        logo = R.drawable.logo_munpia
+                    )
+                }
+                "톡소다 웹소설" -> {
+                    ContentsPlatform(
+                        viewModelMain = viewModelMain,
+                        platform = "TOKSODA",
+                        type = "NOVEL",
+                        key = DataStoreManager.MINING_TOKSODA_NOVEL,
+                        logo = R.drawable.logo_toksoda
+                    )
                 }
                 "위험 옵션" -> {
                     ContentsDangerOption(viewModelMain = viewModelMain)

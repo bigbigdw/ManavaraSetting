@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -25,6 +27,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.datastore.preferences.core.Preferences
 import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
@@ -48,6 +51,7 @@ fun ScreenMainWebtoon() {
                 .fillMaxSize()
                 .background(color = colorF6F6F6)
                 .padding(16.dp, 0.dp)
+                .verticalScroll(rememberScrollState())
                 .semantics { contentDescription = "Overview Screen" },
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -96,6 +100,7 @@ fun ScreenMainNovel() {
         }
     }
 }
+
 @Composable
 fun ContentsNovel() {
 
@@ -263,6 +268,231 @@ fun ContentsNovel() {
         }
     )
 
+
+    TabletContentWrapBtn(
+        onClick = {},
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.logo_naver_challenge),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = spannableString(
+                        textFront = "네이버 베스트 : ", color = color000000,
+                        textEnd = dataStore.getDataStoreString(
+                            DataStoreManager.MINING_NAVER_BEST_NOVEL
+                        ).collectAsState(initial = "").value ?: "",
+                    ),
+                    color = color20459E,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {},
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.logo_ridibooks),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = spannableString(
+                        textFront = "리디 판타지 : ", color = color000000,
+                        textEnd = dataStore.getDataStoreString(
+                            DataStoreManager.MINING_RIDI_FANTAGY_NOVEL
+                        ).collectAsState(initial = "").value ?: "",
+                    ),
+                    color = color20459E,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {},
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.logo_ridibooks),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = spannableString(
+                        textFront = "리디 로맨스 : ", color = color000000,
+                        textEnd = dataStore.getDataStoreString(
+                            DataStoreManager.MINING_RIDI_ROMANCE_NOVEL
+                        ).collectAsState(initial = "").value ?: "",
+                    ),
+                    color = color20459E,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {},
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.logo_onestore),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = spannableString(
+                        textFront = "원스토리 : ", color = color000000,
+                        textEnd = dataStore.getDataStoreString(
+                            DataStoreManager.MINING_ONESTORY_NOVEL
+                        ).collectAsState(initial = "").value ?: "",
+                    ),
+                    color = color20459E,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {},
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.logo_kakaostage),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = spannableString(
+                        textFront = "카카오 스테이지 : ", color = color000000,
+                        textEnd = dataStore.getDataStoreString(
+                            DataStoreManager.MINING_KAKAO_STAGE_NOVEL
+                        ).collectAsState(initial = "").value ?: "",
+                    ),
+                    color = color20459E,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {},
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.logo_munpia),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = spannableString(
+                        textFront = "문피아 : ", color = color000000,
+                        textEnd = dataStore.getDataStoreString(
+                            DataStoreManager.MINING_MUNPIA_NOVEL
+                        ).collectAsState(initial = "").value ?: "",
+                    ),
+                    color = color20459E,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {},
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.logo_toksoda),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = spannableString(
+                        textFront = "톡소다 : ", color = color000000,
+                        textEnd = dataStore.getDataStoreString(
+                            DataStoreManager.MINING_TOKSODA_NOVEL
+                        ).collectAsState(initial = "").value ?: "",
+                    ),
+                    color = color20459E,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
     Spacer(modifier = Modifier.size(60.dp))
 }
 
@@ -307,15 +537,22 @@ fun ContentsWebtoon() {
 
     Spacer(modifier = Modifier.size(60.dp))
 }
+
 @Composable
-fun ContentsNaverSeriesComic(viewModelMain: ViewModelMain) {
+fun ContentsPlatform(
+    viewModelMain: ViewModelMain,
+    platform: String,
+    type: String,
+    key: Preferences.Key<String>,
+    logo: Int
+) {
 
     val context = LocalContext.current
     getDataStoreStatus(context = context, update = {})
     val workManager = WorkManager.getInstance(context)
     val dataStore = DataStoreManager(context)
 
-    viewModelMain.getFCMList(child = "ALERT", activity = "NAVER_SERIES COMIC")
+    viewModelMain.getFCMList(child = "ALERT", activity = "$platform $type")
     val fcmAlertList = viewModelMain.state.collectAsState().value.fcmAlertList
 
     TabletContentWrapBtn(
@@ -324,8 +561,8 @@ fun ContentsNaverSeriesComic(viewModelMain: ViewModelMain) {
                 workManager = workManager,
                 delayMills = 15,
                 tag = "MINING",
-                platform = "NAVER_SERIES",
-                type = "COMIC"
+                platform = platform,
+                type = type
             )
         },
         content = {
@@ -335,7 +572,7 @@ fun ContentsNaverSeriesComic(viewModelMain: ViewModelMain) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.logo_naver),
+                    painter = painterResource(id = logo),
                     contentDescription = null,
                     modifier = Modifier
                         .width(20.dp)
@@ -345,7 +582,7 @@ fun ContentsNaverSeriesComic(viewModelMain: ViewModelMain) {
                 Spacer(modifier = Modifier.size(8.dp))
 
                 Text(
-                    text = "NAVER_SERIES COMIC",
+                    text = "$platform $type",
                     color = color000000,
                     fontSize = 18.sp,
                 )
@@ -360,9 +597,8 @@ fun ContentsNaverSeriesComic(viewModelMain: ViewModelMain) {
                 modifier = Modifier.fillMaxWidth(),
                 text = spannableString(
                     textFront = "최신화 현황 : ", color = color000000,
-                    textEnd = dataStore.getDataStoreString(
-                        DataStoreManager.MINING_NAVER_SERIES_COMIC
-                    ).collectAsState(initial = "").value ?: "",
+                    textEnd = dataStore.getDataStoreString(key).collectAsState(initial = "").value
+                        ?: "",
                 ),
                 color = color000000,
                 fontSize = 18.sp,
@@ -388,327 +624,7 @@ fun ContentsNaverSeriesComic(viewModelMain: ViewModelMain) {
 }
 
 @Composable
-fun ContentsNaverSeriesNovel(viewModelMain: ViewModelMain) {
-
-    viewModelMain.getFCMList(child = "ALERT", activity = "NAVER_SERIES NOVEL")
-    val fcmAlertList = viewModelMain.state.collectAsState().value.fcmAlertList
-
-    val context = LocalContext.current
-    getDataStoreStatus(context = context, update = {})
-    val workManager = WorkManager.getInstance(context)
-    val dataStore = DataStoreManager(context)
-
-    TabletContentWrapBtn(
-        onClick = {
-            PeriodicWorker.doWorker(
-                workManager = workManager,
-                delayMills = 15,
-                tag = "MINING",
-                platform = "NAVER_SERIES",
-                type = "NOVEL"
-            )
-        },
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_naver),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = "NAVER_SERIES NOVEL",
-                    color = color000000,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = {},
-        content = {
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = spannableString(
-                    textFront = "최신화 현황 : ", color = color000000,
-                    textEnd = dataStore.getDataStoreString(
-                        DataStoreManager.MINING_NAVER_SERIES_NOVEL
-                    ).collectAsState(initial = "").value ?: "",
-                ),
-                color = color000000,
-                fontSize = 18.sp,
-                textAlign = TextAlign.Start
-            )
-        }
-    )
-
-    TabletContentWrap {
-        Spacer(modifier = Modifier.size(8.dp))
-
-        fcmAlertList.forEachIndexed { index, item ->
-            ItemTabletFCMList(
-                item = item,
-                isLast = fcmAlertList.size - 1 == index
-            )
-        }
-
-        Spacer(modifier = Modifier.size(8.dp))
-    }
-
-    Spacer(modifier = Modifier.size(60.dp))
-}
-
-@Composable
-fun ContentsJoaraNovel(viewModelMain : ViewModelMain) {
-
-    val context = LocalContext.current
-    getDataStoreStatus(context = context, update = {})
-    val workManager = WorkManager.getInstance(context)
-    val dataStore = DataStoreManager(context)
-
-    viewModelMain.getFCMList(child = "ALERT", activity = "JOARA NOVEL")
-    val fcmAlertList = viewModelMain.state.collectAsState().value.fcmAlertList
-
-    TabletContentWrapBtn(
-        onClick = {
-            PeriodicWorker.doWorker(
-                workManager = workManager,
-                delayMills = 15,
-                tag = "MINING",
-                platform = "JOARA",
-                type = "NOVEL"
-            )
-        },
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_joara),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = "JOARA NOVEL",
-                    color = color000000,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = {},
-        content = {
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = spannableString(
-                    textFront = "최신화 현황 : ", color = color000000,
-                    textEnd = dataStore.getDataStoreString(
-                        DataStoreManager.MINING_JOARA_NOVEL
-                    ).collectAsState(initial = "").value ?: "",
-                ),
-                color = color000000,
-                fontSize = 18.sp,
-                textAlign = TextAlign.Start
-            )
-        }
-    )
-
-    TabletContentWrap {
-        Spacer(modifier = Modifier.size(8.dp))
-
-        fcmAlertList.forEachIndexed { index, item ->
-            ItemTabletFCMList(
-                item = item,
-                isLast = fcmAlertList.size - 1 == index
-            )
-        }
-
-        Spacer(modifier = Modifier.size(8.dp))
-    }
-
-    Spacer(modifier = Modifier.size(60.dp))
-}
-
-@Composable
-fun ContentsJoaraPremiumNovel(viewModelMain : ViewModelMain) {
-
-    val context = LocalContext.current
-    getDataStoreStatus(context = context, update = {})
-    val workManager = WorkManager.getInstance(context)
-    val dataStore = DataStoreManager(context)
-
-    viewModelMain.getFCMList(child = "ALERT", activity = "JOARA_PREMIUM NOVEL")
-    val fcmAlertList = viewModelMain.state.collectAsState().value.fcmAlertList
-
-    TabletContentWrapBtn(
-        onClick = {
-            PeriodicWorker.doWorker(
-                workManager = workManager,
-                delayMills = 15,
-                tag = "MINING",
-                platform = "JOARA_PREMIUM",
-                type = "NOVEL"
-            )
-        },
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_joara_premium),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = "JOARA_PREMIUM NOVEL",
-                    color = color000000,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = {},
-        content = {
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = spannableString(
-                    textFront = "최신화 현황 : ", color = color000000,
-                    textEnd = dataStore.getDataStoreString(
-                        DataStoreManager.MINING_JOARA_PREMIUM_NOVEL
-                    ).collectAsState(initial = "").value ?: "",
-                ),
-                color = color000000,
-                fontSize = 18.sp,
-                textAlign = TextAlign.Start
-            )
-        }
-    )
-
-    TabletContentWrap {
-        Spacer(modifier = Modifier.size(8.dp))
-
-        fcmAlertList.forEachIndexed { index, item ->
-            ItemTabletFCMList(
-                item = item,
-                isLast = fcmAlertList.size - 1 == index
-            )
-        }
-
-        Spacer(modifier = Modifier.size(8.dp))
-    }
-
-    Spacer(modifier = Modifier.size(60.dp))
-}
-
-@Composable
-fun ContentsJoaraNoblessNovel(viewModelMain : ViewModelMain) {
-
-    val context = LocalContext.current
-    getDataStoreStatus(context = context, update = {})
-    val workManager = WorkManager.getInstance(context)
-    val dataStore = DataStoreManager(context)
-
-    viewModelMain.getFCMList(child = "ALERT", activity = "JOARA_NOBLESS NOVEL")
-    val fcmAlertList = viewModelMain.state.collectAsState().value.fcmAlertList
-
-    TabletContentWrapBtn(
-        onClick = {
-            PeriodicWorker.doWorker(
-                workManager = workManager,
-                delayMills = 15,
-                tag = "MINING",
-                platform = "JOARA_NOBLESS",
-                type = "NOVEL"
-            )
-        },
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_joara_nobless),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = "JOARA_NOBLESS NOVEL",
-                    color = color000000,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = {},
-        content = {
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = spannableString(
-                    textFront = "최신화 현황 : ", color = color000000,
-                    textEnd = dataStore.getDataStoreString(
-                        DataStoreManager.MINING_JOARA_NOBLESS_NOVEL
-                    ).collectAsState(initial = "").value ?: "",
-                ),
-                color = color000000,
-                fontSize = 18.sp,
-                textAlign = TextAlign.Start
-            )
-        }
-    )
-
-    TabletContentWrap {
-        Spacer(modifier = Modifier.size(8.dp))
-
-        fcmAlertList.forEachIndexed { index, item ->
-            ItemTabletFCMList(
-                item = item,
-                isLast = fcmAlertList.size - 1 == index
-            )
-        }
-
-        Spacer(modifier = Modifier.size(8.dp))
-    }
-
-    Spacer(modifier = Modifier.size(60.dp))
-}
-
-@Composable
-fun ContentsNaverChallengeNovel(viewModelMain : ViewModelMain) {
+fun ContentsNaverChallengeNovel(viewModelMain: ViewModelMain) {
 
     val context = LocalContext.current
     getDataStoreStatus(context = context, update = {})

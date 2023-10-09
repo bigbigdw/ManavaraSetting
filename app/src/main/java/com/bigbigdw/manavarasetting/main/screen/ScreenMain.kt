@@ -84,9 +84,14 @@ import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.ui.theme.colorFDC24E
 import com.bigbigdw.manavarasetting.ui.theme.colorFFAC59
 import com.bigbigdw.manavarasetting.ui.theme.colorJOARA
+import com.bigbigdw.manavarasetting.ui.theme.colorKAKAO
+import com.bigbigdw.manavarasetting.ui.theme.colorMUNPIA
 import com.bigbigdw.manavarasetting.ui.theme.colorNAVER
 import com.bigbigdw.manavarasetting.ui.theme.colorNOBLESS
+import com.bigbigdw.manavarasetting.ui.theme.colorONESTORY
 import com.bigbigdw.manavarasetting.ui.theme.colorPREMIUM
+import com.bigbigdw.manavarasetting.ui.theme.colorRIDI
+import com.bigbigdw.manavarasetting.ui.theme.colorTOKSODA
 import com.bigbigdw.manavarasetting.util.BestRef
 import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.MiningSource
@@ -442,6 +447,131 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             onClick = { onClick() }
         )
 
+        TabletBorderLine()
+
+        ItemMainSettingSingleTablet(
+            containerColor = colorJOARA,
+            image = R.drawable.logo_joara,
+            title = "조아라 웹소설",
+            body = "조아라 웹소설 관리",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+
+        ItemMainSettingSingleTablet(
+            containerColor = colorPREMIUM,
+            image = R.drawable.logo_joara_premium,
+            title = "조아라 프리미엄 웹소설",
+            body = "조아라 프리미엄 웹소설 관리",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = colorNOBLESS,
+            image = R.drawable.logo_joara_nobless,
+            title = "조아라 노블레스 웹소설",
+            body = "조아라 노블레스 웹소설 관리",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = colorNAVER,
+            image = R.drawable.logo_naver,
+            title = "네이버 시리즈 웹소설",
+            body = "네이버 시리즈 웹소설 관리",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = colorCHALLENGE,
+            image = R.drawable.logo_naver_challenge,
+            title = "챌린지 리그 웹소설",
+            body = "네이버 챌린지 리그 웹소설 관리",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = colorCHALLENGE,
+            image = R.drawable.logo_naver_challenge,
+            title = "베스트 리그 웹소설",
+            body = "네이버 베스트 리그 웹소설 관리",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = colorRIDI,
+            image = R.drawable.logo_ridibooks,
+            title = "리디 판타지 웹소설",
+            body = "리디북스 판타지 웹소설 관리",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = colorRIDI,
+            image = R.drawable.logo_ridibooks,
+            title = "리디 로맨스 웹소설",
+            body = "리디북스 로맨스 웹소설 관리",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = colorONESTORY,
+            image = R.drawable.logo_onestore,
+            title = "원스토리 웹소설",
+            body = "원스토리 웹소설 관리",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = colorKAKAO,
+            image = R.drawable.logo_kakaostage,
+            title = "카카오 스테이지 웹소설",
+            body = "카카오 스테이지 웹소설 관리",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = colorMUNPIA,
+            image = R.drawable.logo_munpia,
+            title = "문피아 웹소설",
+            body = "문피아 웹소설 관리",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = colorTOKSODA,
+            image = R.drawable.logo_toksoda,
+            title = "톡소다 웹소설",
+            body = "톡소다 웹소설 관리",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        TabletBorderLine()
+
         ItemMainSettingSingleTablet(
             containerColor = colorABD436,
             image = R.drawable.icon_best_wht,
@@ -522,60 +652,6 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             onClick = { onClick() }
         )
 
-
-        TabletBorderLine()
-
-        ItemMainSettingSingleTablet(
-            containerColor = colorJOARA,
-            image = R.drawable.logo_joara,
-            title = "조아라 웹소설",
-            body = "조아라 웹소설 관리",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
-        )
-
-
-        ItemMainSettingSingleTablet(
-            containerColor = colorPREMIUM,
-            image = R.drawable.logo_joara_premium,
-            title = "조아라 프리미엄 웹소설",
-            body = "조아라 프리미엄 웹소설 관리",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = colorNOBLESS,
-            image = R.drawable.logo_joara_nobless,
-            title = "조아라 노블레스 웹소설",
-            body = "조아라 노블레스 웹소설 관리",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = colorCHALLENGE,
-            image = R.drawable.logo_naver_challenge,
-            title = "챌린지 리그 웹소설",
-            body = "네이버 챌린지 리그 웹소설 관리",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = colorNAVER,
-            image = R.drawable.logo_naver,
-            title = "네이버 시리즈 웹소설",
-            body = "네이버 시리즈 웹소설 관리",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
-        )
-
         TabletBorderLine()
 
         ItemMainSettingSingleTablet(
@@ -587,6 +663,20 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             getMenu = getMenu,
             onClick = { onClick() }
         )
+
+        TabletBorderLine()
+
+        ItemMainSettingSingleTablet(
+            containerColor = colorNAVER,
+            image = R.drawable.logo_naver,
+            title = "네이버 시리즈 웹툰",
+            body = "네이버 시리즈 웹툰 관리",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        TabletBorderLine()
 
         ItemMainSettingSingleTablet(
             containerColor = colorFDC24E,
@@ -662,18 +752,6 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             image = R.drawable.icon_trophy_wht,
             title = "웹툰 트로피 월간 토탈",
             body = "시간별 트로피 최신화 현황",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
-        )
-
-        TabletBorderLine()
-
-        ItemMainSettingSingleTablet(
-            containerColor = colorNAVER,
-            image = R.drawable.logo_naver,
-            title = "네이버 시리즈 웹툰",
-            body = "네이버 시리즈 웹툰 관리",
             setMenu = setMenu,
             getMenu = getMenu,
             onClick = { onClick() }
