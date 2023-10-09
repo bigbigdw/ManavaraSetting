@@ -146,7 +146,36 @@ fun doMining(
             )
         }
     } else if(platform == "NAVER_CHALLENGE") {
-        MiningSource.miningNaverChallenge(
+        MiningSource.miningNaver(
+            platform = platform,
+            type = type,
+            mining = "challenge",
+            yesterDatItemMap = yesterDayItemMap
+        ) { itemBookInfoList, itemBestInfoList ->
+            doResultMining(
+                platform = platform,
+                type = type,
+                itemBookInfoList = itemBookInfoList,
+                itemBestInfoList = itemBestInfoList
+            )
+        }
+    } else if(platform == "NAVER_BEST") {
+        MiningSource.miningNaver(
+            platform = platform,
+            type = type,
+            mining = "best",
+            yesterDatItemMap = yesterDayItemMap
+        ) { itemBookInfoList, itemBestInfoList ->
+            doResultMining(
+                platform = platform,
+                type = type,
+                itemBookInfoList = itemBookInfoList,
+                itemBestInfoList = itemBestInfoList
+            )
+        }
+    } else if(platform == "RIDI_FANTAGY") {
+        MiningSource.miningRidi(
+            mining = "1750",
             platform = platform,
             type = type,
             yesterDatItemMap = yesterDayItemMap
@@ -158,8 +187,9 @@ fun doMining(
                 itemBestInfoList = itemBestInfoList
             )
         }
-    } else if(platform == "NAVER_BEST") {
-        MiningSource.miningNaverBest(
+    } else if(platform == "RIDI_ROMANCE") {
+        MiningSource.miningRidi(
+            mining = "1650",
             platform = platform,
             type = type,
             yesterDatItemMap = yesterDayItemMap

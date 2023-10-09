@@ -161,25 +161,25 @@ fun getDataStoreStatus(context: Context, update : () -> Unit){
 fun checkMiningTrophyValue(yesterDayItem: ItemBookInfo) : ItemBookInfo{
 
     yesterDayItem.totalWeek = if (DBDate.getYesterdayDayOfWeek() == 7) {
-        1
+        0
     } else {
         yesterDayItem.totalWeek
     }
 
     yesterDayItem.totalWeekCount = if (DBDate.getYesterdayDayOfWeek() == 7) {
-        1
+        0
     } else {
         yesterDayItem.totalWeekCount
     }
 
     yesterDayItem.totalMonth = if (DBDate.datedd() == "01") {
-        1
+        0
     } else {
         yesterDayItem.totalMonth
     }
 
     yesterDayItem.totalMonthCount = if (DBDate.getYesterdayDayOfWeek() == 7) {
-        1
+        0
     } else {
         yesterDayItem.totalMonthCount
     }

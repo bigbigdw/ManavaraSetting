@@ -156,7 +156,7 @@ fun ScreenTablet(
                     )
                 }
                 "웹툰 JSON 주간 트로피" -> {
-                    ContentsBestJsonListNovel(
+                    ContentsBestJsonListComic(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         type = "JSON 주간 트로피",
@@ -174,7 +174,7 @@ fun ScreenTablet(
                     )
                 }
                 "웹툰 JSON 월간 트로피" -> {
-                    ContentsBestJsonListNovel(
+                    ContentsBestJsonListComic(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         type = "JSON 월간 트로피",
@@ -240,7 +240,7 @@ fun ScreenTablet(
                     ContentsDangerOption(viewModelMain = viewModelMain)
                 }
                 "실험실" -> {
-                    ContentsDangerLabs()
+                    ContentsLabs()
                 }
                 "웹툰 현황" -> {
                     ContentsWebtoon()

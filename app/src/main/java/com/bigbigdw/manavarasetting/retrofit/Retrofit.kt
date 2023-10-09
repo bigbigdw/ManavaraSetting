@@ -4,6 +4,7 @@ import com.bigbigdw.manavarasetting.retrofit.api.ApiJoara
 import com.bigbigdw.moavara.Retrofit.Api.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 
 object Retrofit {
 
@@ -39,7 +40,7 @@ object Retrofit {
 
     private val retrofitRidi = Retrofit.Builder()
         .baseUrl("https://ridibooks.com")
-        .addConverterFactory(GsonConverterFactory.create())
+        .addConverterFactory(ScalarsConverterFactory.create())
         .build()
 
     private val retrofitKakao2 = Retrofit.Builder()

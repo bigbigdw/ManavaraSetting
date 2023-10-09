@@ -370,6 +370,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         modifier = Modifier
             .width(360.dp)
             .fillMaxHeight()
+            .verticalScroll(rememberScrollState())
             .background(color = colorF6F6F6)
             .padding(8.dp, 0.dp)
             .semantics { contentDescription = "Overview Screen" },
@@ -778,7 +779,7 @@ fun ContentsDangerOption(viewModelMain: ViewModelMain) {
 }
 
 @Composable
-fun ContentsDangerLabs() {
+fun ContentsLabs() {
 
     val context = LocalContext.current
 
@@ -787,19 +788,19 @@ fun ContentsDangerLabs() {
             runBlocking {
                 if (DBDate.getDayOfWeekAsNumber() == 0) {
                     BestRef.setBestRef(
-                        platform = "NAVER_CHALLENGE",
+                        platform = "RIDI_FANTAGY",
                         type = "NOVEL"
                     )
                         .child("TROPHY_MONTH").removeValue()
                 }
 
                 if (DBDate.datedd() == "01") {
-                    BestRef.setBestRef(platform = "NAVER_CHALLENGE", type = "NOVEL")
+                    BestRef.setBestRef(platform = "RIDI_FANTAGY", type = "NOVEL")
                         .child("TROPHY_MONTH").removeValue()
                 }
 
                 MiningSource.mining(
-                    platform = "NAVER_CHALLENGE",
+                    platform = "RIDI_ROMANCE",
                     type = "NOVEL",
                     context = context
                 )
@@ -812,7 +813,7 @@ fun ContentsDangerLabs() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "NAVER_CHALLENGE NOVEL 원큐",
+                    text = "테스트",
                     color = color000000,
                     fontSize = 18.sp,
                 )

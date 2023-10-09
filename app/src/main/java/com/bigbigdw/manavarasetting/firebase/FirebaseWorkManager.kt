@@ -42,106 +42,29 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                 TYPE
             )
 
-        if (inputData.getString(PLATFORM) == "NAVER_SERIES") {
-            if (inputData.getString(TYPE) == "COMIC") {
-                runBlocking {
-                    if (DBDate.getDayOfWeekAsNumber() == 0) {
-                        BestRef.setBestRef(
-                            platform = inputData.getString(PLATFORM) ?: "",
-                            type = inputData.getString(TYPE) ?: "",
-                        )
-                            .child("TROPHY_MONTH").removeValue()
-                    }
-
-                    if (DBDate.datedd() == "01") {
-                        BestRef.setBestRef(
-                            platform = inputData.getString(PLATFORM) ?: "",
-                            type = inputData.getString(TYPE) ?: "",
-                        )
-                            .child("TROPHY_MONTH").removeValue()
-                    }
-
-                    MiningSource.mining(
-                        platform = inputData.getString(PLATFORM) ?: "",
-                        type = inputData.getString(TYPE) ?: "",
-                        context = applicationContext
-                    )
-                }
-            } else {
-                runBlocking {
-                    if (DBDate.getDayOfWeekAsNumber() == 0) {
-                        BestRef.setBestRef(
-                            platform = inputData.getString(PLATFORM) ?: "",
-                            type = inputData.getString(TYPE) ?: "",
-                        )
-                            .child("TROPHY_MONTH").removeValue()
-                    }
-
-                    if (DBDate.datedd() == "01") {
-                        BestRef.setBestRef(
-                            platform = inputData.getString(PLATFORM) ?: "",
-                            type = inputData.getString(TYPE) ?: "",
-                        )
-                            .child("TROPHY_MONTH").removeValue()
-                    }
-
-                    MiningSource.mining(
-                        platform = inputData.getString(PLATFORM) ?: "",
-                        type = inputData.getString(TYPE) ?: "",
-                        context = applicationContext
-                    )
-                }
-            }
-        } else if (inputData.getString(PLATFORM)?.contains("JOARA") == true) {
-            runBlocking {
-                if (DBDate.getDayOfWeekAsNumber() == 0) {
-                    BestRef.setBestRef(
-                        platform = inputData.getString(PLATFORM) ?: "",
-                        type = inputData.getString(TYPE) ?: "",
-                    ).child("TROPHY_MONTH").removeValue()
-                }
-
-                if (DBDate.datedd() == "01") {
-                    BestRef.setBestRef(
-                        platform = inputData.getString(PLATFORM) ?: "",
-                        type = inputData.getString(TYPE) ?: "",
-                    ).child("TROPHY_MONTH").removeValue()
-                }
-
-                MiningSource.mining(
+        runBlocking {
+            if (DBDate.getDayOfWeekAsNumber() == 0) {
+                BestRef.setBestRef(
                     platform = inputData.getString(PLATFORM) ?: "",
                     type = inputData.getString(TYPE) ?: "",
-                    context = applicationContext
                 )
+                    .child("TROPHY_MONTH").removeValue()
             }
-        } else if (inputData.getString(PLATFORM)?.contains("NAVER_CHALLENGE") == true) {
-            runBlocking {
-                runBlocking {
-                    if (DBDate.getDayOfWeekAsNumber() == 0) {
-                        BestRef.setBestRef(
-                            inputData.getString(PLATFORM) ?: "",
-                            type = inputData.getString(TYPE) ?: "",
-                        )
-                            .child("TROPHY_MONTH").removeValue()
-                    }
 
-                    if (DBDate.datedd() == "01") {
-                        BestRef.setBestRef(
-                            platform = inputData.getString(PLATFORM) ?: "",
-                            type = inputData.getString(TYPE) ?: ""
-                        )
-                            .child("TROPHY_MONTH").removeValue()
-                    }
-
-                    MiningSource.mining(
-                        platform = inputData.getString(PLATFORM) ?: "",
-                        type = inputData.getString(TYPE) ?: "",
-                        context = applicationContext
-                    )
-                }
+            if (DBDate.datedd() == "01") {
+                BestRef.setBestRef(
+                    platform = inputData.getString(PLATFORM) ?: "",
+                    type = inputData.getString(TYPE) ?: "",
+                )
+                    .child("TROPHY_MONTH").removeValue()
             }
+
+            MiningSource.mining(
+                platform = inputData.getString(PLATFORM) ?: "",
+                type = inputData.getString(TYPE) ?: "",
+                context = applicationContext
+            )
         }
-
 
         postFCM(
             data = workerName,
