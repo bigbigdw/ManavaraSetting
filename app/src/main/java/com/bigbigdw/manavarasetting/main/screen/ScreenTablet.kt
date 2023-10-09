@@ -224,7 +224,7 @@ fun ScreenTablet(
                         viewModelMain = viewModelMain,
                         platform = "NAVER_SERIES",
                         type = "COMIC",
-                        key = DataStoreManager.MINING_JOARA_PREMIUM_NOVEL,
+                        key = DataStoreManager.MINING_NAVER_SERIES_COMIC,
                         logo = R.drawable.logo_naver
                     )
                 }
@@ -233,7 +233,7 @@ fun ScreenTablet(
                         viewModelMain = viewModelMain,
                         platform = "NAVER_SERIES",
                         type = "NOVEL",
-                        key = DataStoreManager.MINING_JOARA_PREMIUM_NOVEL,
+                        key = DataStoreManager.MINING_NAVER_SERIES_NOVEL,
                         logo = R.drawable.logo_naver
                     )
                 }
@@ -242,11 +242,11 @@ fun ScreenTablet(
                         viewModelMain = viewModelMain,
                         platform = "JOARA",
                         type = "NOVEL",
-                        key = DataStoreManager.MINING_JOARA_PREMIUM_NOVEL,
+                        key = DataStoreManager.MINING_JOARA_NOVEL,
                         logo = R.drawable.logo_joara
                     )
                 }
-                "조아라 노블레스 웹소설" -> {
+                "조아라 프리미엄 웹소설" -> {
                     ContentsPlatform(
                         viewModelMain = viewModelMain,
                         platform = "JOARA_NOBLESS",
@@ -255,12 +255,12 @@ fun ScreenTablet(
                         logo = R.drawable.logo_joara_nobless
                     )
                 }
-                "조아라 프리미엄 웹소설" -> {
+                "조아라 노블레스 웹소설" -> {
                     ContentsPlatform(
                         viewModelMain = viewModelMain,
                         platform = "JOARA_PREMIUM",
                         type = "NOVEL",
-                        key = DataStoreManager.MINING_JOARA_PREMIUM_NOVEL,
+                        key = DataStoreManager.MINING_JOARA_NOBLESS_NOVEL,
                         logo = R.drawable.logo_joara_premium
                     )
                 }

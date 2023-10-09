@@ -164,6 +164,7 @@ fun ContentsBestListNovel(
 
     TabletContentWrapBtn(
         onClick = {
+            setDetailPage(true)
             setDetailMenu("네이버 챌린지 베스트")
             setDetailPlatform("NAVER_CHALLENGE")
             setDetailType("NOVEL")
@@ -196,6 +197,7 @@ fun ContentsBestListNovel(
 
     TabletContentWrapBtn(
         onClick = {
+            setDetailPage(true)
             setDetailMenu("네이버 베스트 베스트")
             setDetailPlatform("NAVER_BEST")
             setDetailType("NOVEL")
@@ -228,6 +230,7 @@ fun ContentsBestListNovel(
 
     TabletContentWrapBtn(
         onClick = {
+            setDetailPage(true)
             setDetailMenu("리디북스 판타지 베스트")
             setDetailPlatform("RIDI_FANTAGY")
             setDetailType("NOVEL")
@@ -260,6 +263,7 @@ fun ContentsBestListNovel(
 
     TabletContentWrapBtn(
         onClick = {
+            setDetailPage(true)
             setDetailMenu("리디북스 로맨스 베스트")
             setDetailPlatform("RIDI_ROMANCE")
             setDetailType("NOVEL")
@@ -292,6 +296,7 @@ fun ContentsBestListNovel(
 
     TabletContentWrapBtn(
         onClick = {
+            setDetailPage(true)
             setDetailMenu("원스토리 베스트")
             setDetailPlatform("ONESTORY")
             setDetailType("NOVEL")
@@ -324,6 +329,7 @@ fun ContentsBestListNovel(
 
     TabletContentWrapBtn(
         onClick = {
+            setDetailPage(true)
             setDetailMenu("카카오 스테이지 베스트")
             setDetailPlatform("KAKAO_STAGE")
             setDetailType("NOVEL")
@@ -356,6 +362,7 @@ fun ContentsBestListNovel(
 
     TabletContentWrapBtn(
         onClick = {
+            setDetailPage(true)
             setDetailMenu("문피아 베스트")
             setDetailPlatform("MUNPIA")
             setDetailType("NOVEL")
@@ -388,6 +395,7 @@ fun ContentsBestListNovel(
 
     TabletContentWrapBtn(
         onClick = {
+            setDetailPage(true)
             setDetailMenu("톡소다 베스트")
             setDetailPlatform("TOKSODA")
             setDetailType("NOVEL")

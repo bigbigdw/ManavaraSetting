@@ -36,7 +36,9 @@ import com.bigbigdw.manavarasetting.ui.theme.color20459E
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.util.DataStoreManager
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
+import com.bigbigdw.manavarasetting.util.doMining
 import com.bigbigdw.manavarasetting.util.getDataStoreStatus
+import kotlinx.coroutines.runBlocking
 
 
 @Composable
@@ -557,13 +559,14 @@ fun ContentsPlatform(
 
     TabletContentWrapBtn(
         onClick = {
-            PeriodicWorker.doWorker(
-                workManager = workManager,
-                delayMills = 15,
-                tag = "MINING",
-                platform = platform,
-                type = type
-            )
+            runBlocking {
+                doMining(
+                    platform = platform,
+                    type = type,
+                    yesterDayItemMap = mutableMapOf(),
+                    context = context
+                )
+            }
         },
         content = {
             Row(
@@ -623,82 +626,3 @@ fun ContentsPlatform(
     Spacer(modifier = Modifier.size(60.dp))
 }
 
-@Composable
-fun ContentsNaverChallengeNovel(viewModelMain: ViewModelMain) {
-
-    val context = LocalContext.current
-    getDataStoreStatus(context = context, update = {})
-    val workManager = WorkManager.getInstance(context)
-    val dataStore = DataStoreManager(context)
-
-    viewModelMain.getFCMList(child = "ALERT", activity = "NAVER_CHALLENGE NOVEL")
-    val fcmAlertList = viewModelMain.state.collectAsState().value.fcmAlertList
-
-    TabletContentWrapBtn(
-        onClick = {
-            PeriodicWorker.doWorker(
-                workManager = workManager,
-                delayMills = 15,
-                tag = "MINING",
-                platform = "NAVER_CHALLENGE",
-                type = "NOVEL"
-            )
-        },
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_naver_challenge),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = "NAVER_CHALLENGE NOVEL",
-                    color = color000000,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = {},
-        content = {
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = spannableString(
-                    textFront = "최신화 현황 : ", color = color000000,
-                    textEnd = dataStore.getDataStoreString(
-                        DataStoreManager.MINING_NAVER_CHALLENGE_NOVEL
-                    ).collectAsState(initial = "").value ?: "",
-                ),
-                color = color000000,
-                fontSize = 18.sp,
-                textAlign = TextAlign.Start
-            )
-        }
-    )
-
-    TabletContentWrap {
-        Spacer(modifier = Modifier.size(8.dp))
-
-        fcmAlertList.forEachIndexed { index, item ->
-            ItemTabletFCMList(
-                item = item,
-                isLast = fcmAlertList.size - 1 == index
-            )
-        }
-
-        Spacer(modifier = Modifier.size(8.dp))
-    }
-
-    Spacer(modifier = Modifier.size(60.dp))
-}

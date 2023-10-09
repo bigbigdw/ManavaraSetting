@@ -206,6 +206,7 @@ fun ContentsBestJsonListNovel(
 
     TabletContentWrapBtn(
         onClick = {
+            setDetailPage(true)
             setDetailMenu("네이버 챌린지 $type")
             setDetailPlatform("NAVER_CHALLENGE")
             setDetailType("NOVEL")
@@ -238,6 +239,7 @@ fun ContentsBestJsonListNovel(
 
     TabletContentWrapBtn(
         onClick = {
+            setDetailPage(true)
             setDetailMenu("네이버 베스트 $type")
             setDetailPlatform("NAVER_BEST")
             setDetailType("NOVEL")
@@ -270,6 +272,7 @@ fun ContentsBestJsonListNovel(
 
     TabletContentWrapBtn(
         onClick = {
+            setDetailPage(true)
             setDetailMenu("리디북스 판타지 $type")
             setDetailPlatform("RIDI_FANTAGY")
             setDetailType("NOVEL")
@@ -302,6 +305,7 @@ fun ContentsBestJsonListNovel(
 
     TabletContentWrapBtn(
         onClick = {
+            setDetailPage(true)
             setDetailMenu("리디북스 로맨스 $type")
             setDetailPlatform("RIDI_ROMANCE")
             setDetailType("NOVEL")
@@ -334,6 +338,7 @@ fun ContentsBestJsonListNovel(
 
     TabletContentWrapBtn(
         onClick = {
+            setDetailPage(true)
             setDetailMenu("원스토리 $type")
             setDetailPlatform("ONESTORY")
             setDetailType("NOVEL")
@@ -366,6 +371,7 @@ fun ContentsBestJsonListNovel(
 
     TabletContentWrapBtn(
         onClick = {
+            setDetailPage(true)
             setDetailMenu("카카오 스테이지 $type")
             setDetailPlatform("KAKAO_STAGE")
             setDetailType("NOVEL")
@@ -398,6 +404,7 @@ fun ContentsBestJsonListNovel(
 
     TabletContentWrapBtn(
         onClick = {
+            setDetailPage(true)
             setDetailMenu("문피아 $type")
             setDetailPlatform("MUNPIA")
             setDetailType("NOVEL")
@@ -430,6 +437,7 @@ fun ContentsBestJsonListNovel(
 
     TabletContentWrapBtn(
         onClick = {
+            setDetailPage(true)
             setDetailMenu("톡소다 $type")
             setDetailPlatform("TOKSODA")
             setDetailType("NOVEL")

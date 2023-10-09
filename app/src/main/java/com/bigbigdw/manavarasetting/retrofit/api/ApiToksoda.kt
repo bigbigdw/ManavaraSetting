@@ -7,7 +7,7 @@ import retrofit2.http.*
 
 interface ApiToksoda {
     @Headers("Accept-Encoding: identity")
-    @GET("getMainChargeProductList")
+    @GET("getTotalBestList")
     fun getBestList(@QueryMap queryMap: MutableMap<String?, Any>): Call<BestToksodaResult>
 
 }
