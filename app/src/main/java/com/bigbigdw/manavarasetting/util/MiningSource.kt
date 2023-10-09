@@ -4,10 +4,18 @@ import android.content.Context
 import android.util.Log
 import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
 import com.bigbigdw.manavarasetting.util.DBDate.dateMMDD
+import com.bigbigdw.manavarasetting.retrofit.result.BestMoonpiaResult
+import com.bigbigdw.moavara.Retrofit.BestResultKakaoStageNovel
+import com.bigbigdw.manavarasetting.retrofit.result.BestToksodaResult
 import com.bigbigdw.moavara.Retrofit.JoaraBestListResult
+import com.bigbigdw.manavarasetting.retrofit.result.OneStoreBookResult
 import com.bigbigdw.moavara.Retrofit.RetrofitDataListener
 import com.bigbigdw.moavara.Retrofit.RetrofitJoara
+import com.bigbigdw.moavara.Retrofit.RetrofitKaKao
+import com.bigbigdw.moavara.Retrofit.RetrofitMoonPia
+import com.bigbigdw.moavara.Retrofit.RetrofitOnestore
 import com.bigbigdw.moavara.Retrofit.RetrofitRidi
+import com.bigbigdw.moavara.Retrofit.RetrofitToksoda
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.google.gson.JsonArray
@@ -91,7 +99,7 @@ object MiningSource {
     fun miningNaverSeriesComic(
         platform: String,
         type: String,
-        yesterDatItemMap: MutableMap<String, ItemBookInfo>,
+        yesterDayItemMap: MutableMap<String, ItemBookInfo>,
         callBack: (JsonArray, JsonArray) -> Unit
     ){
         Thread{
@@ -111,7 +119,7 @@ object MiningSource {
                     val bookCode = naverSeries.select(".comic_cont a")[i].absUrl("href").replace("https://series.naver.com/comic/detail.series?productNo=", "")
                     val point = (naverSeries.size * 5) - ((naverSeries.size * (pageCount - 1)) + i)
 
-                    val yesterDayItem = checkMiningTrophyValue(yesterDatItemMap[bookCode] ?: ItemBookInfo())
+                    val yesterDayItem = checkMiningTrophyValue(yesterDayItemMap[bookCode] ?: ItemBookInfo())
 
                     ref["writerName"] = naverSeries[i].select(".comic_cont .info .ellipsis .author").first()?.text() ?: ""
                     ref["subject"] = naverSeries.select(".comic_cont h3 a")[i].text()
@@ -130,8 +138,8 @@ object MiningSource {
                     ref["totalMonth"] = yesterDayItem.totalMonth + point
                     ref["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
                     ref["currentDiff"] =
-                        if (yesterDatItemMap[bookCode]?.currentDiff != null) {
-                            (yesterDatItemMap[bookCode]?.currentDiff ?: 0) - ((naverSeries.size * (pageCount - 1)) + i)
+                        if (yesterDayItemMap[bookCode]?.currentDiff != null) {
+                            (yesterDayItemMap[bookCode]?.currentDiff ?: 0) - ((naverSeries.size * (pageCount - 1)) + i)
                         } else {
                             0
                         }
@@ -160,7 +168,7 @@ object MiningSource {
     fun miningNaverSeriesNovel(
         platform: String,
         type: String,
-        yesterDatItemMap: MutableMap<String, ItemBookInfo>,
+        yesterDayItemMap: MutableMap<String, ItemBookInfo>,
         callBack: (JsonArray, JsonArray) -> Unit
     ){
         Thread{
@@ -178,7 +186,7 @@ object MiningSource {
                     val bookCode = naverSeries.select(".comic_cont a")[i].absUrl("href").replace("https://series.naver.com/novel/detail.series?productNo=", "")
                     val point = (naverSeries.size * 5) - ((naverSeries.size * (pageCount - 1)) + i)
 
-                    val yesterDayItem = checkMiningTrophyValue(yesterDatItemMap[bookCode] ?: ItemBookInfo())
+                    val yesterDayItem = checkMiningTrophyValue(yesterDayItemMap[bookCode] ?: ItemBookInfo())
 
                     ref["writerName"] = naverSeries[i].select(".comic_cont .info .ellipsis .author").first()?.text() ?: ""
                     ref["subject"] = naverSeries.select(".comic_cont h3 a")[i].text()
@@ -197,8 +205,8 @@ object MiningSource {
                     ref["totalMonth"] = yesterDayItem.totalMonth + point
                     ref["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
                     ref["currentDiff"] =
-                        if (yesterDatItemMap[bookCode]?.currentDiff != null) {
-                            (yesterDatItemMap[bookCode]?.currentDiff ?: 0) - ((naverSeries.size * (pageCount - 1)) + i)
+                        if (yesterDayItemMap[bookCode]?.currentDiff != null) {
+                            (yesterDayItemMap[bookCode]?.currentDiff ?: 0) - ((naverSeries.size * (pageCount - 1)) + i)
                         } else {
                             0
                         }
@@ -229,7 +237,7 @@ object MiningSource {
         mining: String,
         platform: String,
         type: String,
-        yesterDatItemMap: MutableMap<String, ItemBookInfo>,
+        yesterDayItemMap: MutableMap<String, ItemBookInfo>,
         callBack: (JsonArray, JsonArray) -> Unit
     ){
         val ref: MutableMap<String?, Any> = HashMap()
@@ -258,9 +266,9 @@ object MiningSource {
 
                             val bookCode = books[i].bookCode
                             val point = books.size - i
-                            val number = i
 
-                            val yesterDayItem = checkMiningTrophyValue(yesterDatItemMap[bookCode] ?: ItemBookInfo())
+                            val yesterDayItem =
+                                checkMiningTrophyValue(yesterDayItemMap[bookCode] ?: ItemBookInfo())
 
                             ref["keyword"] = books[i].keyword
 
@@ -274,7 +282,7 @@ object MiningSource {
                             ref["cntFavorite"] = books[i].cntFavorite
                             ref["cntRecom"] = books[i].cntRecom
                             ref["cntTotalComment"] = books[i].cntTotalComment
-                            ref["number"] = number
+                            ref["number"] = i
                             ref["point"] = point
 
                             ref["total"] = yesterDayItem.point + point
@@ -284,8 +292,8 @@ object MiningSource {
                             ref["totalMonth"] = yesterDayItem.totalMonth + point
                             ref["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
                             ref["currentDiff"] =
-                                if (yesterDatItemMap[bookCode]?.currentDiff != null) {
-                                    (yesterDatItemMap[bookCode]?.currentDiff ?: 0) - number
+                                if (yesterDayItemMap[bookCode]?.currentDiff != null) {
+                                    (yesterDayItemMap[bookCode]?.currentDiff ?: 0) - i
                                 } else {
                                     0
                                 }
@@ -295,7 +303,7 @@ object MiningSource {
 
                             miningValue(
                                 ref = ref,
-                                num = number,
+                                num = i,
                                 platform = platform,
                                 type = type
                             )
@@ -314,7 +322,7 @@ object MiningSource {
         platform: String,
         mining: String,
         type: String,
-        yesterDatItemMap: MutableMap<String, ItemBookInfo>,
+        yesterDayItemMap: MutableMap<String, ItemBookInfo>,
         callBack: (JsonArray, JsonArray) -> Unit
     ){
         Thread{
@@ -330,7 +338,7 @@ object MiningSource {
                 val bookCode = naverSeries.select("a")[i].absUrl("href").replace("https://novel.naver.com/${mining}/list?novelId=", "")
                 val point = naverSeries.size - i
 
-                val yesterDayItem = checkMiningTrophyValue(yesterDatItemMap[bookCode] ?: ItemBookInfo())
+                val yesterDayItem = checkMiningTrophyValue(yesterDayItemMap[bookCode] ?: ItemBookInfo())
 
                 ref["writerName"] = naverSeries.select(".info_group .author")[i].text()
                 ref["subject"] = naverSeries.select(".title_group .title")[i].text()
@@ -350,8 +358,8 @@ object MiningSource {
                 ref["totalMonth"] = yesterDayItem.totalMonth + point
                 ref["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
                 ref["currentDiff"] =
-                    if (yesterDatItemMap[bookCode]?.currentDiff != null) {
-                        (yesterDatItemMap[bookCode]?.currentDiff ?: 0) - i
+                    if (yesterDayItemMap[bookCode]?.currentDiff != null) {
+                        (yesterDayItemMap[bookCode]?.currentDiff ?: 0) - i
                     } else {
                         0
                     }
@@ -379,74 +387,178 @@ object MiningSource {
         mining: String,
         platform: String,
         type: String,
-        yesterDatItemMap: MutableMap<String, ItemBookInfo>,
+        yesterDayItemMap: MutableMap<String, ItemBookInfo>,
         callBack: (JsonArray, JsonArray) -> Unit
     ) {
-        try {
-            val ref: MutableMap<String?, Any> = HashMap()
 
-            val apiRidi = RetrofitRidi()
-            val param: MutableMap<String?, Any> = HashMap()
-            param["tab"] = "bestsellers"
-            param["category"] = mining
+        for(page in 1..2){
+            try {
+                val ref: MutableMap<String?, Any> = HashMap()
 
-            val itemBookInfoList = JsonArray()
-            val itemBestInfoList = JsonArray()
+                val apiRidi = RetrofitRidi()
+                val param: MutableMap<String?, Any> = HashMap()
+                param["tab"] = "bestsellers"
+                param["category"] = mining
+                param["page"] = page
 
-            apiRidi.getRidiRomance(
-                value = mining,
-                map = param,
-                object : RetrofitDataListener<String> {
-                    override fun onSuccess(data: String) {
+                val itemBookInfoList = JsonArray()
+                val itemBestInfoList = JsonArray()
 
-                        val baseJSONObject = JSONObject(data)
+                apiRidi.getRidiRomance(
+                    value = mining,
+                    map = param,
+                    object : RetrofitDataListener<String> {
+                        override fun onSuccess(data: String) {
 
-                        val result = baseJSONObject.optJSONObject("pageProps")
-                            ?.optJSONObject("dehydratedState")?.optJSONArray("queries")
-                            ?.get(3)
+                            val baseJSONObject = JSONObject(data)
 
-                        val productList = JSONObject(result.toString()).optJSONObject("state")
-                            ?.optJSONArray("data")
+                            val result = baseJSONObject.optJSONObject("pageProps")
+                                ?.optJSONObject("dehydratedState")?.optJSONArray("queries")
+                                ?.get(3)
 
-                        if (productList != null) {
-                            for (i in 0 until productList.length()) {
+                            val productList = JSONObject(result.toString()).optJSONObject("state")
+                                ?.optJSONArray("data")
 
-                                val jsonObject = productList.getJSONObject(i).optJSONObject("book")
+                            if (productList != null) {
+                                for (i in 0 until productList.length()) {
 
-                                if (jsonObject != null) {
+                                    val jsonObject = productList.getJSONObject(i).optJSONObject("book")
 
-                                    val bookCode = jsonObject.optString("bookId")
-                                    val point = productList.length() - i
-                                    val number = i
+                                    if (jsonObject != null) {
 
-                                    val yesterDayItem = checkMiningTrophyValue(yesterDatItemMap[bookCode] ?: ItemBookInfo())
+                                        val bookCode = jsonObject.optString("bookId")
+                                        val point = (productList.length() * 4) - ((productList.length() * (page - 1)) + i)
+                                        val number = ((productList.length() * (page - 1)) + i)
 
-                                    val ratings = jsonObject.optJSONArray("ratings")
+                                        val yesterDayItem = checkMiningTrophyValue(yesterDayItemMap[bookCode] ?: ItemBookInfo())
 
-                                    var ratingCount = 0F
-                                    var ratePoints = 0F
+                                        val ratings = jsonObject.optJSONArray("ratings")
 
-                                    if (ratings != null) {
-                                        for (j in 0 until ratings.length()) {
-                                            val rate = ratings.getJSONObject(j)
+                                        var ratingCount = 0F
+                                        var ratePoints = 0F
 
-                                            ratingCount += rate.optInt("count")
-                                            ratePoints += rate.optInt("count") * rate.optInt("rating")
+                                        if (ratings != null) {
+                                            for (j in 0 until ratings.length()) {
+                                                val rate = ratings.getJSONObject(j)
+
+                                                ratingCount += rate.optInt("count")
+                                                ratePoints += rate.optInt("count") * rate.optInt("rating")
+                                            }
                                         }
+
+                                        ref["writerName"] = JSONObject(jsonObject.optJSONArray("authors")?.get(0).toString()).optString("name") ?: ""
+                                        ref["subject"] = jsonObject.optString("title")
+                                        ref["bookImg"] = jsonObject.optJSONObject("cover")?.optString("xxlarge") ?: ""
+                                        ref["bookCode"] = bookCode
+                                        ref["intro"] = jsonObject.optJSONObject("introduction")?.optString("description") ?: ""
+                                        ref["cntChapter"] = "총 ${jsonObject.optJSONObject("serial")?.optString("total") ?: ""}화"
+                                        ref["cntRecom"] = if (ratingCount == 0F) {
+                                            "0"
+                                        } else {
+                                            String.format("%.1f", ratePoints / ratingCount)
+                                        }
+                                        ref["cntPageRead"] = ratingCount.toInt().toString()
+                                        ref["number"] = number
+                                        ref["point"] = point
+
+                                        ref["total"] = yesterDayItem.point + point
+                                        ref["totalCount"] = yesterDayItem.totalCount + 1
+                                        ref["totalWeek"] = yesterDayItem.totalWeek + point
+                                        ref["totalWeekCount"] = yesterDayItem.totalWeekCount + 1
+                                        ref["totalMonth"] = yesterDayItem.totalMonth + point
+                                        ref["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
+                                        ref["currentDiff"] =
+                                            if (yesterDayItemMap[bookCode]?.currentDiff != null) {
+                                                (yesterDayItemMap[bookCode]?.currentDiff ?: 0) - number
+                                            } else {
+                                                0
+                                            }
+
+                                        ref["date"] = dateMMDD()
+                                        ref["type"] = platform
+
+                                        miningValue(
+                                            ref = ref,
+                                            num = number,
+                                            platform = platform,
+                                            type = type
+                                        )
+
+                                        itemBookInfoList.add(convertItemBook(BestRef.setItemBookInfoRef(ref)))
+                                        itemBestInfoList.add(convertItemBest(BestRef.setItemBestInfoRef(ref)))
                                     }
 
-                                    ref["writerName"] = JSONObject(jsonObject.optJSONArray("authors")?.get(0).toString()).optString("name") ?: ""
-                                    ref["subject"] = jsonObject.optString("title")
-                                    ref["bookImg"] = jsonObject.optJSONObject("cover")?.optString("xxlarge") ?: ""
+
+                                }
+                            }
+
+                            callBack.invoke(itemBookInfoList, itemBestInfoList)
+                        }
+                    })
+            } catch (exception: Exception) {
+                Log.d("RIDI EXCEPTION", "RIDI")
+            }
+        }
+    }
+
+    fun miningOnestory(
+        platform: String,
+        type: String,
+        yesterDayItemMap: MutableMap<String, ItemBookInfo>,
+        callBack: (JsonArray, JsonArray) -> Unit
+    ) {
+
+        for(page in 1..4){
+            try {
+                val ref: MutableMap<String?, Any> = HashMap()
+
+                val apiOneStory = RetrofitOnestore()
+                val param: MutableMap<String?, Any> = HashMap()
+                param["menuId"] = "DP13041|DP13042|DP13043|DP13044"
+                param["startKey"] = when (page) {
+                    1 -> {
+                        ""
+                    }
+                    2 -> {
+                        "61/0"
+                    }
+                    3 -> {
+                        "125/0"
+                    }
+                    else -> {
+                        "183/0"
+                    }
+                }
+
+                val itemBookInfoList = JsonArray()
+                val itemBestInfoList = JsonArray()
+
+
+                apiOneStory.getBestOneStore(
+                    param,
+                    object : RetrofitDataListener<OneStoreBookResult> {
+                        override fun onSuccess(data: OneStoreBookResult) {
+
+                            val productList = data.params?.productList
+
+                            if (productList != null) {
+                                for (i in productList.indices) {
+
+                                    val bookCode = productList[i].prodId
+                                    val point = (productList.size * 4) - ((productList.size * (page - 1)) + i)
+                                    val number = ((productList.size * (page - 1)) + i)
+
+                                    val yesterDayItem = checkMiningTrophyValue(yesterDayItemMap[bookCode] ?: ItemBookInfo())
+
+                                    ref["writerName"] = productList[i].artistNm
+                                    ref["subject"] = productList[i].prodNm
+                                    ref["bookImg"] =
+                                        "https://img.onestore.co.kr/thumbnails/img_sac/224_320_F10_95/" + productList[i].thumbnailImageUrl
                                     ref["bookCode"] = bookCode
-                                    ref["intro"] = jsonObject.optJSONObject("introduction")?.optString("description") ?: ""
-                                    ref["cntChapter"] = "총 ${jsonObject.optJSONObject("serial")?.optString("total") ?: ""}화"
-                                    ref["cntRecom"] = if (ratingCount == 0F) {
-                                        "0"
-                                    } else {
-                                        String.format("%.1f", ratePoints / ratingCount)
-                                    }
-                                    ref["cntPageRead"] = ratingCount.toInt().toString()
+                                    ref["cntPageRead"] = productList[i].totalCount
+                                    ref["cntRecom"] = productList[i].avgScore
+                                    ref["cntTotalComment"] = productList[i].commentCount
+
                                     ref["number"] = number
                                     ref["point"] = point
 
@@ -457,8 +569,197 @@ object MiningSource {
                                     ref["totalMonth"] = yesterDayItem.totalMonth + point
                                     ref["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
                                     ref["currentDiff"] =
-                                        if (yesterDatItemMap[bookCode]?.currentDiff != null) {
-                                            (yesterDatItemMap[bookCode]?.currentDiff ?: 0) - number
+                                        if (yesterDayItemMap[bookCode]?.currentDiff != null) {
+                                            (yesterDayItemMap[bookCode]?.currentDiff ?: 0) - number
+                                        } else {
+                                            0
+                                        }
+
+                                    ref["date"] = dateMMDD()
+                                    ref["type"] = platform
+
+                                    miningValue(
+                                        ref = ref,
+                                        num = number,
+                                        platform = platform,
+                                        type = type
+                                    )
+
+                                    itemBookInfoList.add(convertItemBook(BestRef.setItemBookInfoRef(ref)))
+                                    itemBestInfoList.add(convertItemBest(BestRef.setItemBestInfoRef(ref)))
+
+                                }
+                            }
+
+                            callBack.invoke(itemBookInfoList, itemBestInfoList)
+                        }
+                    })
+            } catch (exception: Exception) {
+                Log.d("EXCEPTION", "ONESTORE")
+            }
+        }
+    }
+
+    fun miningKakaoStage(
+        platform: String,
+        type: String,
+        yesterDayItemMap: MutableMap<String, ItemBookInfo>,
+        callBack: (JsonArray, JsonArray) -> Unit
+    ) {
+        val ref: MutableMap<String?, Any> = HashMap()
+
+        val apiKakao = RetrofitKaKao()
+        val param: MutableMap<String?, Any> = HashMap()
+
+        param["adult"] = "false"
+        param["dateRange"] = "YESTERDAY"
+        param["genreIds"] = "7,1,2,3,4,5,6"
+        param["recentHours"] = "72"
+
+        val itemBookInfoList = JsonArray()
+        val itemBestInfoList = JsonArray()
+
+        apiKakao.getBestKakaoStage(
+            param,
+            object : RetrofitDataListener<List<BestResultKakaoStageNovel>> {
+                override fun onSuccess(data: List<BestResultKakaoStageNovel>) {
+
+                    data.let {
+
+                        val list = it
+
+                        for (i in list.indices) {
+
+                            val novel = list[i].novel
+                            val bookCode = novel?.stageSeriesNumber ?: ""
+                            val point = list.size - i
+                            val number = i
+
+                            val yesterDayItem = checkMiningTrophyValue(yesterDayItemMap[bookCode] ?: ItemBookInfo())
+
+                            ref["genre"] = list[i].novel?.subGenre?.name ?: ""
+                            ref["keyword"] = ArrayList<String>()
+
+                            ref["writerName"] = novel!!.nickname!!.name
+                            ref["subject"] = novel.title
+                            ref["bookImg"] = novel.thumbnail!!.url
+                            ref["bookCode"] = bookCode
+                            ref["intro"] =novel.synopsis
+                            ref["cntChapter"] = "총 ${novel.publishedEpisodeCount}화"
+                            ref["cntPageRead"] = novel.visitorCount
+                            ref["cntFavorite"] = novel.favoriteCount
+                            ref["cntRecom"] = novel.episodeLikeCount
+                            ref["number"] = number
+                            ref["point"] = point
+
+                            ref["total"] = yesterDayItem.point + point
+                            ref["totalCount"] = yesterDayItem.totalCount + 1
+                            ref["totalWeek"] = yesterDayItem.totalWeek + point
+                            ref["totalWeekCount"] = yesterDayItem.totalWeekCount + 1
+                            ref["totalMonth"] = yesterDayItem.totalMonth + point
+                            ref["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
+                            ref["currentDiff"] =
+                                if (yesterDayItemMap[bookCode]?.currentDiff != null) {
+                                    (yesterDayItemMap[bookCode]?.currentDiff ?: 0) - number
+                                } else {
+                                    0
+                                }
+
+                            ref["date"] = dateMMDD()
+                            ref["type"] = platform
+
+                            miningValue(
+                                ref = ref,
+                                num = number,
+                                platform = platform,
+                                type = type
+                            )
+
+                            itemBookInfoList.add(convertItemBook(BestRef.setItemBookInfoRef(ref)))
+                            itemBestInfoList.add(convertItemBest(BestRef.setItemBestInfoRef(ref)))
+                        }
+
+                        callBack.invoke(itemBookInfoList, itemBestInfoList)
+
+                    }
+                }
+            })
+    }
+
+    fun miningMunpia(
+        platform: String,
+        type: String,
+        yesterDayItemMap: MutableMap<String, ItemBookInfo>,
+        callBack: (JsonArray, JsonArray) -> Unit
+    ) {
+
+        for(page in 1..4){
+            val ref: MutableMap<String?, Any> = HashMap()
+
+            val apiMoonPia = RetrofitMoonPia()
+            val param: MutableMap<String?, Any> = HashMap()
+
+            param["section"] = "today"
+            param["exclusive"] = ""
+            param["outAdult"] = "true"
+            param["offset"] = when (page) {
+                1 -> {
+                    ""
+                }
+                2 -> {
+                    "28"
+                }
+                3 -> {
+                    "53"
+                }
+                else -> {
+                    "78"
+                }
+            }
+
+
+            val itemBookInfoList = JsonArray()
+            val itemBestInfoList = JsonArray()
+
+            apiMoonPia.postMoonPiaBest(
+                param,
+                object : RetrofitDataListener<BestMoonpiaResult> {
+                    override fun onSuccess(data: BestMoonpiaResult) {
+
+                        data.api?.items.let {
+
+                            if (it != null) {
+                                for (i in it.indices) {
+
+                                    val bookCode = it[i].nvSrl
+                                    val point = (it.size * 4) - ((it.size * (page - 1)) + i)
+                                    val number = ((it.size * (page - 1)) + i)
+
+                                    val yesterDayItem = checkMiningTrophyValue(yesterDayItemMap[bookCode] ?: ItemBookInfo())
+
+                                    ref["genre"] = it[i].nvGnMainTitle
+                                    ref["keyword"] = ArrayList<String>()
+
+                                    ref["writerName"] = it[i].author
+                                    ref["subject"] = it[i].nvTitle
+                                    ref["bookImg"] = "https://cdn1.munpia.com${it[i].nvCover}"
+                                    ref["bookCode"] = it[i].nvSrl
+                                    ref["intro"] = it[i].nvStory
+                                    ref["cntRecom"] = it[i].nsrData?.hit!!
+                                    ref["cntPageRead"] = it[i].nsrData?.number!!
+                                    ref["cntFavorite"] = it[i].nsrData?.prefer!!
+
+                                    ref["number"] = number
+                                    ref["point"] = point
+                                    ref["total"] = yesterDayItem.point + point
+                                    ref["totalCount"] = yesterDayItem.totalCount + 1
+                                    ref["totalWeek"] = yesterDayItem.totalWeek + point
+                                    ref["totalWeekCount"] = yesterDayItem.totalWeekCount + 1
+                                    ref["totalMonth"] = yesterDayItem.totalMonth + point
+                                    ref["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
+                                    ref["currentDiff"] =
+                                        if (yesterDayItemMap[bookCode]?.currentDiff != null) {
+                                            (yesterDayItemMap[bookCode]?.currentDiff ?: 0) - number
                                         } else {
                                             0
                                         }
@@ -477,447 +778,102 @@ object MiningSource {
                                     itemBestInfoList.add(convertItemBest(BestRef.setItemBestInfoRef(ref)))
                                 }
 
-
+                                callBack.invoke(itemBookInfoList, itemBestInfoList)
                             }
                         }
 
-                        callBack.invoke(itemBookInfoList, itemBestInfoList)
                     }
                 })
-        } catch (exception: Exception) {
-            Log.d("RIDI EXCEPTION", "RIDI")
         }
     }
 
-//    private fun getOneStoreBest(context : Context, genre: String) {
-//        try {
-//            val OneStoryRef: MutableMap<String?, Any> = HashMap()
-//
-//            val apiOneStory = RetrofitOnestore()
-//            val param: MutableMap<String?, Any> = HashMap()
-//            param["menuId"] = Genre.setOneStoreGenre(genre)
-//
-//            apiOneStory.getBestOneStore(
-//                param,
-//                object : RetrofitDataListener<OneStoreBookResult> {
-//                    override fun onSuccess(data: OneStoreBookResult) {
-//
-//                        val productList = data.params?.productList
-//
-//                        if (productList != null) {
-//                            for (i in productList.indices) {
-//
-//                                OneStoryRef["writerName"] = productList[i].artistNm
-//                                OneStoryRef["subject"] = productList[i].prodNm
-//                                OneStoryRef["bookImg"] =
-//                                    "https://img.onestore.co.kr/thumbnails/img_sac/224_320_F10_95/" + productList[i].thumbnailImageUrl
-//                                OneStoryRef["bookCode"] = productList[i].prodId
-//                                OneStoryRef["info1"] = " "
-//                                OneStoryRef["info2"] = " "
-//                                OneStoryRef["info3"] = productList[i].totalCount
-//                                OneStoryRef["info4"] = productList[i].avgScore
-//                                OneStoryRef["info5"] = productList[i].commentCount
-//                                OneStoryRef["info6"] = ""
-//                                OneStoryRef["number"] = i
-//                                OneStoryRef["date"] = DBDate.DateMMDD()
-//                                OneStoryRef["type"] = "OneStore"
-//
-//                                miningValue(
-//                                    OneStoryRef,
-//                                    i,
-//                                    "OneStore",
-//                                    genre
-//                                )
-//
-//                            }
-//                        }
-//
-//                        val bestDaoToday = Room.databaseBuilder(
-//                            context,
-//                            DBBest::class.java,
-//                            "Today_OneStore_${genre}"
-//                        ).allowMainThreadQueries().build()
-//
-//                        val bestDaoWeek = Room.databaseBuilder(
-//                            context,
-//                            DBBest::class.java,
-//                            "Week_OneStore_${genre}"
-//                        ).allowMainThreadQueries().build()
-//
-//                        val bestDaoMonth = Room.databaseBuilder(
-//                            context,
-//                            DBBest::class.java,
-//                            "Month_OneStore_${genre}"
-//                        ).allowMainThreadQueries().build()
-//
-//                        bestDaoToday.bestDao().initAll()
-//                        bestDaoWeek.bestDao().initAll()
-//                        bestDaoMonth.bestDao().initAll()
-//
-//                        File(
-//                            File("/storage/self/primary/MOAVARA"),
-//                            "Today_OneStore_${genre}.json"
-//                        ).delete()
-//                        File(
-//                            File("/storage/self/primary/MOAVARA"),
-//                            "Week_OneStore_${genre}.json"
-//                        ).delete()
-//                        File(
-//                            File("/storage/self/primary/MOAVARA"),
-//                            "Month_OneStore_${genre}.json"
-//                        ).delete()
-//                    }
-//                })
-//        } catch (exception: SocketTimeoutException) {
-//            Log.d("EXCEPTION", "ONESTORE")
-//        }
-//    }
-//    private fun getKakaoStageBest(context : Context, genre: String) {
-//        val KakaoRef: MutableMap<String?, Any> = HashMap()
-//
-//        val apiKakao = RetrofitKaKao()
-//        val param: MutableMap<String?, Any> = HashMap()
-//
-//        param["adult"] = "false"
-//        param["dateRange"] = "YESTERDAY"
-//        param["genreIds"] = Genre.setKakaoStageGenre(genre)
-//        param["recentHours"] = "72"
-//
-//        apiKakao.getBestKakaoStage(
-//            param,
-//            object : RetrofitDataListener<List<BestResultKakaoStageNovel>> {
-//                override fun onSuccess(data: List<BestResultKakaoStageNovel>) {
-//
-//                    data.let {
-//
-//                        val list = it
-//                        val books = ArrayList<BestItemData>()
-//
-//                        for (i in list.indices) {
-//                            val novel = list[i].novel
-//                            KakaoRef["genre"] = list[i].novel?.subGenre?.name ?: ""
-//                            KakaoRef["keyword"] = ArrayList<String>()
-//
-//                            KakaoRef["writerName"] = novel!!.nickname!!.name
-//                            KakaoRef["subject"] = novel.title
-//                            KakaoRef["bookImg"] = novel.thumbnail!!.url
-//                            KakaoRef["bookCode"] = novel.stageSeriesNumber
-//                            KakaoRef["info1"] = novel.synopsis
-//                            KakaoRef["info2"] = "총 ${novel.publishedEpisodeCount}화"
-//                            KakaoRef["info3"] = novel.viewCount
-//                            KakaoRef["info4"] = novel.visitorCount
-//                            KakaoRef["info5"] = novel.episodeLikeCount
-//                            KakaoRef["info6"] = novel.favoriteCount
-//                            KakaoRef["number"] = i
-//                            KakaoRef["date"] = DBDate.DateMMDD()
-//                            KakaoRef["type"] = "Kakao_Stage"
-//
-//                            miningValue(KakaoRef, i, "Kakao_Stage", genre)
-//
-//                            miningDataValue(
-//                                KakaoRef,
-//                                "Kakao_Stage",
-//                                genre
-//                            )
-//
-//                            miningDataValue(
-//                                KakaoRef,
-//                                "Kakao_Stage",
-//                                genre
-//                            )
-//
-//                            books.add(BestRef.setBookListDataBest(KakaoRef))
-//                        }
-//
-//                        val bestDaoToday = Room.databaseBuilder(
-//                            context,
-//                            DBBest::class.java,
-//                            "Today_Kakao_Stage_${genre}"
-//                        ).allowMainThreadQueries().build()
-//
-//                        val bestDaoWeek = Room.databaseBuilder(
-//                            context,
-//                            DBBest::class.java,
-//                            "Week_Kakao_Stage_${genre}"
-//                        ).allowMainThreadQueries().build()
-//
-//                        val bestDaoMonth = Room.databaseBuilder(
-//                            context,
-//                            DBBest::class.java,
-//                            "Month_Kakao_Stage_${genre}"
-//                        ).allowMainThreadQueries().build()
-//
-//                        bestDaoToday.bestDao().initAll()
-//                        bestDaoWeek.bestDao().initAll()
-//                        bestDaoMonth.bestDao().initAll()
-//
-//                    }
-//
-//                }
-//            })
-//    }
+    fun miningToksoda(
+        platform: String,
+        type: String,
+        yesterDayItemMap: MutableMap<String, ItemBookInfo>,
+        callBack: (JsonArray, JsonArray) -> Unit
+    ) {
 
-//    fun getKakaoBest(context : Context, genre: String) {
-//        val apiKakao = RetrofitKaKao()
-//        val param: MutableMap<String?, Any> = HashMap()
-//        val KakaoRef: MutableMap<String?, Any> = HashMap()
-//
-//        Log.d("KAKAO 0", "KAKAO")
-//
-//        param["subcategory_uid"] = Genre.setKakaoPage(genre)
-//
-//        apiKakao.getBestKakao2(
-//            param,
-//            object : RetrofitDataListener<BestKakao2Result> {
-//                override fun onSuccess(data: BestKakao2Result) {
-//
-//                    val list = data.pageProps?.initialState?.json?.pagewebLayout?.entities?.items
-//                    val array = JSONArray()
-//
-//                    for (item in list!!.keySet()) {
-//                        array.put(item)
-//                    }
-//
-//                    for (i in 0 until array.length()) {
-//
-//                        val res = list.getAsJsonObject(array[i].toString())
-//
-//                        KakaoRef["genre"] = res.get("row2").asJsonArray[0].asString
-//                        KakaoRef["keyword"] = ArrayList<String>()
-//
-//                        KakaoRef["writerName"] = res.get("row2").asJsonArray[2].asString
-//                        KakaoRef["subject"] = res.get("row1").asString
-//                        KakaoRef["bookImg"] = "https:${res.get("thumbnail").asString}"
-//                        KakaoRef["bookCode"] = res.get("scheme").toString().replace("kakaopage://open/content?series_id=","")
-//                        KakaoRef["info1"] = res.get("row2").asJsonArray[0].asString
-//                        KakaoRef["info2"] = StrToInt(res.get("row2").asJsonArray[1].asString)
-//                        KakaoRef["info3"] = ""
-//                        KakaoRef["info4"] = ""
-//                        KakaoRef["info5"] = ""
-//                        KakaoRef["info6"] = ""
-//                        KakaoRef["number"] = i
-//                        KakaoRef["date"] = DBDate.DateMMDD()
-//                        KakaoRef["type"] = "Kakao"
-//
-//                        miningValue(
-//                            KakaoRef,
-//                            i,
-//                            "Kakao",
-//                            genre
-//                        )
-//
-//                        miningDataValue(
-//                            KakaoRef,
-//                            "Kakao",
-//                            genre
-//                        )
-//                    }
-//
-//                    val bestDaoToday = Room.databaseBuilder(
-//                        context,
-//                        DBBest::class.java,
-//                        "Today_Kakao_${genre}"
-//                    ).allowMainThreadQueries().build()
-//
-//                    val bestDaoWeek = Room.databaseBuilder(
-//                        context,
-//                        DBBest::class.java,
-//                        "Week_Kakao_${genre}"
-//                    ).allowMainThreadQueries().build()
-//
-//                    val bestDaoMonth = Room.databaseBuilder(
-//                        context,
-//                        DBBest::class.java,
-//                        "Month_Kakao_${genre}"
-//                    ).allowMainThreadQueries().build()
-//
-//                    bestDaoToday.bestDao().initAll()
-//                    bestDaoWeek.bestDao().initAll()
-//                    bestDaoMonth.bestDao().initAll()
-//
-//                }
-//            })
-//    }
+        for(page in 1..5){
+            val ref: MutableMap<String?, Any> = HashMap()
 
-//    private fun getMoonpiaBest(context : Context) {
-//        val MoonpiaRef: MutableMap<String?, Any> = HashMap()
-//
-//        val apiMoonPia = RetrofitMoonPia()
-//        val param: MutableMap<String?, Any> = HashMap()
-//
-//        param["section"] = "today"
-//        param["exclusive"] = ""
-//        param["outAdult"] = "true"
-//        param["offset"] = 25
-//
-//        apiMoonPia.postMoonPiaBest(
-//            param,
-//            object : RetrofitDataListener<BestMoonpiaResult> {
-//                override fun onSuccess(data: BestMoonpiaResult) {
-//
-//                    data.api?.items.let {
-//
-//                        if (it != null) {
-//                            for (i in it.indices) {
-//                                MoonpiaRef["genre"] = it[i].nvGnMainTitle
-//                                MoonpiaRef["keyword"] = ArrayList<String>()
-//
-//                                MoonpiaRef["writerName"] = it[i].author
-//                                MoonpiaRef["subject"] = it[i].nvTitle
-//                                MoonpiaRef["bookImg"] =
-//                                    "https://cdn1.munpia.com${it[i].nvCover}"
-//                                MoonpiaRef["bookCode"] = it[i].nvSrl
-//                                MoonpiaRef["info1"] = it[i].nvStory
-//                                MoonpiaRef["info2"] = it[i].nvGnMainTitle
-//                                MoonpiaRef["info3"] = it[i].nsrData?.hit!!
-//                                MoonpiaRef["info4"] = it[i].nsrData?.number!!
-//                                MoonpiaRef["info5"] = it[i].nsrData?.prefer!!
-//                                MoonpiaRef["info6"] = it[i].nsrData?.hour!!
-//                                MoonpiaRef["number"] = i
-//                                MoonpiaRef["date"] = DBDate.DateMMDD()
-//                                MoonpiaRef["type"] = "Munpia"
-//
-//                                miningValue(
-//                                    MoonpiaRef,
-//                                    i,
-//                                    "Munpia",
-//                                    ""
-//                                )
-//
-//                                miningDataValue(
-//                                    MoonpiaRef,
-//                                    "Munpia",
-//                                    ""
-//                                )
-//                            }
-//
-//                            val bestDaoToday = Room.databaseBuilder(
-//                                context,
-//                                DBBest::class.java,
-//                                "Today_Munpia"
-//                            ).allowMainThreadQueries().build()
-//
-//                            val bestDaoWeek = Room.databaseBuilder(
-//                                context,
-//                                DBBest::class.java,
-//                                "Week_Munpia"
-//                            ).allowMainThreadQueries().build()
-//
-//                            val bestDaoMonth = Room.databaseBuilder(
-//                                context,
-//                                DBBest::class.java,
-//                                "Month_Munpia"
-//                            ).allowMainThreadQueries().build()
-//
-//                            bestDaoToday.bestDao().initAll()
-//                            bestDaoWeek.bestDao().initAll()
-//                            bestDaoMonth.bestDao().initAll()
-//
-//                            File(
-//                                File("/storage/self/primary/MOAVARA"),
-//                                "Today_Munpia.json"
-//                            ).delete()
-//                            File(File("/storage/self/primary/MOAVARA"), "Week_Munpia.json").delete()
-//                            File(
-//                                File("/storage/self/primary/MOAVARA"),
-//                                "Month_Munpia.json"
-//                            ).delete()
-//                        }
-//                    }
-//
-//                }
-//            })
-//    }
+            val apiToksoda = RetrofitToksoda()
+            val param: MutableMap<String?, Any> = HashMap()
 
-//    private fun getToksodaBest(context : Context, genre: String) {
-//        val ToksodaRef: MutableMap<String?, Any> = HashMap()
-//
-//        val apiToksoda = RetrofitToksoda()
-//        val param: MutableMap<String?, Any> = HashMap()
-//
-//        param["page"] = 1
-//        param["lgctgrCd"] = Genre.setToksodaGenre(genre)
-//        param["mdctgrCd"] = "all"
-//        param["rookieYn"] = "N"
-//        param["over19Yn"] = "N"
-//        param["type"] = "NEW"
-//        param["freePblserlYn"] = "00431"
-//        param["_"] = "1657262989944"
-//
-//        apiToksoda.getBestList(
-//            param,
-//            object : RetrofitDataListener<BestToksodaResult> {
-//                override fun onSuccess(data: BestToksodaResult) {
-//
-//                    data.resultList?.let { it ->
-//                        for (i in it.indices) {
-//                            ToksodaRef["genre"] = it[i].lgctgrNm
-//                            ToksodaRef["keyword"] = ArrayList<String>()
-//
-//                            ToksodaRef["writerName"] = it[i].athrnm
-//                            ToksodaRef["subject"] = it[i].wrknm
-//                            ToksodaRef["bookImg"] = "https:${it[i].imgPath}"
-//                            ToksodaRef["bookCode"] = it[i].brcd
-//                            ToksodaRef["info1"] = it[i].lnIntro
-//                            ToksodaRef["info2"] = "총 ${it[i].whlEpsdCnt}화"
-//                            ToksodaRef["info3"] = it[i].inqrCnt
-//                            ToksodaRef["info4"] = it[i].goodAllCnt
-//                            ToksodaRef["info5"] = it[i].intrstCnt
-//                            ToksodaRef["info6"] = ""
-//                            ToksodaRef["number"] = i
-//                            ToksodaRef["date"] = DBDate.DateMMDD()
-//                            ToksodaRef["type"] = "Toksoda"
-//
-//                            miningValue(
-//                                ToksodaRef,
-//                                i,
-//                                "Toksoda",
-//                                genre
-//                            )
-//
-//                            miningDataValue(
-//                                ToksodaRef,
-//                                "Toksoda",
-//                                genre
-//                            )
-//                        }
-//
-//                        val bestDaoToday = Room.databaseBuilder(
-//                            context,
-//                            DBBest::class.java,
-//                            "Today_Toksoda_${genre}"
-//                        ).allowMainThreadQueries().build()
-//
-//                        val bestDaoWeek = Room.databaseBuilder(
-//                            context,
-//                            DBBest::class.java,
-//                            "Week_Toksoda_${genre}"
-//                        ).allowMainThreadQueries().build()
-//
-//                        val bestDaoMonth = Room.databaseBuilder(
-//                            context,
-//                            DBBest::class.java,
-//                            "Month_Toksoda_${genre}"
-//                        ).allowMainThreadQueries().build()
-//
-//                        bestDaoToday.bestDao().initAll()
-//                        bestDaoWeek.bestDao().initAll()
-//                        bestDaoMonth.bestDao().initAll()
-//
-//                        File(
-//                            File("/storage/self/primary/MOAVARA"),
-//                            "Today_Toksoda_${genre}.json"
-//                        ).delete()
-//                        File(
-//                            File("/storage/self/primary/MOAVARA"),
-//                            "Week_Toksoda_${genre}.json"
-//                        ).delete()
-//                        File(
-//                            File("/storage/self/primary/MOAVARA"),
-//                            "Month_Toksoda_${genre}.json"
-//                        ).delete()
-//                    }
-//                }
-//            })
-//    }
+            param["page"] = page
+            param["lgctgrCd"] = "0007"
+            param["mdctgrCd"] = "all"
+            param["rookieYn"] = "N"
+            param["over19Yn"] = "N"
+            param["type"] = "NEW"
+            param["freePblserlYn"] = "00431"
+            param["_"] = "1657262989944"
+
+            val itemBookInfoList = JsonArray()
+            val itemBestInfoList = JsonArray()
+
+            apiToksoda.getBestList(
+                param,
+                object : RetrofitDataListener<BestToksodaResult> {
+                    override fun onSuccess(data: BestToksodaResult) {
+
+                        data.resultList?.let { it ->
+                            for (i in it.indices) {
+
+                                val bookCode = it[i].brcd
+                                val point = (it.size * 5) - ((it.size * (page - 1)) + i)
+                                val number = ((it.size * (page - 1)) + i)
+
+                                val yesterDayItem =
+                                    checkMiningTrophyValue(yesterDayItemMap[bookCode] ?: ItemBookInfo())
+
+                                ref["genre"] = it[i].lgctgrNm
+                                ref["keyword"] = ArrayList<String>()
+                                ref["writerName"] = it[i].athrnm
+                                ref["subject"] = it[i].wrknm
+                                ref["bookImg"] = "https:${it[i].imgPath}"
+                                ref["bookCode"] = it[i].brcd
+                                ref["intro"] = it[i].lnIntro
+                                ref["cntRecom"] = it[i].intrstCnt
+                                ref["cntPageRead"] = it[i].goodAllCnt
+                                ref["cntFavorite"] = it[i].goodAllCnt
+                                ref["cntChapter"] = "총 ${it[i].whlEpsdCnt}화"
+
+
+                                ref["number"] = number
+                                ref["point"] = point
+
+                                ref["total"] = yesterDayItem.point + point
+                                ref["totalCount"] = yesterDayItem.totalCount + 1
+                                ref["totalWeek"] = yesterDayItem.totalWeek + point
+                                ref["totalWeekCount"] = yesterDayItem.totalWeekCount + 1
+                                ref["totalMonth"] = yesterDayItem.totalMonth + point
+                                ref["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
+                                ref["currentDiff"] =
+                                    if (yesterDayItemMap[bookCode]?.currentDiff != null) {
+                                        (yesterDayItemMap[bookCode]?.currentDiff ?: 0) - number
+                                    } else {
+                                        0
+                                    }
+
+                                ref["date"] = dateMMDD()
+                                ref["type"] = platform
+
+                                miningValue(
+                                    ref = ref,
+                                    num = number,
+                                    platform = platform,
+                                    type = type
+                                )
+
+                                itemBookInfoList.add(convertItemBook(BestRef.setItemBookInfoRef(ref)))
+                                itemBestInfoList.add(convertItemBest(BestRef.setItemBestInfoRef(ref)))
+                            }
+
+                            callBack.invoke(itemBookInfoList, itemBestInfoList)
+                        }
+                    }
+                })
+        }
+    }
 }

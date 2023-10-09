@@ -77,7 +77,7 @@ fun doMining(
             miningNaverSeriesComic(
                 platform = platform,
                 type = type,
-                yesterDatItemMap = yesterDayItemMap
+                yesterDayItemMap = yesterDayItemMap
             ) { itemBookInfoList, itemBestInfoList ->
                 doResultMining(
                     platform = platform,
@@ -90,7 +90,7 @@ fun doMining(
             MiningSource.miningNaverSeriesNovel(
                 platform = platform,
                 type = type,
-                yesterDatItemMap = yesterDayItemMap
+                yesterDayItemMap = yesterDayItemMap
             ) { itemBookInfoList, itemBestInfoList ->
                 doResultMining(
                     platform = platform,
@@ -106,7 +106,7 @@ fun doMining(
             mining = "",
             platform = platform,
             type = type,
-            yesterDatItemMap = yesterDayItemMap
+            yesterDayItemMap = yesterDayItemMap
         ) { itemBookInfoList, itemBestInfoList ->
             doResultMining(
                 platform = platform,
@@ -121,7 +121,7 @@ fun doMining(
             mining = "premium",
             platform = platform,
             type = type,
-            yesterDatItemMap = yesterDayItemMap
+            yesterDayItemMap = yesterDayItemMap
         ) { itemBookInfoList, itemBestInfoList ->
             doResultMining(
                 platform = platform,
@@ -136,7 +136,7 @@ fun doMining(
             mining = "nobless",
             platform = platform,
             type = type,
-            yesterDatItemMap = yesterDayItemMap
+            yesterDayItemMap = yesterDayItemMap
         ) { itemBookInfoList, itemBestInfoList ->
             doResultMining(
                 platform = platform,
@@ -150,7 +150,7 @@ fun doMining(
             platform = platform,
             type = type,
             mining = "challenge",
-            yesterDatItemMap = yesterDayItemMap
+            yesterDayItemMap = yesterDayItemMap
         ) { itemBookInfoList, itemBestInfoList ->
             doResultMining(
                 platform = platform,
@@ -164,7 +164,7 @@ fun doMining(
             platform = platform,
             type = type,
             mining = "best",
-            yesterDatItemMap = yesterDayItemMap
+            yesterDayItemMap = yesterDayItemMap
         ) { itemBookInfoList, itemBestInfoList ->
             doResultMining(
                 platform = platform,
@@ -178,7 +178,7 @@ fun doMining(
             mining = "1750",
             platform = platform,
             type = type,
-            yesterDatItemMap = yesterDayItemMap
+            yesterDayItemMap = yesterDayItemMap
         ) { itemBookInfoList, itemBestInfoList ->
             doResultMining(
                 platform = platform,
@@ -192,7 +192,65 @@ fun doMining(
             mining = "1650",
             platform = platform,
             type = type,
-            yesterDatItemMap = yesterDayItemMap
+            yesterDayItemMap = yesterDayItemMap
+        ) { itemBookInfoList, itemBestInfoList ->
+            doResultMining(
+                platform = platform,
+                type = type,
+                itemBookInfoList = itemBookInfoList,
+                itemBestInfoList = itemBestInfoList
+            )
+        }
+    } else if(platform == "ONESTORY") {
+
+        if(type == "COMIC"){
+
+        } else{
+            MiningSource.miningOnestory(
+                platform = platform,
+                type = type,
+                yesterDayItemMap = yesterDayItemMap
+            ) { itemBookInfoList, itemBestInfoList ->
+                doResultMining(
+                    platform = platform,
+                    type = type,
+                    itemBookInfoList = itemBookInfoList,
+                    itemBestInfoList = itemBestInfoList
+                )
+            }
+        }
+
+    } else if(platform == "KAKAO_STAGE") {
+        MiningSource.miningKakaoStage(
+            platform = platform,
+            type = type,
+            yesterDayItemMap = yesterDayItemMap
+        ) { itemBookInfoList, itemBestInfoList ->
+            doResultMining(
+                platform = platform,
+                type = type,
+                itemBookInfoList = itemBookInfoList,
+                itemBestInfoList = itemBestInfoList
+            )
+        }
+    } else if(platform == "MUNPIA") {
+        MiningSource.miningMunpia(
+            platform = platform,
+            type = type,
+            yesterDayItemMap = yesterDayItemMap
+        ) { itemBookInfoList, itemBestInfoList ->
+            doResultMining(
+                platform = platform,
+                type = type,
+                itemBookInfoList = itemBookInfoList,
+                itemBestInfoList = itemBestInfoList
+            )
+        }
+    } else if(platform == "TOKSODA") {
+        MiningSource.miningToksoda(
+            platform = platform,
+            type = type,
+            yesterDayItemMap = yesterDayItemMap
         ) { itemBookInfoList, itemBestInfoList ->
             doResultMining(
                 platform = platform,

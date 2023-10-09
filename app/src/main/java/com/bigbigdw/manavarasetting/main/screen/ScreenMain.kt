@@ -788,19 +788,19 @@ fun ContentsLabs() {
             runBlocking {
                 if (DBDate.getDayOfWeekAsNumber() == 0) {
                     BestRef.setBestRef(
-                        platform = "RIDI_FANTAGY",
+                        platform = "TOKSODA",
                         type = "NOVEL"
                     )
                         .child("TROPHY_MONTH").removeValue()
                 }
 
                 if (DBDate.datedd() == "01") {
-                    BestRef.setBestRef(platform = "RIDI_FANTAGY", type = "NOVEL")
+                    BestRef.setBestRef(platform = "TOKSODA", type = "NOVEL")
                         .child("TROPHY_MONTH").removeValue()
                 }
 
                 MiningSource.mining(
-                    platform = "RIDI_ROMANCE",
+                    platform = "TOKSODA",
                     type = "NOVEL",
                     context = context
                 )

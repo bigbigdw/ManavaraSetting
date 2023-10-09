@@ -348,6 +348,222 @@ fun ContentsSetting() {
                 workManager = workManager,
                 delayMills = 18,
                 tag = "MINING",
+                platform = "RIDI_FANTAGY",
+                type = "NOVEL"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo_ridibooks),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "리디 판타지 NOVEL",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                delayMills = 21,
+                tag = "MINING",
+                platform = "RIDI_ROMANCE",
+                type = "NOVEL"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo_ridibooks),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "리디 로맨스 NOVEL",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                delayMills = 24,
+                tag = "MINING",
+                platform = "ONESTORY",
+                type = "NOVEL"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo_onestore),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "원스토리 NOVEL",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                delayMills = 27,
+                tag = "MINING",
+                platform = "KAKAO_STAGE",
+                type = "NOVEL"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo_kakaostage),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "카카오 스테이지 NOVEL",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                delayMills = 30,
+                tag = "MINING",
+                platform = "MUNPIA",
+                type = "NOVEL"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo_munpia),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "문피아 NOVEL",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                delayMills = 33,
+                tag = "MINING",
+                platform = "TOKSODA",
+                type = "NOVEL"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo_toksoda),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "톡소다 NOVEL",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                delayMills = 36,
+                tag = "MINING",
                 platform = "NAVER_SERIES",
                 type = "COMIC"
             )

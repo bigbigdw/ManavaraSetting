@@ -63,6 +63,16 @@ val colorJOARA = Color(android.graphics.Color.parseColor("#2552b5"))
 val colorNOBLESS = Color(android.graphics.Color.parseColor("#4385dc"))
 val colorPREMIUM = Color(android.graphics.Color.parseColor("#b3cb38"))
 val colorCHALLENGE = Color(android.graphics.Color.parseColor("#3eb85e"))
+val colorRIDI = Color(android.graphics.Color.parseColor("#1f8ee6"))
+val colorONESTORY = Color(android.graphics.Color.parseColor("#ff7913"))
+val colorKAKAO = Color(android.graphics.Color.parseColor("#ffbc00"))
+val colorMUNPIA = Color(android.graphics.Color.parseColor("#2b7db8"))
+val colorTOKSODA = Color(android.graphics.Color.parseColor("#ff3333"))
+
+
+
+
+
 
 
 
