@@ -177,7 +177,7 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                             fcmlist = fcmlist.reversed() as ArrayList<FCMAlert>
                         }
 
-                        events.send(EventMain.SetFcmNoticeList(fcmNoticeList = fcmlist))
+                        events.send(EventMain.SetFcmAlertList(fcmAlertList = fcmlist))
                     }
 
                 } else {

@@ -430,6 +430,11 @@ fun ItemTabletFCMList(item : FCMAlert, isLast: Boolean){
     val day = item.date.substring(6,8)
     val hour = item.date.substring(8,10)
     val min = item.date.substring(10,12)
+    val sec = if(item.date.length > 12){
+        item.date.substring(12,14)
+    } else {
+        ""
+    }
 
     Column {
 
@@ -444,7 +449,7 @@ fun ItemTabletFCMList(item : FCMAlert, isLast: Boolean){
                 } else {
                     Color.Transparent
                 }),
-                text = "${year}.${month}.${day} ${hour}:${min}",
+                text = "${year}.${month}.${day} ${hour}:${min}:${sec}",
                 color = color000000,
                 fontSize = 18.sp,
             )
