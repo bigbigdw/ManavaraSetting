@@ -57,8 +57,8 @@ object BestRef {
             cntFavorite = ref["cntFavorite"] as String? ?: "",
             cntRecom = ref["cntRecom"] as String? ?: "",
             cntTotalComment = ref["cntTotalComment"] as String? ?: "",
-            total = ref["point"] as Int,
-            totalCount = ref["point"] as Int,
+            total = ref["total"] as Int,
+            totalCount = ref["totalCount"] as Int,
             bookCode = ref["bookCode"] as String,
             currentDiff = ref["currentDiff"] as Int,
         )

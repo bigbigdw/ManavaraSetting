@@ -93,7 +93,7 @@ object MiningSource {
 
             }
         } catch (exception: Exception) {
-            Log.d("EXCEPTION!!!!", "NAVER TODAY")
+            Log.d("DO_MINING", "mining")
         }
     }
 
@@ -104,65 +104,64 @@ object MiningSource {
         callBack: (JsonArray, JsonArray) -> Unit
     ){
         Thread{
+            try{
+                val itemBookInfoList = JsonArray()
+                val itemBestInfoList = JsonArray()
 
-            val itemBookInfoList = JsonArray()
-            val itemBestInfoList = JsonArray()
-
-            for(pageCount in 1..5) {
-                val doc: Document =
-                    Jsoup.connect("https://series.naver.com/comic/top100List.series?rankingTypeCode=DAILY&categoryCode=ALL&page=${pageCount + 1}")
-                        .post()
-                val naverSeries: Elements = doc.select(".comic_top_lst li")
-                val ref: MutableMap<String?, Any> = HashMap()
+                for(pageCount in 1..5) {
+                    val doc: Document =
+                        Jsoup.connect("https://series.naver.com/comic/top100List.series?rankingTypeCode=DAILY&categoryCode=ALL&page=${pageCount + 1}")
+                            .post()
+                    val naverSeries: Elements = doc.select(".comic_top_lst li")
+                    val ref: MutableMap<String?, Any> = HashMap()
 
 
-                for (i in naverSeries.indices) {
-                    val bookCode = naverSeries.select(".comic_cont a")[i].absUrl("href").replace("https://series.naver.com/comic/detail.series?productNo=", "")
-                    val point = (naverSeries.size * 5) - ((naverSeries.size * (pageCount - 1)) + i)
+                    for (i in naverSeries.indices) {
+                        val bookCode = naverSeries.select(".comic_cont a")[i].absUrl("href").replace("https://series.naver.com/comic/detail.series?productNo=", "")
+                        val point = (naverSeries.size * 5) - ((naverSeries.size * (pageCount - 1)) + i)
+                        val number = ((naverSeries.size * (pageCount - 1)) + i)
 
-                    val yesterDayItem = checkMiningTrophyValue(yesterDayItemMap[bookCode] ?: ItemBookInfo())
+                        val yesterDayItem = checkMiningTrophyValue(yesterDayItemMap[bookCode] ?: ItemBookInfo())
 
-                    ref["writerName"] = naverSeries[i].select(".comic_cont .info .ellipsis .author").first()?.text() ?: ""
-                    ref["subject"] = naverSeries.select(".comic_cont h3 a")[i].text()
-                    ref["bookImg"] = naverSeries.select("a img")[i].absUrl("src")
-                    ref["bookCode"] = bookCode
-                    ref["cntRecom"] = naverSeries.select(".comic_cont .info .score_num")[i].text()
-                    ref["cntChapter"] = naverSeries[i].select(".comic_cont .info .ellipsis")[1]?.text() ?: ""
-                    ref["intro"] = naverSeries.select(".comic_cont .dsc")[i].text()
-                    ref["number"] = ((naverSeries.size * (pageCount - 1)) + i)
-                    ref["point"] = point
+                        ref["writerName"] = naverSeries[i].select(".comic_cont .info .ellipsis .author").first()?.text() ?: ""
+                        ref["subject"] = naverSeries.select(".comic_cont h3 a")[i].text()
+                        ref["bookImg"] = naverSeries.select("a img")[i].absUrl("src")
+                        ref["bookCode"] = bookCode
+                        ref["cntRecom"] = naverSeries.select(".comic_cont .info .score_num")[i].text()
+                        ref["cntChapter"] = naverSeries[i].select(".comic_cont .info .ellipsis")[1]?.text() ?: ""
+                        ref["intro"] = naverSeries.select(".comic_cont .dsc")[i].text()
+                        ref["number"] = number
+                        ref["point"] = point
 
-                    ref["total"] = yesterDayItem.point + point
-                    ref["totalCount"] = yesterDayItem.totalCount + 1
-                    ref["totalWeek"] = yesterDayItem.totalWeek + point
-                    ref["totalWeekCount"] = yesterDayItem.totalWeekCount + 1
-                    ref["totalMonth"] = yesterDayItem.totalMonth + point
-                    ref["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
-                    ref["currentDiff"] =
-                        if (yesterDayItemMap[bookCode]?.currentDiff != null) {
-                            (yesterDayItemMap[bookCode]?.currentDiff ?: 0) - ((naverSeries.size * (pageCount - 1)) + i)
-                        } else {
-                            0
-                        }
+                        ref["total"] = yesterDayItem.point + point
+                        ref["totalCount"] = yesterDayItem.totalCount + 1
+                        ref["totalWeek"] = yesterDayItem.totalWeek + point
+                        ref["totalWeekCount"] = yesterDayItem.totalWeekCount + 1
+                        ref["totalMonth"] = yesterDayItem.totalMonth + point
+                        ref["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
+                        ref["currentDiff"] = (yesterDayItemMap[bookCode]?.number ?: 0) - number
 
-                    ref["date"] = dateMMDD()
-                    ref["type"] = platform
 
-                    miningValue(
-                        ref = ref,
-                        num = (naverSeries.size * (pageCount - 1)) + i,
-                        platform = platform,
-                        type = type
-                    )
+                        ref["date"] = dateMMDD()
+                        ref["type"] = platform
 
-                    itemBookInfoList.add(convertItemBook(BestRef.setItemBookInfoRef(ref)))
-                    itemBestInfoList.add(convertItemBest(BestRef.setItemBestInfoRef(ref)))
+                        miningValue(
+                            ref = ref,
+                            num = (naverSeries.size * (pageCount - 1)) + i,
+                            platform = platform,
+                            type = type
+                        )
+
+                        itemBookInfoList.add(convertItemBook(BestRef.setItemBookInfoRef(ref)))
+                        itemBestInfoList.add(convertItemBest(BestRef.setItemBestInfoRef(ref)))
+                    }
+
+                    callBack.invoke(itemBookInfoList, itemBestInfoList)
+
                 }
-
-                callBack.invoke(itemBookInfoList, itemBestInfoList)
-
+            } catch (e : Exception){
+                Log.d("DO_MINING", "miningNaverSeriesComic $e")
             }
-
         }.start()
     }
 
@@ -173,63 +172,61 @@ object MiningSource {
         callBack: (JsonArray, JsonArray) -> Unit
     ){
         Thread{
+            try {
+                val itemBookInfoList = JsonArray()
+                val itemBestInfoList = JsonArray()
 
-            val itemBookInfoList = JsonArray()
-            val itemBestInfoList = JsonArray()
-
-            for(pageCount in 1..5) {
-                val doc: Document = Jsoup.connect("https://series.naver.com/novel/top100List.series?rankingTypeCode=DAILY&categoryCode=ALL&page=${pageCount}").post()
-                val naverSeries: Elements = doc.select(".comic_top_lst li")
-                val ref: MutableMap<String?, Any> = HashMap()
+                for(pageCount in 1..5) {
+                    val doc: Document = Jsoup.connect("https://series.naver.com/novel/top100List.series?rankingTypeCode=DAILY&categoryCode=ALL&page=${pageCount}").post()
+                    val naverSeries: Elements = doc.select(".comic_top_lst li")
+                    val ref: MutableMap<String?, Any> = HashMap()
 
 
-                for (i in naverSeries.indices) {
-                    val bookCode = naverSeries.select(".comic_cont a")[i].absUrl("href").replace("https://series.naver.com/novel/detail.series?productNo=", "")
-                    val point = (naverSeries.size * 5) - ((naverSeries.size * (pageCount - 1)) + i)
+                    for (i in naverSeries.indices) {
+                        val bookCode = naverSeries.select(".comic_cont a")[i].absUrl("href").replace("https://series.naver.com/novel/detail.series?productNo=", "")
+                        val point = (naverSeries.size * 5) - ((naverSeries.size * (pageCount - 1)) + i)
 
-                    val yesterDayItem = checkMiningTrophyValue(yesterDayItemMap[bookCode] ?: ItemBookInfo())
+                        val yesterDayItem = checkMiningTrophyValue(yesterDayItemMap[bookCode] ?: ItemBookInfo())
+                        val number = ((naverSeries.size * (pageCount - 1)) + i)
 
-                    ref["writerName"] = naverSeries[i].select(".comic_cont .info .ellipsis .author").first()?.text() ?: ""
-                    ref["subject"] = naverSeries.select(".comic_cont h3 a")[i].text()
-                    ref["bookImg"] = naverSeries.select("a img")[i].absUrl("src")
-                    ref["bookCode"] = bookCode
-                    ref["cntRecom"] = naverSeries.select(".comic_cont .info .score_num")[i].text()
-                    ref["cntChapter"] = naverSeries[i].select(".comic_cont .info .ellipsis")[1]?.text() ?: ""
-                    ref["intro"] = naverSeries.select(".comic_cont .dsc")[i].text()
-                    ref["number"] = ((naverSeries.size * (pageCount - 1)) + i)
-                    ref["point"] = point
+                        ref["writerName"] = naverSeries[i].select(".comic_cont .info .ellipsis .author").first()?.text() ?: ""
+                        ref["subject"] = naverSeries.select(".comic_cont h3 a")[i].text()
+                        ref["bookImg"] = naverSeries.select("a img")[i].absUrl("src")
+                        ref["bookCode"] = bookCode
+                        ref["cntRecom"] = naverSeries.select(".comic_cont .info .score_num")[i].text()
+                        ref["cntChapter"] = naverSeries[i].select(".comic_cont .info .ellipsis")[1]?.text() ?: ""
+                        ref["intro"] = naverSeries.select(".comic_cont .dsc")[i].text()
+                        ref["number"] = number
+                        ref["point"] = point
 
-                    ref["total"] = yesterDayItem.point + point
-                    ref["totalCount"] = yesterDayItem.totalCount + 1
-                    ref["totalWeek"] = yesterDayItem.totalWeek + point
-                    ref["totalWeekCount"] = yesterDayItem.totalWeekCount + 1
-                    ref["totalMonth"] = yesterDayItem.totalMonth + point
-                    ref["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
-                    ref["currentDiff"] =
-                        if (yesterDayItemMap[bookCode]?.currentDiff != null) {
-                            (yesterDayItemMap[bookCode]?.currentDiff ?: 0) - ((naverSeries.size * (pageCount - 1)) + i)
-                        } else {
-                            0
-                        }
+                        ref["total"] = yesterDayItem.point + point
+                        ref["totalCount"] = yesterDayItem.totalCount + 1
+                        ref["totalWeek"] = yesterDayItem.totalWeek + point
+                        ref["totalWeekCount"] = yesterDayItem.totalWeekCount + 1
+                        ref["totalMonth"] = yesterDayItem.totalMonth + point
+                        ref["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
+                        ref["currentDiff"] = (yesterDayItemMap[bookCode]?.number ?: 0) - number
 
-                    ref["date"] = dateMMDD()
-                    ref["type"] = platform
+                        ref["date"] = dateMMDD()
+                        ref["type"] = platform
 
-                    miningValue(
-                        ref = ref,
-                        num = (naverSeries.size * (pageCount - 1)) + i,
-                        platform = platform,
-                        type = type
-                    )
+                        miningValue(
+                            ref = ref,
+                            num = (naverSeries.size * (pageCount - 1)) + i,
+                            platform = platform,
+                            type = type
+                        )
 
-                    itemBookInfoList.add(convertItemBook(BestRef.setItemBookInfoRef(ref)))
-                    itemBestInfoList.add(convertItemBest(BestRef.setItemBestInfoRef(ref)))
+                        itemBookInfoList.add(convertItemBook(BestRef.setItemBookInfoRef(ref)))
+                        itemBestInfoList.add(convertItemBest(BestRef.setItemBestInfoRef(ref)))
+                    }
+
+                    callBack.invoke(itemBookInfoList, itemBestInfoList)
+
                 }
-
-                callBack.invoke(itemBookInfoList, itemBestInfoList)
-
+            }catch (e : Exception){
+                Log.d("DO_MINING", "miningNaverSeriesNovel $e")
             }
-
         }.start()
     }
 
@@ -241,82 +238,82 @@ object MiningSource {
         yesterDayItemMap: MutableMap<String, ItemBookInfo>,
         callBack: (JsonArray, JsonArray) -> Unit
     ){
-        val ref: MutableMap<String?, Any> = HashMap()
-        val apiJoara = RetrofitJoara()
-        val param = getItemAPI(context)
+        try {
+            val ref: MutableMap<String?, Any> = HashMap()
+            val apiJoara = RetrofitJoara()
+            val param = getItemAPI(context)
 
-        param["page"] = 1
-        param["best"] = "today"
-        param["store"] = mining
-        param["category"] = "0"
-        param["offset"] = "100"
+            param["page"] = 1
+            param["best"] = "today"
+            param["store"] = mining
+            param["category"] = "0"
+            param["offset"] = "100"
 
-        val itemBookInfoList = JsonArray()
-        val itemBestInfoList = JsonArray()
+            val itemBookInfoList = JsonArray()
+            val itemBestInfoList = JsonArray()
 
-        apiJoara.getJoaraBookBest(
-            param,
-            object : RetrofitDataListener<JoaraBestListResult> {
-                override fun onSuccess(data: JoaraBestListResult) {
+            apiJoara.getJoaraBookBest(
+                param,
+                object : RetrofitDataListener<JoaraBestListResult> {
+                    override fun onSuccess(data: JoaraBestListResult) {
 
-                    val books = data.bookLists
+                        val books = data.bookLists
 
-                    if (books != null) {
+                        if (books != null) {
 
-                        for (i in books.indices) {
+                            for (i in books.indices) {
 
-                            val bookCode = books[i].bookCode
-                            val point = books.size - i
+                                val bookCode = books[i].bookCode
+                                val point = books.size - i
 
-                            val yesterDayItem =
-                                checkMiningTrophyValue(yesterDayItemMap[bookCode] ?: ItemBookInfo())
+                                val yesterDayItem =
+                                    checkMiningTrophyValue(yesterDayItemMap[bookCode] ?: ItemBookInfo())
+                                val number = i
 
-                            ref["keyword"] = books[i].keyword
+                                ref["keyword"] = books[i].keyword
 
-                            ref["writerName"] = books[i].writerName
-                            ref["subject"] = books[i].subject
-                            ref["bookImg"] = books[i].bookImg.replace("http://", "https://")
-                            ref["bookCode"] = bookCode
-                            ref["intro"] = books[i].intro
-                            ref["cntChapter"] = "총 ${books[i].cntChapter}화"
-                            ref["cntPageRead"] = books[i].cntPageRead
-                            ref["cntFavorite"] = books[i].cntFavorite
-                            ref["cntRecom"] = books[i].cntRecom
-                            ref["cntTotalComment"] = books[i].cntTotalComment
-                            ref["number"] = i
-                            ref["point"] = point
+                                ref["writerName"] = books[i].writerName
+                                ref["subject"] = books[i].subject
+                                ref["bookImg"] = books[i].bookImg.replace("http://", "https://")
+                                ref["bookCode"] = bookCode
+                                ref["intro"] = books[i].intro
+                                ref["cntChapter"] = "총 ${books[i].cntChapter}화"
+                                ref["cntPageRead"] = books[i].cntPageRead
+                                ref["cntFavorite"] = books[i].cntFavorite
+                                ref["cntRecom"] = books[i].cntRecom
+                                ref["cntTotalComment"] = books[i].cntTotalComment
+                                ref["number"] = number
+                                ref["point"] = point
 
-                            ref["total"] = yesterDayItem.point + point
-                            ref["totalCount"] = yesterDayItem.totalCount + 1
-                            ref["totalWeek"] = yesterDayItem.totalWeek + point
-                            ref["totalWeekCount"] = yesterDayItem.totalWeekCount + 1
-                            ref["totalMonth"] = yesterDayItem.totalMonth + point
-                            ref["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
-                            ref["currentDiff"] =
-                                if (yesterDayItemMap[bookCode]?.currentDiff != null) {
-                                    (yesterDayItemMap[bookCode]?.currentDiff ?: 0) - i
-                                } else {
-                                    0
-                                }
+                                ref["total"] = yesterDayItem.point + point
+                                ref["totalCount"] = yesterDayItem.totalCount + 1
+                                ref["totalWeek"] = yesterDayItem.totalWeek + point
+                                ref["totalWeekCount"] = yesterDayItem.totalWeekCount + 1
+                                ref["totalMonth"] = yesterDayItem.totalMonth + point
+                                ref["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
+                                ref["currentDiff"] = (yesterDayItemMap[bookCode]?.number ?: 0) - number
 
-                            ref["date"] = dateMMDD()
-                            ref["type"] = platform
+                                ref["date"] = dateMMDD()
+                                ref["type"] = platform
 
-                            miningValue(
-                                ref = ref,
-                                num = i,
-                                platform = platform,
-                                type = type
-                            )
+                                miningValue(
+                                    ref = ref,
+                                    num = i,
+                                    platform = platform,
+                                    type = type
+                                )
 
-                            itemBookInfoList.add(convertItemBook(BestRef.setItemBookInfoRef(ref)))
-                            itemBestInfoList.add(convertItemBest(BestRef.setItemBestInfoRef(ref)))
+                                itemBookInfoList.add(convertItemBook(BestRef.setItemBookInfoRef(ref)))
+                                itemBestInfoList.add(convertItemBest(BestRef.setItemBestInfoRef(ref)))
+                            }
+
+                            callBack.invoke(itemBookInfoList, itemBestInfoList)
                         }
-
-                        callBack.invoke(itemBookInfoList, itemBestInfoList)
                     }
-                }
-            })
+                })
+        }catch (e : Exception){
+            Log.d("DO_MINING", "miningJoara $e")
+        }
     }
 
     fun miningNaver(
@@ -327,59 +324,58 @@ object MiningSource {
         callBack: (JsonArray, JsonArray) -> Unit
     ){
         Thread{
+            try{
+                val itemBookInfoList = JsonArray()
+                val itemBestInfoList = JsonArray()
 
-            val itemBookInfoList = JsonArray()
-            val itemBestInfoList = JsonArray()
+                val doc: Document = Jsoup.connect("https://novel.naver.com/${mining}/ranking?genre=101&periodType=DAILY").post()
+                val naverSeries: Elements = doc.select(".ranking_wrap_left .ranking_list li")
+                val ref: MutableMap<String?, Any> = HashMap()
 
-            val doc: Document = Jsoup.connect("https://novel.naver.com/${mining}/ranking?genre=101&periodType=DAILY").post()
-            val naverSeries: Elements = doc.select(".ranking_wrap_left .ranking_list li")
-            val ref: MutableMap<String?, Any> = HashMap()
+                for (i in naverSeries.indices) {
+                    val bookCode = naverSeries.select("a")[i].absUrl("href").replace("https://novel.naver.com/${mining}/list?novelId=", "")
+                    val point = naverSeries.size - i
+                    val number = i
 
-            for (i in naverSeries.indices) {
-                val bookCode = naverSeries.select("a")[i].absUrl("href").replace("https://novel.naver.com/${mining}/list?novelId=", "")
-                val point = naverSeries.size - i
+                    val yesterDayItem = checkMiningTrophyValue(yesterDayItemMap[bookCode] ?: ItemBookInfo())
 
-                val yesterDayItem = checkMiningTrophyValue(yesterDayItemMap[bookCode] ?: ItemBookInfo())
+                    ref["writerName"] = naverSeries.select(".info_group .author")[i].text()
+                    ref["subject"] = naverSeries.select(".title_group .title")[i].text()
+                    ref["bookImg"] = naverSeries.select("div img")[i].absUrl("src")
+                    ref["bookCode"] = bookCode
+                    ref["cntRecom"] = naverSeries.select(".score_area")[i].text().replace("별점", "")
+                    ref["cntPageRead"] = naverSeries[i].select(".info_group .count").next().first()!!.text()
+                    ref["cntFavorite"] = naverSeries.select(".meta_data_group .count")[i].text()
+                    ref["cntChapter"] = naverSeries[i].select(".info_group .count").first()!!.text()
+                    ref["number"] = number
+                    ref["point"] = point
 
-                ref["writerName"] = naverSeries.select(".info_group .author")[i].text()
-                ref["subject"] = naverSeries.select(".title_group .title")[i].text()
-                ref["bookImg"] = naverSeries.select("div img")[i].absUrl("src")
-                ref["bookCode"] = bookCode
-                ref["cntRecom"] = naverSeries.select(".score_area")[i].text().replace("별점", "")
-                ref["cntPageRead"] = naverSeries[i].select(".info_group .count").next().first()!!.text()
-                ref["cntFavorite"] = naverSeries.select(".meta_data_group .count")[i].text()
-                ref["cntChapter"] = naverSeries[i].select(".info_group .count").first()!!.text()
-                ref["number"] = i
-                ref["point"] = point
+                    ref["total"] = yesterDayItem.point + point
+                    ref["totalCount"] = yesterDayItem.totalCount + 1
+                    ref["totalWeek"] = yesterDayItem.totalWeek + point
+                    ref["totalWeekCount"] = yesterDayItem.totalWeekCount + 1
+                    ref["totalMonth"] = yesterDayItem.totalMonth + point
+                    ref["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
+                    ref["currentDiff"] = (yesterDayItemMap[bookCode]?.number ?: 0) - number
 
-                ref["total"] = yesterDayItem.point + point
-                ref["totalCount"] = yesterDayItem.totalCount + 1
-                ref["totalWeek"] = yesterDayItem.totalWeek + point
-                ref["totalWeekCount"] = yesterDayItem.totalWeekCount + 1
-                ref["totalMonth"] = yesterDayItem.totalMonth + point
-                ref["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
-                ref["currentDiff"] =
-                    if (yesterDayItemMap[bookCode]?.currentDiff != null) {
-                        (yesterDayItemMap[bookCode]?.currentDiff ?: 0) - i
-                    } else {
-                        0
-                    }
+                    ref["date"] = dateMMDD()
+                    ref["type"] = platform
 
-                ref["date"] = dateMMDD()
-                ref["type"] = platform
+                    miningValue(
+                        ref = ref,
+                        num = i,
+                        platform = platform,
+                        type = type
+                    )
 
-                miningValue(
-                    ref = ref,
-                    num = i,
-                    platform = platform,
-                    type = type
-                )
+                    itemBookInfoList.add(convertItemBook(BestRef.setItemBookInfoRef(ref)))
+                    itemBestInfoList.add(convertItemBest(BestRef.setItemBestInfoRef(ref)))
+                }
 
-                itemBookInfoList.add(convertItemBook(BestRef.setItemBookInfoRef(ref)))
-                itemBestInfoList.add(convertItemBest(BestRef.setItemBestInfoRef(ref)))
+                callBack.invoke(itemBookInfoList, itemBestInfoList)
+            }catch (e : Exception){
+                Log.d("DO_MINING", "miningNaver $e")
             }
-
-            callBack.invoke(itemBookInfoList, itemBestInfoList)
 
         }.start()
     }
@@ -412,9 +408,10 @@ object MiningSource {
 
                             val baseJSONObject = JSONObject(data)
 
-                            val result = baseJSONObject.optJSONObject("pageProps")
+                            val test = baseJSONObject.optJSONObject("pageProps")
                                 ?.optJSONObject("dehydratedState")?.optJSONArray("queries")
-                                ?.get(3)
+
+                            val result = test?.get(test.length() - 1)
 
                             val productList = JSONObject(result.toString()).optJSONObject("state")
                                 ?.optJSONArray("data")
@@ -467,12 +464,7 @@ object MiningSource {
                                         ref["totalWeekCount"] = yesterDayItem.totalWeekCount + 1
                                         ref["totalMonth"] = yesterDayItem.totalMonth + point
                                         ref["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
-                                        ref["currentDiff"] =
-                                            if (yesterDayItemMap[bookCode]?.currentDiff != null) {
-                                                (yesterDayItemMap[bookCode]?.currentDiff ?: 0) - number
-                                            } else {
-                                                0
-                                            }
+                                        ref["currentDiff"] = (yesterDayItemMap[bookCode]?.number ?: 0) - number
 
                                         ref["date"] = dateMMDD()
                                         ref["type"] = platform
@@ -496,7 +488,7 @@ object MiningSource {
                         }
                     })
             } catch (exception: Exception) {
-                Log.d("RIDI EXCEPTION", "RIDI")
+                Log.d("DO_MINING", "RIDI")
             }
         }
     }
@@ -566,12 +558,7 @@ object MiningSource {
                                     ref["totalWeekCount"] = yesterDayItem.totalWeekCount + 1
                                     ref["totalMonth"] = yesterDayItem.totalMonth + point
                                     ref["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
-                                    ref["currentDiff"] =
-                                        if (yesterDayItemMap[bookCode]?.currentDiff != null) {
-                                            (yesterDayItemMap[bookCode]?.currentDiff ?: 0) - number
-                                        } else {
-                                            0
-                                        }
+                                    ref["currentDiff"] = (yesterDayItemMap[bookCode]?.number ?: 0) - number
 
                                     ref["date"] = dateMMDD()
                                     ref["type"] = platform
@@ -656,12 +643,7 @@ object MiningSource {
                             ref["totalWeekCount"] = yesterDayItem.totalWeekCount + 1
                             ref["totalMonth"] = yesterDayItem.totalMonth + point
                             ref["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
-                            ref["currentDiff"] =
-                                if (yesterDayItemMap[bookCode]?.currentDiff != null) {
-                                    (yesterDayItemMap[bookCode]?.currentDiff ?: 0) - number
-                                } else {
-                                    0
-                                }
+                            ref["currentDiff"] = (yesterDayItemMap[bookCode]?.number ?: 0) - number
 
                             ref["date"] = dateMMDD()
                             ref["type"] = platform
@@ -753,12 +735,7 @@ object MiningSource {
                                     ref["totalWeekCount"] = yesterDayItem.totalWeekCount + 1
                                     ref["totalMonth"] = yesterDayItem.totalMonth + point
                                     ref["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
-                                    ref["currentDiff"] =
-                                        if (yesterDayItemMap[bookCode]?.currentDiff != null) {
-                                            (yesterDayItemMap[bookCode]?.currentDiff ?: 0) - number
-                                        } else {
-                                            0
-                                        }
+                                    ref["currentDiff"] = (yesterDayItemMap[bookCode]?.number ?: 0) - number
 
                                     ref["date"] = dateMMDD()
                                     ref["type"] = platform
@@ -819,8 +796,7 @@ object MiningSource {
                                 val point = (it.size * 5) - ((it.size * (page - 1)) + i)
                                 val number = ((it.size * (page - 1)) + i)
 
-                                val yesterDayItem =
-                                    checkMiningTrophyValue(yesterDayItemMap[bookCode] ?: ItemBookInfo())
+                                val yesterDayItem = checkMiningTrophyValue(yesterDayItemMap[bookCode] ?: ItemBookInfo())
 
                                 ref["genre"] = it[i].lgctgrNm
                                 ref["keyword"] = ArrayList<String>()
@@ -843,12 +819,7 @@ object MiningSource {
                                 ref["totalWeekCount"] = yesterDayItem.totalWeekCount + 1
                                 ref["totalMonth"] = yesterDayItem.totalMonth + point
                                 ref["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
-                                ref["currentDiff"] =
-                                    if (yesterDayItemMap[bookCode]?.currentDiff != null) {
-                                        (yesterDayItemMap[bookCode]?.currentDiff ?: 0) - number
-                                    } else {
-                                        0
-                                    }
+                                ref["currentDiff"] = (yesterDayItemMap[bookCode]?.number ?: 0) - number
 
                                 ref["date"] = dateMMDD()
                                 ref["type"] = platform

@@ -513,7 +513,7 @@ private fun makeWeekJson(
 
 
     } catch (e : Exception){
-
+        Log.d("makeWeekJson", "jsonWeekRef $e")
     }
 }
 
@@ -555,14 +555,19 @@ private fun makeMonthJson(
         jsonMonthArray.set(indexWeekNum, itemWeekJsonArray)
     }
 
-    val jsonBytes = jsonMonthArray.toString().toByteArray(Charsets.UTF_8)
+    try{
+        val jsonBytes = jsonMonthArray.toString().toByteArray(Charsets.UTF_8)
 
-    jsonMonthRef.putBytes(jsonBytes)
-        .addOnSuccessListener {
-            Log.d("JSON_MINING", "uploadJsonArrayToStorageMonth makeMonthJson")
-        }.addOnFailureListener {
-            Log.d("JSON_MINING", "uploadJsonArrayToStorageMonth makeMonthJson")
-        }
+        jsonMonthRef.putBytes(jsonBytes)
+            .addOnSuccessListener {
+                Log.d("JSON_MINING", "uploadJsonArrayToStorageMonth makeMonthJson")
+            }.addOnFailureListener {
+                Log.d("JSON_MINING", "uploadJsonArrayToStorageMonth makeMonthJson")
+            }
+
+    } catch (e : Exception){
+        Log.d("makeMonthJson", "jsonBytes $e")
+    }
 }
 
 fun uploadJsonTrophyWeek(
@@ -604,19 +609,24 @@ fun uploadJsonTrophyMonth(
     val jsonArrayRef =
         storageRef.child("${platform}/${type}/MONTH_TROPHY/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
 
-    val jsonArrayByteArray = itemBestInfoList.toString().toByteArray(Charsets.UTF_8)
 
+    try{
+        val jsonArrayByteArray = itemBestInfoList.toString().toByteArray(Charsets.UTF_8)
 
-    jsonArrayRef.putBytes(jsonArrayByteArray)
-        .addOnSuccessListener {
-            Log.d(
-                "TROPHY_MINING",
-                "uploadJsonArrayToStorageTrophyMonth addOnSuccessListener"
-            )
-        }.addOnFailureListener {
-            Log.d(
-                "TROPHY_MINING",
-                "uploadJsonArrayToStorageTrophyMonth addOnFailureListener == $it"
-            )
-        }
+        jsonArrayRef.putBytes(jsonArrayByteArray)
+            .addOnSuccessListener {
+                Log.d(
+                    "TROPHY_MINING",
+                    "uploadJsonArrayToStorageTrophyMonth addOnSuccessListener"
+                )
+            }.addOnFailureListener {
+                Log.d(
+                    "TROPHY_MINING",
+                    "uploadJsonArrayToStorageTrophyMonth addOnFailureListener == $it"
+                )
+            }
+
+    } catch (e : Exception){
+        Log.d("uploadJsonTrophyMonth", "jsonArrayByteArray $e")
+    }
 }
