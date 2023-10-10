@@ -551,10 +551,9 @@ fun ContentsPlatform(
 
     val context = LocalContext.current
     getDataStoreStatus(context = context, update = {})
-    val workManager = WorkManager.getInstance(context)
     val dataStore = DataStoreManager(context)
 
-    viewModelMain.getFCMList(child = "ALERT", activity = "$platform $type")
+    viewModelMain.getMiningList(title = platform)
     val fcmAlertList = viewModelMain.state.collectAsState().value.fcmAlertList
 
     TabletContentWrapBtn(

@@ -22,7 +22,6 @@ class FirebaseMessagingOnReceived : FirebaseMessagingService() {
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
 
         val title = remoteMessage.notification?.title ?: ""
@@ -36,7 +35,6 @@ class FirebaseMessagingOnReceived : FirebaseMessagingService() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun showNotification(title: String, message: String) {
 
 //        if(activity.isNotEmpty()){

@@ -36,17 +36,10 @@ object PeriodicWorker {
             .setInitialDelay(delayMills, TimeUnit.MINUTES)
             .setBackoffCriteria(
                 BackoffPolicy.LINEAR,
-                PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS,
-                TimeUnit.MINUTES
+                PeriodicWorkRequest.MIN_PERIODIC_FLEX_MILLIS,
+                TimeUnit.MILLISECONDS
             )
             .setInputData(inputData)
-            .setConstraints(
-                Constraints.Builder()
-                    .setRequiredNetworkType(NetworkType.CONNECTED)
-                    .setRequiresDeviceIdle(false)
-                    .setRequiresCharging(false)
-                    .build()
-            )
             .build()
 
         val currentUser :  FirebaseUser?

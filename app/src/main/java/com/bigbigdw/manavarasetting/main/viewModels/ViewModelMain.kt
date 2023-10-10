@@ -149,6 +149,46 @@ class ViewModelMain @Inject constructor() : ViewModel() {
         })
     }
 
+    fun getMiningList(title: String = ""){
+
+        val mRootRef = FirebaseDatabase.getInstance().reference.child("MINING")
+
+        mRootRef.addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if(dataSnapshot.exists()){
+
+                    var fcmlist = ArrayList<FCMAlert>()
+
+                    for(item in dataSnapshot.children){
+                        val fcm: FCMAlert? = dataSnapshot.child(item.key ?: "").getValue(FCMAlert::class.java)
+
+                        if (fcm != null) {
+
+                            if(fcm.title == title){
+                                fcmlist.add(fcm)
+                            }
+                        }
+                    }
+
+                    viewModelScope.launch {
+
+                        if(fcmlist.size > 1){
+                            fcmlist = fcmlist.reversed() as ArrayList<FCMAlert>
+                        }
+
+                        events.send(EventMain.SetFcmNoticeList(fcmNoticeList = fcmlist))
+                    }
+
+                } else {
+                    Log.d("HIHI", "FALSE")
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
+    }
+
     fun getBestList(platform: String, type: String){
         val mRootRef = FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform).child("DAY")
 

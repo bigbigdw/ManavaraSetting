@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.bigbigdw.manavarasetting.util.DataStoreManager
 import com.bigbigdw.manavarasetting.util.BestRef
 import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.MiningSource
@@ -21,8 +20,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
     Worker(context, workerParams) {
 
-    val dataStore = DataStoreManager(context)
-
     companion object {
         const val WORKER = "WORKER"
         const val PLATFORM = "PLATFORM"
@@ -31,48 +28,53 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
 
     override fun doWork(): Result {
 
-        val year = DBDate.dateMMDDHHMM().substring(0, 4)
-        val month = DBDate.dateMMDDHHMM().substring(4, 6)
-        val day = DBDate.dateMMDDHHMM().substring(6, 8)
-        val hour = DBDate.dateMMDDHHMM().substring(8, 10)
-        val min = DBDate.dateMMDDHHMM().substring(10, 12)
+        val year = DBDate.dateMMDDHHMMss().substring(0, 4)
+        val month = DBDate.dateMMDDHHMMss().substring(4, 6)
+        val day = DBDate.dateMMDDHHMMss().substring(6, 8)
+        val hour = DBDate.dateMMDDHHMMss().substring(8, 10)
+        val min = DBDate.dateMMDDHHMMss().substring(10, 12)
+        val sec = DBDate.dateMMDDHHMMss().substring(12, 14)
 
         val workerName =
             inputData.getString(WORKER) + "_" + inputData.getString(PLATFORM) + "_" + inputData.getString(
                 TYPE
             )
 
-        runBlocking {
-            if (DBDate.getDayOfWeekAsNumber() == 0) {
-                BestRef.setBestRef(
+        if(workerName.contains("MINING")){
+            runBlocking {
+                if (DBDate.getDayOfWeekAsNumber() == 0) {
+                    BestRef.setBestRef(
+                        platform = inputData.getString(PLATFORM) ?: "",
+                        type = inputData.getString(TYPE) ?: "",
+                    )
+                        .child("TROPHY_MONTH").removeValue()
+                }
+
+                if (DBDate.datedd() == "01") {
+                    BestRef.setBestRef(
+                        platform = inputData.getString(PLATFORM) ?: "",
+                        type = inputData.getString(TYPE) ?: "",
+                    )
+                        .child("TROPHY_MONTH").removeValue()
+                }
+
+                MiningSource.mining(
                     platform = inputData.getString(PLATFORM) ?: "",
                     type = inputData.getString(TYPE) ?: "",
+                    context = applicationContext
                 )
-                    .child("TROPHY_MONTH").removeValue()
             }
 
-            if (DBDate.datedd() == "01") {
-                BestRef.setBestRef(
-                    platform = inputData.getString(PLATFORM) ?: "",
-                    type = inputData.getString(TYPE) ?: "",
-                )
-                    .child("TROPHY_MONTH").removeValue()
-            }
+            setDataStore(data = workerName)
+            miningLog(title = inputData.getString(PLATFORM) ?: "", message = "${year}.${month}.${day} ${hour}:${min}:${sec}")
 
-            MiningSource.mining(
-                platform = inputData.getString(PLATFORM) ?: "",
-                type = inputData.getString(TYPE) ?: "",
-                context = applicationContext
+        } else {
+            postFCM(
+                data = workerName,
+                time = "${year}.${month}.${day} ${hour}:${min}:${sec}",
+                activity = "${inputData.getString(PLATFORM)} ${inputData.getString(TYPE)}",
             )
         }
-
-        postFCM(
-            data = workerName,
-            time = "${year}.${month}.${day} ${hour}:${min}",
-            activity = "${inputData.getString(PLATFORM)} ${inputData.getString(TYPE)}",
-        )
-
-        setDataStore(data = workerName)
 
         return Result.success()
     }
@@ -133,6 +135,20 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                     title = title,
                     body = message,
                     activity = activity
+                )
+            )
+    }
+
+    private fun miningLog(
+        title: String,
+        message: String
+    ) {
+        FirebaseDatabase.getInstance().reference.child("MINING")
+            .child(DBDate.dateMMDDHHMMss()).setValue(
+                FCMAlert(
+                    date = DBDate.dateMMDDHHMMss(),
+                    title = title,
+                    body = message
                 )
             )
     }

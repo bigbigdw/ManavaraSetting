@@ -58,6 +58,12 @@ object DBDate {
         return format.format(currentTime).toString()
     }
 
+    fun dateMMDDHHMMss(): String {
+        val currentTime: Date = Calendar.getInstance().time
+        val format = SimpleDateFormat("YYYYMMddHHmmss")
+        return format.format(currentTime).toString()
+    }
+
     fun year() : String{
         val currentDate = LocalDate.now()
         val currentYear = currentDate.year
