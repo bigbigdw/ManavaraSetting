@@ -282,24 +282,6 @@ fun ScreenTablet(
                         logo = R.drawable.logo_naver_challenge
                     )
                 }
-                "리디 판타지 웹소설" -> {
-                    ContentsPlatform(
-                        viewModelMain = viewModelMain,
-                        platform = "RIDI_FANTAGY",
-                        type = "NOVEL",
-                        key = DataStoreManager.MINING_RIDI_FANTAGY_NOVEL,
-                        logo = R.drawable.logo_ridibooks
-                    )
-                }
-                "리디 로맨스 웹소설" -> {
-                    ContentsPlatform(
-                        viewModelMain = viewModelMain,
-                        platform = "RIDI_ROMANCE",
-                        type = "NOVEL",
-                        key = DataStoreManager.MINING_RIDI_ROMANCE_NOVEL,
-                        logo = R.drawable.logo_ridibooks
-                    )
-                }
                 "원스토리 웹소설" -> {
                     ContentsPlatform(
                         viewModelMain = viewModelMain,

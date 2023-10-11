@@ -173,68 +173,6 @@ fun doMining(
                 itemBestInfoList = itemBestInfoList
             )
         }
-    } else if(platform == "RIDI_FANTAGY") {
-
-        val totalBookItem: MutableMap<Int, ItemBookInfo> = HashMap()
-        val totalBestItem: MutableMap<Int, ItemBestInfo> = HashMap()
-
-        MiningSource.miningRidi(
-            mining = "1750",
-            platform = platform,
-            type = type,
-            totalBookItem = totalBookItem,
-            totalBestItem = totalBestItem,
-            yesterDayItemMap = yesterDayItemMap
-        ) { itemBook, itemBest ->
-
-            if(itemBook.size > 99 && itemBest.size > 99){
-                val itemBookInfoList = JsonArray()
-                val itemBestInfoList = JsonArray()
-
-                for(item in 0 until itemBook.size){
-                    itemBookInfoList.add(convertItemBook(itemBook[item] ?: ItemBookInfo()))
-                    itemBestInfoList.add(convertItemBest(itemBest[item] ?: ItemBestInfo()))
-                }
-
-                doResultMining(
-                    platform = platform,
-                    type = type,
-                    itemBookInfoList = itemBookInfoList,
-                    itemBestInfoList = itemBestInfoList
-                )
-            }
-        }
-    } else if(platform == "RIDI_ROMANCE") {
-
-        val totalBookItem: MutableMap<Int, ItemBookInfo> = HashMap()
-        val totalBestItem: MutableMap<Int, ItemBestInfo> = HashMap()
-
-        MiningSource.miningRidi(
-            mining = "1650",
-            platform = platform,
-            type = type,
-            totalBookItem = totalBookItem,
-            totalBestItem = totalBestItem,
-            yesterDayItemMap = yesterDayItemMap
-        ) { itemBook, itemBest ->
-
-            if(itemBook.size > 99 && itemBest.size > 99){
-                val itemBookInfoList = JsonArray()
-                val itemBestInfoList = JsonArray()
-
-                for(item in 0 until itemBook.size){
-                    itemBookInfoList.add(convertItemBook(itemBook[item] ?: ItemBookInfo()))
-                    itemBestInfoList.add(convertItemBest(itemBest[item] ?: ItemBestInfo()))
-                }
-
-                doResultMining(
-                    platform = platform,
-                    type = type,
-                    itemBookInfoList = itemBookInfoList,
-                    itemBestInfoList = itemBestInfoList
-                )
-            }
-        }
     } else if(platform == "ONESTORY") {
 
         if(type == "COMIC"){

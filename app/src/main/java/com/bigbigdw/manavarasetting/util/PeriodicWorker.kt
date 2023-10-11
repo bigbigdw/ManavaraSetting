@@ -33,7 +33,7 @@ object PeriodicWorker {
 
         val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(2, TimeUnit.HOURS)
             .addTag("${tag}_${platform}_${type}")
-            .setInitialDelay(delayMills, TimeUnit.MINUTES)
+
             .setBackoffCriteria(
                 BackoffPolicy.LINEAR,
                 PeriodicWorkRequest.MIN_PERIODIC_FLEX_MILLIS,
