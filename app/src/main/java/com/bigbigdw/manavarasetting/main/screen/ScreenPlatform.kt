@@ -431,6 +431,8 @@ fun ContentsNovel() {
         }
     )
 
+    ContentsLabs()
+
     Spacer(modifier = Modifier.size(60.dp))
 }
 

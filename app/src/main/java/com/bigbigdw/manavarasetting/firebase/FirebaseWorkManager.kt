@@ -57,6 +57,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                     type = inputData.getString(TYPE) ?: "",
                     context = applicationContext
                 )
+
             }
 
             miningLog(title = inputData.getString(PLATFORM) ?: "", workerName = workerName)
