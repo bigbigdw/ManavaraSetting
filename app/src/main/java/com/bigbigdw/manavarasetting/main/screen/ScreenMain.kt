@@ -95,6 +95,7 @@ import com.bigbigdw.manavarasetting.ui.theme.colorTOKSODA
 import com.bigbigdw.manavarasetting.util.BestRef
 import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.MiningSource
+import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import kotlinx.coroutines.runBlocking
 
 @Composable
@@ -860,6 +861,7 @@ fun ContentsDangerOption(viewModelMain: ViewModelMain) {
 fun ContentsLabs() {
 
     val context = LocalContext.current
+    val workManager = WorkManager.getInstance(context)
 
     TabletContentWrapBtn(
         onClick = {
@@ -892,6 +894,42 @@ fun ContentsLabs() {
             ) {
                 Text(
                     text = "테스트",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                delayMills = 3,
+                tag = "NOVEL",
+                platform = "ALL",
+                type = "NOVEL"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.ic_launcher),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "마나바라 NOVEL 전체",
                     color = color000000,
                     fontSize = 18.sp,
                 )

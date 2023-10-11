@@ -411,7 +411,7 @@ object MiningSource {
                             val test = baseJSONObject.optJSONObject("pageProps")
                                 ?.optJSONObject("dehydratedState")?.optJSONArray("queries")
 
-                            val result = test?.get(test.length() - 1)
+                            val result = test?.get(test.length() - 2)
 
                             val productList = JSONObject(result.toString()).optJSONObject("state")
                                 ?.optJSONArray("data")

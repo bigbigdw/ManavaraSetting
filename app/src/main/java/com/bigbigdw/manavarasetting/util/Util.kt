@@ -28,6 +28,23 @@ val WeekKor = arrayListOf(
     "토",
 )
 
+fun novelListEng(): List<String> {
+    return listOf(
+        "JOARA",
+        "JOARA_NOBLESS",
+        "JOARA_PREMIUM",
+        "NAVER_SERIES",
+        "NAVER_CHALLENGE",
+        "NAVER_BEST",
+        "KAKAO_STAGE",
+        "RIDI_ROMANCE",
+        "RIDI_FANTAGY",
+        "ONESTORY",
+        "MUNPIA",
+        "TOKSODA",
+    )
+}
+
 
 @SuppressLint("SuspiciousIndentation")
 fun convertItemBook(bestItemData : ItemBookInfo) : JsonObject {

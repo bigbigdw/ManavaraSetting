@@ -7,6 +7,7 @@ import androidx.work.WorkerParameters
 import com.bigbigdw.manavarasetting.util.BestRef
 import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.MiningSource
+import com.bigbigdw.manavarasetting.util.novelListEng
 import com.bigbigdw.manavarasetting.util.setDataStore
 import com.bigbigdw.massmath.Firebase.FirebaseService
 import com.google.firebase.database.FirebaseDatabase
@@ -59,6 +60,47 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
             }
 
             miningLog(title = inputData.getString(PLATFORM) ?: "", workerName = workerName)
+
+        } else if(inputData.getString(WORKER)?.contains("NOVEL") == true){
+
+            for(platform in novelListEng()){
+                runBlocking {
+                    if (DBDate.getDayOfWeekAsNumber() == 0) {
+                        BestRef.setBestRef(
+                            platform = platform,
+                            type = inputData.getString(TYPE) ?: "",
+                        )
+                            .child("TROPHY_MONTH").removeValue()
+                    }
+
+                    if (DBDate.datedd() == "01") {
+                        BestRef.setBestRef(
+                            platform = platform,
+                            type = inputData.getString(TYPE) ?: "",
+                        )
+                            .child("TROPHY_MONTH").removeValue()
+                    }
+
+                    MiningSource.mining(
+                        platform = platform,
+                        type = inputData.getString(TYPE) ?: "",
+                        context = applicationContext
+                    )
+                }
+            }
+
+            val year = DBDate.dateMMDDHHMMss().substring(0, 4)
+            val month = DBDate.dateMMDDHHMMss().substring(4, 6)
+            val day = DBDate.dateMMDDHHMMss().substring(6, 8)
+            val hour = DBDate.dateMMDDHHMMss().substring(8, 10)
+            val min = DBDate.dateMMDDHHMMss().substring(10, 12)
+            val sec = DBDate.dateMMDDHHMMss().substring(12, 14)
+
+            postFCM(
+                data = "마나바라 웹소설",
+                time = "${year}.${month}.${day} ${hour}:${min}:${sec}",
+                activity = "NOVEL",
+            )
 
         } else {
 
