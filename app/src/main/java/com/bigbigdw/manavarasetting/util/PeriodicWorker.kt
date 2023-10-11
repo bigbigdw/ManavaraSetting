@@ -47,13 +47,19 @@ object PeriodicWorker {
 
         currentUser = auth.currentUser
 
-        if(currentUser?.uid == "A8uh2QkVQaV3Q3rE8SgBNKzV6VH2"){
-            workManager.enqueueUniquePeriodicWork(
-                "${tag}_${platform}_${type}",
-                ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,
-                workRequest
-            )
-        }
+//        if(currentUser?.uid == "A8uh2QkVQaV3Q3rE8SgBNKzV6VH2"){
+//            workManager.enqueueUniquePeriodicWork(
+//                "${tag}_${platform}_${type}",
+//                ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,
+//                workRequest
+//            )
+//        }
+
+        workManager.enqueueUniquePeriodicWork(
+            "${tag}_${platform}_${type}",
+            ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,
+            workRequest
+        )
     }
 
     fun cancelWorker(workManager: WorkManager, tag: String, platform : String, type: String){

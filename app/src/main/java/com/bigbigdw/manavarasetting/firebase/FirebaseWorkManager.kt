@@ -28,13 +28,6 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
 
     override fun doWork(): Result {
 
-        val year = DBDate.dateMMDDHHMMss().substring(0, 4)
-        val month = DBDate.dateMMDDHHMMss().substring(4, 6)
-        val day = DBDate.dateMMDDHHMMss().substring(6, 8)
-        val hour = DBDate.dateMMDDHHMMss().substring(8, 10)
-        val min = DBDate.dateMMDDHHMMss().substring(10, 12)
-        val sec = DBDate.dateMMDDHHMMss().substring(12, 14)
-
         val workerName =
             inputData.getString(WORKER) + "_" + inputData.getString(PLATFORM) + "_" + inputData.getString(
                 TYPE
@@ -65,10 +58,17 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                 )
             }
 
-            setDataStore(data = workerName)
-            miningLog(title = inputData.getString(PLATFORM) ?: "", message = "${year}.${month}.${day} ${hour}:${min}:${sec}")
+            miningLog(title = inputData.getString(PLATFORM) ?: "", workerName = workerName)
 
         } else {
+
+            val year = DBDate.dateMMDDHHMMss().substring(0, 4)
+            val month = DBDate.dateMMDDHHMMss().substring(4, 6)
+            val day = DBDate.dateMMDDHHMMss().substring(6, 8)
+            val hour = DBDate.dateMMDDHHMMss().substring(8, 10)
+            val min = DBDate.dateMMDDHHMMss().substring(10, 12)
+            val sec = DBDate.dateMMDDHHMMss().substring(12, 14)
+
             postFCM(
                 data = workerName,
                 time = "${year}.${month}.${day} ${hour}:${min}:${sec}",
@@ -141,14 +141,24 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
 
     private fun miningLog(
         title: String,
-        message: String
+        workerName: String
     ) {
+
+        val year = DBDate.dateMMDDHHMMss().substring(0, 4)
+        val month = DBDate.dateMMDDHHMMss().substring(4, 6)
+        val day = DBDate.dateMMDDHHMMss().substring(6, 8)
+        val hour = DBDate.dateMMDDHHMMss().substring(8, 10)
+        val min = DBDate.dateMMDDHHMMss().substring(10, 12)
+        val sec = DBDate.dateMMDDHHMMss().substring(12, 14)
+
+        setDataStore(data = workerName)
+
         FirebaseDatabase.getInstance().reference.child("MINING")
             .child(DBDate.dateMMDDHHMMss()).setValue(
                 FCMAlert(
                     date = DBDate.dateMMDDHHMMss(),
                     title = title,
-                    body = message
+                    body = "${year}.${month}.${day} ${hour}:${min}:${sec}"
                 )
             )
     }
