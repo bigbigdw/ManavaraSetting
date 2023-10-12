@@ -163,7 +163,6 @@ fun ScreenMainMobile(
     )
 
     Scaffold(
-//        topBar = { MainTopBar() },
         bottomBar = { BottomNavScreen(navController = navController, currentRoute = currentRoute) }
     ) {
         Box(
@@ -191,56 +190,6 @@ fun ScreenMainMobile(
 //            ScreenTest()
 //        },
 //    ) {}
-}
-
-@Composable
-fun MainTopBar() {
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .background(color = Color.Cyan)
-            .padding(16.dp),
-        horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-
-        Box(
-            modifier = Modifier.weight(1f)
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_launcher),
-                contentDescription = null,
-                modifier = Modifier
-                    .width(110.dp)
-                    .height(22.dp)
-                    .clickable { }
-            )
-        }
-
-        Image(
-            painter = painterResource(id = R.drawable.ic_launcher),
-            contentDescription = null,
-            modifier = Modifier
-                .width(22.dp)
-                .height(22.dp)
-                .clickable { }
-        )
-
-        Spacer(
-            modifier = Modifier
-                .wrapContentWidth()
-                .width(16.dp)
-        )
-
-        Image(
-            painter = painterResource(id = R.drawable.ic_launcher),
-            contentDescription = null,
-            modifier = Modifier
-                .width(22.dp)
-                .height(22.dp)
-                .clickable { }
-        )
-    }
 }
 
 @Composable
