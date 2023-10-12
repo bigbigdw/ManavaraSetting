@@ -74,30 +74,64 @@ fun doMining(
 
     if(platform == "NAVER_SERIES"){
         if(type == "COMIC"){
+
+            val totalBookItem: MutableMap<Int, ItemBookInfo> = HashMap()
+            val totalBestItem: MutableMap<Int, ItemBestInfo> = HashMap()
+
             miningNaverSeriesComic(
                 platform = platform,
                 type = type,
+                totalBookItem = totalBookItem,
+                totalBestItem = totalBestItem,
                 yesterDayItemMap = yesterDayItemMap
-            ) { itemBookInfoList, itemBestInfoList ->
-                doResultMining(
-                    platform = platform,
-                    type = type,
-                    itemBookInfoList = itemBookInfoList,
-                    itemBestInfoList = itemBestInfoList
-                )
+            ) { itemBook, itemBest ->
+
+                if(itemBook.size > 99 && itemBest.size > 99){
+                    val itemBookInfoList = JsonArray()
+                    val itemBestInfoList = JsonArray()
+
+                    for(item in 0 until itemBook.size){
+                        itemBookInfoList.add(convertItemBook(itemBook[item] ?: ItemBookInfo()))
+                        itemBestInfoList.add(convertItemBest(itemBest[item] ?: ItemBestInfo()))
+                    }
+
+                    doResultMining(
+                        platform = platform,
+                        type = type,
+                        itemBookInfoList = itemBookInfoList,
+                        itemBestInfoList = itemBestInfoList
+                    )
+                }
             }
         } else {
+
+            val totalBookItem: MutableMap<Int, ItemBookInfo> = HashMap()
+            val totalBestItem: MutableMap<Int, ItemBestInfo> = HashMap()
+
             MiningSource.miningNaverSeriesNovel(
                 platform = platform,
                 type = type,
+                totalBookItem = totalBookItem,
+                totalBestItem = totalBestItem,
                 yesterDayItemMap = yesterDayItemMap
-            ) { itemBookInfoList, itemBestInfoList ->
-                doResultMining(
-                    platform = platform,
-                    type = type,
-                    itemBookInfoList = itemBookInfoList,
-                    itemBestInfoList = itemBestInfoList
-                )
+            ) { itemBook, itemBest ->
+
+                if(itemBook.size > 99 && itemBest.size > 99){
+                    val itemBookInfoList = JsonArray()
+                    val itemBestInfoList = JsonArray()
+
+                    for(item in 0 until itemBook.size){
+                        itemBookInfoList.add(convertItemBook(itemBook[item] ?: ItemBookInfo()))
+                        itemBestInfoList.add(convertItemBest(itemBest[item] ?: ItemBestInfo()))
+                    }
+
+                    doResultMining(
+                        platform = platform,
+                        type = type,
+                        itemBookInfoList = itemBookInfoList,
+                        itemBestInfoList = itemBestInfoList
+                    )
+                }
             }
         }
     } else if(platform == "JOARA") {
@@ -145,11 +179,42 @@ fun doMining(
                 itemBestInfoList = itemBestInfoList
             )
         }
-    } else if(platform == "NAVER_CHALLENGE") {
+    } else if(platform == "NAVER_WEBNOVEL_FREE") {
         MiningSource.miningNaver(
             platform = platform,
+            mining = "webnovel",
             type = type,
+            platformType = "FREE",
+            yesterDayItemMap = yesterDayItemMap
+        ) { itemBookInfoList, itemBestInfoList ->
+            doResultMining(
+                platform = platform,
+                type = type,
+                itemBookInfoList = itemBookInfoList,
+                itemBestInfoList = itemBestInfoList
+            )
+        }
+    } else if(platform == "NAVER_WEBNOVEL_PAY") {
+        MiningSource.miningNaver(
+            platform = platform,
+            mining = "webnovel",
+            type = type,
+            platformType = "PAY",
+            yesterDayItemMap = yesterDayItemMap
+        ) { itemBookInfoList, itemBestInfoList ->
+            doResultMining(
+                platform = platform,
+                type = type,
+                itemBookInfoList = itemBookInfoList,
+                itemBestInfoList = itemBestInfoList
+            )
+        }
+    }  else if(platform == "NAVER_CHALLENGE") {
+        MiningSource.miningNaver(
+            platform = platform,
             mining = "challenge",
+            type = type,
+            platformType = "FREE",
             yesterDayItemMap = yesterDayItemMap
         ) { itemBookInfoList, itemBestInfoList ->
             doResultMining(
@@ -162,8 +227,9 @@ fun doMining(
     } else if(platform == "NAVER_BEST") {
         MiningSource.miningNaver(
             platform = platform,
-            type = type,
             mining = "best",
+            type = type,
+            platformType = "PAY",
             yesterDayItemMap = yesterDayItemMap
         ) { itemBookInfoList, itemBestInfoList ->
             doResultMining(

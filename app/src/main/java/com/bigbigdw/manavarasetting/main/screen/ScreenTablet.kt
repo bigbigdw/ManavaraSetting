@@ -264,7 +264,7 @@ fun ScreenTablet(
                         logo = R.drawable.logo_joara_premium
                     )
                 }
-                "챌린지 리그 웹소설" -> {
+                "챌린지 리그" -> {
                     ContentsPlatform(
                         viewModelMain = viewModelMain,
                         platform = "NAVER_CHALLENGE",
@@ -273,12 +273,30 @@ fun ScreenTablet(
                         logo = R.drawable.logo_naver_challenge
                     )
                 }
-                "베스트 리그 웹소설" -> {
+                "베스트 리그" -> {
                     ContentsPlatform(
                         viewModelMain = viewModelMain,
                         platform = "NAVER_BEST",
                         type = "NOVEL",
                         key = DataStoreManager.MINING_NAVER_BEST_NOVEL,
+                        logo = R.drawable.logo_naver_challenge
+                    )
+                }
+                "네이버 웹소설 유료" -> {
+                    ContentsPlatform(
+                        viewModelMain = viewModelMain,
+                        platform = "NAVER_WEBNOVEL_PAY",
+                        type = "NOVEL",
+                        key = DataStoreManager.MINING_NAVER_WEBNOVEL_PAY_NOVEL,
+                        logo = R.drawable.logo_naver_challenge
+                    )
+                }
+                "네이버 웹소설 무료" -> {
+                    ContentsPlatform(
+                        viewModelMain = viewModelMain,
+                        platform = "NAVER_WEBNOVEL_FREE",
+                        type = "NOVEL",
+                        key = DataStoreManager.MINING_NAVER_WEBNOVEL_FREE_NOVEL,
                         logo = R.drawable.logo_naver_challenge
                     )
                 }

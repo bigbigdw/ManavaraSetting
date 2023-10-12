@@ -3,11 +3,8 @@ package com.bigbigdw.manavarasetting.util
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
-import com.bigbigdw.manavarasetting.main.model.MainSettingLine
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -36,6 +33,8 @@ fun novelListEng(): List<String> {
         "NAVER_SERIES",
         "NAVER_CHALLENGE",
         "NAVER_BEST",
+        "NAVER_WEBNOVEL_PAY",
+        "NAVER_WEBNOVEL_FREE",
         "KAKAO_STAGE",
         "ONESTORY",
         "MUNPIA",
@@ -161,6 +160,8 @@ fun getDataStoreStatus(context: Context, update : () -> Unit){
                     dataStore.setDataStoreString(DataStoreManager.MINING_JOARA_NOBLESS_NOVEL, dataSnapshot.child("MINING_JOARA_NOBLESS_NOVEL").getValue(String::class.java) ?: "")
                     dataStore.setDataStoreString(DataStoreManager.MINING_NAVER_CHALLENGE_NOVEL, dataSnapshot.child("MINING_NAVER_CHALLENGE_NOVEL").getValue(String::class.java) ?: "")
                     dataStore.setDataStoreString(DataStoreManager.MINING_NAVER_BEST_NOVEL, dataSnapshot.child("MINING_NAVER_BEST_NOVEL").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.MINING_NAVER_WEBNOVEL_PAY_NOVEL, dataSnapshot.child("MINING_NAVER_WEBNOVEL_PAY_NOVEL").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.MINING_NAVER_WEBNOVEL_FREE_NOVEL, dataSnapshot.child("MINING_NAVER_WEBNOVEL_FREE_NOVEL").getValue(String::class.java) ?: "")
                     dataStore.setDataStoreString(DataStoreManager.MINING_ONESTORY_NOVEL, dataSnapshot.child("MINING_ONESTORY_NOVEL").getValue(String::class.java) ?: "")
                     dataStore.setDataStoreString(DataStoreManager.MINING_KAKAO_STAGE_NOVEL, dataSnapshot.child("MINING_KAKAO_STAGE_NOVEL").getValue(String::class.java) ?: "")
                     dataStore.setDataStoreString(DataStoreManager.MINING_MUNPIA_NOVEL, dataSnapshot.child("MINING_MUNPIA_NOVEL").getValue(String::class.java) ?: "")

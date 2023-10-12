@@ -443,8 +443,8 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         ItemMainSettingSingleTablet(
             containerColor = colorCHALLENGE,
             image = R.drawable.logo_naver_challenge,
-            title = "챌린지 리그 웹소설",
-            body = "네이버 챌린지 리그 웹소설 관리",
+            title = "네이버 웹소설 유료",
+            body = "네이버 웹소설 유료 관리",
             setMenu = setMenu,
             getMenu = getMenu,
             onClick = { onClick() }
@@ -453,28 +453,28 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         ItemMainSettingSingleTablet(
             containerColor = colorCHALLENGE,
             image = R.drawable.logo_naver_challenge,
-            title = "베스트 리그 웹소설",
-            body = "네이버 베스트 리그 웹소설 관리",
+            title = "네이버 웹소설 무료",
+            body = "네이버 웹소설 무료 관리",
             setMenu = setMenu,
             getMenu = getMenu,
             onClick = { onClick() }
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = colorRIDI,
-            image = R.drawable.logo_ridibooks,
-            title = "리디 판타지 웹소설",
-            body = "리디북스 판타지 웹소설 관리",
+            containerColor = colorCHALLENGE,
+            image = R.drawable.logo_naver_challenge,
+            title = "챌린지 리그",
+            body = "네이버 챌린지 리그 관리",
             setMenu = setMenu,
             getMenu = getMenu,
             onClick = { onClick() }
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = colorRIDI,
-            image = R.drawable.logo_ridibooks,
-            title = "리디 로맨스 웹소설",
-            body = "리디북스 로맨스 웹소설 관리",
+            containerColor = colorCHALLENGE,
+            image = R.drawable.logo_naver_challenge,
+            title = "베스트 리그",
+            body = "네이버 베스트 리그 관리",
             setMenu = setMenu,
             getMenu = getMenu,
             onClick = { onClick() }

@@ -165,7 +165,73 @@ fun ContentsBestListNovel(
     TabletContentWrapBtn(
         onClick = {
             setDetailPage(true)
-            setDetailMenu("네이버 챌린지 베스트")
+            setDetailMenu("네이버 웹소설 유료 베스트")
+            setDetailPlatform("NAVER_WEBNOVEL_PAY")
+            setDetailType("NOVEL")
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo_naver_challenge),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "네이버 웹소설 유료",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            setDetailPage(true)
+            setDetailMenu("네이버 웹소설 무료 베스트")
+            setDetailPlatform("NAVER_WEBNOVEL_FREE")
+            setDetailType("NOVEL")
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo_naver_challenge),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "네이버 웹소설 무료",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            setDetailPage(true)
+            setDetailMenu("네이버 챌린지 리그")
             setDetailPlatform("NAVER_CHALLENGE")
             setDetailType("NOVEL")
         },
@@ -187,7 +253,7 @@ fun ContentsBestListNovel(
                 Spacer(modifier = Modifier.size(8.dp))
 
                 Text(
-                    text = "네이버 챌린지",
+                    text = "네이버 챌린지 리그",
                     color = color000000,
                     fontSize = 18.sp,
                 )
@@ -198,7 +264,7 @@ fun ContentsBestListNovel(
     TabletContentWrapBtn(
         onClick = {
             setDetailPage(true)
-            setDetailMenu("네이버 베스트 베스트")
+            setDetailMenu("네이버 베스트 리그")
             setDetailPlatform("NAVER_BEST")
             setDetailType("NOVEL")
         },
@@ -220,7 +286,7 @@ fun ContentsBestListNovel(
                 Spacer(modifier = Modifier.size(8.dp))
 
                 Text(
-                    text = "네이버 베스트",
+                    text = "네이버 베스트 리그",
                     color = color000000,
                     fontSize = 18.sp,
                 )

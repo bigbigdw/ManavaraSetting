@@ -312,6 +312,71 @@ fun ContentsNovel() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
+                    painter = painterResource(id = R.drawable.logo_naver_challenge),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = spannableString(
+                        textFront = "네이버 웹소설 유료 : ", color = color000000,
+                        textEnd = dataStore.getDataStoreString(
+                            DataStoreManager.MINING_NAVER_WEBNOVEL_PAY_NOVEL
+                        ).collectAsState(initial = "").value ?: "",
+                    ),
+                    color = color20459E,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+
+    TabletContentWrapBtn(
+        onClick = {},
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.logo_naver_challenge),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = spannableString(
+                        textFront = "네이버 웹소설 무료 : ", color = color000000,
+                        textEnd = dataStore.getDataStoreString(
+                            DataStoreManager.MINING_NAVER_WEBNOVEL_FREE_NOVEL
+                        ).collectAsState(initial = "").value ?: "",
+                    ),
+                    color = color20459E,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {},
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
                     painter = painterResource(id = R.drawable.logo_onestore),
                     contentDescription = null,
                     modifier = Modifier

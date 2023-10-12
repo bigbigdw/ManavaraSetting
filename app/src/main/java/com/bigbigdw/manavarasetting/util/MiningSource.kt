@@ -15,7 +15,6 @@ import com.bigbigdw.moavara.Retrofit.RetrofitJoara
 import com.bigbigdw.moavara.Retrofit.RetrofitKaKao
 import com.bigbigdw.moavara.Retrofit.RetrofitMoonPia
 import com.bigbigdw.moavara.Retrofit.RetrofitOnestore
-import com.bigbigdw.moavara.Retrofit.RetrofitRidi
 import com.bigbigdw.moavara.Retrofit.RetrofitToksoda
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -23,7 +22,6 @@ import com.google.gson.JsonArray
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import org.json.JSONObject
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
@@ -100,13 +98,13 @@ object MiningSource {
     fun miningNaverSeriesComic(
         platform: String,
         type: String,
+        totalBookItem: MutableMap<Int, ItemBookInfo>,
+        totalBestItem: MutableMap<Int, ItemBestInfo>,
         yesterDayItemMap: MutableMap<String, ItemBookInfo>,
-        callBack: (JsonArray, JsonArray) -> Unit
+        callBack: (MutableMap<Int, ItemBookInfo>, MutableMap<Int, ItemBestInfo>) -> Unit,
     ){
         Thread{
             try{
-                val itemBookInfoList = JsonArray()
-                val itemBestInfoList = JsonArray()
 
                 for(pageCount in 1..5) {
                     val doc: Document =
@@ -152,11 +150,11 @@ object MiningSource {
                             type = type
                         )
 
-                        itemBookInfoList.add(convertItemBook(BestRef.setItemBookInfoRef(ref)))
-                        itemBestInfoList.add(convertItemBest(BestRef.setItemBestInfoRef(ref)))
+                        totalBookItem[number] = BestRef.setItemBookInfoRef(ref)
+                        totalBestItem[number] = BestRef.setItemBestInfoRef(ref)
                     }
 
-                    callBack.invoke(itemBookInfoList, itemBestInfoList)
+                    callBack.invoke(totalBookItem, totalBestItem)
 
                 }
             } catch (e : Exception){
@@ -168,13 +166,13 @@ object MiningSource {
     fun miningNaverSeriesNovel(
         platform: String,
         type: String,
+        totalBookItem: MutableMap<Int, ItemBookInfo>,
+        totalBestItem: MutableMap<Int, ItemBestInfo>,
         yesterDayItemMap: MutableMap<String, ItemBookInfo>,
-        callBack: (JsonArray, JsonArray) -> Unit
+        callBack: (MutableMap<Int, ItemBookInfo>, MutableMap<Int, ItemBestInfo>) -> Unit,
     ){
         Thread{
             try {
-                val itemBookInfoList = JsonArray()
-                val itemBestInfoList = JsonArray()
 
                 for(pageCount in 1..5) {
                     val doc: Document = Jsoup.connect("https://series.naver.com/novel/top100List.series?rankingTypeCode=DAILY&categoryCode=ALL&page=${pageCount}").post()
@@ -217,11 +215,11 @@ object MiningSource {
                             type = type
                         )
 
-                        itemBookInfoList.add(convertItemBook(BestRef.setItemBookInfoRef(ref)))
-                        itemBestInfoList.add(convertItemBest(BestRef.setItemBestInfoRef(ref)))
+                        totalBookItem[number] = BestRef.setItemBookInfoRef(ref)
+                        totalBestItem[number] = BestRef.setItemBestInfoRef(ref)
                     }
 
-                    callBack.invoke(itemBookInfoList, itemBestInfoList)
+                    callBack.invoke(totalBookItem, totalBestItem)
 
                 }
             }catch (e : Exception){
@@ -319,6 +317,7 @@ object MiningSource {
     fun miningNaver(
         platform: String,
         mining: String,
+        platformType: String,
         type: String,
         yesterDayItemMap: MutableMap<String, ItemBookInfo>,
         callBack: (JsonArray, JsonArray) -> Unit
@@ -328,12 +327,16 @@ object MiningSource {
                 val itemBookInfoList = JsonArray()
                 val itemBestInfoList = JsonArray()
 
-                val doc: Document = Jsoup.connect("https://novel.naver.com/${mining}/ranking?genre=101&periodType=DAILY").post()
-                val naverSeries: Elements = doc.select(".ranking_wrap_left .ranking_list li")
+                val doc: Document = Jsoup.connect("https://novel.naver.com/webnovel/ranking?genre=999&periodType=DAILY").post()
+                val naverSeries: Elements = if(platformType == "FREE"){
+                    doc.select(".ranking_wrap_left .ranking_list li")
+                } else {
+                    doc.select(".ranking_wrap_right .ranking_list li")
+                }
                 val ref: MutableMap<String?, Any> = HashMap()
 
                 for (i in naverSeries.indices) {
-                    val bookCode = naverSeries.select("a")[i].absUrl("href").replace("https://novel.naver.com/${mining}/list?novelId=", "")
+                    val bookCode = naverSeries.select("a")[i].absUrl("href").replace("https://novel.naver.com/webnovel/list?novelId=", "")
                     val point = naverSeries.size - i
                     val number = i
 

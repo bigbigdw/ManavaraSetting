@@ -23,6 +23,8 @@ class DataStoreManager(private val context: Context) {
         val MINING_JOARA_NOBLESS_NOVEL = stringPreferencesKey("MINING_JOARA_NOBLESS_NOVEL")
         val MINING_NAVER_CHALLENGE_NOVEL = stringPreferencesKey("MINING_NAVER_CHALLENGE_NOVEL")
         val MINING_NAVER_BEST_NOVEL = stringPreferencesKey("MINING_NAVER_BEST_NOVEL")
+        val MINING_NAVER_WEBNOVEL_PAY_NOVEL = stringPreferencesKey("MINING_NAVER_WEBNOVEL_PAY_NOVEL")
+        val MINING_NAVER_WEBNOVEL_FREE_NOVEL = stringPreferencesKey("MINING_NAVER_WEBNOVEL_FREE_NOVEL")
         val MINING_ONESTORY_NOVEL = stringPreferencesKey("MINING_ONESTORY_NOVEL")
         val MINING_KAKAO_STAGE_NOVEL = stringPreferencesKey("MINING_KAKAO_STAGE_NOVEL")
         val MINING_MUNPIA_NOVEL = stringPreferencesKey("MINING_MUNPIA_NOVEL")
