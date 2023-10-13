@@ -399,6 +399,33 @@ fun ScreenTablet(
                         logo = R.drawable.logo_toksoda
                     )
                 }
+                "투데이 장르 베스트" -> {
+                    ContentsGenre(
+                        menuType = "투데이",
+                        setDetailPage = setDetailPage,
+                        setDetailMenu = setDetailMenu,
+                        setDetailPlatform = setDetailPlatform,
+                        setDetailType = setDetailType,
+                    )
+                }
+                "주간 장르 베스트" -> {
+                    ContentsGenre(
+                        menuType = "주간",
+                        setDetailPage = setDetailPage,
+                        setDetailMenu = setDetailMenu,
+                        setDetailPlatform = setDetailPlatform,
+                        setDetailType = setDetailType,
+                    )
+                }
+                "월간 장르 베스트" -> {
+                    ContentsGenre(
+                        menuType = "월간",
+                        setDetailPage = setDetailPage,
+                        setDetailMenu = setDetailMenu,
+                        setDetailPlatform = setDetailPlatform,
+                        setDetailType = setDetailType,
+                    )
+                }
                 "위험 옵션" -> {
                     ContentsDangerOption(viewModelMain = viewModelMain)
                 }
@@ -506,6 +533,26 @@ fun ScreenTabletDetail(
                 getDetailType = getDetailType,
             )
         } else if (getDetailMenu.contains("베스트")) {
+            ContentsBestListDetail(
+                viewModelMain = viewModelMain,
+                type = "BEST",
+                getDetailPlatform = getDetailPlatform,
+                getDetailType = getDetailType,
+            )
+        } else if (getDetailMenu.contains("장르 투데이")) {
+            GenreDetailToday(
+                viewModelMain = viewModelMain,
+                getDetailPlatform = getDetailPlatform,
+                getDetailType = getDetailType,
+            )
+        } else if (getDetailMenu.contains("장르 주간")) {
+            ContentsBestListDetail(
+                viewModelMain = viewModelMain,
+                type = "BEST",
+                getDetailPlatform = getDetailPlatform,
+                getDetailType = getDetailType,
+            )
+        } else if (getDetailMenu.contains("장르 월간")) {
             ContentsBestListDetail(
                 viewModelMain = viewModelMain,
                 type = "BEST",

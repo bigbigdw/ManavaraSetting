@@ -16,39 +16,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 
-val WeekKor = arrayListOf(
-    "일",
-    "월",
-    "화",
-    "수",
-    "목",
-    "금",
-    "토",
-)
-
-fun novelListEng(): List<String> {
-    return listOf(
-        "JOARA",
-        "JOARA_NOBLESS",
-        "JOARA_PREMIUM",
-        "NAVER_SERIES",
-        "NAVER_CHALLENGE",
-        "NAVER_BEST",
-        "NAVER_WEBNOVEL_PAY",
-        "NAVER_WEBNOVEL_FREE",
-        "KAKAO_STAGE",
-        "ONESTORY_FANTAGY",
-        "ONESTORY_ROMANCE",
-        "ONESTORY_PASS_FANTAGY",
-        "ONESTORY_PASS_ROMANCE",
-        "MUNPIA_PAY",
-        "MUNPIA_FREE",
-        "TOKSODA",
-        "TOKSODA_FREE",
-    )
-}
-
-
 @SuppressLint("SuspiciousIndentation")
 fun convertItemBook(bestItemData : ItemBookInfo) : JsonObject {
     val jsonObject = JsonObject()
@@ -121,6 +88,7 @@ fun convertItemBestJson(jsonObject : JSONObject) : ItemBestInfo {
 
 fun convertItemBest(bestItemData : ItemBestInfo) : JsonObject {
     val jsonObject = JsonObject()
+
     jsonObject.addProperty("number", bestItemData.number)
     jsonObject.addProperty("point", bestItemData.point)
     jsonObject.addProperty("cntPageRead", bestItemData.cntPageRead)
@@ -136,6 +104,7 @@ fun convertItemBest(bestItemData : ItemBestInfo) : JsonObject {
 
 fun convertItemKeywordJson(itemBestKeyword : ItemBestKeyword) : JsonObject {
     val jsonObject = JsonObject()
+
     jsonObject.addProperty("title", itemBestKeyword.title)
     jsonObject.addProperty("value", itemBestKeyword.value)
     return jsonObject

@@ -581,13 +581,15 @@ fun doMining(
             totalBestItem = totalBestItem,
             yesterDayItemMap = yesterDayItemMap
         ) { itemBook, itemBest ->
+
             val itemBookInfoList = JsonArray()
             val itemBestInfoList = JsonArray()
             for (item in 0 until itemBook.size) {
                 itemBookInfoList.add(convertItemBook(itemBook[item] ?: ItemBookInfo()))
                 itemBestInfoList.add(convertItemBest(itemBest[item] ?: ItemBestInfo()))
             }
-            doResultMining(
+
+            doMining(
                 platform = platform,
                 type = type,
                 itemBookInfoList = itemBookInfoList,
@@ -597,6 +599,7 @@ fun doMining(
     } else if (platform == "RIDI_ROMANCE") {
         val totalBookItem: MutableMap<Int, ItemBookInfo> = HashMap()
         val totalBestItem: MutableMap<Int, ItemBestInfo> = HashMap()
+
         MiningSource.miningRidi(
             mining = "1650",
             platform = platform,
@@ -612,7 +615,8 @@ fun doMining(
                 itemBookInfoList.add(convertItemBook(itemBook[item] ?: ItemBookInfo()))
                 itemBestInfoList.add(convertItemBest(itemBest[item] ?: ItemBestInfo()))
             }
-            doResultMining(
+
+            doMining(
                 platform = platform,
                 type = type,
                 itemBookInfoList = itemBookInfoList,

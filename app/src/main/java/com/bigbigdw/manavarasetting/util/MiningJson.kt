@@ -268,8 +268,15 @@ fun doResultMiningGenre(
     for (i in 0 until itemBookInfoList.size()) {
         val item = JSONObject(itemBookInfoList[i].asJsonObject.toString())
         if (item.optString("genre").isNotEmpty()) {
+
             val value = item.optString("genre")
-            genreValuesMap[value] = genreValuesMap.getOrDefault(value, 0) + 1
+
+            genreValuesMap[value.replace("/", ",")
+                .replace(".", " ")
+                .replace("#", " ")
+                .replace("$", " ")
+                .replace("[", " ")
+                .replace("]", " ")] = genreValuesMap.getOrDefault(value, 0) + 1
         }
     }
 
@@ -308,37 +315,6 @@ fun doResultMiningGenre(
     }
 }
 
-fun getGenreDay(
-    platform: String,
-    type: String
-) {
-
-    val mRootRef =  FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform).child("GENRE_DAY")
-    val dataMap = HashMap<String, Any>()
-
-    mRootRef.addListenerForSingleValueEvent(object :
-        ValueEventListener {
-        override fun onDataChange(dataSnapshot: DataSnapshot) {
-            if(dataSnapshot.exists()){
-
-                for (snapshot in dataSnapshot.children) {
-                    val key = snapshot.key
-                    val value = snapshot.value
-                    if (key != null && value != null) {
-                        dataMap[key] = value
-                    }
-                }
-
-                Log.d("HIHIHI", "dataMap == ${dataMap}")
-
-            } else {
-                Log.d("HIHIHI", "FAIL == NOT EXIST")
-            }
-        }
-
-        override fun onCancelled(databaseError: DatabaseError) {}
-    })
-}
 
 fun getGenreDayWeek(
     platform: String,

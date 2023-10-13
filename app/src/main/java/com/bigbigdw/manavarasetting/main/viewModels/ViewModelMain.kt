@@ -9,6 +9,7 @@ import com.bigbigdw.manavarasetting.main.event.EventMain
 import com.bigbigdw.manavarasetting.main.event.StateMain
 import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
+import com.bigbigdw.manavarasetting.main.model.ItemBestKeyword
 import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import com.bigbigdw.manavarasetting.util.convertItemBestJson
@@ -89,6 +90,12 @@ class ViewModelMain @Inject constructor() : ViewModel() {
             is EventMain.SetTrophyList -> {
                 current.copy(
                     trophyList = event.trophyList
+                )
+            }
+
+            is EventMain.SetGenreDay -> {
+                current.copy(
+                    genreDay = event.genreDay
                 )
             }
 
@@ -395,6 +402,51 @@ class ViewModelMain @Inject constructor() : ViewModel() {
             )
         }
     }
+
+    fun getGenreDay(
+        platform: String,
+        type: String
+    ) {
+
+        val mRootRef =  FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform).child("GENRE_DAY")
+        val dataMap = HashMap<String, Any>()
+
+        mRootRef.addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if(dataSnapshot.exists()){
+
+                    val arrayList = ArrayList<ItemBestKeyword>()
+
+                    for (snapshot in dataSnapshot.children) {
+                        val key = snapshot.key
+                        val value = snapshot.value
+                        if (key != null && value != null) {
+                            dataMap[key] = value
+
+                            arrayList.add(
+                                ItemBestKeyword(
+                                    title = key,
+                                    value = value.toString()
+                                )
+                            )
+                        }
+                    }
+
+                    val cmpAsc: java.util.Comparator<ItemBestKeyword> =
+                        Comparator { o1, o2 -> o2.value.compareTo(o1.value) }
+                    Collections.sort(arrayList, cmpAsc)
+
+                    viewModelScope.launch {
+                        events.send(EventMain.SetGenreDay(genreDay = arrayList))
+                    }
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
+    }
+
 
 }
 

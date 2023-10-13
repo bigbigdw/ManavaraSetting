@@ -93,10 +93,6 @@ import com.bigbigdw.manavarasetting.util.BestRef
 import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.MiningSource
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
-import com.bigbigdw.manavarasetting.util.getGenreDay
-import com.bigbigdw.manavarasetting.util.getGenreDayWeek
-import com.bigbigdw.manavarasetting.util.getJsonGenreList
-import com.bigbigdw.manavarasetting.util.getJsonGenreWeekList
 import kotlinx.coroutines.runBlocking
 
 @Composable
@@ -612,6 +608,26 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         )
 
         ItemMainSettingSingleTablet(
+            containerColor = colorABD436,
+            image = R.drawable.icon_best_wht,
+            title = "주간 장르 베스트",
+            body = "투데이 장르 베스트 확인",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = colorABD436,
+            image = R.drawable.icon_best_wht,
+            title = "월간 장르 베스트",
+            body = "투데이 장르 베스트 확인",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        ItemMainSettingSingleTablet(
             containerColor = colorF17FA0,
             image = R.drawable.icon_json_wht,
             title = "웹소설 JSON 투데이",
@@ -676,6 +692,36 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             image = R.drawable.icon_trophy_wht,
             title = "웹소설 트로피 월간 토탈",
             body = "장르별 월간 트로피 리스트 확인",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color536FD2,
+            image = R.drawable.icon_trophy_wht,
+            title = "투데이 장르 JSON",
+            body = "투데이 장르 JSON 확인",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color536FD2,
+            image = R.drawable.icon_trophy_wht,
+            title = "주간 장르 JSON",
+            body = "주간 장르 JSON 확인",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color536FD2,
+            image = R.drawable.icon_trophy_wht,
+            title = "월간 장르 JSON",
+            body = "월간 장르 JSON 확인",
             setMenu = setMenu,
             getMenu = getMenu,
             onClick = { onClick() }
@@ -891,7 +937,7 @@ fun ContentsLabs() {
     val context = LocalContext.current
     val workManager = WorkManager.getInstance(context)
 
-    getJsonGenreWeekList(platform = "JOARA", type = "NOVEL", menu = "주간")
+//    getJsonGenreWeekList(platform = "JOARA", type = "NOVEL", menu = "주간")
 
     TabletContentWrapBtn(
         onClick = {

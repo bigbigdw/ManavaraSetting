@@ -219,7 +219,7 @@ fun ContentsBestJsonListNovel(
             ) {
 
                 Image(
-                    painter = painterResource(id = R.drawable.logo_naver_challenge),
+                    painter = painterResource(id = R.drawable.logo_naver),
                     contentDescription = null,
                     modifier = Modifier
                         .width(20.dp)
@@ -252,7 +252,7 @@ fun ContentsBestJsonListNovel(
             ) {
 
                 Image(
-                    painter = painterResource(id = R.drawable.logo_naver_challenge),
+                    painter = painterResource(id = R.drawable.logo_naver),
                     contentDescription = null,
                     modifier = Modifier
                         .width(20.dp)
