@@ -339,6 +339,65 @@ fun ContentsBestJsonListNovel(
     TabletContentWrapBtn(
         onClick = {
             setDetailPage(true)
+            setDetailMenu("리디북스 판타지 $type")
+            setDetailPlatform("RIDI_FANTAGY")
+            setDetailType("NOVEL")
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.logo_ridibooks),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+                Spacer(modifier = Modifier.size(8.dp))
+                Text(
+                    text = "리디북스 판타지",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+    TabletContentWrapBtn(
+        onClick = {
+            setDetailPage(true)
+            setDetailMenu("리디북스 로맨스 $type")
+            setDetailPlatform("RIDI_ROMANCE")
+            setDetailType("NOVEL")
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.logo_ridibooks),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+                Spacer(modifier = Modifier.size(8.dp))
+                Text(
+                    text = "리디북스 로맨스",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            setDetailPage(true)
             setDetailMenu("원스토리 $type")
             setDetailPlatform("ONESTORY")
             setDetailType("NOVEL")

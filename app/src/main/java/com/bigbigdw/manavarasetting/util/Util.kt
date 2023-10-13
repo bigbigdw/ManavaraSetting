@@ -162,6 +162,8 @@ fun getDataStoreStatus(context: Context, update : () -> Unit){
                     dataStore.setDataStoreString(DataStoreManager.MINING_NAVER_BEST_NOVEL, dataSnapshot.child("MINING_NAVER_BEST_NOVEL").getValue(String::class.java) ?: "")
                     dataStore.setDataStoreString(DataStoreManager.MINING_NAVER_WEBNOVEL_PAY_NOVEL, dataSnapshot.child("MINING_NAVER_WEBNOVEL_PAY_NOVEL").getValue(String::class.java) ?: "")
                     dataStore.setDataStoreString(DataStoreManager.MINING_NAVER_WEBNOVEL_FREE_NOVEL, dataSnapshot.child("MINING_NAVER_WEBNOVEL_FREE_NOVEL").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.MINING_RIDI_FANTAGY_NOVEL, dataSnapshot.child("MINING_RIDI_FANTAGY_NOVEL").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.MINING_RIDI_ROMANCE_NOVEL, dataSnapshot.child("MINING_RIDI_ROMANCE_NOVEL").getValue(String::class.java) ?: "")
                     dataStore.setDataStoreString(DataStoreManager.MINING_ONESTORY_NOVEL, dataSnapshot.child("MINING_ONESTORY_NOVEL").getValue(String::class.java) ?: "")
                     dataStore.setDataStoreString(DataStoreManager.MINING_KAKAO_STAGE_NOVEL, dataSnapshot.child("MINING_KAKAO_STAGE_NOVEL").getValue(String::class.java) ?: "")
                     dataStore.setDataStoreString(DataStoreManager.MINING_MUNPIA_NOVEL, dataSnapshot.child("MINING_MUNPIA_NOVEL").getValue(String::class.java) ?: "")

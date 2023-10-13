@@ -15,6 +15,7 @@ import com.bigbigdw.moavara.Retrofit.RetrofitJoara
 import com.bigbigdw.moavara.Retrofit.RetrofitKaKao
 import com.bigbigdw.moavara.Retrofit.RetrofitMoonPia
 import com.bigbigdw.moavara.Retrofit.RetrofitOnestore
+import com.bigbigdw.manavarasetting.retrofit.RetrofitRidi
 import com.bigbigdw.moavara.Retrofit.RetrofitToksoda
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -22,6 +23,7 @@ import com.google.gson.JsonArray
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import org.json.JSONObject
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
@@ -729,6 +731,99 @@ object MiningSource {
                         }
                     }
                 })
+        }
+    }
+
+    fun miningRidi(
+        mining: String,
+        platform: String,
+        type: String,
+        yesterDayItemMap: MutableMap<String, ItemBookInfo>,
+        totalBookItem: MutableMap<Int, ItemBookInfo>,
+        totalBestItem: MutableMap<Int, ItemBestInfo>,
+        callBack: (MutableMap<Int, ItemBookInfo>, MutableMap<Int, ItemBestInfo>) -> Unit,
+    ) {
+        try {
+            val ref: MutableMap<String?, Any> = HashMap()
+            val apiRidi = RetrofitRidi()
+            val param: MutableMap<String?, Any> = HashMap()
+
+            param["tab"] = "books"
+            param["category_id"] = mining
+            param["platform"] = "web"
+            param["offset"] = "0"
+            param["limit"] = "100"
+            param["order_by"] = "popular"
+
+            apiRidi.getRidiRomance(
+                value = mining,
+                map = param,
+                object : RetrofitDataListener<String> {
+                    override fun onSuccess(data: String) {
+                        val baseJSONObject = JSONObject(data)
+                        val productList = baseJSONObject.optJSONObject("data")?.optJSONArray("items")
+
+                        if (productList != null) {
+                            for (i in 0 until productList.length()) {
+
+                                val jsonObject = productList.getJSONObject(i).optJSONObject("book")
+
+                                if (jsonObject != null) {
+                                    val bookCode = jsonObject.optString("bookId")
+                                    val point = productList.length() - i
+                                    val number = i
+                                    val yesterDayItem = checkMiningTrophyValue(yesterDayItemMap[bookCode] ?: ItemBookInfo())
+                                    val ratings = jsonObject.optJSONArray("ratings")
+                                    var ratingCount = 0F
+                                    var ratePoints = 0F
+
+                                    if (ratings != null) {
+                                        for (j in 0 until ratings.length()) {
+                                            val rate = ratings.getJSONObject(j)
+                                            ratingCount += rate.optInt("count")
+                                            ratePoints += rate.optInt("count") * rate.optInt("rating")
+                                        }
+                                    }
+
+                                    ref["writerName"] = JSONObject(jsonObject.optJSONArray("authors")?.get(0).toString()).optString("name") ?: ""
+                                    ref["subject"] = jsonObject.optString("title")
+                                    ref["bookImg"] = jsonObject.optJSONObject("cover")?.optString("xxlarge") ?: ""
+                                    ref["bookCode"] = bookCode
+                                    ref["intro"] = jsonObject.optJSONObject("introduction")?.optString("description") ?: ""
+                                    ref["cntChapter"] = "총 ${jsonObject.optJSONObject("serial")?.optString("total") ?: ""}화"
+                                    ref["cntRecom"] = if (ratingCount == 0F) {
+                                        "0"
+                                    } else {
+                                        String.format("%.1f", ratePoints / ratingCount)
+                                    }
+                                    ref["cntPageRead"] = ratingCount.toInt().toString()
+                                    ref["number"] = number
+                                    ref["point"] = point
+                                    ref["total"] = yesterDayItem.point + point
+                                    ref["totalCount"] = yesterDayItem.totalCount + 1
+                                    ref["totalWeek"] = yesterDayItem.totalWeek + point
+                                    ref["totalWeekCount"] = yesterDayItem.totalWeekCount + 1
+                                    ref["totalMonth"] = yesterDayItem.totalMonth + point
+                                    ref["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
+                                    ref["currentDiff"] = (yesterDayItemMap[bookCode]?.number ?: 0) - number
+                                    ref["date"] = dateMMDD()
+                                    ref["type"] = platform
+                                    miningValue(
+                                        ref = ref,
+                                        num = number,
+                                        platform = platform,
+                                        type = type
+                                    )
+                                    totalBookItem[number] = BestRef.setItemBookInfoRef(ref)
+                                    totalBestItem[number] = BestRef.setItemBestInfoRef(ref)
+                                }
+                            }
+                        }
+                        callBack.invoke(totalBookItem, totalBestItem)
+                    }
+                })
+        } catch (exception: Exception) {
+            Log.d("DO_MINING", "RIDI")
         }
     }
 }

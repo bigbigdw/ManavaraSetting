@@ -1,5 +1,7 @@
 package com.bigbigdw.moavara.Retrofit
 
+import com.bigbigdw.manavarasetting.retrofit.Retrofit
+
 class RetrofitJoara {
     private val apiJoara = Retrofit.apiJoara
 

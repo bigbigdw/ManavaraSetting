@@ -1,9 +1,12 @@
-package com.bigbigdw.moavara.Retrofit
+package com.bigbigdw.manavarasetting.retrofit
+
+import com.bigbigdw.moavara.Retrofit.RetrofitDataListener
+import com.bigbigdw.moavara.Retrofit.baseCallback
 
 class RetrofitRidi {
-    private val apiRidi = com.bigbigdw.moavara.Retrofit.Retrofit.apiRidi
+    private val apiRidi = Retrofit.apiRidi
 
         fun getRidiRomance(value : String, map: MutableMap<String?, Any>, dataListener: RetrofitDataListener<String>) {
-        apiRidi.getRidi(value = value, queryMap = map).enqueue(baseCallback(dataListener))
+        apiRidi.getRidi(queryMap = map).enqueue(baseCallback(dataListener))
     }
 }
