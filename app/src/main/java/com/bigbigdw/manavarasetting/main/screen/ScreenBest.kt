@@ -521,8 +521,8 @@ fun ContentsBestListNovel(
     TabletContentWrapBtn(
         onClick = {
             setDetailPage(true)
-            setDetailMenu("문피아 베스트")
-            setDetailPlatform("MUNPIA")
+            setDetailMenu("문피아 유료 베스트")
+            setDetailPlatform("MUNPIA_PAY")
             setDetailType("NOVEL")
         },
         content = {
@@ -543,7 +543,41 @@ fun ContentsBestListNovel(
                 Spacer(modifier = Modifier.size(8.dp))
 
                 Text(
-                    text = "문피아 로맨스",
+                    text = "문피아 유료",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+
+    TabletContentWrapBtn(
+        onClick = {
+            setDetailPage(true)
+            setDetailMenu("문피아 무료 베스트")
+            setDetailPlatform("MUNPIA_FREE")
+            setDetailType("NOVEL")
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo_munpia),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "문피아 무료",
                     color = color000000,
                     fontSize = 18.sp,
                 )
@@ -577,6 +611,39 @@ fun ContentsBestListNovel(
 
                 Text(
                     text = "톡소다 로맨스",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            setDetailPage(true)
+            setDetailMenu("톡소다 베스트")
+            setDetailPlatform("TOKSODA_FREE")
+            setDetailType("NOVEL")
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo_toksoda),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "톡소다 자유연재 로맨스",
                     color = color000000,
                     fontSize = 18.sp,
                 )

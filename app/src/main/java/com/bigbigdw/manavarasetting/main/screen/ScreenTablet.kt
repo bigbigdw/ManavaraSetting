@@ -288,7 +288,7 @@ fun ScreenTablet(
                         platform = "NAVER_WEBNOVEL_PAY",
                         type = "NOVEL",
                         key = DataStoreManager.MINING_NAVER_WEBNOVEL_PAY_NOVEL,
-                        logo = R.drawable.logo_naver_challenge
+                        logo = R.drawable.logo_naver
                     )
                 }
                 "네이버 웹소설 무료" -> {
@@ -297,7 +297,7 @@ fun ScreenTablet(
                         platform = "NAVER_WEBNOVEL_FREE",
                         type = "NOVEL",
                         key = DataStoreManager.MINING_NAVER_WEBNOVEL_FREE_NOVEL,
-                        logo = R.drawable.logo_naver_challenge
+                        logo = R.drawable.logo_naver
                     )
                 }
                 "리디 판타지 웹소설" -> {
@@ -363,12 +363,21 @@ fun ScreenTablet(
                         logo = R.drawable.logo_kakaostage
                     )
                 }
-                "문피아 웹소설" -> {
+                "문피아 유료 웹소설" -> {
                     ContentsPlatform(
                         viewModelMain = viewModelMain,
-                        platform = "MUNPIA",
+                        platform = "MUNPIA_PAY",
                         type = "NOVEL",
-                        key = DataStoreManager.MINING_MUNPIA_NOVEL,
+                        key = DataStoreManager.MINING_MUNPIA_PAY_NOVEL,
+                        logo = R.drawable.logo_munpia
+                    )
+                }
+                "문피아 무료 웹소설" -> {
+                    ContentsPlatform(
+                        viewModelMain = viewModelMain,
+                        platform = "MUNPIA_FREE",
+                        type = "NOVEL",
+                        key = DataStoreManager.MINING_MUNPIA_FREE_NOVEL,
                         logo = R.drawable.logo_munpia
                     )
                 }
@@ -376,6 +385,15 @@ fun ScreenTablet(
                     ContentsPlatform(
                         viewModelMain = viewModelMain,
                         platform = "TOKSODA",
+                        type = "NOVEL",
+                        key = DataStoreManager.MINING_TOKSODA_NOVEL,
+                        logo = R.drawable.logo_toksoda
+                    )
+                }
+                "톡소다 자유연재" -> {
+                    ContentsPlatform(
+                        viewModelMain = viewModelMain,
+                        platform = "TOKSODA_FREE",
                         type = "NOVEL",
                         key = DataStoreManager.MINING_TOKSODA_NOVEL,
                         logo = R.drawable.logo_toksoda

@@ -273,6 +273,80 @@ fun ContentsSetting() {
         }
     )
 
+
+
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                delayMills = 15,
+                tag = "MINING",
+                platform = "NAVER_WEBNOVEL_PAY",
+                type = "NOVEL"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo_naver),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "네이버 웹소설 유료 NOVEL",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                delayMills = 15,
+                tag = "MINING",
+                platform = "NAVER_WEBNOVEL_FREE",
+                type = "NOVEL"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo_naver),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "네이버 웹소설 무료 NOVEL",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
     TabletContentWrapBtn(
         onClick = {
             PeriodicWorker.doWorker(
@@ -338,78 +412,6 @@ fun ContentsSetting() {
 
                 Text(
                     text = "베스트 리그 NOVEL",
-                    color = color000000,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = {
-            PeriodicWorker.doWorker(
-                workManager = workManager,
-                delayMills = 15,
-                tag = "MINING",
-                platform = "NAVER_WEBNOVEL_PAY",
-                type = "NOVEL"
-            )
-        },
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-
-                Image(
-                    painter = painterResource(id = R.drawable.logo_naver_challenge),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = "네이버 웹소설 유료 NOVEL",
-                    color = color000000,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = {
-            PeriodicWorker.doWorker(
-                workManager = workManager,
-                delayMills = 15,
-                tag = "MINING",
-                platform = "NAVER_WEBNOVEL_FREE",
-                type = "NOVEL"
-            )
-        },
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-
-                Image(
-                    painter = painterResource(id = R.drawable.logo_naver_challenge),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = "네이버 웹소설 무료 NOVEL",
                     color = color000000,
                     fontSize = 18.sp,
                 )
@@ -669,7 +671,7 @@ fun ContentsSetting() {
                 workManager = workManager,
                 delayMills = 30,
                 tag = "MINING",
-                platform = "MUNPIA",
+                platform = "MUNPIA_PAY",
                 type = "NOVEL"
             )
         },
@@ -691,7 +693,43 @@ fun ContentsSetting() {
                 Spacer(modifier = Modifier.size(8.dp))
 
                 Text(
-                    text = "문피아 NOVEL",
+                    text = "문피아 유료 NOVEL",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                delayMills = 30,
+                tag = "MINING",
+                platform = "MUNPIA_FREE",
+                type = "NOVEL"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo_munpia),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "문피아 무료 NOVEL",
                     color = color000000,
                     fontSize = 18.sp,
                 )
@@ -728,6 +766,42 @@ fun ContentsSetting() {
 
                 Text(
                     text = "톡소다 NOVEL",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                delayMills = 33,
+                tag = "MINING",
+                platform = "TOKSODA_FREE",
+                type = "NOVEL"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo_toksoda),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "톡소다 자유연재 NOVEL",
                     color = color000000,
                     fontSize = 18.sp,
                 )

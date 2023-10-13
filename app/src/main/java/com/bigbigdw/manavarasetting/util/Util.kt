@@ -40,8 +40,10 @@ fun novelListEng(): List<String> {
         "ONESTORY_ROMANCE",
         "ONESTORY_PASS_FANTAGY",
         "ONESTORY_PASS_ROMANCE",
-        "MUNPIA",
+        "MUNPIA_PAY",
+        "MUNPIA_FREE",
         "TOKSODA",
+        "TOKSODA_FREE",
     )
 }
 
@@ -172,7 +174,8 @@ fun getDataStoreStatus(context: Context, update : () -> Unit){
                     dataStore.setDataStoreString(DataStoreManager.MINING_ONESTORY_PASS_FANTAGY_NOVEL, dataSnapshot.child("MINING_ONESTORY_PASS_FANTAGY_NOVEL").getValue(String::class.java) ?: "")
                     dataStore.setDataStoreString(DataStoreManager.MINING_ONESTORY_PASS_ROMANCE_NOVEL, dataSnapshot.child("MINING_ONESTORY_PASS_ROMANCE_NOVEL").getValue(String::class.java) ?: "")
                     dataStore.setDataStoreString(DataStoreManager.MINING_KAKAO_STAGE_NOVEL, dataSnapshot.child("MINING_KAKAO_STAGE_NOVEL").getValue(String::class.java) ?: "")
-                    dataStore.setDataStoreString(DataStoreManager.MINING_MUNPIA_NOVEL, dataSnapshot.child("MINING_MUNPIA_NOVEL").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.MINING_MUNPIA_PAY_NOVEL, dataSnapshot.child("MINING_MUNPIA_PAY_NOVEL").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.MINING_MUNPIA_FREE_NOVEL, dataSnapshot.child("MINING_MUNPIA_FREE_NOVEL").getValue(String::class.java) ?: "")
                     dataStore.setDataStoreString(DataStoreManager.MINING_TOKSODA_NOVEL, dataSnapshot.child("MINING_TOKSODA_NOVEL").getValue(String::class.java) ?: "")
 
                     update()

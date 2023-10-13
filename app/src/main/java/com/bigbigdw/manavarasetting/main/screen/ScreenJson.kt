@@ -552,7 +552,7 @@ fun ContentsBestJsonListNovel(
                 Spacer(modifier = Modifier.size(8.dp))
 
                 Text(
-                    text = "카카오 스테이지 로맨스",
+                    text = "카카오 스테이지",
                     color = color000000,
                     fontSize = 18.sp,
                 )
@@ -563,8 +563,8 @@ fun ContentsBestJsonListNovel(
     TabletContentWrapBtn(
         onClick = {
             setDetailPage(true)
-            setDetailMenu("문피아 $type")
-            setDetailPlatform("MUNPIA")
+            setDetailMenu("문피아 유료 $type")
+            setDetailPlatform("MUNPIA_PAY")
             setDetailType("NOVEL")
         },
         content = {
@@ -585,7 +585,40 @@ fun ContentsBestJsonListNovel(
                 Spacer(modifier = Modifier.size(8.dp))
 
                 Text(
-                    text = "문피아 로맨스",
+                    text = "문피아 유료",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            setDetailPage(true)
+            setDetailMenu("문피아 무료 $type")
+            setDetailPlatform("MUNPIA_FREE")
+            setDetailType("NOVEL")
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo_munpia),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "문피아 무료",
                     color = color000000,
                     fontSize = 18.sp,
                 )
@@ -618,7 +651,40 @@ fun ContentsBestJsonListNovel(
                 Spacer(modifier = Modifier.size(8.dp))
 
                 Text(
-                    text = "톡소다 로맨스",
+                    text = "톡소다 웹소설",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            setDetailPage(true)
+            setDetailMenu("톡소다 자유연재 $type")
+            setDetailPlatform("TOKSODA_FREE")
+            setDetailType("NOVEL")
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo_toksoda),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "톡소다 자유연재",
                     color = color000000,
                     fontSize = 18.sp,
                 )

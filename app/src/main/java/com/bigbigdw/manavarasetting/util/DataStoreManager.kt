@@ -32,7 +32,8 @@ class DataStoreManager(private val context: Context) {
         val MINING_ONESTORY_PASS_FANTAGY_NOVEL = stringPreferencesKey("MINING_ONESTORY_PASS_FANTAGY_NOVEL")
         val MINING_ONESTORY_PASS_ROMANCE_NOVEL = stringPreferencesKey("MINING_ONESTORY_PASS_ROMANCE_NOVEL")
         val MINING_KAKAO_STAGE_NOVEL = stringPreferencesKey("MINING_KAKAO_STAGE_NOVEL")
-        val MINING_MUNPIA_NOVEL = stringPreferencesKey("MINING_MUNPIA_NOVEL")
+        val MINING_MUNPIA_PAY_NOVEL = stringPreferencesKey("MINING_MUNPIA_PAY_NOVEL")
+        val MINING_MUNPIA_FREE_NOVEL = stringPreferencesKey("MINING_MUNPIA_NOVEL")
         val MINING_TOKSODA_NOVEL = stringPreferencesKey("MINING_TOKSODA_NOVEL")
     }
 

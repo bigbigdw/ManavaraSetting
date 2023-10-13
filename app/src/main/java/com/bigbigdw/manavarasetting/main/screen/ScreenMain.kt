@@ -441,8 +441,8 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = colorCHALLENGE,
-            image = R.drawable.logo_naver_challenge,
+            containerColor = colorNAVER,
+            image = R.drawable.logo_naver,
             title = "네이버 웹소설 유료",
             body = "네이버 웹소설 유료 관리",
             setMenu = setMenu,
@@ -451,8 +451,8 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = colorCHALLENGE,
-            image = R.drawable.logo_naver_challenge,
+            containerColor = colorNAVER,
+            image = R.drawable.logo_naver,
             title = "네이버 웹소설 무료",
             body = "네이버 웹소설 무료 관리",
             setMenu = setMenu,
@@ -553,8 +553,18 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         ItemMainSettingSingleTablet(
             containerColor = colorMUNPIA,
             image = R.drawable.logo_munpia,
-            title = "문피아 웹소설",
-            body = "문피아 웹소설 관리",
+            title = "문피아 유료 웹소설",
+            body = "문피아 유료 웹소설 관리",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = colorMUNPIA,
+            image = R.drawable.logo_munpia,
+            title = "문피아 무료 웹소설",
+            body = "문피아 무료 웹소설 관리",
             setMenu = setMenu,
             getMenu = getMenu,
             onClick = { onClick() }
@@ -565,6 +575,16 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             image = R.drawable.logo_toksoda,
             title = "톡소다 웹소설",
             body = "톡소다 웹소설 관리",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = colorTOKSODA,
+            image = R.drawable.logo_toksoda,
+            title = "톡소다 자유연재",
+            body = "톡소다 자유연재 관리",
             setMenu = setMenu,
             getMenu = getMenu,
             onClick = { onClick() }

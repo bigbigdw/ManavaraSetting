@@ -13,7 +13,7 @@ import com.bigbigdw.manavarasetting.retrofit.result.OneStoreBookResult
 import com.bigbigdw.moavara.Retrofit.RetrofitDataListener
 import com.bigbigdw.moavara.Retrofit.RetrofitJoara
 import com.bigbigdw.moavara.Retrofit.RetrofitKaKao
-import com.bigbigdw.moavara.Retrofit.RetrofitMoonPia
+import com.bigbigdw.manavarasetting.retrofit.RetrofitMoonPia
 import com.bigbigdw.manavarasetting.retrofit.RetrofitOnestore
 import com.bigbigdw.manavarasetting.retrofit.RetrofitRidi
 import com.bigbigdw.moavara.Retrofit.RetrofitToksoda
@@ -656,6 +656,7 @@ object MiningSource {
 
     fun miningMunpia(
         platform: String,
+        platformType: String,
         type: String,
         yesterDayItemMap: MutableMap<String, ItemBookInfo>,
         totalBookItem: MutableMap<Int, ItemBookInfo>,
@@ -669,7 +670,7 @@ object MiningSource {
             val apiMoonPia = RetrofitMoonPia()
             val param: MutableMap<String?, Any> = HashMap()
 
-            param["section"] = "today"
+            param["section"] = platformType
             param["exclusive"] = ""
             param["outAdult"] = "true"
             param["offset"] = when (page) {
@@ -750,6 +751,7 @@ object MiningSource {
 
     fun miningToksoda(
         platform: String,
+        platformType: String,
         type: String,
         yesterDayItemMap: MutableMap<String, ItemBookInfo>,
         totalBookItem: MutableMap<Int, ItemBookInfo>,
@@ -769,7 +771,7 @@ object MiningSource {
             param["sumtalkYn"] = "N"
             param["rookieYn"] = "N"
             param["statsClsfCd"] = "00073"
-            param["freePblserlYn"] = "00431"
+            param["freePblserlYn"] = platformType
             param["_"] = "1696853385623"
 
             apiToksoda.getBestList(

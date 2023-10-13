@@ -310,7 +310,7 @@ fun ContentsNovel() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.logo_naver_challenge),
+                    painter = painterResource(id = R.drawable.logo_naver),
                     contentDescription = null,
                     modifier = Modifier
                         .width(20.dp)
@@ -343,7 +343,7 @@ fun ContentsNovel() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.logo_naver_challenge),
+                    painter = painterResource(id = R.drawable.logo_naver),
                     contentDescription = null,
                     modifier = Modifier
                         .width(20.dp)
@@ -605,9 +605,41 @@ fun ContentsNovel() {
 
                 Text(
                     text = spannableString(
-                        textFront = "문피아 : ", color = color000000,
+                        textFront = "문피아 유료 : ", color = color000000,
                         textEnd = dataStore.getDataStoreString(
-                            DataStoreManager.MINING_MUNPIA_NOVEL
+                            DataStoreManager.MINING_MUNPIA_PAY_NOVEL
+                        ).collectAsState(initial = "").value ?: "",
+                    ),
+                    color = color20459E,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {},
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.logo_munpia),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = spannableString(
+                        textFront = "문피아 무료 : ", color = color000000,
+                        textEnd = dataStore.getDataStoreString(
+                            DataStoreManager.MINING_MUNPIA_FREE_NOVEL
                         ).collectAsState(initial = "").value ?: "",
                     ),
                     color = color20459E,
@@ -638,6 +670,38 @@ fun ContentsNovel() {
                 Text(
                     text = spannableString(
                         textFront = "톡소다 : ", color = color000000,
+                        textEnd = dataStore.getDataStoreString(
+                            DataStoreManager.MINING_TOKSODA_NOVEL
+                        ).collectAsState(initial = "").value ?: "",
+                    ),
+                    color = color20459E,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {},
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.logo_toksoda),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = spannableString(
+                        textFront = "톡소다 자유연재 : ", color = color000000,
                         textEnd = dataStore.getDataStoreString(
                             DataStoreManager.MINING_TOKSODA_NOVEL
                         ).collectAsState(initial = "").value ?: "",

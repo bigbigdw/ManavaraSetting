@@ -400,13 +400,45 @@ fun doMining(
                 itemBestInfoList = itemBestInfoList
             )
         }
-    } else if(platform == "MUNPIA") {
+    } else if(platform == "MUNPIA_FREE") {
 
         val totalBookItem: MutableMap<Int, ItemBookInfo> = HashMap()
         val totalBestItem: MutableMap<Int, ItemBestInfo> = HashMap()
 
         MiningSource.miningMunpia(
             platform = platform,
+            platformType = "today",
+            type = type,
+            totalBookItem = totalBookItem,
+            totalBestItem = totalBestItem,
+            yesterDayItemMap = yesterDayItemMap
+        ) { itemBook, itemBest ->
+
+            if(itemBook.size > 99 && itemBest.size > 99){
+                val itemBookInfoList = JsonArray()
+                val itemBestInfoList = JsonArray()
+
+                for(item in 0 until itemBook.size){
+                    itemBookInfoList.add(convertItemBook(itemBook[item] ?: ItemBookInfo()))
+                    itemBestInfoList.add(convertItemBest(itemBest[item] ?: ItemBestInfo()))
+                }
+
+                doResultMining(
+                    platform = platform,
+                    type = type,
+                    itemBookInfoList = itemBookInfoList,
+                    itemBestInfoList = itemBestInfoList
+                )
+            }
+        }
+    }  else if(platform == "MUNPIA_PAY") {
+
+        val totalBookItem: MutableMap<Int, ItemBookInfo> = HashMap()
+        val totalBestItem: MutableMap<Int, ItemBestInfo> = HashMap()
+
+        MiningSource.miningMunpia(
+            platform = platform,
+            platformType = "plsa.eachtoday",
             type = type,
             totalBookItem = totalBookItem,
             totalBestItem = totalBestItem,
@@ -437,6 +469,40 @@ fun doMining(
 
         MiningSource.miningToksoda(
             platform = platform,
+            platformType = "00431",
+            type = type,
+            totalBookItem = totalBookItem,
+            totalBestItem = totalBestItem,
+            yesterDayItemMap = yesterDayItemMap
+        ) { itemBook, itemBest ->
+
+            if(itemBook.size > 99 && itemBest.size > 99){
+
+                val itemBookInfoList = JsonArray()
+                val itemBestInfoList = JsonArray()
+
+                for(item in 0 until itemBook.size){
+                    itemBookInfoList.add(convertItemBook(itemBook[item] ?: ItemBookInfo()))
+                    itemBestInfoList.add(convertItemBest(itemBest[item] ?: ItemBestInfo()))
+                }
+
+                doResultMining(
+                    platform = platform,
+                    type = type,
+                    itemBookInfoList = itemBookInfoList,
+                    itemBestInfoList = itemBestInfoList
+                )
+            }
+        }
+
+    }  else if(platform == "TOKSODA_FREE") {
+
+        val totalBookItem: MutableMap<Int, ItemBookInfo> = HashMap()
+        val totalBestItem: MutableMap<Int, ItemBestInfo> = HashMap()
+
+        MiningSource.miningToksoda(
+            platform = platform,
+            platformType = "00024",
             type = type,
             totalBookItem = totalBookItem,
             totalBestItem = totalBestItem,
