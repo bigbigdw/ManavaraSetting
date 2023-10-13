@@ -45,7 +45,11 @@ data class ItemBookInfo(
     var number: Int = 0,
     @SerialName("point")
     var point: Int = 0,
-)
+    @SerialName("keyword")
+    var keyword: ArrayList<String> = ArrayList(),
+    @SerialName("genre")
+    var genre: String = "",
+    )
 @Serializable
 data class ItemBestInfo (
     @SerialName("number")

@@ -254,8 +254,6 @@ fun NavigationGraph(
     isExpandedScreen: Boolean
 ) {
 
-    val context = LocalContext.current
-
     NavHost(
         navController = navController,
         startDestination = ScreemBottomItem.SETTING.screenRoute
@@ -597,6 +595,16 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             image = R.drawable.icon_best_wht,
             title = "웹소설 베스트 리스트",
             body = "웹소설 플랫폼 베스트 리스트 확인",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = colorABD436,
+            image = R.drawable.icon_best_wht,
+            title = "투데이 장르 베스트",
+            body = "투데이 장르 베스트 확인",
             setMenu = setMenu,
             getMenu = getMenu,
             onClick = { onClick() }

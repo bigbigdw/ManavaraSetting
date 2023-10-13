@@ -71,6 +71,8 @@ fun convertItemBook(bestItemData : ItemBookInfo) : JsonObject {
         jsonObject.addProperty("totalMonth", bestItemData.totalMonth)
         jsonObject.addProperty("totalMonthCount", bestItemData.totalMonthCount)
         jsonObject.addProperty("currentDiff", bestItemData.currentDiff)
+        jsonObject.addProperty("genre", bestItemData.genre)
+        jsonObject.addProperty("keyword", bestItemData.keyword.toString())
     return jsonObject
 }
 

@@ -10,6 +10,7 @@ import com.google.firebase.storage.ktx.storage
 import com.google.gson.JsonArray
 import com.google.gson.JsonParser
 import kotlinx.coroutines.runBlocking
+import org.json.JSONObject
 import java.nio.charset.Charset
 
 fun miningValue(
@@ -63,6 +64,31 @@ fun miningValue(
         bookCode = ref["bookCode"] as String,
         type = type
     ).setValue(BestRef.setItemBestInfoRef(ref))
+
+}
+
+fun miningGenre(
+    ref: MutableMap<String, Int>,
+    platform: String,
+    type: String
+) {
+    BestRef.setBestGenre(
+        platform = platform,
+        genreDate = "GENRE_DAY",
+        type = type
+    ).setValue(ref)
+
+    BestRef.setBestGenre(
+        platform = platform,
+        genreDate = "GENRE_WEEK",
+        type = type
+    ).child(DBDate.getDayOfWeekAsNumber().toString()).setValue(ref)
+
+    BestRef.setBestGenre(
+        platform = platform,
+        genreDate = "GENRE_MONTH",
+        type = type
+    ).child(DBDate.datedd()).setValue(ref)
 }
 
 fun doMining(
@@ -142,12 +168,31 @@ fun doMining(
             type = type,
             yesterDayItemMap = yesterDayItemMap
         ) { itemBookInfoList, itemBestInfoList ->
+
             doResultMining(
                 platform = platform,
                 type = type,
                 itemBookInfoList = itemBookInfoList,
                 itemBestInfoList = itemBestInfoList
             )
+
+            val genreValuesMap = HashMap<String, Int>()
+
+            for (i in 0 until itemBookInfoList.size()) {
+                val item = JSONObject(itemBookInfoList[i].asJsonObject.toString())
+                if (item.optString("genre").isNotEmpty()) {
+                    val value = item.optString("genre")
+
+                    genreValuesMap[value] = genreValuesMap.getOrDefault(value, 0) + 1
+                }
+            }
+
+            miningGenre(
+                ref = genreValuesMap,
+                platform = platform,
+                type = type,
+            )
+
         }
     } else if(platform == "JOARA_PREMIUM") {
         MiningSource.miningJoara(

@@ -271,6 +271,7 @@ object MiningSource {
                                 val number = i
 
                                 ref["keyword"] = books[i].keyword
+                                ref["genre"] = books[i].category_ko_name
 
                                 ref["writerName"] = books[i].writerName
                                 ref["subject"] = books[i].subject
@@ -906,12 +907,14 @@ object MiningSource {
                                     ref["currentDiff"] = (yesterDayItemMap[bookCode]?.number ?: 0) - number
                                     ref["date"] = dateMMDD()
                                     ref["type"] = platform
+
                                     miningValue(
                                         ref = ref,
                                         num = number,
                                         platform = platform,
                                         type = type
                                     )
+
                                     totalBookItem[number] = BestRef.setItemBookInfoRef(ref)
                                     totalBestItem[number] = BestRef.setItemBestInfoRef(ref)
                                 }

@@ -49,6 +49,10 @@ object BestRef {
         return mRootRef.child("DATA").child(type).child(platform).child(bookCode).child(DBDate.year()).child(DBDate.month()).child(DBDate.datedd())
     }
 
+    fun setBestGenre(platform: String, genreDate: String, type: String): DatabaseReference {
+        return mRootRef.child("BEST").child(type).child(platform).child(genreDate)
+    }
+
     fun setItemBestInfoRef(ref: MutableMap<String?, Any>): ItemBestInfo {
         return ItemBestInfo(
             number = ref["number"] as Int,
@@ -90,6 +94,10 @@ object BestRef {
             totalMonth = ref["totalMonth"] as Int,
             totalMonthCount = ref["totalMonthCount"] as Int,
             currentDiff = ref["currentDiff"] as Int,
+            keyword = ref["keyword"] as ArrayList<String>? ?: ArrayList<String>(),
+            genre = ref["genre"] as String? ?: "",
         )
     }
+
+
 }
