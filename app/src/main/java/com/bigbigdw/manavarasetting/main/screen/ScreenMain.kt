@@ -503,7 +503,37 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         ItemMainSettingSingleTablet(
             containerColor = colorONESTORY,
             image = R.drawable.logo_onestore,
-            title = "원스토리 웹소설",
+            title = "원스토리 판타지 웹소설",
+            body = "원스토리 웹소설 관리",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = colorONESTORY,
+            image = R.drawable.logo_onestore,
+            title = "원스토리 로맨스 웹소설",
+            body = "원스토리 웹소설 관리",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = colorONESTORY,
+            image = R.drawable.logo_onestore,
+            title = "원스토리 PASS 판타지 웹소설",
+            body = "원스토리 웹소설 관리",
+            setMenu = setMenu,
+            getMenu = getMenu,
+            onClick = { onClick() }
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = colorONESTORY,
+            image = R.drawable.logo_onestore,
+            title = "원스토리 PASS 로맨스 웹소설",
             body = "원스토리 웹소설 관리",
             setMenu = setMenu,
             getMenu = getMenu,

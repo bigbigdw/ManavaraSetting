@@ -36,7 +36,10 @@ fun novelListEng(): List<String> {
         "NAVER_WEBNOVEL_PAY",
         "NAVER_WEBNOVEL_FREE",
         "KAKAO_STAGE",
-        "ONESTORY",
+        "ONESTORY_FANTAGY",
+        "ONESTORY_ROMANCE",
+        "ONESTORY_PASS_FANTAGY",
+        "ONESTORY_PASS_ROMANCE",
         "MUNPIA",
         "TOKSODA",
     )
@@ -164,7 +167,10 @@ fun getDataStoreStatus(context: Context, update : () -> Unit){
                     dataStore.setDataStoreString(DataStoreManager.MINING_NAVER_WEBNOVEL_FREE_NOVEL, dataSnapshot.child("MINING_NAVER_WEBNOVEL_FREE_NOVEL").getValue(String::class.java) ?: "")
                     dataStore.setDataStoreString(DataStoreManager.MINING_RIDI_FANTAGY_NOVEL, dataSnapshot.child("MINING_RIDI_FANTAGY_NOVEL").getValue(String::class.java) ?: "")
                     dataStore.setDataStoreString(DataStoreManager.MINING_RIDI_ROMANCE_NOVEL, dataSnapshot.child("MINING_RIDI_ROMANCE_NOVEL").getValue(String::class.java) ?: "")
-                    dataStore.setDataStoreString(DataStoreManager.MINING_ONESTORY_NOVEL, dataSnapshot.child("MINING_ONESTORY_NOVEL").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.MINING_ONESTORY_FANTAGY_NOVEL, dataSnapshot.child("MINING_ONESTORY_FANTAGY_NOVEL").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.MINING_ONESTORY_ROMANCE_NOVEL, dataSnapshot.child("MINING_ONESTORY_ROMANCE_NOVEL").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.MINING_ONESTORY_PASS_FANTAGY_NOVEL, dataSnapshot.child("MINING_ONESTORY_PASS_FANTAGY_NOVEL").getValue(String::class.java) ?: "")
+                    dataStore.setDataStoreString(DataStoreManager.MINING_ONESTORY_PASS_ROMANCE_NOVEL, dataSnapshot.child("MINING_ONESTORY_PASS_ROMANCE_NOVEL").getValue(String::class.java) ?: "")
                     dataStore.setDataStoreString(DataStoreManager.MINING_KAKAO_STAGE_NOVEL, dataSnapshot.child("MINING_KAKAO_STAGE_NOVEL").getValue(String::class.java) ?: "")
                     dataStore.setDataStoreString(DataStoreManager.MINING_MUNPIA_NOVEL, dataSnapshot.child("MINING_MUNPIA_NOVEL").getValue(String::class.java) ?: "")
                     dataStore.setDataStoreString(DataStoreManager.MINING_TOKSODA_NOVEL, dataSnapshot.child("MINING_TOKSODA_NOVEL").getValue(String::class.java) ?: "")

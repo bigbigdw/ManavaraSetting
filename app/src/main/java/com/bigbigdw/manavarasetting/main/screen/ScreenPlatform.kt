@@ -28,14 +28,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.datastore.preferences.core.Preferences
-import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color20459E
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.util.DataStoreManager
-import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import com.bigbigdw.manavarasetting.util.doMining
 import com.bigbigdw.manavarasetting.util.getDataStoreStatus
 import kotlinx.coroutines.runBlocking
@@ -447,9 +445,105 @@ fun ContentsNovel() {
 
                 Text(
                     text = spannableString(
-                        textFront = "원스토리 : ", color = color000000,
+                        textFront = "원스토리 판타지 : ", color = color000000,
                         textEnd = dataStore.getDataStoreString(
-                            DataStoreManager.MINING_ONESTORY_NOVEL
+                            DataStoreManager.MINING_ONESTORY_FANTAGY_NOVEL
+                        ).collectAsState(initial = "").value ?: "",
+                    ),
+                    color = color20459E,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {},
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.logo_onestore),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = spannableString(
+                        textFront = "원스토리 로맨스 : ", color = color000000,
+                        textEnd = dataStore.getDataStoreString(
+                            DataStoreManager.MINING_ONESTORY_ROMANCE_NOVEL,
+                        ).collectAsState(initial = "").value ?: "",
+                    ),
+                    color = color20459E,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {},
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.logo_onestore),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = spannableString(
+                        textFront = "원스토리 PASS 판타지 : ", color = color000000,
+                        textEnd = dataStore.getDataStoreString(
+                            DataStoreManager.MINING_ONESTORY_PASS_FANTAGY_NOVEL
+                        ).collectAsState(initial = "").value ?: "",
+                    ),
+                    color = color20459E,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {},
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.logo_onestore),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = spannableString(
+                        textFront = "원스토리 PASS 로맨스 : ", color = color000000,
+                        textEnd = dataStore.getDataStoreString(
+                            DataStoreManager.MINING_ONESTORY_PASS_ROMANCE_NOVEL,
                         ).collectAsState(initial = "").value ?: "",
                     ),
                     color = color20459E,

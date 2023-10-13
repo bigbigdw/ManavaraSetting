@@ -356,8 +356,41 @@ fun ContentsBestListNovel(
     TabletContentWrapBtn(
         onClick = {
             setDetailPage(true)
-            setDetailMenu("원스토리 베스트")
-            setDetailPlatform("ONESTORY")
+            setDetailMenu("원스토리 판타지 베스트")
+            setDetailPlatform("ONESTORY_FANTAGY")
+            setDetailType("NOVEL")
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo_onestore),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "원스토리 판타지",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            setDetailPage(true)
+            setDetailMenu("원스토리 로맨스 베스트")
+            setDetailPlatform("ONESTORY_ROMANCE")
             setDetailType("NOVEL")
         },
         content = {
@@ -379,6 +412,72 @@ fun ContentsBestListNovel(
 
                 Text(
                     text = "원스토리 로맨스",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            setDetailPage(true)
+            setDetailMenu("원스토리 PASS 판타지 베스트")
+            setDetailPlatform("ONESTORY_PASS_FANTAGY")
+            setDetailType("NOVEL")
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo_onestore),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "원스토리 PASS 판타지",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            setDetailPage(true)
+            setDetailMenu("원스토리 PASS 로맨스 베스트")
+            setDetailPlatform("ONESTORY_PASS_ROMANCE")
+            setDetailType("NOVEL")
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo_onestore),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "원스토리 PASS 로맨스",
                     color = color000000,
                     fontSize = 18.sp,
                 )

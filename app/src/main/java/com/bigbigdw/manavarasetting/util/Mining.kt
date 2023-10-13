@@ -239,7 +239,7 @@ fun doMining(
                 itemBestInfoList = itemBestInfoList
             )
         }
-    } else if(platform == "ONESTORY") {
+    } else if(platform == "ONESTORY_FANTAGY") {
 
         if(type == "COMIC"){
 
@@ -250,6 +250,118 @@ fun doMining(
 
             MiningSource.miningOnestory(
                 platform = platform,
+                platformType = "DP13041|DP13042|DP13043|DP13044",
+                type = type,
+                totalBookItem = totalBookItem,
+                totalBestItem = totalBestItem,
+                yesterDayItemMap = yesterDayItemMap
+            ) { itemBook, itemBest ->
+
+                if(itemBook.size > 99 && itemBest.size > 99){
+                    val itemBookInfoList = JsonArray()
+                    val itemBestInfoList = JsonArray()
+
+                    for(item in 0 until itemBook.size){
+                        itemBookInfoList.add(convertItemBook(itemBook[item] ?: ItemBookInfo()))
+                        itemBestInfoList.add(convertItemBest(itemBest[item] ?: ItemBestInfo()))
+                    }
+
+                    doResultMining(
+                        platform = platform,
+                        type = type,
+                        itemBookInfoList = itemBookInfoList,
+                        itemBestInfoList = itemBestInfoList
+                    )
+                }
+            }
+        }
+
+    } else if(platform == "ONESTORY_ROMANCE") {
+
+        if(type == "COMIC"){
+
+        } else{
+
+            val totalBookItem: MutableMap<Int, ItemBookInfo> = HashMap()
+            val totalBestItem: MutableMap<Int, ItemBestInfo> = HashMap()
+
+            MiningSource.miningOnestory(
+                platform = platform,
+                platformType = "DP13040|DP13045|DP13046|DP13047|DP13048|DP13031|DP13055",
+                type = type,
+                totalBookItem = totalBookItem,
+                totalBestItem = totalBestItem,
+                yesterDayItemMap = yesterDayItemMap
+            ) { itemBook, itemBest ->
+
+                if(itemBook.size > 99 && itemBest.size > 99){
+                    val itemBookInfoList = JsonArray()
+                    val itemBestInfoList = JsonArray()
+
+                    for(item in 0 until itemBook.size){
+                        itemBookInfoList.add(convertItemBook(itemBook[item] ?: ItemBookInfo()))
+                        itemBestInfoList.add(convertItemBest(itemBest[item] ?: ItemBestInfo()))
+                    }
+
+                    doResultMining(
+                        platform = platform,
+                        type = type,
+                        itemBookInfoList = itemBookInfoList,
+                        itemBestInfoList = itemBestInfoList
+                    )
+                }
+            }
+        }
+
+    }  else if(platform == "ONESTORY_PASS_FANTAGY") {
+
+        if(type == "COMIC"){
+
+        } else{
+
+            val totalBookItem: MutableMap<Int, ItemBookInfo> = HashMap()
+            val totalBestItem: MutableMap<Int, ItemBestInfo> = HashMap()
+
+            MiningSource.miningOnestoryPass(
+                platform = platform,
+                platformType = "DP13041|DP13042|DP13043|DP13044",
+                type = type,
+                totalBookItem = totalBookItem,
+                totalBestItem = totalBestItem,
+                yesterDayItemMap = yesterDayItemMap
+            ) { itemBook, itemBest ->
+
+                if(itemBook.size > 99 && itemBest.size > 99){
+                    val itemBookInfoList = JsonArray()
+                    val itemBestInfoList = JsonArray()
+
+                    for(item in 0 until itemBook.size){
+                        itemBookInfoList.add(convertItemBook(itemBook[item] ?: ItemBookInfo()))
+                        itemBestInfoList.add(convertItemBest(itemBest[item] ?: ItemBestInfo()))
+                    }
+
+                    doResultMining(
+                        platform = platform,
+                        type = type,
+                        itemBookInfoList = itemBookInfoList,
+                        itemBestInfoList = itemBestInfoList
+                    )
+                }
+            }
+        }
+
+    } else if(platform == "ONESTORY_PASS_ROMANCE") {
+
+        if(type == "COMIC"){
+
+        } else{
+
+            val totalBookItem: MutableMap<Int, ItemBookInfo> = HashMap()
+            val totalBestItem: MutableMap<Int, ItemBestInfo> = HashMap()
+
+            MiningSource.miningOnestoryPass(
+                platform = platform,
+                platformType = "DP13040|DP13045|DP13046|DP13047|DP13048|DP13031|DP13055",
                 type = type,
                 totalBookItem = totalBookItem,
                 totalBestItem = totalBestItem,

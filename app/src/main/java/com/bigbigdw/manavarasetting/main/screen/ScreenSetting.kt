@@ -489,7 +489,7 @@ fun ContentsSetting() {
                 workManager = workManager,
                 delayMills = 24,
                 tag = "MINING",
-                platform = "ONESTORY",
+                platform = "ONESTORY_FANTAGY",
                 type = "NOVEL"
             )
         },
@@ -511,7 +511,115 @@ fun ContentsSetting() {
                 Spacer(modifier = Modifier.size(8.dp))
 
                 Text(
-                    text = "원스토리 NOVEL",
+                    text = "원스토리 판타지 NOVEL",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                delayMills = 24,
+                tag = "MINING",
+                platform = "ONESTORY_ROMANCE",
+                type = "NOVEL"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo_onestore),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "원스토리 로맨스 NOVEL",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                delayMills = 24,
+                tag = "MINING",
+                platform = "ONESTORY_PASS_FANTAGY",
+                type = "NOVEL"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo_onestore),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "원스토리 PASS 판타지 NOVEL",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                delayMills = 24,
+                tag = "MINING",
+                platform = "ONESTORY_PASS_ROMANCE",
+                type = "NOVEL"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo_onestore),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "원스토리 PASS 로맨스 NOVEL",
                     color = color000000,
                     fontSize = 18.sp,
                 )

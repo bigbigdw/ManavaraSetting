@@ -14,7 +14,7 @@ import com.bigbigdw.moavara.Retrofit.RetrofitDataListener
 import com.bigbigdw.moavara.Retrofit.RetrofitJoara
 import com.bigbigdw.moavara.Retrofit.RetrofitKaKao
 import com.bigbigdw.moavara.Retrofit.RetrofitMoonPia
-import com.bigbigdw.moavara.Retrofit.RetrofitOnestore
+import com.bigbigdw.manavarasetting.retrofit.RetrofitOnestore
 import com.bigbigdw.manavarasetting.retrofit.RetrofitRidi
 import com.bigbigdw.moavara.Retrofit.RetrofitToksoda
 import com.google.firebase.ktx.Firebase
@@ -387,6 +387,7 @@ object MiningSource {
 
     fun miningOnestory(
         platform: String,
+        platformType: String,
         type: String,
         yesterDayItemMap: MutableMap<String, ItemBookInfo>,
         totalBookItem: MutableMap<Int, ItemBookInfo>,
@@ -400,7 +401,7 @@ object MiningSource {
 
                 val apiOneStory = RetrofitOnestore()
                 val param: MutableMap<String?, Any> = HashMap()
-                param["menuId"] = "DP13041|DP13042|DP13043|DP13044"
+                param["menuId"] = platformType
                 param["startKey"] = when (page) {
                     1 -> {
                         ""
@@ -417,6 +418,101 @@ object MiningSource {
                 }
 
                 apiOneStory.getBestOneStore(
+                    param,
+                    object : RetrofitDataListener<OneStoreBookResult> {
+                        override fun onSuccess(data: OneStoreBookResult) {
+
+                            val productList = data.params?.productList
+
+                            if (productList != null) {
+                                for (i in productList.indices) {
+
+                                    val bookCode = productList[i].prodId
+                                    val point = (productList.size * 4) - ((productList.size * (page - 1)) + i)
+                                    val number = ((productList.size * (page - 1)) + i)
+
+                                    val yesterDayItem = checkMiningTrophyValue(yesterDayItemMap[bookCode] ?: ItemBookInfo())
+
+                                    ref["writerName"] = productList[i].artistNm
+                                    ref["subject"] = productList[i].prodNm
+                                    ref["bookImg"] =
+                                        "https://img.onestore.co.kr/thumbnails/img_sac/224_320_F10_95/" + productList[i].thumbnailImageUrl
+                                    ref["bookCode"] = bookCode
+                                    ref["cntPageRead"] = productList[i].totalCount
+                                    ref["cntRecom"] = productList[i].avgScore
+                                    ref["cntTotalComment"] = productList[i].commentCount
+
+                                    ref["number"] = number
+                                    ref["point"] = point
+
+                                    ref["total"] = yesterDayItem.point + point
+                                    ref["totalCount"] = yesterDayItem.totalCount + 1
+                                    ref["totalWeek"] = yesterDayItem.totalWeek + point
+                                    ref["totalWeekCount"] = yesterDayItem.totalWeekCount + 1
+                                    ref["totalMonth"] = yesterDayItem.totalMonth + point
+                                    ref["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
+                                    ref["currentDiff"] = (yesterDayItemMap[bookCode]?.number ?: 0) - number
+
+                                    ref["date"] = dateMMDD()
+                                    ref["type"] = platform
+
+                                    miningValue(
+                                        ref = ref,
+                                        num = number,
+                                        platform = platform,
+                                        type = type
+                                    )
+
+                                    totalBookItem[number] = BestRef.setItemBookInfoRef(ref)
+                                    totalBestItem[number] = BestRef.setItemBestInfoRef(ref)
+
+                                }
+                            }
+
+                            callBack.invoke(totalBookItem, totalBestItem)
+                        }
+                    })
+            } catch (exception: Exception) {
+                Log.d("EXCEPTION", "ONESTORE")
+            }
+        }
+    }
+
+    fun miningOnestoryPass(
+        platform: String,
+        platformType: String,
+        type: String,
+        yesterDayItemMap: MutableMap<String, ItemBookInfo>,
+        totalBookItem: MutableMap<Int, ItemBookInfo>,
+        totalBestItem: MutableMap<Int, ItemBestInfo>,
+        callBack: (MutableMap<Int, ItemBookInfo>, MutableMap<Int, ItemBestInfo>) -> Unit,
+    ) {
+
+        for(page in 1..4){
+            try {
+                val ref: MutableMap<String?, Any> = HashMap()
+
+                val apiOneStory = RetrofitOnestore()
+                val param: MutableMap<String?, Any> = HashMap()
+                param["menuId"] = platformType
+                param["freepassGrpCd"] = "PD013333"
+
+                param["startKey"] = when (page) {
+                    1 -> {
+                        ""
+                    }
+                    2 -> {
+                        "367/0"
+                    }
+                    3 -> {
+                        "1439/0"
+                    }
+                    else -> {
+                        "1957/0"
+                    }
+                }
+
+                apiOneStory.getBestOneStorePass(
                     param,
                     object : RetrofitDataListener<OneStoreBookResult> {
                         override fun onSuccess(data: OneStoreBookResult) {

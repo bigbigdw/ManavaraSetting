@@ -1,6 +1,7 @@
 package com.bigbigdw.manavarasetting.retrofit
 
 import com.bigbigdw.manavarasetting.retrofit.api.ApiJoara
+import com.bigbigdw.manavarasetting.retrofit.api.ApiOneStory
 import com.bigbigdw.manavarasetting.retrofit.api.ApiRidi
 import com.bigbigdw.moavara.Retrofit.Api.*
 import retrofit2.Retrofit

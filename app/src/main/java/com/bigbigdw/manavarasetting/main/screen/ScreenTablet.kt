@@ -318,12 +318,39 @@ fun ScreenTablet(
                         logo = R.drawable.logo_ridibooks
                     )
                 }
-                "원스토리 웹소설" -> {
+                "원스토리 판타지 웹소설" -> {
                     ContentsPlatform(
                         viewModelMain = viewModelMain,
-                        platform = "ONESTORY",
+                        platform = "ONESTORY_FANTAGY",
                         type = "NOVEL",
-                        key = DataStoreManager.MINING_ONESTORY_NOVEL,
+                        key = DataStoreManager.MINING_ONESTORY_FANTAGY_NOVEL,
+                        logo = R.drawable.logo_onestore
+                    )
+                }
+                "원스토리 로맨스 웹소설" -> {
+                    ContentsPlatform(
+                        viewModelMain = viewModelMain,
+                        platform = "ONESTORY_ROMANCE",
+                        type = "NOVEL",
+                        key = DataStoreManager.MINING_ONESTORY_ROMANCE_NOVEL,
+                        logo = R.drawable.logo_onestore
+                    )
+                }
+                "원스토리 PASS 판타지 웹소설" -> {
+                    ContentsPlatform(
+                        viewModelMain = viewModelMain,
+                        platform = "ONESTORY_PASS_FANTAGY",
+                        type = "NOVEL",
+                        key = DataStoreManager.MINING_ONESTORY_PASS_FANTAGY_NOVEL,
+                        logo = R.drawable.logo_onestore
+                    )
+                }
+                "원스토리 PASS 로맨스 웹소설" -> {
+                    ContentsPlatform(
+                        viewModelMain = viewModelMain,
+                        platform = "ONESTORY_PASS_ROMANCE",
+                        type = "NOVEL",
+                        key = DataStoreManager.MINING_ONESTORY_PASS_ROMANCE_NOVEL,
                         logo = R.drawable.logo_onestore
                     )
                 }
