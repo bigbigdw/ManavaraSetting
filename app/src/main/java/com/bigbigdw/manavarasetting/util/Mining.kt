@@ -175,17 +175,11 @@ fun doMining(
             yesterDayItemMap = yesterDayItemMap
         ) { itemBookInfoList, itemBestInfoList ->
 
-            doResultMining(
+            doMining(
                 platform = platform,
                 type = type,
                 itemBookInfoList = itemBookInfoList,
                 itemBestInfoList = itemBestInfoList
-            )
-
-            doResultMiningGenre(
-                platform = platform,
-                type = type,
-                itemBookInfoList = itemBookInfoList,
             )
 
         }
@@ -198,54 +192,12 @@ fun doMining(
             yesterDayItemMap = yesterDayItemMap
         ) { itemBookInfoList, itemBestInfoList ->
 
-            doResultMining(
+            doMining(
                 platform = platform,
                 type = type,
                 itemBookInfoList = itemBookInfoList,
                 itemBestInfoList = itemBestInfoList
             )
-
-            val genreValuesMap = HashMap<String, Int>()
-            val jsonArray = JsonArray()
-
-            for (i in 0 until itemBookInfoList.size()) {
-                val item = JSONObject(itemBookInfoList[i].asJsonObject.toString())
-                if (item.optString("genre").isNotEmpty()) {
-                    val value = item.optString("genre")
-
-                    genreValuesMap[value] = genreValuesMap.getOrDefault(value, 0) + 1
-
-
-                }
-            }
-
-            for ((key, value) in genreValuesMap) {
-                jsonArray.add(
-                    convertItemKeywordJson(
-                        itemBestKeyword = ItemBestKeyword(
-                            title = key,
-                            value = value.toString()
-                        )
-                    )
-                )
-            }
-
-            val storage = Firebase.storage
-            val storageRef = storage.reference
-
-            val today = storageRef.child("${platform}/${type}/GENRE_DAY/${DBDate.dateMMDD()}.json")
-            val week =  storageRef.child("${platform}/${type}/GENRE_WEEK/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
-            val month = storageRef.child("${platform}/${type}/GENRE_MONTH/${DBDate.year()}_${DBDate.month()}.json")
-
-            runBlocking {
-                makeTodayJson(
-                    today = today,
-                    todayArray = jsonArray,
-                    week = week,
-                    month = month,
-                    type = "GENRE"
-                )
-            }
 
         }
     } else if(platform == "JOARA_NOBLESS") {
@@ -256,12 +208,14 @@ fun doMining(
             type = type,
             yesterDayItemMap = yesterDayItemMap
         ) { itemBookInfoList, itemBestInfoList ->
-            doResultMining(
+
+            doMining(
                 platform = platform,
                 type = type,
                 itemBookInfoList = itemBookInfoList,
                 itemBestInfoList = itemBestInfoList
             )
+
         }
     } else if(platform == "NAVER_WEBNOVEL_FREE") {
         MiningSource.miningNaver(
@@ -477,12 +431,14 @@ fun doMining(
             type = type,
             yesterDayItemMap = yesterDayItemMap
         ) { itemBookInfoList, itemBestInfoList ->
-            doResultMining(
+
+            doMining(
                 platform = platform,
                 type = type,
                 itemBookInfoList = itemBookInfoList,
                 itemBestInfoList = itemBestInfoList
             )
+
         }
     } else if(platform == "MUNPIA_FREE") {
 
@@ -507,12 +463,13 @@ fun doMining(
                     itemBestInfoList.add(convertItemBest(itemBest[item] ?: ItemBestInfo()))
                 }
 
-                doResultMining(
+                doMining(
                     platform = platform,
                     type = type,
                     itemBookInfoList = itemBookInfoList,
                     itemBestInfoList = itemBestInfoList
                 )
+
             }
         }
     }  else if(platform == "MUNPIA_PAY") {
@@ -538,7 +495,7 @@ fun doMining(
                     itemBestInfoList.add(convertItemBest(itemBest[item] ?: ItemBestInfo()))
                 }
 
-                doResultMining(
+                doMining(
                     platform = platform,
                     type = type,
                     itemBookInfoList = itemBookInfoList,
@@ -570,7 +527,7 @@ fun doMining(
                     itemBestInfoList.add(convertItemBest(itemBest[item] ?: ItemBestInfo()))
                 }
 
-                doResultMining(
+                doMining(
                     platform = platform,
                     type = type,
                     itemBookInfoList = itemBookInfoList,
@@ -603,7 +560,7 @@ fun doMining(
                     itemBestInfoList.add(convertItemBest(itemBest[item] ?: ItemBestInfo()))
                 }
 
-                doResultMining(
+                doMining(
                     platform = platform,
                     type = type,
                     itemBookInfoList = itemBookInfoList,
@@ -700,6 +657,30 @@ private fun doResultMining(
             platform = platform,
             type = type,
             itemBestInfoList = itemBestInfoList
+        )
+    }
+}
+
+fun doMining(
+    platform: String,
+    type: String,
+    itemBookInfoList: JsonArray,
+    itemBestInfoList: JsonArray
+) {
+    runBlocking {
+        doResultMining(
+            platform = platform,
+            type = type,
+            itemBookInfoList = itemBookInfoList,
+            itemBestInfoList = itemBestInfoList
+        )
+    }
+
+    runBlocking {
+        doResultMiningGenre(
+            platform = platform,
+            type = type,
+            itemBookInfoList = itemBookInfoList,
         )
     }
 }

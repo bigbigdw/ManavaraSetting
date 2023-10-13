@@ -94,7 +94,6 @@ object BestRef {
             totalMonth = ref["totalMonth"] as Int,
             totalMonthCount = ref["totalMonthCount"] as Int,
             currentDiff = ref["currentDiff"] as Int,
-            keyword = ref["keyword"] as ArrayList<String>? ?: ArrayList<String>(),
             genre = ref["genre"] as String? ?: "",
         )
     }

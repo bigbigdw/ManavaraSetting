@@ -123,6 +123,8 @@ object MiningSource {
 
                         val yesterDayItem = checkMiningTrophyValue(yesterDayItemMap[bookCode] ?: ItemBookInfo())
 
+                        ref["genre"] = ""
+
                         ref["writerName"] = naverSeries[i].select(".comic_cont .info .ellipsis .author").first()?.text() ?: ""
                         ref["subject"] = naverSeries.select(".comic_cont h3 a")[i].text()
                         ref["bookImg"] = naverSeries.select("a img")[i].absUrl("src")
@@ -188,6 +190,8 @@ object MiningSource {
 
                         val yesterDayItem = checkMiningTrophyValue(yesterDayItemMap[bookCode] ?: ItemBookInfo())
                         val number = ((naverSeries.size * (pageCount - 1)) + i)
+
+                        ref["genre"] = ""
 
                         ref["writerName"] = naverSeries[i].select(".comic_cont .info .ellipsis .author").first()?.text() ?: ""
                         ref["subject"] = naverSeries.select(".comic_cont h3 a")[i].text()
@@ -270,7 +274,6 @@ object MiningSource {
                                     checkMiningTrophyValue(yesterDayItemMap[bookCode] ?: ItemBookInfo())
                                 val number = i
 
-                                ref["keyword"] = books[i].keyword
                                 ref["genre"] = books[i].category_ko_name
 
                                 ref["writerName"] = books[i].writerName
@@ -330,7 +333,7 @@ object MiningSource {
                 val itemBookInfoList = JsonArray()
                 val itemBestInfoList = JsonArray()
 
-                val doc: Document = Jsoup.connect("https://novel.naver.com/webnovel/ranking?genre=999&periodType=DAILY").post()
+                val doc: Document = Jsoup.connect("https://novel.naver.com/${mining}/ranking?genre=999&periodType=DAILY").post()
                 val naverSeries: Elements = if(platformType == "FREE"){
                     doc.select(".ranking_wrap_left .ranking_list li")
                 } else {
@@ -434,6 +437,8 @@ object MiningSource {
 
                                     val yesterDayItem = checkMiningTrophyValue(yesterDayItemMap[bookCode] ?: ItemBookInfo())
 
+                                    ref["genre"] = ""
+
                                     ref["writerName"] = productList[i].artistNm
                                     ref["subject"] = productList[i].prodNm
                                     ref["bookImg"] =
@@ -528,6 +533,8 @@ object MiningSource {
                                     val number = ((productList.size * (page - 1)) + i)
 
                                     val yesterDayItem = checkMiningTrophyValue(yesterDayItemMap[bookCode] ?: ItemBookInfo())
+
+                                    ref["genre"] = ""
 
                                     ref["writerName"] = productList[i].artistNm
                                     ref["subject"] = productList[i].prodNm
@@ -883,6 +890,8 @@ object MiningSource {
                                             ratePoints += rate.optInt("count") * rate.optInt("rating")
                                         }
                                     }
+
+                                    ref["genre"] = JSONObject(jsonObject.optJSONArray("categories")?.get(0).toString()).optString("name") ?: ""
 
                                     ref["writerName"] = JSONObject(jsonObject.optJSONArray("authors")?.get(0).toString()).optString("name") ?: ""
                                     ref["subject"] = jsonObject.optString("title")
