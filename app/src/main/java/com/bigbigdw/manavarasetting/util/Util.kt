@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.Log
 import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
+import com.bigbigdw.manavarasetting.main.model.ItemBestKeyword
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -131,6 +132,13 @@ fun convertItemBest(bestItemData : ItemBestInfo) : JsonObject {
     jsonObject.addProperty("totalCount", bestItemData.totalCount)
     jsonObject.addProperty("bookCode", bestItemData.bookCode)
     jsonObject.addProperty("currentDiff", bestItemData.currentDiff)
+    return jsonObject
+}
+
+fun convertItemKeywordJson(itemBestKeyword : ItemBestKeyword) : JsonObject {
+    val jsonObject = JsonObject()
+    jsonObject.addProperty("title", itemBestKeyword.title)
+    jsonObject.addProperty("value", itemBestKeyword.value)
     return jsonObject
 }
 

@@ -3,11 +3,17 @@ package com.bigbigdw.manavarasetting.util
 import android.content.Context
 import android.util.Log
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
+import com.bigbigdw.manavarasetting.main.model.ItemBestKeyword
 import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
 import com.bigbigdw.manavarasetting.util.MiningSource.miningNaverSeriesComic
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.google.gson.JsonArray
+import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import kotlinx.coroutines.runBlocking
 import org.json.JSONObject
@@ -177,6 +183,7 @@ fun doMining(
             )
 
             val genreValuesMap = HashMap<String, Int>()
+            val jsonArray = JsonArray()
 
             for (i in 0 until itemBookInfoList.size()) {
                 val item = JSONObject(itemBookInfoList[i].asJsonObject.toString())
@@ -184,11 +191,32 @@ fun doMining(
                     val value = item.optString("genre")
 
                     genreValuesMap[value] = genreValuesMap.getOrDefault(value, 0) + 1
+
+
                 }
             }
 
+            for ((key, value) in genreValuesMap) {
+                jsonArray.add(
+                    convertItemKeywordJson(
+                        itemBestKeyword = ItemBestKeyword(
+                            title = key,
+                            value = value.toString()
+                        )
+                    )
+                )
+            }
+
+            Log.d("HIHI", "jsonArray == $jsonArray")
+
             miningGenre(
                 ref = genreValuesMap,
+                platform = platform,
+                type = type,
+            )
+
+            makeTodayGenreJson(
+                todayArray = jsonArray,
                 platform = platform,
                 type = type,
             )
@@ -202,12 +230,51 @@ fun doMining(
             type = type,
             yesterDayItemMap = yesterDayItemMap
         ) { itemBookInfoList, itemBestInfoList ->
+
             doResultMining(
                 platform = platform,
                 type = type,
                 itemBookInfoList = itemBookInfoList,
                 itemBestInfoList = itemBestInfoList
             )
+
+            val genreValuesMap = HashMap<String, Int>()
+            val jsonArray = JsonArray()
+
+            for (i in 0 until itemBookInfoList.size()) {
+                val item = JSONObject(itemBookInfoList[i].asJsonObject.toString())
+                if (item.optString("genre").isNotEmpty()) {
+                    val value = item.optString("genre")
+
+                    genreValuesMap[value] = genreValuesMap.getOrDefault(value, 0) + 1
+
+
+                }
+            }
+
+            for ((key, value) in genreValuesMap) {
+                jsonArray.add(
+                    convertItemKeywordJson(
+                        itemBestKeyword = ItemBestKeyword(
+                            title = key,
+                            value = value.toString()
+                        )
+                    )
+                )
+            }
+
+            miningGenre(
+                ref = genreValuesMap,
+                platform = platform,
+                type = type,
+            )
+
+            makeTodayGenreJson(
+                todayArray = jsonArray,
+                platform = platform,
+                type = type,
+            )
+
         }
     } else if(platform == "JOARA_NOBLESS") {
         MiningSource.miningJoara(
@@ -906,5 +973,332 @@ fun uploadJsonTrophyMonth(
 
     } catch (e : Exception){
         Log.d("uploadJsonTrophyMonth", "jsonArrayByteArray $e")
+    }
+}
+
+fun getGenreDay(
+    platform: String,
+    type: String
+) {
+
+    val mRootRef =  FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform).child("GENRE_DAY")
+    val dataMap = HashMap<String, Any>()
+
+    mRootRef.addListenerForSingleValueEvent(object :
+        ValueEventListener {
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            if(dataSnapshot.exists()){
+
+                for (snapshot in dataSnapshot.children) {
+                    val key = snapshot.key
+                    val value = snapshot.value
+                    if (key != null && value != null) {
+                        dataMap[key] = value
+                    }
+                }
+
+                Log.d("HIHIHI", "dataMap == ${dataMap}")
+
+            } else {
+                Log.d("HIHIHI", "FAIL == NOT EXIST")
+            }
+        }
+
+        override fun onCancelled(databaseError: DatabaseError) {}
+    })
+}
+
+fun getGenreDayWeek(
+    platform: String,
+    type: String
+) {
+
+    val mRootRef =  FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform).child("GENRE_WEEK")
+    val dataMap = HashMap<String, Any>()
+
+    mRootRef.addListenerForSingleValueEvent(object :
+        ValueEventListener {
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            if(dataSnapshot.exists()){
+
+                for (i in 0..7) {
+
+                    val item = dataSnapshot.child(i.toString())
+
+                    if (item.exists()) {
+
+                        for (snapshot in item.children) {
+                            val key = snapshot.key
+                            val value = snapshot.value
+
+                            if (key != null && value != null) {
+
+                                if(dataMap[key] != null){
+
+                                    val preValue = dataMap[key] as Long
+                                    val currentValue = value as Long
+
+                                    Log.d("HIHIHI", "preValue == ${preValue} currentValue == $currentValue")
+
+                                    dataMap[key] = preValue + currentValue
+                                } else {
+                                    dataMap[key] = value
+                                }
+                            }
+
+                            Log.d("HIHIHI", "snapshot == ${item} dataMap == $dataMap")
+                        }
+                    }
+                }
+
+            } else {
+                Log.d("HIHIHI", "FAIL == NOT EXIST")
+            }
+        }
+
+        override fun onCancelled(databaseError: DatabaseError) {}
+    })
+}
+
+fun getGenreDayMonth(
+    platform: String,
+    type: String
+) {
+
+    val mRootRef =  FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform).child("GENRE_MONTH")
+    val dataMap = HashMap<String, Any>()
+
+    mRootRef.addListenerForSingleValueEvent(object :
+        ValueEventListener {
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            if(dataSnapshot.exists()){
+
+                for (i in 0..31) {
+
+                    val item = dataSnapshot.child(i.toString())
+
+                    if (item.exists()) {
+
+                        for (snapshot in item.children) {
+                            val key = snapshot.key
+                            val value = snapshot.value
+
+                            if (key != null && value != null) {
+
+                                if(dataMap[key] != null){
+
+                                    val preValue = dataMap[key] as Long
+                                    val currentValue = value as Long
+
+                                    Log.d("HIHIHI", "preValue == ${preValue} currentValue == $currentValue")
+
+                                    dataMap[key] = preValue + currentValue
+                                } else {
+                                    dataMap[key] = value
+                                }
+                            }
+
+                            Log.d("HIHIHI", "snapshot == ${item} dataMap == $dataMap")
+                        }
+                    }
+                }
+
+            } else {
+                Log.d("HIHIHI", "FAIL == NOT EXIST")
+            }
+        }
+
+        override fun onCancelled(databaseError: DatabaseError) {}
+    })
+}
+
+fun makeTodayGenreJson(
+    platform: String,
+    type: String,
+    todayArray: JsonArray
+) {
+
+    val storage = Firebase.storage
+    val storageRef = storage.reference
+    val jsonArrayRef =
+        storageRef.child("${platform}/${type}/GENRE_DAY/${DBDate.dateMMDD()}.json")
+
+    val jsonArrayByteArray = todayArray.toString().toByteArray(Charsets.UTF_8)
+
+    jsonArrayRef.putBytes(jsonArrayByteArray)
+        .addOnSuccessListener {
+            Log.d("MANANVARA_MINING", "makeTodayGenreJson addOnSuccessListener == $it")
+
+            uploadGenreWeekJson(
+                platform = platform,
+                type = type,
+                todayArray = todayArray
+            )
+        }.addOnFailureListener {
+            Log.d("MANANVARA_MINING", "makeTodayGenreJson addOnFailureListener == $it")
+        }
+}
+
+private fun uploadGenreWeekJson(
+    platform: String,
+    type: String,
+    todayArray: JsonArray
+) {
+    val storage = Firebase.storage
+    val storageRef = storage.reference
+
+    val jsonFileRef =
+        storageRef.child("${platform}/${type}/GENRE_WEEK/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json") // 읽어올 JSON 파일의 경로
+
+    val jsonMonthRef =
+        storageRef.child("${platform}/${type}/GENRE_MONTH/${DBDate.year()}_${DBDate.month()}.json")
+
+    jsonFileRef.getBytes(1024 * 1024)
+        .addOnSuccessListener { bytes ->
+            val jsonString = String(bytes, Charset.forName("UTF-8"))
+            val weekArray = JsonParser().parse(jsonString).asJsonArray
+
+            makeGenreWeekJson(
+                platform = platform,
+                weekArray = weekArray,
+                type = type,
+                todayArray = todayArray
+            )
+
+        }
+
+        .addOnFailureListener {
+
+            val jsonArray = JsonArray()
+
+            for (i in 0..6) {
+                jsonArray.add("")
+            }
+
+            makeGenreWeekJson(
+                platform = platform,
+                weekArray = jsonArray,
+                type = type,
+                todayArray = todayArray
+            )
+        }
+
+    jsonMonthRef.getBytes(1024 * 1024)
+        .addOnSuccessListener { bytes ->
+            val jsonString = String(bytes, Charset.forName("UTF-8"))
+            val monthArray = JsonParser().parse(jsonString).asJsonArray
+
+            makeGenreMonthJson(
+                platform = platform,
+                jsonMonthArray = monthArray,
+                type = type,
+                todayArray = todayArray
+            )
+
+        }.addOnFailureListener {
+
+            val jsonArray = JsonArray()
+
+            val totalWeekCount = DBDate.getNumberOfWeeksInMonth(
+                year = DBDate.year().toInt(), month = DBDate.month().toInt()
+            )
+
+            for (i in 0 until totalWeekCount) {
+                jsonArray.add("")
+            }
+
+            makeGenreMonthJson(
+                platform = platform,
+                jsonMonthArray = jsonArray,
+                type = type,
+                todayArray = todayArray
+            )
+        }
+}
+
+private fun makeGenreWeekJson(
+    platform: String,
+    weekArray: JsonArray,
+    type: String,
+    todayArray: JsonArray
+) {
+    val storage = Firebase.storage
+    val storageRef = storage.reference
+
+    val jsonWeekRef =
+        storageRef.child("${platform}/${type}/GENRE_WEEK/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
+
+    val indexNum = DBDate.getDayOfWeekAsNumber()
+
+    val clonedWeekArray = weekArray.deepCopy()
+
+    clonedWeekArray.set(indexNum, todayArray)
+
+    try{
+        val jsonBytes = clonedWeekArray.toString().toByteArray(Charsets.UTF_8)
+
+        jsonWeekRef.putBytes(jsonBytes)
+            .addOnSuccessListener {
+                Log.d("MANANVARA_MINING", "makeGenreWeekJson jsonWeekRef 성공")
+            }.addOnFailureListener {
+                Log.d("MANANVARA_MINING", "makeGenreWeekJson jsonWeekRef 실패")
+            }
+
+
+    } catch (e : Exception){
+        Log.d("makeWeekJson", "jsonWeekRef $e")
+    }
+}
+
+private fun makeGenreMonthJson(
+    platform: String,
+    jsonMonthArray: JsonArray,
+    type: String,
+    todayArray: JsonArray
+) {
+    val storage = Firebase.storage
+    val storageRef = storage.reference
+
+    val jsonMonthRef =
+        storageRef.child("${platform}/${type}/GENRE_MONTH/${DBDate.year()}_${DBDate.month()}.json")
+
+    val indexNum = DBDate.getDayOfWeekAsNumber()
+    val indexWeekNum = DBDate.getCurrentWeekNumber() - 1
+
+    val weekJson = try {
+        jsonMonthArray.get(indexWeekNum).asJsonArray
+    } catch (e: Exception) {
+        JsonArray()
+    }
+
+    if (weekJson.size() > 0) {
+
+        weekJson.set(indexNum, todayArray[0])
+        jsonMonthArray.set(indexWeekNum, weekJson)
+
+    } else {
+
+        val itemWeekJsonArray = JsonArray()
+
+        for (i in 0..6) {
+            itemWeekJsonArray.add("")
+        }
+
+        itemWeekJsonArray.set(indexNum,todayArray[0])
+        jsonMonthArray.set(indexWeekNum, itemWeekJsonArray)
+    }
+
+    try{
+        val jsonBytes = jsonMonthArray.toString().toByteArray(Charsets.UTF_8)
+
+        jsonMonthRef.putBytes(jsonBytes)
+            .addOnSuccessListener {
+                Log.d("MANANVARA_MINING", "makeGenreMonthJson makeMonthJson")
+            }.addOnFailureListener {
+                Log.d("MANANVARA_MINING", "makeGenreMonthJson makeMonthJson")
+            }
+
+    } catch (e : Exception){
+        Log.d("makeMonthJson", "jsonBytes $e")
     }
 }

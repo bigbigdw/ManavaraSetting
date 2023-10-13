@@ -77,6 +77,6 @@ data class ItemBestInfo (
 class ItemBestKeyword(
     @SerialName("title")
     var title: String = "",
-    @SerialName("type")
-    var type: String = ""
+    @SerialName("value")
+    var value: String = ""
 )
