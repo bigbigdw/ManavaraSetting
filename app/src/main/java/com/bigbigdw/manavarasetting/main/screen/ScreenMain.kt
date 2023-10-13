@@ -95,6 +95,8 @@ import com.bigbigdw.manavarasetting.util.MiningSource
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import com.bigbigdw.manavarasetting.util.getGenreDay
 import com.bigbigdw.manavarasetting.util.getGenreDayWeek
+import com.bigbigdw.manavarasetting.util.getJsonGenreList
+import com.bigbigdw.manavarasetting.util.getJsonGenreWeekList
 import kotlinx.coroutines.runBlocking
 
 @Composable
@@ -889,7 +891,7 @@ fun ContentsLabs() {
     val context = LocalContext.current
     val workManager = WorkManager.getInstance(context)
 
-    getGenreDayWeek(platform = "JOARA", type = "NOVEL")
+    getJsonGenreWeekList(platform = "JOARA", type = "NOVEL", menu = "주간")
 
     TabletContentWrapBtn(
         onClick = {

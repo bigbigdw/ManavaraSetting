@@ -142,6 +142,15 @@ fun convertItemKeywordJson(itemBestKeyword : ItemBestKeyword) : JsonObject {
     return jsonObject
 }
 
+@SuppressLint("SuspiciousIndentation")
+fun convertItemKeyword(jsonObject: JSONObject): ItemBestKeyword {
+
+    return ItemBestKeyword(
+        title = jsonObject.optString("title"),
+        value = jsonObject.optString("value")
+    )
+}
+
 
 fun setDataStore(data: String){
     val mRootRef = FirebaseDatabase.getInstance().reference.child("WORKER")

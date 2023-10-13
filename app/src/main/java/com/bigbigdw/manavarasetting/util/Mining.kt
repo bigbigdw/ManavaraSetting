@@ -242,7 +242,8 @@ fun doMining(
                     today = today,
                     todayArray = jsonArray,
                     week = week,
-                    month = month
+                    month = month,
+                    type = "GENRE"
                 )
             }
 
@@ -683,7 +684,8 @@ private fun doResultMining(
             today = today,
             todayArray = itemBookInfoList,
             week = week,
-            month = month
+            month = month,
+            type = "BEST"
         )
     }
     runBlocking {
