@@ -28,12 +28,13 @@ fun ContentsBestListNovel(
     setDetailMenu: (String) -> Unit,
     setDetailPlatform: (String) -> Unit,
     setDetailType: (String) -> Unit,
+    type : String
 ) {
 
     TabletContentWrapBtn(
         onClick = {
             setDetailPage(true)
-            setDetailMenu("조아라 베스트")
+            setDetailMenu("조아라 $type")
             setDetailPlatform("JOARA")
             setDetailType("NOVEL")
         },
@@ -66,7 +67,7 @@ fun ContentsBestListNovel(
     TabletContentWrapBtn(
         onClick = {
             setDetailPage(true)
-            setDetailMenu("조아라 노블레스 베스트")
+            setDetailMenu("조아라 노블레스 $type")
             setDetailPlatform("JOARA_NOBLESS")
             setDetailType("NOVEL")
         },
@@ -99,7 +100,7 @@ fun ContentsBestListNovel(
     TabletContentWrapBtn(
         onClick = {
             setDetailPage(true)
-            setDetailMenu("조아라 프리미엄 베스트")
+            setDetailMenu("조아라 프리미엄 $type")
             setDetailPlatform("JOARA_PREMIUM")
             setDetailType("NOVEL")
         },
@@ -132,7 +133,7 @@ fun ContentsBestListNovel(
     TabletContentWrapBtn(
         onClick = {
             setDetailPage(true)
-            setDetailMenu("네이버 시리즈 베스트")
+            setDetailMenu("네이버 시리즈 $type")
             setDetailPlatform("NAVER_SERIES")
             setDetailType("NOVEL")
         },
@@ -165,7 +166,7 @@ fun ContentsBestListNovel(
     TabletContentWrapBtn(
         onClick = {
             setDetailPage(true)
-            setDetailMenu("네이버 웹소설 유료 베스트")
+            setDetailMenu("네이버 웹소설 유료 $type")
             setDetailPlatform("NAVER_WEBNOVEL_PAY")
             setDetailType("NOVEL")
         },
@@ -198,7 +199,7 @@ fun ContentsBestListNovel(
     TabletContentWrapBtn(
         onClick = {
             setDetailPage(true)
-            setDetailMenu("네이버 웹소설 무료 베스트")
+            setDetailMenu("네이버 웹소설 무료 $type")
             setDetailPlatform("NAVER_WEBNOVEL_FREE")
             setDetailType("NOVEL")
         },
@@ -231,7 +232,7 @@ fun ContentsBestListNovel(
     TabletContentWrapBtn(
         onClick = {
             setDetailPage(true)
-            setDetailMenu("네이버 챌린지 리그")
+            setDetailMenu("네이버 챌린지 리그 $type")
             setDetailPlatform("NAVER_CHALLENGE")
             setDetailType("NOVEL")
         },
@@ -264,7 +265,7 @@ fun ContentsBestListNovel(
     TabletContentWrapBtn(
         onClick = {
             setDetailPage(true)
-            setDetailMenu("네이버 베스트 리그")
+            setDetailMenu("네이버 베스트 리그 $type")
             setDetailPlatform("NAVER_BEST")
             setDetailType("NOVEL")
         },
@@ -297,7 +298,7 @@ fun ContentsBestListNovel(
     TabletContentWrapBtn(
         onClick = {
             setDetailPage(true)
-            setDetailMenu("리디북스 판타지 베스트")
+            setDetailMenu("리디북스 판타지 $type")
             setDetailPlatform("RIDI_FANTAGY")
             setDetailType("NOVEL")
         },
@@ -326,7 +327,7 @@ fun ContentsBestListNovel(
     TabletContentWrapBtn(
         onClick = {
             setDetailPage(true)
-            setDetailMenu("리디북스 로맨스 베스트")
+            setDetailMenu("리디북스 로맨스 $type")
             setDetailPlatform("RIDI_ROMANCE")
             setDetailType("NOVEL")
         },
@@ -356,7 +357,7 @@ fun ContentsBestListNovel(
     TabletContentWrapBtn(
         onClick = {
             setDetailPage(true)
-            setDetailMenu("원스토리 판타지 베스트")
+            setDetailMenu("원스토리 판타지 $type")
             setDetailPlatform("ONESTORY_FANTAGY")
             setDetailType("NOVEL")
         },
@@ -389,7 +390,7 @@ fun ContentsBestListNovel(
     TabletContentWrapBtn(
         onClick = {
             setDetailPage(true)
-            setDetailMenu("원스토리 로맨스 베스트")
+            setDetailMenu("원스토리 로맨스 $type")
             setDetailPlatform("ONESTORY_ROMANCE")
             setDetailType("NOVEL")
         },
@@ -422,7 +423,7 @@ fun ContentsBestListNovel(
     TabletContentWrapBtn(
         onClick = {
             setDetailPage(true)
-            setDetailMenu("원스토리 PASS 판타지 베스트")
+            setDetailMenu("원스토리 PASS 판타지 $type")
             setDetailPlatform("ONESTORY_PASS_FANTAGY")
             setDetailType("NOVEL")
         },
@@ -455,7 +456,7 @@ fun ContentsBestListNovel(
     TabletContentWrapBtn(
         onClick = {
             setDetailPage(true)
-            setDetailMenu("원스토리 PASS 로맨스 베스트")
+            setDetailMenu("원스토리 PASS 로맨스 $type")
             setDetailPlatform("ONESTORY_PASS_ROMANCE")
             setDetailType("NOVEL")
         },
@@ -488,7 +489,7 @@ fun ContentsBestListNovel(
     TabletContentWrapBtn(
         onClick = {
             setDetailPage(true)
-            setDetailMenu("카카오 스테이지 베스트")
+            setDetailMenu("카카오 스테이지 $type")
             setDetailPlatform("KAKAO_STAGE")
             setDetailType("NOVEL")
         },
@@ -521,7 +522,7 @@ fun ContentsBestListNovel(
     TabletContentWrapBtn(
         onClick = {
             setDetailPage(true)
-            setDetailMenu("문피아 유료 베스트")
+            setDetailMenu("문피아 유료 $type")
             setDetailPlatform("MUNPIA_PAY")
             setDetailType("NOVEL")
         },
@@ -555,7 +556,7 @@ fun ContentsBestListNovel(
     TabletContentWrapBtn(
         onClick = {
             setDetailPage(true)
-            setDetailMenu("문피아 무료 베스트")
+            setDetailMenu("문피아 무료 $type")
             setDetailPlatform("MUNPIA_FREE")
             setDetailType("NOVEL")
         },
@@ -588,7 +589,7 @@ fun ContentsBestListNovel(
     TabletContentWrapBtn(
         onClick = {
             setDetailPage(true)
-            setDetailMenu("톡소다 베스트")
+            setDetailMenu("톡소다 $type")
             setDetailPlatform("TOKSODA")
             setDetailType("NOVEL")
         },
@@ -621,7 +622,7 @@ fun ContentsBestListNovel(
     TabletContentWrapBtn(
         onClick = {
             setDetailPage(true)
-            setDetailMenu("톡소다 베스트")
+            setDetailMenu("톡소다 자유연재 $type")
             setDetailPlatform("TOKSODA_FREE")
             setDetailType("NOVEL")
         },
@@ -661,12 +662,13 @@ fun ContentsBestListComic(
     setDetailMenu: (String) -> Unit,
     setDetailPlatform: (String) -> Unit,
     setDetailType: (String) -> Unit,
+    type : String
 ) {
 
     TabletContentWrapBtn(
         onClick = {
             setDetailPage(true)
-            setDetailMenu("네이버 시리즈 베스트")
+            setDetailMenu("네이버 시리즈 $type")
             setDetailPlatform("NAVER_SERIES")
             setDetailType("COMIC")
         },

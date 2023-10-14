@@ -1,5 +1,6 @@
 package com.bigbigdw.manavarasetting.main.screen
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,6 +21,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,7 +51,7 @@ fun ContentsGenre(
     TabletContentWrapBtn(
         onClick = {
             setDetailPage(true)
-            setDetailMenu("조아라 장르 $menuType")
+            setDetailMenu("조아라 $menuType")
             setDetailPlatform("JOARA")
             setDetailType("NOVEL")
         },
@@ -365,7 +367,7 @@ fun ContentsGenre(
 }
 
 @Composable
-fun GenreDetailToday(
+fun GenreDetail(
     viewModelMain: ViewModelMain,
     getDetailPlatform: String,
     getDetailType: String,
@@ -378,11 +380,13 @@ fun GenreDetailToday(
         "투데이" -> {
             viewModelMain.getGenreDay(platform = getDetailPlatform, type = getDetailType)
         }
+
         "주간" -> {
             viewModelMain.getGenreDayWeek(platform = getDetailPlatform, type = getDetailType)
         }
+
         else -> {
-            viewModelMain.getGenreDayMonth(platform = getDetailPlatform, type = getDetailType)
+            viewModelMain.getGenreDayWeek(platform = getDetailPlatform, type = getDetailType)
         }
     }
 
@@ -390,8 +394,8 @@ fun GenreDetailToday(
 
     Spacer(modifier = Modifier.size(8.dp))
 
-    LazyColumn{
-        itemsIndexed(bestList){ index, item ->
+    LazyColumn {
+        itemsIndexed(bestList) { index, item ->
             ListGenreToday(
                 itemBestKeyword = item,
                 index = index
@@ -401,6 +405,48 @@ fun GenreDetailToday(
 
     Spacer(modifier = Modifier.size(60.dp))
 }
+
+@Composable
+fun GenreDetailJson(
+    viewModelMain: ViewModelMain,
+    getDetailPlatform: String,
+    getDetailType: String,
+    menuType: String
+) {
+
+    Log.d("HIHI", "REPEAT")
+    viewModelMain.getJsonGenreList(platform = getDetailPlatform, type = getDetailType)
+
+//    when (menuType) {
+//        "투데이" -> {
+//            viewModelMain.getJsonGenreList(platform = getDetailPlatform, type = getDetailType)
+//        }
+//
+//        "주간" -> {
+//            viewModelMain.getJsonGenreWeekList(platform = getDetailPlatform, type = getDetailType, menu = menuType)
+//        }
+//
+//        else -> {
+//            viewModelMain.getJsonGenreWeekList(platform = getDetailPlatform, type = getDetailType, menu = menuType)
+//        }
+//    }
+
+    val bestList: ArrayList<ItemBestKeyword> = viewModelMain.state.collectAsState().value.genreDay
+
+    Spacer(modifier = Modifier.size(8.dp))
+
+    LazyColumn {
+        itemsIndexed(bestList) { index, item ->
+            ListGenreToday(
+                itemBestKeyword = item,
+                index = index
+            )
+        }
+    }
+
+    Spacer(modifier = Modifier.size(60.dp))
+}
+
 
 
 @Composable

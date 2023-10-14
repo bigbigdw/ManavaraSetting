@@ -14,6 +14,7 @@ import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import com.bigbigdw.manavarasetting.util.convertItemBestJson
 import com.bigbigdw.manavarasetting.util.convertItemBookJson
+import com.bigbigdw.manavarasetting.util.convertItemKeyword
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -96,6 +97,13 @@ class ViewModelMain @Inject constructor() : ViewModel() {
             is EventMain.SetGenreDay -> {
                 current.copy(
                     genreDay = event.genreDay
+                )
+            }
+
+            is EventMain.SetGenreWeek -> {
+                current.copy(
+                    genreDay = event.genreDay,
+                    genreDayList = event.genreDayList
                 )
             }
 
@@ -529,7 +537,6 @@ class ViewModelMain @Inject constructor() : ViewModel() {
     ) {
 
         val mRootRef =  FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform).child("GENRE_MONTH")
-        val dataMap = HashMap<String, Any>()
 
         mRootRef.addListenerForSingleValueEvent(object :
             ValueEventListener {
@@ -589,6 +596,99 @@ class ViewModelMain @Inject constructor() : ViewModel() {
 
             override fun onCancelled(databaseError: DatabaseError) {}
         })
+    }
+
+    fun getJsonGenreList(platform: String, type: String){
+        val storage = Firebase.storage
+        val storageRef = storage.reference
+        val todayFileRef = storageRef.child("${platform}/${type}/GENRE_DAY/${DBDate.dateMMDD()}.json")
+
+        val todayFile = todayFileRef.getBytes(1024 * 1024)
+
+        todayFile.addOnSuccessListener { bytes ->
+            val jsonString = String(bytes, Charset.forName("UTF-8"))
+            val json = Json { ignoreUnknownKeys = true }
+            val itemList = json.decodeFromString<List<ItemBestKeyword>>(jsonString)
+
+            val jsonList = ArrayList<ItemBestKeyword>()
+
+            for (item in itemList) {
+                jsonList.add(item)
+            }
+
+            Log.d("HIHI", "dataMap == ${jsonList}")
+
+            viewModelScope.launch {
+                events.send(EventMain.SetGenreDay(genreDay = jsonList))
+            }
+        }
+    }
+
+    fun getJsonGenreWeekList(platform: String, menu: String, type: String) {
+        val storage = Firebase.storage
+        val storageRef = storage.reference
+
+        val fileRef: StorageReference = if (menu == "주간") {
+            storageRef.child("${platform}/${type}/GENRE_WEEK/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
+        } else {
+            storageRef.child("${platform}/${type}/GENRE_MONTH/${DBDate.year()}_${DBDate.month()}.json")
+        }
+
+        val file = fileRef.getBytes(1024 * 1024)
+
+        file.addOnSuccessListener { bytes ->
+            val jsonString = String(bytes, Charset.forName("UTF-8"))
+
+            val jsonArray = JSONArray(jsonString)
+
+
+            val weekJsonList = ArrayList<ArrayList<ItemBestKeyword>>()
+            val sumList = ArrayList<ItemBestKeyword>()
+            val dataMap = HashMap<String, Any>()
+
+            for (i in 0 until jsonArray.length()) {
+
+                try {
+                    val jsonArrayItem = jsonArray.getJSONArray(i)
+                    val itemList = ArrayList<ItemBestKeyword>()
+
+                    for (j in 0 until jsonArrayItem.length()) {
+
+                        try {
+                            val jsonObject = jsonArrayItem.getJSONObject(j)
+                            itemList.add(convertItemKeyword(jsonObject))
+
+                            val key = convertItemKeyword(jsonObject).title
+                            val value = convertItemKeyword(jsonObject).value
+
+                            if(dataMap[key] != null){
+
+                                val preValue = dataMap[key] as Long
+                                val currentValue = value.toLong()
+
+                                dataMap[key] = preValue + currentValue
+                            } else {
+                                dataMap[key] = value
+                            }
+
+                        } catch (e: Exception) {
+                            itemList.add(ItemBestKeyword())
+
+                        }
+                    }
+
+                    weekJsonList.add(itemList)
+                } catch (e: Exception) {
+                    weekJsonList.add(ArrayList())
+                }
+            }
+
+            Log.d("HIHI", "dataMap == ${dataMap}")
+
+//            viewModelScope.launch {
+//                events.send(EventMain.SetGenreWeek(genreDayList = weekJsonList))
+//            }
+        }
     }
 
 }

@@ -40,6 +40,11 @@ sealed interface EventMain {
     class SetGenreDay(
         val genreDay : ArrayList<ItemBestKeyword> = ArrayList()
     ) : EventMain
+
+    class SetGenreWeek(
+        val genreDay : ArrayList<ItemBestKeyword> = ArrayList(),
+        val genreDayList : ArrayList<ArrayList<ItemBestKeyword>> = ArrayList()
+    ) : EventMain
 }
 
 data class StateMain(
@@ -55,5 +60,6 @@ data class StateMain(
     val fcmBestCount : Int = 0,
     val fcmJsonCount : Int = 0,
     val fcmTrophyCount : Int = 0,
-    val genreDay : ArrayList<ItemBestKeyword> = ArrayList()
+    val genreDay : ArrayList<ItemBestKeyword> = ArrayList(),
+    val genreDayList : ArrayList<ArrayList<ItemBestKeyword>> = ArrayList()
 )

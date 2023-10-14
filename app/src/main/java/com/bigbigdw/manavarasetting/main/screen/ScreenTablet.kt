@@ -83,23 +83,34 @@ fun ScreenTablet(
                         setDetailMenu = setDetailMenu,
                         setDetailPlatform = setDetailPlatform,
                         setDetailType = setDetailType,
+                        type = "베스트 리스트"
                     )
                 }
-                "웹툰 베스트 리스트" -> {
-                    ContentsBestListComic(
+                "투데이 장르 베스트" -> {
+                    ContentsGenre(
+                        menuType = "투데이 장르 베스트",
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         setDetailPlatform = setDetailPlatform,
                         setDetailType = setDetailType,
                     )
                 }
-                "웹툰 JSON 투데이" -> {
-                    ContentsBestJsonListComic(
+                "주간 장르 베스트" -> {
+                    ContentsGenre(
+                        menuType = "주간 장르 베스트",
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         setDetailPlatform = setDetailPlatform,
                         setDetailType = setDetailType,
-                        type = "JSON 투데이",
+                    )
+                }
+                "월간 장르 베스트" -> {
+                    ContentsGenre(
+                        menuType = "월간 장르 베스트",
+                        setDetailPage = setDetailPage,
+                        setDetailMenu = setDetailMenu,
+                        setDetailPlatform = setDetailPlatform,
+                        setDetailType = setDetailType,
                     )
                 }
                 "웹소설 JSON 투데이" -> {
@@ -108,7 +119,7 @@ fun ScreenTablet(
                         setDetailMenu = setDetailMenu,
                         setDetailPlatform = setDetailPlatform,
                         setDetailType = setDetailType,
-                        type = "JSON 투데이",
+                        type = "JSON 투데이 베스트",
                     )
                 }
                 "웹소설 JSON 주간" -> {
@@ -117,16 +128,7 @@ fun ScreenTablet(
                         setDetailMenu = setDetailMenu,
                         setDetailPlatform = setDetailPlatform,
                         setDetailType = setDetailType,
-                        type = "JSON 주간",
-                    )
-                }
-                "웹툰 JSON 주간" -> {
-                    ContentsBestJsonListComic(
-                        setDetailPage = setDetailPage,
-                        setDetailMenu = setDetailMenu,
-                        setDetailPlatform = setDetailPlatform,
-                        setDetailType = setDetailType,
-                        type = "JSON 주간",
+                        type = "JSON 주간 베스트",
                     )
                 }
                 "웹소설 JSON 월간" -> {
@@ -135,29 +137,11 @@ fun ScreenTablet(
                         setDetailMenu = setDetailMenu,
                         setDetailPlatform = setDetailPlatform,
                         setDetailType = setDetailType,
-                        type = "JSON 월간",
-                    )
-                }
-                "웹툰 JSON 월간" -> {
-                    ContentsBestJsonListComic(
-                        setDetailPage = setDetailPage,
-                        setDetailMenu = setDetailMenu,
-                        setDetailPlatform = setDetailPlatform,
-                        setDetailType = setDetailType,
-                        type = "JSON 월간",
+                        type = "JSON 월간 베스트",
                     )
                 }
                 "웹소설 JSON 주간 트로피" -> {
                     ContentsBestJsonListNovel(
-                        setDetailPage = setDetailPage,
-                        setDetailMenu = setDetailMenu,
-                        type = "JSON 주간 트로피",
-                        setDetailPlatform = setDetailPlatform,
-                        setDetailType = setDetailType,
-                    )
-                }
-                "웹툰 JSON 주간 트로피" -> {
-                    ContentsBestJsonListComic(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         type = "JSON 주간 트로피",
@@ -174,49 +158,49 @@ fun ScreenTablet(
                         setDetailType = setDetailType,
                     )
                 }
-                "웹툰 JSON 월간 트로피" -> {
-                    ContentsBestJsonListComic(
-                        setDetailPage = setDetailPage,
-                        setDetailMenu = setDetailMenu,
-                        type = "JSON 월간 트로피",
-                        setDetailPlatform = setDetailPlatform,
-                        setDetailType = setDetailType,
-                    )
-                }
                 "웹소설 트로피 주간 토탈" -> {
                     ContentsBestJsonListNovel(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
-                        type = "트로피 주간",
                         setDetailPlatform = setDetailPlatform,
                         setDetailType = setDetailType,
-                    )
-                }
-                "웹툰 트로피 주간 토탈" -> {
-                    ContentsBestJsonListComic(
-                        setDetailPage = setDetailPage,
-                        setDetailMenu = setDetailMenu,
-                        setDetailPlatform = setDetailPlatform,
-                        setDetailType = setDetailType,
-                        type = "트로피 주간",
+                        type = "트로피 주간 토탈",
                     )
                 }
                 "웹소설 트로피 월간 토탈" -> {
                     ContentsBestJsonListNovel(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
-                        type = "트로피 월간",
                         setDetailPlatform = setDetailPlatform,
                         setDetailType = setDetailType,
+                        type = "트로피 월간 토탈",
                     )
                 }
-                "웹툰 트로피 월간 토탈" -> {
-                    ContentsBestJsonListComic(
+                "웹소설 투데이 장르 JSON" -> {
+                    ContentsGenre(
+                        menuType = "투데이 장르 JSON",
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         setDetailPlatform = setDetailPlatform,
                         setDetailType = setDetailType,
-                        type = "트로피 월간",
+                    )
+                }
+                "웹소설 주간 장르 JSON" -> {
+                    ContentsGenre(
+                        menuType = "주간 장르 JSON",
+                        setDetailPage = setDetailPage,
+                        setDetailMenu = setDetailMenu,
+                        setDetailPlatform = setDetailPlatform,
+                        setDetailType = setDetailType,
+                    )
+                }
+                "웹소설 월간 장르 JSON" -> {
+                    ContentsGenre(
+                        menuType = "월간 장르 JSON",
+                        setDetailPage = setDetailPage,
+                        setDetailMenu = setDetailMenu,
+                        setDetailPlatform = setDetailPlatform,
+                        setDetailType = setDetailType,
                     )
                 }
                 "네이버 시리즈 웹툰" -> {
@@ -399,31 +383,76 @@ fun ScreenTablet(
                         logo = R.drawable.logo_toksoda
                     )
                 }
-                "투데이 장르 베스트" -> {
-                    ContentsGenre(
-                        menuType = "투데이",
+                "웹툰 베스트 리스트" -> {
+                    ContentsBestListComic(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
+                        setDetailPlatform = setDetailPlatform,
+                        setDetailType = setDetailType,
+                        type = "베스트 리스트"
+                    )
+                }
+                "웹툰 JSON 투데이" -> {
+                    ContentsBestJsonListComic(
+                        setDetailPage = setDetailPage,
+                        setDetailMenu = setDetailMenu,
+                        setDetailPlatform = setDetailPlatform,
+                        setDetailType = setDetailType,
+                        type = "JSON 투데이",
+                    )
+                }
+                "웹툰 JSON 주간" -> {
+                    ContentsBestJsonListComic(
+                        setDetailPage = setDetailPage,
+                        setDetailMenu = setDetailMenu,
+                        setDetailPlatform = setDetailPlatform,
+                        setDetailType = setDetailType,
+                        type = "JSON 주간 베스트",
+                    )
+                }
+                "웹툰 JSON 월간" -> {
+                    ContentsBestJsonListComic(
+                        setDetailPage = setDetailPage,
+                        setDetailMenu = setDetailMenu,
+                        setDetailPlatform = setDetailPlatform,
+                        setDetailType = setDetailType,
+                        type = "JSON 월간",
+                    )
+                }
+                "웹툰 JSON 주간 트로피" -> {
+                    ContentsBestJsonListComic(
+                        setDetailPage = setDetailPage,
+                        setDetailMenu = setDetailMenu,
+                        type = "JSON 주간 트로피",
                         setDetailPlatform = setDetailPlatform,
                         setDetailType = setDetailType,
                     )
                 }
-                "주간 장르 베스트" -> {
-                    ContentsGenre(
-                        menuType = "주간",
+                "웹툰 JSON 월간 트로피" -> {
+                    ContentsBestJsonListComic(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
+                        type = "JSON 월간 트로피",
                         setDetailPlatform = setDetailPlatform,
                         setDetailType = setDetailType,
                     )
                 }
-                "월간 장르 베스트" -> {
-                    ContentsGenre(
-                        menuType = "월간",
+                "웹툰 트로피 주간 토탈" -> {
+                    ContentsBestJsonListComic(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         setDetailPlatform = setDetailPlatform,
                         setDetailType = setDetailType,
+                        type = "트로피 주간",
+                    )
+                }
+                "웹툰 트로피 월간 토탈" -> {
+                    ContentsBestJsonListComic(
+                        setDetailPage = setDetailPage,
+                        setDetailMenu = setDetailMenu,
+                        setDetailPlatform = setDetailPlatform,
+                        setDetailType = setDetailType,
+                        type = "트로피 월간",
                     )
                 }
                 "위험 옵션" -> {
@@ -483,21 +512,49 @@ fun ScreenTabletDetail(
             )
         }
 
-        if (getDetailMenu.contains("JSON 투데이")) {
+        if (getDetailMenu.contains("베스트 리스트")) {
+            ContentsBestListDetail(
+                viewModelMain = viewModelMain,
+                type = "BEST",
+                getDetailPlatform = getDetailPlatform,
+                getDetailType = getDetailType,
+            )
+        } else if (getDetailMenu.contains("투데이 장르 베스트")) {
+            GenreDetail(
+                viewModelMain = viewModelMain,
+                getDetailPlatform = getDetailPlatform,
+                getDetailType = getDetailType,
+                menuType = "투데이 장르 베스트"
+            )
+        } else if (getDetailMenu.contains("주간 장르 베스트")) {
+            GenreDetail(
+                viewModelMain = viewModelMain,
+                getDetailPlatform = getDetailPlatform,
+                getDetailType = getDetailType,
+                menuType = "주간"
+            )
+        } else if (getDetailMenu.contains("월간 장르 베스트")) {
+            GenreDetail(
+                viewModelMain = viewModelMain,
+                getDetailPlatform = getDetailPlatform,
+                getDetailType = getDetailType,
+                menuType = "월간"
+            )
+        } else if (getDetailMenu.contains("JSON 투데이 베스트",)) {
             ContentsBestListDetail(
                 viewModelMain = viewModelMain,
                 type = "JSON",
                 getDetailPlatform = getDetailPlatform,
                 getDetailType = getDetailType,
             )
-        }  else if (getDetailMenu.contains("JSON 주간")) {
+        } else if (getDetailMenu.contains("JSON 주간 베스트")) {
             ContentsBestListDetailWeek(
                 viewModelMain = viewModelMain,
                 menu = "주간",
                 getDetailPlatform = getDetailPlatform,
                 getDetailType = getDetailType,
             )
-        }  else if (getDetailMenu.contains("JSON 월간")) {
+        } else if (getDetailMenu.contains("JSON 월간 베스트")) {
             ContentsBestListDetailWeek(
                 viewModelMain = viewModelMain,
                 menu = "월간",
@@ -518,48 +575,41 @@ fun ScreenTabletDetail(
                 getDetailPlatform = getDetailPlatform,
                 getDetailType = getDetailType,
             )
-        } else if (getDetailMenu.contains("트로피 주간")) {
+        } else if (getDetailMenu.contains("트로피 주간 토탈")) {
             ContentsBestListDetailTrophy(
                 viewModelMain = viewModelMain,
                 menu = "주간",
                 getDetailPlatform = getDetailPlatform,
                 getDetailType = getDetailType,
             )
-        } else if (getDetailMenu.contains("트로피 월간")) {
+        } else if (getDetailMenu.contains("트로피 월간 토탈")) {
             ContentsBestListDetailTrophy(
                 viewModelMain = viewModelMain,
                 menu = "월간",
                 getDetailPlatform = getDetailPlatform,
                 getDetailType = getDetailType,
             )
-        } else if (getDetailMenu.contains("베스트")) {
-            ContentsBestListDetail(
-                viewModelMain = viewModelMain,
-                type = "BEST",
-                getDetailPlatform = getDetailPlatform,
-                getDetailType = getDetailType,
-            )
-        } else if (getDetailMenu.contains("장르 투데이")) {
-            GenreDetailToday(
+        } else if (getDetailMenu.contains("투데이 장르 JSON")) {
+            GenreDetailJson(
                 viewModelMain = viewModelMain,
                 getDetailPlatform = getDetailPlatform,
                 getDetailType = getDetailType,
                 menuType = "투데이"
             )
-        } else if (getDetailMenu.contains("장르 주간")) {
-            GenreDetailToday(
-                viewModelMain = viewModelMain,
-                getDetailPlatform = getDetailPlatform,
-                getDetailType = getDetailType,
-                menuType = "주간"
-            )
-        } else if (getDetailMenu.contains("장르 월간")) {
-            GenreDetailToday(
-                viewModelMain = viewModelMain,
-                getDetailPlatform = getDetailPlatform,
-                getDetailType = getDetailType,
-                menuType = "월간"
-            )
+        } else if (getDetailMenu.contains("주간 장르 JSON")) {
+//            GenreDetailJson(
+//                viewModelMain = viewModelMain,
+//                getDetailPlatform = getDetailPlatform,
+//                getDetailType = getDetailType,
+//                menuType = "주간"
+//            )
+        } else if (getDetailMenu.contains("월간 장르 JSON")) {
+//            GenreDetailJson(
+//                viewModelMain = viewModelMain,
+//                getDetailPlatform = getDetailPlatform,
+//                getDetailType = getDetailType,
+//                menuType = "월간"
+//            )
         }
     }
 }
