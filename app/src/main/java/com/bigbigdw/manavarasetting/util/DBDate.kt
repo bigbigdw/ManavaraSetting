@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.icu.text.SimpleDateFormat
 import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.YearMonth
 import java.time.temporal.TemporalAdjusters
 import java.time.temporal.WeekFields
 import java.util.Calendar
@@ -139,6 +140,16 @@ object DBDate {
         val lastWeekNumber = lastDayOfMonth.get(weekFields.weekOfWeekBasedYear())
 
         return lastWeekNumber - firstWeekNumber + 1
+    }
+
+    fun getDaysInMonth(): Int {
+        val currentYearMonth = YearMonth.now()
+        return currentYearMonth.lengthOfMonth()
+    }
+
+    fun getCurrentDayOfMonth(): Int {
+        val currentDate = LocalDate.now()
+        return currentDate.dayOfMonth
     }
 
 }

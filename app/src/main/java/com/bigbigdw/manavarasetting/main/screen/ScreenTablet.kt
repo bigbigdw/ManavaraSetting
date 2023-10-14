@@ -233,19 +233,19 @@ fun ScreenTablet(
                 "조아라 프리미엄 웹소설" -> {
                     ContentsPlatform(
                         viewModelMain = viewModelMain,
-                        platform = "JOARA_NOBLESS",
+                        platform = "JOARA_PREMIUM",
                         type = "NOVEL",
-                        key = DataStoreManager.MINING_JOARA_PREMIUM_NOVEL,
-                        logo = R.drawable.logo_joara_nobless
+                        key = DataStoreManager.MINING_JOARA_NOBLESS_NOVEL,
+                        logo = R.drawable.logo_joara_premium
                     )
                 }
                 "조아라 노블레스 웹소설" -> {
                     ContentsPlatform(
                         viewModelMain = viewModelMain,
-                        platform = "JOARA_PREMIUM",
+                        platform = "JOARA_NOBLESS",
                         type = "NOVEL",
-                        key = DataStoreManager.MINING_JOARA_NOBLESS_NOVEL,
-                        logo = R.drawable.logo_joara_premium
+                        key = DataStoreManager.MINING_JOARA_PREMIUM_NOVEL,
+                        logo = R.drawable.logo_joara_nobless
                     )
                 }
                 "챌린지 리그" -> {

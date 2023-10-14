@@ -531,7 +531,7 @@ fun GenreDetailJson(
 
             for(item in state.genreDayList){
                 count += 1
-                arrayList.add("${count}주차")
+                arrayList.add("${count}일")
             }
 
             Column(modifier = Modifier.background(color = colorF6F6F6)) {
@@ -565,13 +565,13 @@ fun GenreDetailJson(
                     }
                 } else {
 
-                    if(state.genreDayList[geMonthDate(getDate)].size > 0){
+                    if(state.genreDayList[getDate.replace("일","").toInt() - 1].size > 0){
                         LazyColumn(
                             modifier = Modifier
                                 .background(colorF6F6F6)
                         ) {
 
-                            itemsIndexed(state.genreDayList[geMonthDate(getDate)]) { index, item ->
+                            itemsIndexed(state.genreDayList[getDate.replace("일","").toInt() - 1]) { index, item ->
                                 ListGenreToday(
                                     itemBestKeyword = item,
                                     index = index

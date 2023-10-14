@@ -76,31 +76,54 @@ private fun uploadWeekJson(
             val jsonString = String(bytes, Charset.forName("UTF-8"))
             val monthArray = JsonParser().parse(jsonString).asJsonArray
 
-            makeMonthJson(
-                jsonMonthArray = monthArray,
-                todayArray = todayArray,
-                month = month,
-                type = type
-            )
+            if(type == "GENRE"){
+                makeMonthGenreJson(
+                    jsonMonthArray = monthArray,
+                    todayArray = todayArray,
+                    month = month
+                )
+            } else {
+                makeMonthJson(
+                    jsonMonthArray = monthArray,
+                    todayArray = todayArray,
+                    month = month
+                )
+            }
+
 
         }.addOnFailureListener {
 
-            val jsonArray = JsonArray()
+            if(type == "GENRE"){
+                val jsonArray = JsonArray()
 
-            val totalWeekCount = DBDate.getNumberOfWeeksInMonth(
-                year = DBDate.year().toInt(), month = DBDate.month().toInt()
-            )
+                val totalWeekCount = DBDate.getDaysInMonth()
 
-            for (i in 0 until totalWeekCount) {
-                jsonArray.add("")
+                for (i in 0 until totalWeekCount) {
+                    jsonArray.add("")
+                }
+
+                makeMonthGenreJson(
+                    jsonMonthArray = jsonArray,
+                    todayArray = todayArray,
+                    month = month
+                )
+            } else {
+                val jsonArray = JsonArray()
+
+                val totalWeekCount = DBDate.getNumberOfWeeksInMonth(
+                    year = DBDate.year().toInt(), month = DBDate.month().toInt()
+                )
+
+                for (i in 0 until totalWeekCount) {
+                    jsonArray.add("")
+                }
+
+                makeMonthJson(
+                    jsonMonthArray = jsonArray,
+                    todayArray = todayArray,
+                    month = month
+                )
             }
-
-            makeMonthJson(
-                jsonMonthArray = jsonArray,
-                todayArray = todayArray,
-                month = month,
-                type = type
-            )
         }
 }
 
@@ -136,7 +159,6 @@ private fun makeMonthJson(
     jsonMonthArray: JsonArray,
     todayArray: JsonArray,
     month: StorageReference,
-    type : String,
 ) {
 
     val indexNum = DBDate.getDayOfWeekAsNumber()
@@ -149,15 +171,8 @@ private fun makeMonthJson(
     }
 
     if (weekJson.size() > 0) {
-
-        if(type == "GENRE"){
-            weekJson.set(indexNum, todayArray)
-            jsonMonthArray.set(indexWeekNum, weekJson)
-        } else {
-            weekJson.set(indexNum, todayArray[0])
-            jsonMonthArray.set(indexWeekNum, weekJson)
-        }
-
+        weekJson.set(indexNum, todayArray[0])
+        jsonMonthArray.set(indexWeekNum, weekJson)
     } else {
 
         val itemWeekJsonArray = JsonArray()
@@ -301,6 +316,43 @@ fun doResultMiningGenre(
             month = month,
             type = "GENRE"
         )
+    }
+}
+
+private fun makeMonthGenreJson(
+    jsonMonthArray: JsonArray,
+    todayArray: JsonArray,
+    month: StorageReference,
+) {
+
+    val indexDayNum = DBDate.getCurrentDayOfMonth() - 1
+
+    if(jsonMonthArray.size() > 0){
+        jsonMonthArray.set(indexDayNum, todayArray)
+    } else {
+        val totalWeekCount = DBDate.getNumberOfWeeksInMonth(
+            year = DBDate.year().toInt(), month = DBDate.month().toInt()
+        )
+
+        for (i in 0 until totalWeekCount) {
+            jsonMonthArray.add("")
+        }
+
+        jsonMonthArray.set(indexDayNum, todayArray)
+    }
+
+    try{
+        val jsonBytes = jsonMonthArray.toString().toByteArray(Charsets.UTF_8)
+
+        month.putBytes(jsonBytes)
+            .addOnSuccessListener {
+                Log.d("JSON_MINING", "uploadJsonArrayToStorageMonth makeMonthJson")
+            }.addOnFailureListener {
+                Log.d("JSON_MINING", "uploadJsonArrayToStorageMonth makeMonthJson")
+            }
+
+    } catch (e : Exception){
+        Log.d("makeMonthJson", "jsonBytes $e")
     }
 }
 

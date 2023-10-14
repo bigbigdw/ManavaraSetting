@@ -674,7 +674,7 @@ fun doMining(
         doResultMiningGenre(
             platform = platform,
             type = type,
-            itemBookInfoList = itemBookInfoList,
+            itemBookInfoList = itemBookInfoList
         )
     }
 }
