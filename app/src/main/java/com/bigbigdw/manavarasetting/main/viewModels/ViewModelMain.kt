@@ -51,17 +51,17 @@ class ViewModelMain @Inject constructor() : ViewModel() {
     val sideEffects = _sideEffects.receiveAsFlow()
 
     private fun reduceState(current: StateMain, event: EventMain): StateMain {
-        return when(event){
+        return when (event) {
             EventMain.Loaded -> {
                 current.copy(Loaded = true)
             }
 
             is EventMain.SetFcmAlertList -> {
-                current.copy(fcmAlertList = event.fcmAlertList,)
+                current.copy(fcmAlertList = event.fcmAlertList)
             }
 
             is EventMain.SetFcmNoticeList -> {
-                current.copy(fcmNoticeList = event.fcmNoticeList,)
+                current.copy(fcmNoticeList = event.fcmNoticeList)
             }
 
             is EventMain.SetBestBookList -> {
@@ -106,26 +106,27 @@ class ViewModelMain @Inject constructor() : ViewModel() {
     }
 
 
-    fun getFCMList(child: String, activity : String = ""){
+    fun getFCMList(child: String, activity: String = "") {
 
         val mRootRef = FirebaseDatabase.getInstance().reference.child("MESSAGE").child(child)
 
         mRootRef.addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if(dataSnapshot.exists()){
+                if (dataSnapshot.exists()) {
 
                     var fcmlist = ArrayList<FCMAlert>()
 
-                    for(item in dataSnapshot.children){
-                        val fcm: FCMAlert? = dataSnapshot.child(item.key ?: "").getValue(FCMAlert::class.java)
+                    for (item in dataSnapshot.children) {
+                        val fcm: FCMAlert? =
+                            dataSnapshot.child(item.key ?: "").getValue(FCMAlert::class.java)
 
                         if (fcm != null) {
 
-                            if(activity.isNullOrEmpty()){
+                            if (activity.isNullOrEmpty()) {
                                 fcmlist.add(fcm)
                             } else {
-                                if(fcm.activity == activity){
+                                if (fcm.activity == activity) {
                                     fcmlist.add(fcm)
                                 }
                             }
@@ -134,13 +135,13 @@ class ViewModelMain @Inject constructor() : ViewModel() {
 
                     viewModelScope.launch {
 
-                        if(fcmlist.size > 1){
+                        if (fcmlist.size > 1) {
                             fcmlist = fcmlist.reversed() as ArrayList<FCMAlert>
                         }
 
-                        if(child == "ALERT"){
+                        if (child == "ALERT") {
                             events.send(EventMain.SetFcmAlertList(fcmAlertList = fcmlist))
-                        } else if (child == "NOTICE"){
+                        } else if (child == "NOTICE") {
                             events.send(EventMain.SetFcmNoticeList(fcmNoticeList = fcmlist))
                         } else {
                             events.send(EventMain.SetFcmNoticeList(fcmNoticeList = fcmlist))
@@ -156,23 +157,24 @@ class ViewModelMain @Inject constructor() : ViewModel() {
         })
     }
 
-    fun getMiningList(title: String = ""){
+    fun getMiningList(title: String = "") {
 
         val mRootRef = FirebaseDatabase.getInstance().reference.child("MINING")
 
         mRootRef.addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if(dataSnapshot.exists()){
+                if (dataSnapshot.exists()) {
 
                     var fcmlist = ArrayList<FCMAlert>()
 
-                    for(item in dataSnapshot.children){
-                        val fcm: FCMAlert? = dataSnapshot.child(item.key ?: "").getValue(FCMAlert::class.java)
+                    for (item in dataSnapshot.children) {
+                        val fcm: FCMAlert? =
+                            dataSnapshot.child(item.key ?: "").getValue(FCMAlert::class.java)
 
                         if (fcm != null) {
 
-                            if(fcm.title == title){
+                            if (fcm.title == title) {
                                 fcmlist.add(fcm)
                             }
                         }
@@ -180,7 +182,7 @@ class ViewModelMain @Inject constructor() : ViewModel() {
 
                     viewModelScope.launch {
 
-                        if(fcmlist.size > 1){
+                        if (fcmlist.size > 1) {
                             fcmlist = fcmlist.reversed() as ArrayList<FCMAlert>
                         }
 
@@ -196,18 +198,21 @@ class ViewModelMain @Inject constructor() : ViewModel() {
         })
     }
 
-    fun getBestList(platform: String, type: String){
-        val mRootRef = FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform).child("DAY")
+    fun getBestList(platform: String, type: String) {
+        val mRootRef =
+            FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform)
+                .child("DAY")
 
         mRootRef.addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if(dataSnapshot.exists()){
+                if (dataSnapshot.exists()) {
 
                     val bestList = ArrayList<ItemBookInfo>()
 
-                    for(book in dataSnapshot.children){
-                        val item: ItemBookInfo? = dataSnapshot.child(book.key ?: "").getValue(ItemBookInfo::class.java)
+                    for (book in dataSnapshot.children) {
+                        val item: ItemBookInfo? =
+                            dataSnapshot.child(book.key ?: "").getValue(ItemBookInfo::class.java)
                         if (item != null) {
                             bestList.add(item)
                         }
@@ -226,7 +231,7 @@ class ViewModelMain @Inject constructor() : ViewModel() {
         })
     }
 
-    fun getBestJsonList(platform: String, type: String){
+    fun getBestJsonList(platform: String, type: String) {
         val storage = Firebase.storage
         val storageRef = storage.reference
         val todayFileRef = storageRef.child("${platform}/${type}/DAY/${DBDate.dateMMDD()}.json")
@@ -250,11 +255,11 @@ class ViewModelMain @Inject constructor() : ViewModel() {
         }
     }
 
-    fun getBestJsonWeekList(platform: String, menu : String, type : String){
+    fun getBestJsonWeekList(platform: String, menu: String, type: String) {
         val storage = Firebase.storage
         val storageRef = storage.reference
 
-        val fileRef: StorageReference = if(menu == "주간"){
+        val fileRef: StorageReference = if (menu == "주간") {
             storageRef.child("${platform}/${type}/WEEK/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
         } else {
             storageRef.child("${platform}/${type}/MONTH/${DBDate.year()}_${DBDate.month()}.json")
@@ -271,22 +276,22 @@ class ViewModelMain @Inject constructor() : ViewModel() {
 
             for (i in 0 until jsonArray.length()) {
 
-                try{
+                try {
                     val jsonArrayItem = jsonArray.getJSONArray(i)
                     val itemList = ArrayList<ItemBookInfo>()
 
                     for (j in 0 until jsonArrayItem.length()) {
 
-                        try{
+                        try {
                             val jsonObject = jsonArrayItem.getJSONObject(j)
                             itemList.add(convertItemBookJson(jsonObject))
-                        }catch (e : Exception){
+                        } catch (e: Exception) {
                             itemList.add(ItemBookInfo())
                         }
                     }
 
                     weekJsonList.add(itemList)
-                } catch (e : Exception){
+                } catch (e: Exception) {
                     weekJsonList.add(ArrayList())
                 }
             }
@@ -297,11 +302,11 @@ class ViewModelMain @Inject constructor() : ViewModel() {
         }
     }
 
-    fun getBestJsonTrophyList(platform: String, menu: String, type: String){
+    fun getBestJsonTrophyList(platform: String, menu: String, type: String) {
         val storage = Firebase.storage
         val storageRef = storage.reference
 
-        val jsonArrayRef = if(menu == "주간"){
+        val jsonArrayRef = if (menu == "주간") {
             storageRef.child("${platform}/${type}/WEEK_TROPHY/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
         } else {
             storageRef.child("${platform}/${type}/MONTH_TROPHY/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
@@ -334,12 +339,14 @@ class ViewModelMain @Inject constructor() : ViewModel() {
         }
     }
 
-    fun getBestTrophyList(platform: String, menu: String, type: String){
+    fun getBestTrophyList(platform: String, menu: String, type: String) {
 
-        val mRootRef = if(menu == "주간"){
-            FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform).child("TROPHY_WEEK_TOTAL")
+        val mRootRef = if (menu == "주간") {
+            FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform)
+                .child("TROPHY_WEEK_TOTAL")
         } else {
-            FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform).child("TROPHY_MONTH_TOTAL")
+            FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform)
+                .child("TROPHY_MONTH_TOTAL")
         }
 
         Log.d("JSON_TROPHY_$type", "mRootRef == $mRootRef")
@@ -347,12 +354,13 @@ class ViewModelMain @Inject constructor() : ViewModel() {
         mRootRef.addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if(dataSnapshot.exists()){
+                if (dataSnapshot.exists()) {
 
                     val bestList = ArrayList<ItemBestInfo>()
 
-                    for(book in dataSnapshot.children){
-                        val item: ItemBestInfo? = dataSnapshot.child(book.key ?: "").getValue(ItemBestInfo::class.java)
+                    for (book in dataSnapshot.children) {
+                        val item: ItemBestInfo? =
+                            dataSnapshot.child(book.key ?: "").getValue(ItemBestInfo::class.java)
                         if (item != null) {
                             bestList.add(item.copy(bookCode = book.key ?: ""))
                         }
@@ -371,17 +379,17 @@ class ViewModelMain @Inject constructor() : ViewModel() {
         })
     }
 
-    fun resetBest(str : String){
-        var currentUser :  FirebaseUser? = null
+    fun resetBest(str: String) {
+        var currentUser: FirebaseUser? = null
         val auth: FirebaseAuth = Firebase.auth
 
         val mRootRef = FirebaseDatabase.getInstance().reference
 
         currentUser = auth.currentUser
 
-        if(currentUser?.uid == "A8uh2QkVQaV3Q3rE8SgBNKzV6VH2"){
+        if (currentUser?.uid == "A8uh2QkVQaV3Q3rE8SgBNKzV6VH2") {
 
-            if(str == "ALERT"){
+            if (str == "ALERT") {
                 mRootRef.child("MESSAGE").child(str).removeValue()
             } else {
                 mRootRef.child(str).removeValue()
@@ -408,21 +416,22 @@ class ViewModelMain @Inject constructor() : ViewModel() {
         type: String
     ) {
 
-        val mRootRef =  FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform).child("GENRE_DAY")
-        val dataMap = HashMap<String, Any>()
+        val mRootRef =
+            FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform)
+                .child("GENRE_DAY")
 
         mRootRef.addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if(dataSnapshot.exists()){
+                if (dataSnapshot.exists()) {
 
                     val arrayList = ArrayList<ItemBestKeyword>()
 
                     for (snapshot in dataSnapshot.children) {
                         val key = snapshot.key
                         val value = snapshot.value
+
                         if (key != null && value != null) {
-                            dataMap[key] = value
 
                             arrayList.add(
                                 ItemBestKeyword(
@@ -434,7 +443,7 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                     }
 
                     val cmpAsc: java.util.Comparator<ItemBestKeyword> =
-                        Comparator { o1, o2 -> o2.value.compareTo(o1.value) }
+                        Comparator { o1, o2 -> o2.value.toInt().compareTo(o1.value.toInt()) }
                     Collections.sort(arrayList, cmpAsc)
 
                     viewModelScope.launch {
@@ -447,6 +456,140 @@ class ViewModelMain @Inject constructor() : ViewModel() {
         })
     }
 
+    fun getGenreDayWeek(
+        platform: String,
+        type: String
+    ) {
+
+        val mRootRef =  FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform).child("GENRE_WEEK")
+
+        mRootRef.addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if(dataSnapshot.exists()){
+
+                    val dataMap = HashMap<String, Any>()
+                    val arrayList = ArrayList<ItemBestKeyword>()
+
+                    for (i in 0..7) {
+
+                        val item = dataSnapshot.child(i.toString())
+
+                        if (item.exists()) {
+
+                            for (snapshot in item.children) {
+                                val key = snapshot.key
+                                val value = snapshot.value
+
+                                if (key != null && value != null) {
+
+                                    if(dataMap[key] != null){
+
+                                        val preValue = dataMap[key] as Long
+                                        val currentValue = value as Long
+
+                                        dataMap[key] = preValue + currentValue
+                                    } else {
+                                        dataMap[key] = value
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    for ((key, value) in dataMap) {
+                        arrayList.add(
+                            ItemBestKeyword(
+                                title = key,
+                                value = value.toString()
+                            )
+                        )
+                    }
+
+                    val cmpAsc: java.util.Comparator<ItemBestKeyword> =
+                        Comparator { o1, o2 -> o2.value.toInt().compareTo(o1.value.toInt()) }
+                    Collections.sort(arrayList, cmpAsc)
+
+                    viewModelScope.launch {
+                        events.send(EventMain.SetGenreDay(genreDay = arrayList))
+                    }
+
+                } else {
+                    Log.d("HIHIHI", "FAIL == NOT EXIST")
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
+    }
+
+    fun getGenreDayMonth(
+        platform: String,
+        type: String
+    ) {
+
+        val mRootRef =  FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform).child("GENRE_MONTH")
+        val dataMap = HashMap<String, Any>()
+
+        mRootRef.addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if(dataSnapshot.exists()){
+
+                    val dataMap = HashMap<String, Any>()
+                    val arrayList = ArrayList<ItemBestKeyword>()
+
+                    for (i in 1..31) {
+
+                        val item = dataSnapshot.child(i.toString())
+
+                        if (item.exists()) {
+
+                            for (snapshot in item.children) {
+                                val key = snapshot.key
+                                val value = snapshot.value
+
+                                if (key != null && value != null) {
+
+                                    if(dataMap[key] != null){
+
+                                        val preValue = dataMap[key] as Long
+                                        val currentValue = value as Long
+
+                                        dataMap[key] = preValue + currentValue
+                                    } else {
+                                        dataMap[key] = value
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    for ((key, value) in dataMap) {
+                        arrayList.add(
+                            ItemBestKeyword(
+                                title = key,
+                                value = value.toString()
+                            )
+                        )
+                    }
+
+                    val cmpAsc: java.util.Comparator<ItemBestKeyword> =
+                        Comparator { o1, o2 -> o2.value.toInt().compareTo(o1.value.toInt()) }
+                    Collections.sort(arrayList, cmpAsc)
+
+                    viewModelScope.launch {
+                        events.send(EventMain.SetGenreDay(genreDay = arrayList))
+                    }
+
+                } else {
+                    Log.d("HIHIHI", "FAIL == NOT EXIST")
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
+    }
 
 }
 

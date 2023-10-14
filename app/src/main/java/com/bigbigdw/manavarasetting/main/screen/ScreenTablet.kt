@@ -544,20 +544,21 @@ fun ScreenTabletDetail(
                 viewModelMain = viewModelMain,
                 getDetailPlatform = getDetailPlatform,
                 getDetailType = getDetailType,
+                menuType = "투데이"
             )
         } else if (getDetailMenu.contains("장르 주간")) {
-            ContentsBestListDetail(
+            GenreDetailToday(
                 viewModelMain = viewModelMain,
-                type = "BEST",
                 getDetailPlatform = getDetailPlatform,
                 getDetailType = getDetailType,
+                menuType = "주간"
             )
         } else if (getDetailMenu.contains("장르 월간")) {
-            ContentsBestListDetail(
+            GenreDetailToday(
                 viewModelMain = viewModelMain,
-                type = "BEST",
                 getDetailPlatform = getDetailPlatform,
                 getDetailType = getDetailType,
+                menuType = "월간"
             )
         }
     }
