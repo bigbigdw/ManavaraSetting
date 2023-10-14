@@ -72,7 +72,7 @@ data class ItemBestInfo (
     var currentDiff:  Int = 0,
 )
 @Serializable
-class ItemBestKeyword(
+class ItemKeyword(
     @SerialName("title")
     var title: String = "",
     @SerialName("value")

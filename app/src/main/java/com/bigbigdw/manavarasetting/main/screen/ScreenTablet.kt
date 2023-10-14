@@ -540,7 +540,7 @@ fun ScreenTabletDetail(
                 getDetailType = getDetailType,
                 menuType = "월간"
             )
-        } else if (getDetailMenu.contains("JSON 투데이 베스트",)) {
+        } else if (getDetailMenu.contains("JSON 투데이 베스트")) {
             ContentsBestListDetail(
                 viewModelMain = viewModelMain,
                 type = "JSON",
@@ -597,19 +597,19 @@ fun ScreenTabletDetail(
                 menuType = "투데이"
             )
         } else if (getDetailMenu.contains("주간 장르 JSON")) {
-//            GenreDetailJson(
-//                viewModelMain = viewModelMain,
-//                getDetailPlatform = getDetailPlatform,
-//                getDetailType = getDetailType,
-//                menuType = "주간"
-//            )
+            GenreDetailJson(
+                viewModelMain = viewModelMain,
+                getDetailPlatform = getDetailPlatform,
+                getDetailType = getDetailType,
+                menuType = "주간"
+            )
         } else if (getDetailMenu.contains("월간 장르 JSON")) {
-//            GenreDetailJson(
-//                viewModelMain = viewModelMain,
-//                getDetailPlatform = getDetailPlatform,
-//                getDetailType = getDetailType,
-//                menuType = "월간"
-//            )
+            GenreDetailJson(
+                viewModelMain = viewModelMain,
+                getDetailPlatform = getDetailPlatform,
+                getDetailType = getDetailType,
+                menuType = "월간"
+            )
         }
     }
 }

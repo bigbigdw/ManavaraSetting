@@ -1,23 +1,13 @@
 package com.bigbigdw.manavarasetting.util
 
 import android.content.Context
-import android.util.Log
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
-import com.bigbigdw.manavarasetting.main.model.ItemBestKeyword
 import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
 import com.bigbigdw.manavarasetting.util.MiningSource.miningNaverSeriesComic
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import com.google.gson.JsonArray
-import com.google.gson.JsonParser
 import kotlinx.coroutines.runBlocking
-import org.json.JSONObject
-import java.nio.charset.Charset
 
 fun miningValue(
     ref: MutableMap<String?, Any>,

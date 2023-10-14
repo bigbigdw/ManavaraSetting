@@ -23,6 +23,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -56,8 +57,10 @@ import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color20459E
 import com.bigbigdw.manavarasetting.ui.theme.color8E8E8E
 import com.bigbigdw.manavarasetting.ui.theme.colorA7ACB7
+import com.bigbigdw.manavarasetting.ui.theme.colorDCDCDD
 import com.bigbigdw.manavarasetting.ui.theme.colorEDE6FD
 import com.bigbigdw.manavarasetting.ui.theme.colorE9E9E9
+import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.ui.theme.colorF7F7F7
 import com.bigbigdw.manavarasetting.util.DBDate
 
@@ -898,4 +901,50 @@ fun spannableString(textFront : String, color : Color, textEnd : String) : Annot
     }
 
     return annotatedString
+}
+
+@Composable
+fun ScreenEmpty(str : String = "마나바라") {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(colorF6F6F6),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(modifier = Modifier.wrapContentSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+
+            androidx.compose.material3.Card(
+                modifier = Modifier
+                    .wrapContentSize(),
+                colors = CardDefaults.cardColors(containerColor = colorDCDCDD),
+                shape = RoundedCornerShape(50.dp, 50.dp, 50.dp, 50.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .height(90.dp)
+                        .width(90.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Image(
+                        contentScale = ContentScale.FillWidth,
+                        painter = painterResource(id = R.drawable.ic_launcher),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .height(72.dp)
+                            .width(72.dp)
+                    )
+                }
+            }
+
+            Spacer(
+                modifier = Modifier.size(8.dp)
+            )
+            Text(
+                text = str,
+                fontSize = 16.sp,
+                textAlign = TextAlign.Center,
+                color = color000000
+            )
+        }
+    }
 }

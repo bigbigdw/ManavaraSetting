@@ -5,7 +5,7 @@ import android.content.Context
 import android.util.Log
 import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
-import com.bigbigdw.manavarasetting.main.model.ItemBestKeyword
+import com.bigbigdw.manavarasetting.main.model.ItemKeyword
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -102,7 +102,7 @@ fun convertItemBest(bestItemData : ItemBestInfo) : JsonObject {
     return jsonObject
 }
 
-fun convertItemKeywordJson(itemBestKeyword : ItemBestKeyword) : JsonObject {
+fun convertItemKeywordJson(itemBestKeyword : ItemKeyword) : JsonObject {
     val jsonObject = JsonObject()
 
     jsonObject.addProperty("title", itemBestKeyword.title)
@@ -111,9 +111,9 @@ fun convertItemKeywordJson(itemBestKeyword : ItemBestKeyword) : JsonObject {
 }
 
 @SuppressLint("SuspiciousIndentation")
-fun convertItemKeyword(jsonObject: JSONObject): ItemBestKeyword {
+fun convertItemKeyword(jsonObject: JSONObject): ItemKeyword {
 
-    return ItemBestKeyword(
+    return ItemKeyword(
         title = jsonObject.optString("title"),
         value = jsonObject.optString("value")
     )
