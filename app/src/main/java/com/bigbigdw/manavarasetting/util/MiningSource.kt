@@ -894,7 +894,11 @@ object MiningSource {
                                     ref["genre"] = JSONObject(jsonObject.optJSONArray("categories")?.get(0).toString()).optString("name") ?: ""
 
                                     ref["writerName"] = JSONObject(jsonObject.optJSONArray("authors")?.get(0).toString()).optString("name") ?: ""
-                                    ref["subject"] = jsonObject.optJSONObject("serial")?.optString("title") ?: ""
+                                    ref["subject"] = if((jsonObject.optJSONObject("serial")?.optString("title")?.length ?: 0) == 0){
+                                        jsonObject.optString("title")
+                                    } else {
+                                        jsonObject.optJSONObject("serial")?.optString("title") ?: ""
+                                    }
                                     ref["bookImg"] = jsonObject.optJSONObject("cover")?.optString("xxlarge") ?: ""
                                     ref["bookCode"] = bookCode
                                     ref["intro"] = jsonObject.optJSONObject("introduction")?.optString("description") ?: ""
