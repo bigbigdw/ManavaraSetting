@@ -36,20 +36,28 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
 
         if(workerName.contains("MINING")){
             runBlocking {
-                if (DBDate.getDayOfWeekAsNumber() == 0) {
+                if (DBDate.getDayOfWeekAsNumber().toString() == "0") {
                     BestRef.setBestRef(
                         platform = inputData.getString(PLATFORM) ?: "",
                         type = inputData.getString(TYPE) ?: "",
-                    )
-                        .child("TROPHY_MONTH").removeValue()
+                    ).child("TROPHY_WEEK").removeValue()
+
+                    BestRef.setBestRef(
+                        platform = inputData.getString(PLATFORM) ?: "",
+                        type = inputData.getString(TYPE) ?: "",
+                    ).child("TROPHY_WEEK_TOTAL").removeValue()
                 }
 
                 if (DBDate.datedd() == "01") {
                     BestRef.setBestRef(
                         platform = inputData.getString(PLATFORM) ?: "",
                         type = inputData.getString(TYPE) ?: "",
-                    )
-                        .child("TROPHY_MONTH").removeValue()
+                    ).child("TROPHY_MONTH").removeValue()
+
+                    BestRef.setBestRef(
+                        platform = inputData.getString(PLATFORM) ?: "",
+                        type = inputData.getString(TYPE) ?: "",
+                    ).child("TROPHY_MONTH_TOTAL").removeValue()
                 }
 
                 MiningSource.mining(
@@ -64,20 +72,28 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
 
             for(platform in novelListEng()){
                 runBlocking {
-                    if (DBDate.getDayOfWeekAsNumber() == 0) {
+                    if (DBDate.getDayOfWeekAsNumber().toString() == "0") {
                         BestRef.setBestRef(
                             platform = platform,
                             type = inputData.getString(TYPE) ?: "",
-                        )
-                            .child("TROPHY_MONTH").removeValue()
+                        ).child("TROPHY_WEEK").removeValue()
+
+                        BestRef.setBestRef(
+                            platform = platform,
+                            type = inputData.getString(TYPE) ?: "",
+                        ).child("TROPHY_WEEK_TOTAL").removeValue()
                     }
 
                     if (DBDate.datedd() == "01") {
                         BestRef.setBestRef(
                             platform = platform,
                             type = inputData.getString(TYPE) ?: "",
-                        )
-                            .child("TROPHY_MONTH").removeValue()
+                        ).child("TROPHY_MONTH").removeValue()
+
+                        BestRef.setBestRef(
+                            platform = platform,
+                            type = inputData.getString(TYPE) ?: "",
+                        ).child("TROPHY_MONTH_TOTAL").removeValue()
                     }
 
                     MiningSource.mining(

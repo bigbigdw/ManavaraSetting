@@ -167,7 +167,7 @@ fun changePlatformNameEng(platform : String) : String {
         "톡소다" -> {
             "TOKSODA"
         }
-        "톡소다 자유 연재" -> {
+        "톡소다 자유연재" -> {
             "TOKSODA_FREE"
         }
         else -> {
@@ -236,7 +236,7 @@ fun changePlatformNameKor(platform : String) : String {
             "톡소다"
         }
         "TOKSODA_FREE" -> {
-            "톡소다 자유 연재"
+            "톡소다 자유연재"
         }
         else -> {
             platform

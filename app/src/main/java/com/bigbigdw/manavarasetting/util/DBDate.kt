@@ -78,9 +78,6 @@ object DBDate {
         return currentMonth.toString()
     }
 
-
-
-
     fun getWeekDates(year: Int, month: Int, weekNumber: Int): List<LocalDate> {
         val firstDayOfMonth = LocalDate.of(year, month, 1)
         val weekFields = WeekFields.of(Locale.getDefault())
@@ -108,7 +105,7 @@ object DBDate {
         val currentDate = LocalDate.now()
         val weekFields = WeekFields.of(Locale.getDefault())
 
-        // 현재 날짜의 주 번호를 가져옵니다.
+        // 이번달에 몇번째 주인지 체크
         return currentDate.get(weekFields.weekOfMonth())
     }
 

@@ -154,8 +154,8 @@ object MiningSource {
                             type = type
                         )
 
-                        totalBookItem[number] = BestRef.setItemBookInfoRef(ref)
-                        totalBestItem[number] = BestRef.setItemBestInfoRef(ref)
+                        totalBookItem[number] = setItemBookInfoRef(ref)
+                        totalBestItem[number] = setItemBestInfoRef(ref)
                     }
 
                     callBack.invoke(totalBookItem, totalBestItem)
@@ -221,8 +221,8 @@ object MiningSource {
                             type = type
                         )
 
-                        totalBookItem[number] = BestRef.setItemBookInfoRef(ref)
-                        totalBestItem[number] = BestRef.setItemBestInfoRef(ref)
+                        totalBookItem[number] = setItemBookInfoRef(ref)
+                        totalBestItem[number] = setItemBestInfoRef(ref)
                     }
 
                     callBack.invoke(totalBookItem, totalBestItem)
@@ -307,8 +307,8 @@ object MiningSource {
                                     type = type
                                 )
 
-                                itemBookInfoList.add(convertItemBook(BestRef.setItemBookInfoRef(ref)))
-                                itemBestInfoList.add(convertItemBest(BestRef.setItemBestInfoRef(ref)))
+                                itemBookInfoList.add(convertItemBook(setItemBookInfoRef(ref)))
+                                itemBestInfoList.add(convertItemBest(setItemBestInfoRef(ref)))
                             }
 
                             callBack.invoke(itemBookInfoList, itemBestInfoList)
@@ -377,8 +377,8 @@ object MiningSource {
                         type = type
                     )
 
-                    itemBookInfoList.add(convertItemBook(BestRef.setItemBookInfoRef(ref)))
-                    itemBestInfoList.add(convertItemBest(BestRef.setItemBestInfoRef(ref)))
+                    itemBookInfoList.add(convertItemBook(setItemBookInfoRef(ref)))
+                    itemBestInfoList.add(convertItemBest(setItemBestInfoRef(ref)))
                 }
 
                 callBack.invoke(itemBookInfoList, itemBestInfoList)
@@ -469,8 +469,8 @@ object MiningSource {
                                         type = type
                                     )
 
-                                    totalBookItem[number] = BestRef.setItemBookInfoRef(ref)
-                                    totalBestItem[number] = BestRef.setItemBestInfoRef(ref)
+                                    totalBookItem[number] = setItemBookInfoRef(ref)
+                                    totalBestItem[number] = setItemBestInfoRef(ref)
 
                                 }
                             }
@@ -566,8 +566,8 @@ object MiningSource {
                                         type = type
                                     )
 
-                                    totalBookItem[number] = BestRef.setItemBookInfoRef(ref)
-                                    totalBestItem[number] = BestRef.setItemBestInfoRef(ref)
+                                    totalBookItem[number] = setItemBookInfoRef(ref)
+                                    totalBestItem[number] = setItemBestInfoRef(ref)
 
                                 }
                             }
@@ -651,8 +651,8 @@ object MiningSource {
                                 type = type
                             )
 
-                            itemBookInfoList.add(convertItemBook(BestRef.setItemBookInfoRef(ref)))
-                            itemBestInfoList.add(convertItemBest(BestRef.setItemBestInfoRef(ref)))
+                            itemBookInfoList.add(convertItemBook(setItemBookInfoRef(ref)))
+                            itemBestInfoList.add(convertItemBest(setItemBestInfoRef(ref)))
                         }
 
                         callBack.invoke(itemBookInfoList, itemBestInfoList)
@@ -744,8 +744,8 @@ object MiningSource {
                                         type = type
                                     )
 
-                                    totalBookItem[number] = BestRef.setItemBookInfoRef(ref)
-                                    totalBestItem[number] = BestRef.setItemBestInfoRef(ref)
+                                    totalBookItem[number] = setItemBookInfoRef(ref)
+                                    totalBestItem[number] = setItemBestInfoRef(ref)
                                 }
 
                                 callBack.invoke(totalBookItem, totalBestItem)
@@ -829,8 +829,8 @@ object MiningSource {
                                     type = type
                                 )
 
-                                totalBookItem[number] = BestRef.setItemBookInfoRef(ref)
-                                totalBestItem[number] = BestRef.setItemBestInfoRef(ref)
+                                totalBookItem[number] = setItemBookInfoRef(ref)
+                                totalBestItem[number] = setItemBestInfoRef(ref)
                             }
 
                             callBack.invoke(totalBookItem, totalBestItem)
@@ -924,8 +924,8 @@ object MiningSource {
                                         type = type
                                     )
 
-                                    totalBookItem[number] = BestRef.setItemBookInfoRef(ref)
-                                    totalBestItem[number] = BestRef.setItemBestInfoRef(ref)
+                                    totalBookItem[number] = setItemBookInfoRef(ref)
+                                    totalBestItem[number] = setItemBestInfoRef(ref)
                                 }
                             }
                         }

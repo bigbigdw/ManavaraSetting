@@ -573,6 +573,10 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                 jsonList.add(item)
             }
 
+            val cmpAsc: java.util.Comparator<ItemKeyword> =
+                Comparator { o1, o2 -> o2.value.toInt().compareTo(o1.value.toInt()) }
+            Collections.sort(jsonList, cmpAsc)
+
             viewModelScope.launch {
                 events.send(EventMain.SetGenreDay(genreDay = jsonList))
             }

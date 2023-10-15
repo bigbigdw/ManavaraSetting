@@ -1,5 +1,6 @@
 package com.bigbigdw.manavarasetting.main.screen
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -763,7 +764,9 @@ fun ContentsLabs() {
     val context = LocalContext.current
     val workManager = WorkManager.getInstance(context)
 
-//    getJsonGenreWeekList(platform = "JOARA", type = "NOVEL", menu = "주간")
+    val test = DBDate.getDayOfWeekAsNumber()
+
+    Log.d("HIHI", "DBDate.datedd() == ${test}")
 
     TabletContentWrapBtn(
         onClick = {

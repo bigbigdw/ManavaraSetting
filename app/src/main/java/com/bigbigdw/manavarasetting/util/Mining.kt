@@ -20,46 +20,46 @@ fun miningValue(
         platform = platform,
         bookCode = ref["bookCode"] as String,
         type = type
-    ).setValue(BestRef.setItemBookInfoRef(ref))
+    ).setValue(setItemBookInfoRef(ref))
 
     BestRef.setBestTrophy(
         platform = platform,
         bookCode = ref["bookCode"] as String,
         type = type
-    ).setValue(BestRef.setItemBestInfoRef(ref))
+    ).setValue(setItemBestInfoRef(ref))
 
     BestRef.setBookWeeklyBest(
         platform = platform,
         bookCode = ref["bookCode"] as String,
         type = type
-    ).setValue(BestRef.setItemBestInfoRef(ref))
+    ).setValue(setItemBestInfoRef(ref))
 
     BestRef.setBookMonthlyBest(
         platform = platform,
         bookCode = ref["bookCode"] as String,
         type = type
-    ).setValue(BestRef.setItemBestInfoRef(ref))
+    ).setValue(setItemBestInfoRef(ref))
 
     BestRef.setBookDailyBest(platform = platform, num = num, type = type)
-        .setValue(BestRef.setItemBookInfoRef(ref))
+        .setValue(setItemBookInfoRef(ref))
 
     BestRef.setBestData(
         platform = platform,
         bookCode = ref["bookCode"] as String,
         type = type
-    ).setValue(BestRef.setItemBestInfoRef(ref))
+    ).setValue(setItemBestInfoRef(ref))
 
     BestRef.setBookWeeklyBestTotal(
         platform = platform,
         bookCode = ref["bookCode"] as String,
         type = type
-    ).setValue(BestRef.setItemBestInfoRef(ref))
+    ).setValue(setItemBestInfoRef(ref))
 
     BestRef.setBookMonthlyBestTotal(
         platform = platform,
         bookCode = ref["bookCode"] as String,
         type = type
-    ).setValue(BestRef.setItemBestInfoRef(ref))
+    ).setValue(setItemBestInfoRef(ref))
 
 }
 

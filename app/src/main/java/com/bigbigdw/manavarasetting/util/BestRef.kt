@@ -53,50 +53,8 @@ object BestRef {
         return mRootRef.child("BEST").child(type).child(platform).child(genreDate)
     }
 
-    fun setItemBestInfoRef(ref: MutableMap<String?, Any>): ItemBestInfo {
-        return ItemBestInfo(
-            number = ref["number"] as Int,
-            point = ref["point"] as Int,
-            cntPageRead = ref["cntPageRead"] as String? ?: "",
-            cntFavorite = ref["cntFavorite"] as String? ?: "",
-            cntRecom = ref["cntRecom"] as String? ?: "",
-            cntTotalComment = ref["cntTotalComment"] as String? ?: "",
-            total = ref["total"] as Int,
-            totalCount = ref["totalCount"] as Int,
-            bookCode = ref["bookCode"] as String,
-            currentDiff = ref["currentDiff"] as Int,
-        )
-    }
-
     fun setBestRef(platform: String, type: String): DatabaseReference {
         return mRootRef.child("BEST").child(type).child(platform)
     }
-
-    fun setItemBookInfoRef(ref: MutableMap<String?, Any>): ItemBookInfo {
-        return ItemBookInfo(
-            writer = ref["writerName"] as String,
-            title = ref["subject"] as String,
-            bookImg = ref["bookImg"] as String,
-            bookCode = ref["bookCode"] as String,
-            number = ref["number"] as Int,
-            point = ref["point"] as Int,
-            type = ref["type"] as String,
-            intro = ref["intro"] as String? ?: "",
-            cntPageRead = ref["cntPageRead"] as String? ?: "",
-            cntFavorite = ref["cntFavorite"] as String? ?: "",
-            cntRecom = ref["cntRecom"] as String? ?: "",
-            cntChapter = ref["cntChapter"] as String? ?: "",
-            cntTotalComment = ref["cntTotalComment"] as String? ?: "",
-            total = ref["total"] as Int,
-            totalCount = ref["totalCount"] as Int,
-            totalWeek = ref["totalWeek"] as Int,
-            totalWeekCount = ref["totalWeekCount"] as Int,
-            totalMonth = ref["totalMonth"] as Int,
-            totalMonthCount = ref["totalMonthCount"] as Int,
-            currentDiff = ref["currentDiff"] as Int,
-            genre = ref["genre"] as String? ?: "",
-        )
-    }
-
 
 }

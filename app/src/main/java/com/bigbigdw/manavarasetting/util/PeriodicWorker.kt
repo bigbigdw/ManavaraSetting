@@ -31,7 +31,7 @@ object PeriodicWorker {
             .putString(FirebaseWorkManager.TYPE, type)
             .build()
 
-        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(2, TimeUnit.HOURS)
+        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(4, TimeUnit.HOURS)
             .addTag("${tag}_${platform}_${type}")
 
             .setBackoffCriteria(
