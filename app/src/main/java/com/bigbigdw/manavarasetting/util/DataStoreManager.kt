@@ -27,6 +27,7 @@ class DataStoreManager(private val context: Context) {
         val MINING_NAVER_WEBNOVEL_FREE_NOVEL = stringPreferencesKey("MINING_NAVER_WEBNOVEL_FREE_NOVEL")
         val MINING_RIDI_FANTAGY_NOVEL = stringPreferencesKey("MINING_RIDI_FANTAGY_NOVEL")
         val MINING_RIDI_ROMANCE_NOVEL = stringPreferencesKey("MINING_RIDI_ROMANCE_NOVEL")
+        val MINING_RIDI_ROMANCE_FANTAGY_NOVEL = stringPreferencesKey("MINING_RIDI_ROMANCE_FANTAGY_NOVEL")
         val MINING_ONESTORY_FANTAGY_NOVEL = stringPreferencesKey("MINING_ONESTORY_FANTAGY_NOVEL")
         val MINING_ONESTORY_ROMANCE_NOVEL = stringPreferencesKey("MINING_ONESTORY_ROMANCE_NOVEL")
         val MINING_ONESTORY_PASS_FANTAGY_NOVEL = stringPreferencesKey("MINING_ONESTORY_PASS_FANTAGY_NOVEL")
@@ -35,6 +36,7 @@ class DataStoreManager(private val context: Context) {
         val MINING_MUNPIA_PAY_NOVEL = stringPreferencesKey("MINING_MUNPIA_PAY_NOVEL")
         val MINING_MUNPIA_FREE_NOVEL = stringPreferencesKey("MINING_MUNPIA_NOVEL")
         val MINING_TOKSODA_NOVEL = stringPreferencesKey("MINING_TOKSODA_NOVEL")
+        val MINING_TOKSODA_FREE_NOVEL = stringPreferencesKey("MINING_TOKSODA_FREE_NOVEL")
     }
 
     fun getDataStoreString(key : Preferences.Key<String>): Flow<String?> {

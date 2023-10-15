@@ -27,7 +27,9 @@ import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
-import com.bigbigdw.manavarasetting.util.DataStoreManager
+import com.bigbigdw.manavarasetting.util.changePlatformNameEng
+import com.bigbigdw.manavarasetting.util.getPlatformLogo
+import com.bigbigdw.manavarasetting.util.novelListKor
 
 @Composable
 fun ScreenTablet(
@@ -63,6 +65,20 @@ fun ScreenTablet(
 
         item { Spacer(modifier = Modifier.size(16.dp)) }
 
+        item{
+            if(novelListKor().contains(title)){
+                ContentsPlatform(
+                    platform = changePlatformNameEng(title),
+                    type = "NOVEL",
+                    logo = getPlatformLogo(title),
+                    setDetailPage = setDetailPage,
+                    setDetailMenu = setDetailMenu,
+                    setDetailPlatform = setDetailPlatform,
+                    setDetailType = setDetailType,
+                )
+            }
+        }
+
         item {
             when (title) {
                 "세팅바라 현황" -> {
@@ -78,7 +94,7 @@ fun ScreenTablet(
                     ContentsFCMList(viewModelMain = viewModelMain, child = "ALERT")
                 }
                 "웹소설 베스트 리스트" -> {
-                    ContentsBestListNovel(
+                    ContentsListNovel(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         setDetailPlatform = setDetailPlatform,
@@ -114,7 +130,7 @@ fun ScreenTablet(
                     )
                 }
                 "웹소설 JSON 투데이" -> {
-                    ContentsBestJsonListNovel(
+                    ContentsListNovel(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         setDetailPlatform = setDetailPlatform,
@@ -123,7 +139,7 @@ fun ScreenTablet(
                     )
                 }
                 "웹소설 JSON 주간" -> {
-                    ContentsBestJsonListNovel(
+                    ContentsListNovel(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         setDetailPlatform = setDetailPlatform,
@@ -132,7 +148,7 @@ fun ScreenTablet(
                     )
                 }
                 "웹소설 JSON 월간" -> {
-                    ContentsBestJsonListNovel(
+                    ContentsListNovel(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         setDetailPlatform = setDetailPlatform,
@@ -141,7 +157,7 @@ fun ScreenTablet(
                     )
                 }
                 "웹소설 JSON 주간 트로피" -> {
-                    ContentsBestJsonListNovel(
+                    ContentsListNovel(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         type = "JSON 주간 트로피",
@@ -150,7 +166,7 @@ fun ScreenTablet(
                     )
                 }
                 "웹소설 JSON 월간 트로피" -> {
-                    ContentsBestJsonListNovel(
+                    ContentsListNovel(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         type = "JSON 월간 트로피",
@@ -159,7 +175,7 @@ fun ScreenTablet(
                     )
                 }
                 "웹소설 트로피 주간 토탈" -> {
-                    ContentsBestJsonListNovel(
+                    ContentsListNovel(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         setDetailPlatform = setDetailPlatform,
@@ -168,7 +184,7 @@ fun ScreenTablet(
                     )
                 }
                 "웹소설 트로피 월간 토탈" -> {
-                    ContentsBestJsonListNovel(
+                    ContentsListNovel(
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         setDetailPlatform = setDetailPlatform,
@@ -201,186 +217,6 @@ fun ScreenTablet(
                         setDetailMenu = setDetailMenu,
                         setDetailPlatform = setDetailPlatform,
                         setDetailType = setDetailType,
-                    )
-                }
-                "네이버 시리즈 웹툰" -> {
-                    ContentsPlatform(
-                        viewModelMain = viewModelMain,
-                        platform = "NAVER_SERIES",
-                        type = "COMIC",
-                        key = DataStoreManager.MINING_NAVER_SERIES_COMIC,
-                        logo = R.drawable.logo_naver
-                    )
-                }
-                "네이버 시리즈 웹소설" -> {
-                    ContentsPlatform(
-                        viewModelMain = viewModelMain,
-                        platform = "NAVER_SERIES",
-                        type = "NOVEL",
-                        key = DataStoreManager.MINING_NAVER_SERIES_NOVEL,
-                        logo = R.drawable.logo_naver
-                    )
-                }
-                "조아라 웹소설" -> {
-                    ContentsPlatform(
-                        viewModelMain = viewModelMain,
-                        platform = "JOARA",
-                        type = "NOVEL",
-                        key = DataStoreManager.MINING_JOARA_NOVEL,
-                        logo = R.drawable.logo_joara
-                    )
-                }
-                "조아라 프리미엄 웹소설" -> {
-                    ContentsPlatform(
-                        viewModelMain = viewModelMain,
-                        platform = "JOARA_PREMIUM",
-                        type = "NOVEL",
-                        key = DataStoreManager.MINING_JOARA_NOBLESS_NOVEL,
-                        logo = R.drawable.logo_joara_premium
-                    )
-                }
-                "조아라 노블레스 웹소설" -> {
-                    ContentsPlatform(
-                        viewModelMain = viewModelMain,
-                        platform = "JOARA_NOBLESS",
-                        type = "NOVEL",
-                        key = DataStoreManager.MINING_JOARA_PREMIUM_NOVEL,
-                        logo = R.drawable.logo_joara_nobless
-                    )
-                }
-                "챌린지 리그" -> {
-                    ContentsPlatform(
-                        viewModelMain = viewModelMain,
-                        platform = "NAVER_CHALLENGE",
-                        type = "NOVEL",
-                        key = DataStoreManager.MINING_NAVER_CHALLENGE_NOVEL,
-                        logo = R.drawable.logo_naver_challenge
-                    )
-                }
-                "베스트 리그" -> {
-                    ContentsPlatform(
-                        viewModelMain = viewModelMain,
-                        platform = "NAVER_BEST",
-                        type = "NOVEL",
-                        key = DataStoreManager.MINING_NAVER_BEST_NOVEL,
-                        logo = R.drawable.logo_naver_challenge
-                    )
-                }
-                "네이버 웹소설 유료" -> {
-                    ContentsPlatform(
-                        viewModelMain = viewModelMain,
-                        platform = "NAVER_WEBNOVEL_PAY",
-                        type = "NOVEL",
-                        key = DataStoreManager.MINING_NAVER_WEBNOVEL_PAY_NOVEL,
-                        logo = R.drawable.logo_naver
-                    )
-                }
-                "네이버 웹소설 무료" -> {
-                    ContentsPlatform(
-                        viewModelMain = viewModelMain,
-                        platform = "NAVER_WEBNOVEL_FREE",
-                        type = "NOVEL",
-                        key = DataStoreManager.MINING_NAVER_WEBNOVEL_FREE_NOVEL,
-                        logo = R.drawable.logo_naver
-                    )
-                }
-                "리디 판타지 웹소설" -> {
-                    ContentsPlatform(
-                        viewModelMain = viewModelMain,
-                        platform = "RIDI_FANTAGY",
-                        type = "NOVEL",
-                        key = DataStoreManager.MINING_RIDI_FANTAGY_NOVEL,
-                        logo = R.drawable.logo_ridibooks
-                    )
-                }
-                "리디 로맨스 웹소설" -> {
-                    ContentsPlatform(
-                        viewModelMain = viewModelMain,
-                        platform = "RIDI_ROMANCE",
-                        type = "NOVEL",
-                        key = DataStoreManager.MINING_RIDI_ROMANCE_NOVEL,
-                        logo = R.drawable.logo_ridibooks
-                    )
-                }
-                "원스토리 판타지 웹소설" -> {
-                    ContentsPlatform(
-                        viewModelMain = viewModelMain,
-                        platform = "ONESTORY_FANTAGY",
-                        type = "NOVEL",
-                        key = DataStoreManager.MINING_ONESTORY_FANTAGY_NOVEL,
-                        logo = R.drawable.logo_onestore
-                    )
-                }
-                "원스토리 로맨스 웹소설" -> {
-                    ContentsPlatform(
-                        viewModelMain = viewModelMain,
-                        platform = "ONESTORY_ROMANCE",
-                        type = "NOVEL",
-                        key = DataStoreManager.MINING_ONESTORY_ROMANCE_NOVEL,
-                        logo = R.drawable.logo_onestore
-                    )
-                }
-                "원스토리 PASS 판타지 웹소설" -> {
-                    ContentsPlatform(
-                        viewModelMain = viewModelMain,
-                        platform = "ONESTORY_PASS_FANTAGY",
-                        type = "NOVEL",
-                        key = DataStoreManager.MINING_ONESTORY_PASS_FANTAGY_NOVEL,
-                        logo = R.drawable.logo_onestore
-                    )
-                }
-                "원스토리 PASS 로맨스 웹소설" -> {
-                    ContentsPlatform(
-                        viewModelMain = viewModelMain,
-                        platform = "ONESTORY_PASS_ROMANCE",
-                        type = "NOVEL",
-                        key = DataStoreManager.MINING_ONESTORY_PASS_ROMANCE_NOVEL,
-                        logo = R.drawable.logo_onestore
-                    )
-                }
-                "카카오 스테이지 웹소설" -> {
-                    ContentsPlatform(
-                        viewModelMain = viewModelMain,
-                        platform = "KAKAO_STAGE",
-                        type = "NOVEL",
-                        key = DataStoreManager.MINING_KAKAO_STAGE_NOVEL,
-                        logo = R.drawable.logo_kakaostage
-                    )
-                }
-                "문피아 유료 웹소설" -> {
-                    ContentsPlatform(
-                        viewModelMain = viewModelMain,
-                        platform = "MUNPIA_PAY",
-                        type = "NOVEL",
-                        key = DataStoreManager.MINING_MUNPIA_PAY_NOVEL,
-                        logo = R.drawable.logo_munpia
-                    )
-                }
-                "문피아 무료 웹소설" -> {
-                    ContentsPlatform(
-                        viewModelMain = viewModelMain,
-                        platform = "MUNPIA_FREE",
-                        type = "NOVEL",
-                        key = DataStoreManager.MINING_MUNPIA_FREE_NOVEL,
-                        logo = R.drawable.logo_munpia
-                    )
-                }
-                "톡소다 웹소설" -> {
-                    ContentsPlatform(
-                        viewModelMain = viewModelMain,
-                        platform = "TOKSODA",
-                        type = "NOVEL",
-                        key = DataStoreManager.MINING_TOKSODA_NOVEL,
-                        logo = R.drawable.logo_toksoda
-                    )
-                }
-                "톡소다 자유연재" -> {
-                    ContentsPlatform(
-                        viewModelMain = viewModelMain,
-                        platform = "TOKSODA_FREE",
-                        type = "NOVEL",
-                        key = DataStoreManager.MINING_TOKSODA_NOVEL,
-                        logo = R.drawable.logo_toksoda
                     )
                 }
                 "웹툰 베스트 리스트" -> {

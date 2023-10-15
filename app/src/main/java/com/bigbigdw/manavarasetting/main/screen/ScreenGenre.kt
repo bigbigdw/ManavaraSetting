@@ -50,8 +50,12 @@ import com.bigbigdw.manavarasetting.ui.theme.color1CE3EE
 import com.bigbigdw.manavarasetting.ui.theme.color20459E
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.ui.theme.colorF7F7F7
+import com.bigbigdw.manavarasetting.util.changePlatformNameKor
 import com.bigbigdw.manavarasetting.util.geMonthDate
+import com.bigbigdw.manavarasetting.util.genreListEng
+import com.bigbigdw.manavarasetting.util.getPlatformLogoEng
 import com.bigbigdw.manavarasetting.util.getWeekDate
+import com.bigbigdw.manavarasetting.util.novelListEng
 import com.bigbigdw.manavarasetting.util.weekListAll
 
 @Composable
@@ -63,320 +67,40 @@ fun ContentsGenre(
     setDetailType: (String) -> Unit,
 ) {
 
-    TabletContentWrapBtn(
-        onClick = {
-            setDetailPage(true)
-            setDetailMenu("조아라 $menuType")
-            setDetailPlatform("JOARA")
-            setDetailType("NOVEL")
-        },
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_joara),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
+    genreListEng().forEachIndexed { index, item ->
+        TabletContentWrapBtn(
+            onClick = {
+                setDetailPage(true)
+                setDetailMenu("${changePlatformNameKor(item)} $menuType")
+                setDetailPlatform(item)
+                setDetailType("NOVEL")
+            },
+            content = {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
 
-                Spacer(modifier = Modifier.size(8.dp))
+                    Image(
+                        painter = painterResource(id = getPlatformLogoEng(item)),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .width(20.dp)
+                            .height(20.dp)
+                    )
 
-                Text(
-                    text = "조아라",
-                    color = color000000,
-                    fontSize = 18.sp,
-                )
+                    Spacer(modifier = Modifier.size(8.dp))
+
+                    Text(
+                        text = changePlatformNameKor(item),
+                        color = color000000,
+                        fontSize = 18.sp,
+                    )
+                }
             }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = {
-            setDetailPage(true)
-            setDetailMenu("조아라 프리미엄 장르 $menuType")
-            setDetailPlatform("JOARA_PREMIUM")
-            setDetailType("NOVEL")
-        },
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_joara_premium),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = "조아라 프리미엄",
-                    color = color000000,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = {
-            setDetailPage(true)
-            setDetailMenu("조아라 노블레스 장르 $menuType")
-            setDetailPlatform("JOARA_NOBLESS")
-            setDetailType("NOVEL")
-        },
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_joara_nobless),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = "조아라 노블레스",
-                    color = color000000,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = {
-            setDetailPage(true)
-            setDetailMenu("리디 판타지 장르 $menuType")
-            setDetailPlatform("RIDI_FANTAGY")
-            setDetailType("NOVEL")
-        },
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_ridibooks),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-                Spacer(modifier = Modifier.size(8.dp))
-                Text(
-                    text = "리디 판타지",
-                    color = color000000,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-    TabletContentWrapBtn(
-        onClick = {
-            setDetailPage(true)
-            setDetailMenu("리디 로맨스 장르 $menuType")
-            setDetailPlatform("RIDI_ROMANCE")
-            setDetailType("NOVEL")
-        },
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_ridibooks),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-                Spacer(modifier = Modifier.size(8.dp))
-                Text(
-                    text = "리디 로맨스",
-                    color = color000000,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = {
-            setDetailPage(true)
-            setDetailMenu("카카오 스테이지 장르 $menuType")
-            setDetailPlatform("KAKAO_STAGE")
-            setDetailType("NOVEL")
-        },
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_kakaostage),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = "카카오 스테이지",
-                    color = color000000,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = {
-            setDetailPage(true)
-            setDetailMenu("문피아 유료 장르 $menuType")
-            setDetailPlatform("MUNPIA_PAY")
-            setDetailType("NOVEL")
-        },
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_munpia),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = "문피아 유료",
-                    color = color000000,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = {
-            setDetailPage(true)
-            setDetailMenu("문피아 무료 장르 $menuType")
-            setDetailPlatform("MUNPIA_FREE")
-            setDetailType("NOVEL")
-        },
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_munpia),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = "문피아 무료",
-                    color = color000000,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = {
-            setDetailPage(true)
-            setDetailMenu("톡소다 장르 $menuType")
-            setDetailPlatform("TOKSODA")
-            setDetailType("NOVEL")
-        },
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_toksoda),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = "톡소다",
-                    color = color000000,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = {
-            setDetailPage(true)
-            setDetailMenu("톡소다 자유연재 장르 $menuType")
-            setDetailPlatform("TOKSODA_FREE")
-            setDetailType("NOVEL")
-        },
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_toksoda),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = "톡소다 자유연재",
-                    color = color000000,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
+        )
+    }
 
     Spacer(modifier = Modifier.size(60.dp))
 }

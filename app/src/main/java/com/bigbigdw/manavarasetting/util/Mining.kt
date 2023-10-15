@@ -586,6 +586,33 @@ fun doMining(
                 itemBestInfoList = itemBestInfoList
             )
         }
+    }  else if (platform == "RIDI_ROFAN") {
+        val totalBookItem: MutableMap<Int, ItemBookInfo> = HashMap()
+        val totalBestItem: MutableMap<Int, ItemBestInfo> = HashMap()
+
+        MiningSource.miningRidi(
+            mining = "6050",
+            platform = platform,
+            type = type,
+            totalBookItem = totalBookItem,
+            totalBestItem = totalBestItem,
+            yesterDayItemMap = yesterDayItemMap
+        ) { itemBook, itemBest ->
+
+            val itemBookInfoList = JsonArray()
+            val itemBestInfoList = JsonArray()
+            for (item in 0 until itemBook.size) {
+                itemBookInfoList.add(convertItemBook(itemBook[item] ?: ItemBookInfo()))
+                itemBestInfoList.add(convertItemBest(itemBest[item] ?: ItemBestInfo()))
+            }
+
+            doMining(
+                platform = platform,
+                type = type,
+                itemBookInfoList = itemBookInfoList,
+                itemBestInfoList = itemBestInfoList
+            )
+        }
     } else if (platform == "RIDI_ROMANCE") {
         val totalBookItem: MutableMap<Int, ItemBookInfo> = HashMap()
         val totalBestItem: MutableMap<Int, ItemBestInfo> = HashMap()

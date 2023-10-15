@@ -60,8 +60,6 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
 
             }
 
-            miningLog(title = inputData.getString(PLATFORM) ?: "", workerName = workerName)
-
         } else if(inputData.getString(WORKER)?.contains("NOVEL") == true){
 
             for(platform in novelListEng()){
@@ -178,30 +176,6 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                     title = title,
                     body = message,
                     activity = activity
-                )
-            )
-    }
-
-    private fun miningLog(
-        title: String,
-        workerName: String
-    ) {
-
-        val year = DBDate.dateMMDDHHMMss().substring(0, 4)
-        val month = DBDate.dateMMDDHHMMss().substring(4, 6)
-        val day = DBDate.dateMMDDHHMMss().substring(6, 8)
-        val hour = DBDate.dateMMDDHHMMss().substring(8, 10)
-        val min = DBDate.dateMMDDHHMMss().substring(10, 12)
-        val sec = DBDate.dateMMDDHHMMss().substring(12, 14)
-
-        setDataStore(data = workerName)
-
-        FirebaseDatabase.getInstance().reference.child("MINING")
-            .child(DBDate.dateMMDDHHMMss()).setValue(
-                FCMAlert(
-                    date = DBDate.dateMMDDHHMMss(),
-                    title = title,
-                    body = "${year}.${month}.${day} ${hour}:${min}:${sec}"
                 )
             )
     }

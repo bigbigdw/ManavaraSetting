@@ -342,7 +342,7 @@ object MiningSource {
                 val ref: MutableMap<String?, Any> = HashMap()
 
                 for (i in naverSeries.indices) {
-                    val bookCode = naverSeries.select("a")[i].absUrl("href").replace("https://novel.naver.com/webnovel/list?novelId=", "")
+                    val bookCode = naverSeries.select("a")[i].absUrl("href").replace("https://novel.naver.com/${mining}/list?novelId=", "")
                     val point = naverSeries.size - i
                     val number = i
 
@@ -894,7 +894,7 @@ object MiningSource {
                                     ref["genre"] = JSONObject(jsonObject.optJSONArray("categories")?.get(0).toString()).optString("name") ?: ""
 
                                     ref["writerName"] = JSONObject(jsonObject.optJSONArray("authors")?.get(0).toString()).optString("name") ?: ""
-                                    ref["subject"] = jsonObject.optString("title")
+                                    ref["subject"] = jsonObject.optJSONObject("serial")?.optString("title") ?: ""
                                     ref["bookImg"] = jsonObject.optJSONObject("cover")?.optString("xxlarge") ?: ""
                                     ref["bookCode"] = bookCode
                                     ref["intro"] = jsonObject.optJSONObject("introduction")?.optString("description") ?: ""

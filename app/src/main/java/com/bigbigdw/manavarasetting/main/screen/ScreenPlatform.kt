@@ -24,18 +24,21 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.datastore.preferences.core.Preferences
 import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color20459E
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.util.DataStoreManager
+import com.bigbigdw.manavarasetting.util.changePlatformNameKor
 import com.bigbigdw.manavarasetting.util.doMining
+import com.bigbigdw.manavarasetting.util.genreListEng
 import com.bigbigdw.manavarasetting.util.getDataStoreStatus
+import com.bigbigdw.manavarasetting.util.getPlatformDataKey
+import com.bigbigdw.manavarasetting.util.getPlatformLogoEng
+import com.bigbigdw.manavarasetting.util.novelListEng
 import kotlinx.coroutines.runBlocking
 
 
@@ -108,610 +111,40 @@ fun ContentsNovel() {
     val dataStore = DataStoreManager(context)
     getDataStoreStatus(context = context, update = {})
 
-    TabletContentWrapBtn(
-        onClick = {},
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_joara),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
+    novelListEng().forEachIndexed { index, item ->
+        TabletContentWrapBtn(
+            onClick = {},
+            content = {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        painter = painterResource(id = getPlatformLogoEng(item)),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .width(20.dp)
+                            .height(20.dp)
+                    )
 
-                Spacer(modifier = Modifier.size(8.dp))
+                    Spacer(modifier = Modifier.size(8.dp))
 
-                Text(
-                    text = spannableString(
-                        textFront = "조아라 : ", color = color000000,
-                        textEnd = dataStore.getDataStoreString(
-                            DataStoreManager.MINING_JOARA_NOVEL
-                        ).collectAsState(initial = "").value ?: "",
-                    ),
-                    color = color20459E,
-                    fontSize = 18.sp,
-                )
+                    Text(
+                        text = spannableString(
+                            textFront = "${changePlatformNameKor(item)} : ", color = color000000,
+                            textEnd = dataStore.getDataStoreString(
+                                getPlatformDataKey(changePlatformNameKor(item))
+                            ).collectAsState(initial = "").value ?: "",
+                        ),
+                        color = color20459E,
+                        fontSize = 18.sp,
+                    )
+                }
             }
-        }
-    )
+        )
 
-    TabletContentWrapBtn(
-        onClick = {},
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_joara_premium),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = spannableString(
-                        textFront = "조아라 프리미엄 : ", color = color000000,
-                        textEnd = dataStore.getDataStoreString(
-                            DataStoreManager.MINING_JOARA_PREMIUM_NOVEL
-                        ).collectAsState(initial = "").value ?: "",
-                    ),
-                    color = color20459E,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = {},
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_joara_nobless),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = spannableString(
-                        textFront = "조아라 노블레스 : ", color = color000000,
-                        textEnd = dataStore.getDataStoreString(
-                            DataStoreManager.MINING_JOARA_NOBLESS_NOVEL
-                        ).collectAsState(initial = "").value ?: "",
-                    ),
-                    color = color20459E,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = {},
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_naver),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = spannableString(
-                        textFront = "네이버 시리즈 웹소설 : ", color = color000000,
-                        textEnd = dataStore.getDataStoreString(
-                            DataStoreManager.MINING_NAVER_SERIES_NOVEL
-                        ).collectAsState(initial = "").value ?: "",
-                    ),
-                    color = color20459E,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = {},
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_naver),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = spannableString(
-                        textFront = "네이버 웹소설 유료 : ", color = color000000,
-                        textEnd = dataStore.getDataStoreString(
-                            DataStoreManager.MINING_NAVER_WEBNOVEL_PAY_NOVEL
-                        ).collectAsState(initial = "").value ?: "",
-                    ),
-                    color = color20459E,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-
-    TabletContentWrapBtn(
-        onClick = {},
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_naver),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = spannableString(
-                        textFront = "네이버 웹소설 무료 : ", color = color000000,
-                        textEnd = dataStore.getDataStoreString(
-                            DataStoreManager.MINING_NAVER_WEBNOVEL_FREE_NOVEL
-                        ).collectAsState(initial = "").value ?: "",
-                    ),
-                    color = color20459E,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = {},
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_naver_challenge),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = spannableString(
-                        textFront = "네이버 챌린지 : ", color = color000000,
-                        textEnd = dataStore.getDataStoreString(
-                            DataStoreManager.MINING_NAVER_CHALLENGE_NOVEL
-                        ).collectAsState(initial = "").value ?: "",
-                    ),
-                    color = color20459E,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-
-    TabletContentWrapBtn(
-        onClick = {},
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_naver_challenge),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = spannableString(
-                        textFront = "네이버 베스트 : ", color = color000000,
-                        textEnd = dataStore.getDataStoreString(
-                            DataStoreManager.MINING_NAVER_BEST_NOVEL
-                        ).collectAsState(initial = "").value ?: "",
-                    ),
-                    color = color20459E,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = {},
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_ridibooks),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-                Spacer(modifier = Modifier.size(8.dp))
-                Text(
-                    text = spannableString(
-                        textFront = "리디 판타지 : ", color = color000000,
-                        textEnd = dataStore.getDataStoreString(
-                            DataStoreManager.MINING_RIDI_FANTAGY_NOVEL
-                        ).collectAsState(initial = "").value ?: "",
-                    ),
-                    color = color20459E,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-    TabletContentWrapBtn(
-        onClick = {},
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_ridibooks),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-                Spacer(modifier = Modifier.size(8.dp))
-                Text(
-                    text = spannableString(
-                        textFront = "리디 로맨스 : ", color = color000000,
-                        textEnd = dataStore.getDataStoreString(
-                            DataStoreManager.MINING_RIDI_ROMANCE_NOVEL
-                        ).collectAsState(initial = "").value ?: "",
-                    ),
-                    color = color20459E,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = {},
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_onestore),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = spannableString(
-                        textFront = "원스토리 판타지 : ", color = color000000,
-                        textEnd = dataStore.getDataStoreString(
-                            DataStoreManager.MINING_ONESTORY_FANTAGY_NOVEL
-                        ).collectAsState(initial = "").value ?: "",
-                    ),
-                    color = color20459E,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = {},
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_onestore),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = spannableString(
-                        textFront = "원스토리 로맨스 : ", color = color000000,
-                        textEnd = dataStore.getDataStoreString(
-                            DataStoreManager.MINING_ONESTORY_ROMANCE_NOVEL,
-                        ).collectAsState(initial = "").value ?: "",
-                    ),
-                    color = color20459E,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = {},
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_onestore),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = spannableString(
-                        textFront = "원스토리 PASS 판타지 : ", color = color000000,
-                        textEnd = dataStore.getDataStoreString(
-                            DataStoreManager.MINING_ONESTORY_PASS_FANTAGY_NOVEL
-                        ).collectAsState(initial = "").value ?: "",
-                    ),
-                    color = color20459E,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = {},
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_onestore),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = spannableString(
-                        textFront = "원스토리 PASS 로맨스 : ", color = color000000,
-                        textEnd = dataStore.getDataStoreString(
-                            DataStoreManager.MINING_ONESTORY_PASS_ROMANCE_NOVEL,
-                        ).collectAsState(initial = "").value ?: "",
-                    ),
-                    color = color20459E,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = {},
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_kakaostage),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = spannableString(
-                        textFront = "카카오 스테이지 : ", color = color000000,
-                        textEnd = dataStore.getDataStoreString(
-                            DataStoreManager.MINING_KAKAO_STAGE_NOVEL
-                        ).collectAsState(initial = "").value ?: "",
-                    ),
-                    color = color20459E,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = {},
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_munpia),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = spannableString(
-                        textFront = "문피아 유료 : ", color = color000000,
-                        textEnd = dataStore.getDataStoreString(
-                            DataStoreManager.MINING_MUNPIA_PAY_NOVEL
-                        ).collectAsState(initial = "").value ?: "",
-                    ),
-                    color = color20459E,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = {},
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_munpia),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = spannableString(
-                        textFront = "문피아 무료 : ", color = color000000,
-                        textEnd = dataStore.getDataStoreString(
-                            DataStoreManager.MINING_MUNPIA_FREE_NOVEL
-                        ).collectAsState(initial = "").value ?: "",
-                    ),
-                    color = color20459E,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = {},
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_toksoda),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = spannableString(
-                        textFront = "톡소다 : ", color = color000000,
-                        textEnd = dataStore.getDataStoreString(
-                            DataStoreManager.MINING_TOKSODA_NOVEL
-                        ).collectAsState(initial = "").value ?: "",
-                    ),
-                    color = color20459E,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = {},
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_toksoda),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = spannableString(
-                        textFront = "톡소다 자유연재 : ", color = color000000,
-                        textEnd = dataStore.getDataStoreString(
-                            DataStoreManager.MINING_TOKSODA_NOVEL
-                        ).collectAsState(initial = "").value ?: "",
-                    ),
-                    color = color20459E,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
+    }
 
     ContentsLabs()
 
@@ -762,19 +195,16 @@ fun ContentsWebtoon() {
 
 @Composable
 fun ContentsPlatform(
-    viewModelMain: ViewModelMain,
     platform: String,
     type: String,
-    key: Preferences.Key<String>,
-    logo: Int
+    logo: Int,
+    setDetailPage: (Boolean) -> Unit,
+    setDetailMenu: (String) -> Unit,
+    setDetailPlatform: (String) -> Unit,
+    setDetailType: (String) -> Unit,
 ) {
 
     val context = LocalContext.current
-    getDataStoreStatus(context = context, update = {})
-    val dataStore = DataStoreManager(context)
-
-    viewModelMain.getMiningList(title = platform)
-    val fcmAlertList = viewModelMain.state.collectAsState().value.fcmAlertList
 
     TabletContentWrapBtn(
         onClick = {
@@ -789,7 +219,7 @@ fun ContentsPlatform(
         },
         content = {
             Row(
-                modifier = Modifier.fillMaxWidth(),
+
                 horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -804,6 +234,7 @@ fun ContentsPlatform(
                 Spacer(modifier = Modifier.size(8.dp))
 
                 Text(
+                    modifier = Modifier.fillMaxWidth(),
                     text = "$platform $type",
                     color = color000000,
                     fontSize = 18.sp,
@@ -813,33 +244,269 @@ fun ContentsPlatform(
     )
 
     TabletContentWrapBtn(
-        onClick = {},
+        onClick = {
+            setDetailPage(true)
+            setDetailMenu("${changePlatformNameKor(platform)} JSON 투데이 베스트")
+            setDetailPlatform(platform)
+            setDetailType(type)
+        },
         content = {
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = spannableString(
-                    textFront = "최신화 현황 : ", color = color000000,
-                    textEnd = dataStore.getDataStoreString(key).collectAsState(initial = "").value
-                        ?: "",
-                ),
-                color = color000000,
-                fontSize = 18.sp,
-                textAlign = TextAlign.Start
-            )
+            Row(
+
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.icon_best_gr),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = "베스트 투데이",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
         }
     )
 
-    TabletContentWrap {
-        Spacer(modifier = Modifier.size(8.dp))
+    TabletContentWrapBtn(
+        onClick = {
+            setDetailPage(true)
+            setDetailMenu("${changePlatformNameKor(platform)} JSON 주간 베스트")
+            setDetailPlatform(platform)
+            setDetailType(type)
+        },
+        content = {
+            Row(
 
-        fcmAlertList.forEachIndexed { index, item ->
-            ItemTabletFCMList(
-                item = item,
-                isLast = fcmAlertList.size - 1 == index
-            )
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.icon_best_gr),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = "베스트 주간",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
         }
+    )
 
-        Spacer(modifier = Modifier.size(8.dp))
+    TabletContentWrapBtn(
+        onClick = {
+            setDetailPage(true)
+            setDetailMenu("${changePlatformNameKor(platform)} JSON 월간 베스트")
+            setDetailPlatform(platform)
+            setDetailType(type)
+        },
+        content = {
+            Row(
+
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.icon_best_gr),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = "베스트 월간",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            setDetailPage(true)
+            setDetailMenu("${changePlatformNameKor(platform)} JSON 주간 트로피")
+            setDetailPlatform(platform)
+            setDetailType(type)
+        },
+        content = {
+            Row(
+
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.icon_trophy_gr),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = "트로피 주간 토탈",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            setDetailPage(true)
+            setDetailMenu("${changePlatformNameKor(platform)} JSON 월간 트로피")
+            setDetailPlatform(platform)
+            setDetailType(type)
+        },
+        content = {
+            Row(
+
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.icon_trophy_gr),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = "트로피 월간 토탈",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    if(genreListEng().contains(platform)){
+        TabletContentWrapBtn(
+            onClick = {
+                setDetailPage(true)
+                setDetailMenu("${changePlatformNameKor(platform)} 투데이 장르 JSON")
+                setDetailPlatform(platform)
+                setDetailType(type)
+            },
+            content = {
+                Row(
+
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_launcher),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .width(20.dp)
+                            .height(20.dp)
+                    )
+
+                    Spacer(modifier = Modifier.size(8.dp))
+
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = "투데이 장르",
+                        color = color000000,
+                        fontSize = 18.sp,
+                    )
+                }
+            }
+        )
+
+        TabletContentWrapBtn(
+            onClick = {
+                setDetailPage(true)
+                setDetailMenu("${changePlatformNameKor(platform)} 투데이 주간 JSON")
+                setDetailPlatform(platform)
+                setDetailType(type)
+            },
+            content = {
+                Row(
+
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_launcher),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .width(20.dp)
+                            .height(20.dp)
+                    )
+
+                    Spacer(modifier = Modifier.size(8.dp))
+
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = "주간 장르",
+                        color = color000000,
+                        fontSize = 18.sp,
+                    )
+                }
+            }
+        )
+
+        TabletContentWrapBtn(
+            onClick = {
+                setDetailPage(true)
+                setDetailMenu("${changePlatformNameKor(platform)} 월간 장르 JSON")
+                setDetailPlatform(platform)
+                setDetailType(type)
+            },
+            content = {
+                Row(
+
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_launcher),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .width(20.dp)
+                            .height(20.dp)
+                    )
+
+                    Spacer(modifier = Modifier.size(8.dp))
+
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = "월간 장르",
+                        color = color000000,
+                        fontSize = 18.sp,
+                    )
+                }
+            }
+        )
     }
 
     Spacer(modifier = Modifier.size(60.dp))
