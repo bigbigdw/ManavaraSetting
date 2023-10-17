@@ -1,6 +1,7 @@
 package com.bigbigdw.manavarasetting.main.screen
 
 import android.app.Activity
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
@@ -441,7 +442,7 @@ fun ItemTabletFCMList(item : FCMAlert, isLast: Boolean){
     val hour = item.date.substring(8,10)
     val min = item.date.substring(10,12)
     val sec = if(item.date.length > 12){
-        item.date.substring(12,14)
+        ":${item.date.substring(12,14)}"
     } else {
         ""
     }
@@ -459,7 +460,7 @@ fun ItemTabletFCMList(item : FCMAlert, isLast: Boolean){
                 } else {
                     Color.Transparent
                 }),
-                text = "${year}.${month}.${day} ${hour}:${min}:${sec}",
+                text = "${year}.${month}.${day} ${hour}:${min}${sec}",
                 color = color000000,
                 fontSize = 18.sp,
             )

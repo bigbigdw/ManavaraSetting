@@ -244,7 +244,18 @@ fun ContentsFCMList(viewModelMain: ViewModelMain, child : String){
         }
     }
 
-    val fcmAlertList = viewModelMain.state.collectAsState().value.fcmAlertList
+    val fcmAlertList = when (child) {
+        "ALERT" -> {
+            viewModelMain.state.collectAsState().value.fcmAlertList
+        }
+        "NOTICE" -> {
+            viewModelMain.state.collectAsState().value.fcmNoticeList
+        }
+
+        else -> {
+            viewModelMain.state.collectAsState().value.fcmAlertList
+        }
+    }
 
     TabletContentWrap {
         Spacer(modifier = Modifier.size(8.dp))
