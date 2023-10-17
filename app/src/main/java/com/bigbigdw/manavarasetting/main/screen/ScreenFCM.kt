@@ -21,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -232,19 +233,18 @@ fun ContentsFCM() {
 @Composable
 fun ContentsFCMList(viewModelMain: ViewModelMain, child : String){
 
-    val fcmAlertList = when (child) {
-        "ALERT" -> {
-            viewModelMain.getFCMList(child = child)
-            viewModelMain.state.collectAsState().value.fcmAlertList
-        }
-        "NOTICE" -> {
-            viewModelMain.getFCMList(child = child)
-            viewModelMain.state.collectAsState().value.fcmNoticeList
-        }
-        else -> {
-            viewModelMain.state.collectAsState().value.fcmAlertList
+    LaunchedEffect(child){
+        when (child) {
+            "ALERT" -> {
+                viewModelMain.getFCMList(child = child)
+            }
+            "NOTICE" -> {
+                viewModelMain.getFCMList(child = child)
+            }
         }
     }
+
+    val fcmAlertList = viewModelMain.state.collectAsState().value.fcmAlertList
 
     TabletContentWrap {
         Spacer(modifier = Modifier.size(8.dp))

@@ -50,10 +50,12 @@ fun ContentsBestListDetail(
     getType: String
 ) {
 
-    if (type == "BEST") {
-        viewModelMain.getBestList(platform = getPlatform, type = getType)
-    } else {
-        viewModelMain.getBestJsonList(platform = getPlatform, type = getType)
+    LaunchedEffect(getPlatform, getType){
+        if (type == "BEST") {
+            viewModelMain.getBestList(platform = getPlatform, type = getType)
+        } else {
+            viewModelMain.getBestJsonList(platform = getPlatform, type = getType)
+        }
     }
 
     val bestList: ArrayList<ItemBookInfo> = viewModelMain.state.collectAsState().value.bestBookList
@@ -223,7 +225,9 @@ fun ContentsBestListJsonTrophy(
     getType: String
 ) {
 
-    viewModelMain.getBestJsonTrophyList(platform = getPlatform, menu = menu, type = getType)
+    LaunchedEffect(getPlatform, getType, menu){
+        viewModelMain.getBestJsonTrophyList(platform = getPlatform, menu = menu, type = getType)
+    }
 
     val bestWeekList: ArrayList<ItemBestInfo> =
         viewModelMain.state.collectAsState().value.trophyList
@@ -256,7 +260,9 @@ fun ContentsBestListDetailTrophy(
     getType: String
 ) {
 
-    viewModelMain.getBestTrophyList(platform = getPlatform, menu = menu, type = getType)
+    LaunchedEffect(getPlatform, getType, menu){
+        viewModelMain.getBestTrophyList(platform = getPlatform, menu = menu, type = getType)
+    }
 
     val bestWeekList: ArrayList<ItemBestInfo> =
         viewModelMain.state.collectAsState().value.trophyList
