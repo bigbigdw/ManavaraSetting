@@ -49,6 +49,7 @@ import com.bigbigdw.manavarasetting.ui.theme.color1CE3EE
 import com.bigbigdw.manavarasetting.ui.theme.color20459E
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.ui.theme.colorF7F7F7
+import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.changePlatformNameKor
 import com.bigbigdw.manavarasetting.util.genreListEng
 import com.bigbigdw.manavarasetting.util.getPlatformLogoEng
@@ -269,13 +270,17 @@ fun GenreDetailJson(
                             )
                         }
                     }
+
+                    item { Spacer(modifier = Modifier.size(60.dp)) }
                 }
 
-                if (getDate == "전체") {
+                if (getDate == "전체") {  
                     LazyColumn(
                         modifier = Modifier
                             .background(colorF6F6F6)
                     ) {
+
+                        item { ItemTabletTitle(str = "${DBDate.month()}월 전체", isTopPadding = false) }
 
                         itemsIndexed(state.genreDay) { index, item ->
                             ListGenreToday(
@@ -283,6 +288,23 @@ fun GenreDetailJson(
                                 index = index
                             )
                         }
+
+                        itemsIndexed(state.genreDayList) { index, item ->
+
+                            if(item.size > 0){
+
+                                ItemTabletTitle(str = "${DBDate.month()}월 ${index}일")
+
+                                item.forEachIndexed{ innerIndex, innnerItem ->
+                                    ListGenreToday(
+                                        itemBestKeyword = innnerItem,
+                                        index = innerIndex
+                                    )
+                                }
+                            }
+                        }
+
+                        item { Spacer(modifier = Modifier.size(60.dp)) }
                     }
                 } else {
 
@@ -298,6 +320,8 @@ fun GenreDetailJson(
                                     index = index
                                 )
                             }
+
+                            item { Spacer(modifier = Modifier.size(60.dp)) }
                         }
                     } else {
                         ScreenEmpty(str = "데이터가 없습니다")
@@ -306,8 +330,6 @@ fun GenreDetailJson(
             }
         }
     }
-
-    Spacer(modifier = Modifier.size(60.dp))
 }
 
 @Composable

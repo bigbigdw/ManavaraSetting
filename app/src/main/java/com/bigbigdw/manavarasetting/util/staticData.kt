@@ -23,21 +23,9 @@ val WeekKor = arrayListOf(
     "금",
     "토",
 )
-fun comicKor(): List<String> {
+fun comicListKor(): List<String> {
     return listOf(
-        "조아라",
-        "노블레스",
-        "프리미엄",
         "시리즈",
-        "챌린지리그",
-        "베스트리그",
-        "스테이지",
-        "리디 판타지",
-        "리디 로맨스",
-        "리디북스",
-        "원스토리",
-        "문피아",
-        "톡소다",
     )
 }
 fun novelListKor(): List<String> {

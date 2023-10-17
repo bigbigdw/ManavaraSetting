@@ -293,9 +293,9 @@ fun ContentsPlatform(
     type: String,
     logo: Int,
     setDetailPage: (Boolean) -> Unit,
-    setDetailMenu: (String) -> Unit,
-    setDetailPlatform: (String) -> Unit,
-    setDetailType: (String) -> Unit,
+    setMenu: (String) -> Unit,
+    setPlatform: (String) -> Unit,
+    setType: (String) -> Unit,
 ) {
 
     val context = LocalContext.current
@@ -340,9 +340,9 @@ fun ContentsPlatform(
     TabletContentWrapBtn(
         onClick = {
             setDetailPage(true)
-            setDetailMenu("${changePlatformNameKor(platform)} JSON 투데이 베스트")
-            setDetailPlatform(platform)
-            setDetailType(type)
+            setMenu("${changePlatformNameKor(platform)} JSON 투데이 베스트")
+            setPlatform(platform)
+            setType(type)
         },
         content = {
             Row(
@@ -373,9 +373,9 @@ fun ContentsPlatform(
     TabletContentWrapBtn(
         onClick = {
             setDetailPage(true)
-            setDetailMenu("${changePlatformNameKor(platform)} JSON 주간 베스트")
-            setDetailPlatform(platform)
-            setDetailType(type)
+            setMenu("${changePlatformNameKor(platform)} JSON 주간 베스트")
+            setPlatform(platform)
+            setType(type)
         },
         content = {
             Row(
@@ -406,9 +406,9 @@ fun ContentsPlatform(
     TabletContentWrapBtn(
         onClick = {
             setDetailPage(true)
-            setDetailMenu("${changePlatformNameKor(platform)} JSON 월간 베스트")
-            setDetailPlatform(platform)
-            setDetailType(type)
+            setMenu("${changePlatformNameKor(platform)} JSON 월간 베스트")
+            setPlatform(platform)
+            setType(type)
         },
         content = {
             Row(
@@ -439,9 +439,9 @@ fun ContentsPlatform(
     TabletContentWrapBtn(
         onClick = {
             setDetailPage(true)
-            setDetailMenu("${changePlatformNameKor(platform)} JSON 주간 트로피")
-            setDetailPlatform(platform)
-            setDetailType(type)
+            setMenu("${changePlatformNameKor(platform)} JSON 주간 트로피")
+            setPlatform(platform)
+            setType(type)
         },
         content = {
             Row(
@@ -472,9 +472,9 @@ fun ContentsPlatform(
     TabletContentWrapBtn(
         onClick = {
             setDetailPage(true)
-            setDetailMenu("${changePlatformNameKor(platform)} JSON 월간 트로피")
-            setDetailPlatform(platform)
-            setDetailType(type)
+            setMenu("${changePlatformNameKor(platform)} JSON 월간 트로피")
+            setPlatform(platform)
+            setType(type)
         },
         content = {
             Row(
@@ -506,9 +506,9 @@ fun ContentsPlatform(
         TabletContentWrapBtn(
             onClick = {
                 setDetailPage(true)
-                setDetailMenu("${changePlatformNameKor(platform)} 투데이 장르 JSON")
-                setDetailPlatform(platform)
-                setDetailType(type)
+                setMenu("${changePlatformNameKor(platform)} 투데이 장르 JSON")
+                setPlatform(platform)
+                setType(type)
             },
             content = {
                 Row(
@@ -539,9 +539,9 @@ fun ContentsPlatform(
         TabletContentWrapBtn(
             onClick = {
                 setDetailPage(true)
-                setDetailMenu("${changePlatformNameKor(platform)} 투데이 주간 JSON")
-                setDetailPlatform(platform)
-                setDetailType(type)
+                setMenu("${changePlatformNameKor(platform)} 주간 장르 JSON")
+                setPlatform(platform)
+                setType(type)
             },
             content = {
                 Row(
@@ -572,9 +572,9 @@ fun ContentsPlatform(
         TabletContentWrapBtn(
             onClick = {
                 setDetailPage(true)
-                setDetailMenu("${changePlatformNameKor(platform)} 월간 장르 JSON")
-                setDetailPlatform(platform)
-                setDetailType(type)
+                setMenu("${changePlatformNameKor(platform)} 월간 장르 JSON")
+                setPlatform(platform)
+                setType(type)
             },
             content = {
                 Row(

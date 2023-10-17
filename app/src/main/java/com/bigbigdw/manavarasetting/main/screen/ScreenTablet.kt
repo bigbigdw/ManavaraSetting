@@ -28,6 +28,7 @@ import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.util.changePlatformNameEng
+import com.bigbigdw.manavarasetting.util.comicListKor
 import com.bigbigdw.manavarasetting.util.getPlatformLogo
 import com.bigbigdw.manavarasetting.util.novelListKor
 
@@ -72,9 +73,19 @@ fun ScreenTablet(
                     type = "NOVEL",
                     logo = getPlatformLogo(title),
                     setDetailPage = setDetailPage,
-                    setDetailMenu = setDetailMenu,
-                    setDetailPlatform = setDetailPlatform,
-                    setDetailType = setDetailType,
+                    setMenu = setDetailMenu,
+                    setPlatform = setDetailPlatform,
+                    setType = setDetailType,
+                )
+            } else if (comicListKor().contains(title)) {
+                ContentsPlatform(
+                    platform = changePlatformNameEng(title),
+                    type = "COMIC",
+                    logo = getPlatformLogo(title),
+                    setDetailPage = setDetailPage,
+                    setMenu = setDetailMenu,
+                    setPlatform = setDetailPlatform,
+                    setType = setDetailType,
                 )
             }
         }

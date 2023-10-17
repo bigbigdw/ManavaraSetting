@@ -601,7 +601,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             setter = setMenu,
             getter = getMenu,
             onClick = { onClick() },
-            value = "네이버 시리즈 웹툰",
+            value = "시리즈",
         )
 
         TabletBorderLine()
