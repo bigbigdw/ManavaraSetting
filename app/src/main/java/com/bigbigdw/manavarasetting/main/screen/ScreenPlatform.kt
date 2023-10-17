@@ -135,7 +135,7 @@ fun ContentsNovel(viewModelMain: ViewModelMain) {
         onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
-                time = 3,
+                time = 4,
                 tag = "NOVEL",
                 platform = "ALL",
                 type = "NOVEL"
@@ -171,7 +171,7 @@ fun ContentsNovel(viewModelMain: ViewModelMain) {
         onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
-                time = 5,
+                time = 6,
                 timeUnit = TimeUnit.DAYS,
                 tag = "BOOK",
                 platform = "ALL",
@@ -257,7 +257,7 @@ fun ContentsWebtoon() {
         onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
-                time = 36,
+                time = 3,
                 tag = "MINING",
                 platform = "NAVER_SERIES",
                 type = "COMIC"
