@@ -13,6 +13,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
@@ -26,17 +29,20 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
-import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color20459E
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.util.DataStoreManager
+import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import com.bigbigdw.manavarasetting.util.changePlatformNameKor
+import com.bigbigdw.manavarasetting.util.comicListEng
 import com.bigbigdw.manavarasetting.util.doMining
 import com.bigbigdw.manavarasetting.util.genreListEng
-import com.bigbigdw.manavarasetting.util.getDataStoreStatus
-import com.bigbigdw.manavarasetting.util.getPlatformDataKey
+import com.bigbigdw.manavarasetting.util.getBookCount
+import com.bigbigdw.manavarasetting.util.getPlatformDataKeyComic
+import com.bigbigdw.manavarasetting.util.getPlatformDataKeyNovel
 import com.bigbigdw.manavarasetting.util.getPlatformLogoEng
 import com.bigbigdw.manavarasetting.util.novelListEng
 import kotlinx.coroutines.runBlocking
@@ -108,18 +114,26 @@ fun ScreenMainNovel() {
 fun ContentsNovel() {
 
     val context = LocalContext.current
-    val dataStore = DataStoreManager(context)
-    getDataStoreStatus(context = context, update = {})
+    val workManager = WorkManager.getInstance(context)
 
     novelListEng().forEachIndexed { index, item ->
         TabletContentWrapBtn(
-            onClick = {},
+            onClick = {
+                PeriodicWorker.doWorker(
+                    workManager = workManager,
+                    delayMills = 3,
+                    tag = "MINING",
+                    platform = item,
+                    type = "NOVEL"
+                )
+            },
             content = {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+
                     Image(
                         painter = painterResource(id = getPlatformLogoEng(item)),
                         contentDescription = null,
@@ -131,19 +145,13 @@ fun ContentsNovel() {
                     Spacer(modifier = Modifier.size(8.dp))
 
                     Text(
-                        text = spannableString(
-                            textFront = "${changePlatformNameKor(item)} : ", color = color000000,
-                            textEnd = dataStore.getDataStoreString(
-                                getPlatformDataKey(changePlatformNameKor(item))
-                            ).collectAsState(initial = "").value ?: "",
-                        ),
-                        color = color20459E,
+                        text = "${changePlatformNameKor(item)} NOVEL",
+                        color = color000000,
                         fontSize = 18.sp,
                     )
                 }
             }
         )
-
     }
 
     ContentsLabs()
@@ -155,11 +163,18 @@ fun ContentsNovel() {
 fun ContentsWebtoon() {
 
     val context = LocalContext.current
-    val dataStore = DataStoreManager(context)
-    getDataStoreStatus(context = context, update = {})
+    val workManager = WorkManager.getInstance(context)
 
     TabletContentWrapBtn(
-        onClick = {},
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                delayMills = 36,
+                tag = "MINING",
+                platform = "NAVER_SERIES",
+                type = "COMIC"
+            )
+        },
         content = {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -177,13 +192,8 @@ fun ContentsWebtoon() {
                 Spacer(modifier = Modifier.size(8.dp))
 
                 Text(
-                    text = spannableString(
-                        textFront = "네이버 시리즈 웹툰 : ", color = color000000,
-                        textEnd = dataStore.getDataStoreString(
-                            DataStoreManager.MINING_NAVER_SERIES_COMIC
-                        ).collectAsState(initial = "").value ?: "",
-                    ),
-                    color = color20459E,
+                    text = "네이버 시리즈 COMIC",
+                    color = color000000,
                     fontSize = 18.sp,
                 )
             }
@@ -512,3 +522,102 @@ fun ContentsPlatform(
     Spacer(modifier = Modifier.size(60.dp))
 }
 
+@Composable
+fun ScreenManavaraRecord(type: String) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(colorF6F6F6),
+        contentAlignment = Alignment.TopStart
+    ) {
+        val context = LocalContext.current
+        val dataStore = DataStoreManager(context)
+
+        Column(
+            modifier = Modifier.wrapContentSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            if(type == "NOVEL"){
+
+                novelListEng().forEachIndexed { index, item ->
+                    TabletContentWrapBtn(
+                        onClick = {},
+                        content = {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.Start,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+
+                                Image(
+                                    painter = painterResource(id = getPlatformLogoEng(item)),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .width(20.dp)
+                                        .height(20.dp)
+                                )
+
+                                Spacer(modifier = Modifier.size(8.dp))
+
+                                getBookCount(context = context, type = type, platform = item)
+
+                                Text(
+                                    text = spannableString(
+                                        textFront = "${changePlatformNameKor(item)} : ",
+                                        color = color000000,
+                                        textEnd = "${dataStore.getDataStoreString(
+                                            getPlatformDataKeyNovel(item)
+                                        ).collectAsState(initial = "").value ?: "0"} 작품"
+                                    ),
+                                    color = color20459E,
+                                    fontSize = 18.sp,
+                                )
+                            }
+                        }
+                    )
+                }
+
+
+            } else {
+                comicListEng().forEachIndexed { index, item ->
+                    TabletContentWrapBtn(
+                        onClick = {},
+                        content = {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.Start,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+
+                                Image(
+                                    painter = painterResource(id = getPlatformLogoEng(item)),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .width(20.dp)
+                                        .height(20.dp)
+                                )
+
+                                Spacer(modifier = Modifier.size(8.dp))
+
+                                getBookCount(context = context, type = type, platform = item)
+
+                                Text(
+                                    text = spannableString(
+                                        textFront = "${changePlatformNameKor(item)} : ",
+                                        color = color000000,
+                                        textEnd = "${dataStore.getDataStoreString(
+                                            getPlatformDataKeyComic(item)
+                                        ).collectAsState(initial = "").value ?: "0"} 작품"
+                                    ),
+                                    color = color20459E,
+                                    fontSize = 18.sp,
+                                )
+                            }
+                        }
+                    )
+                }
+            }
+        }
+    }
+}

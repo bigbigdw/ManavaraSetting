@@ -663,75 +663,6 @@ fun getPlatformDescription(platform: String) : String {
         }
     }
 }
-
-fun getPlatformDataKey(platform: String) : Preferences.Key<String> {
-    return when (platform) {
-        "조아라" -> {
-            DataStoreManager.MINING_JOARA_NOVEL
-        }
-        "노블레스" -> {
-            DataStoreManager.MINING_JOARA_NOBLESS_NOVEL
-        }
-        "프리미엄" -> {
-            DataStoreManager.MINING_JOARA_PREMIUM_NOVEL
-        }
-        "시리즈" -> {
-            DataStoreManager.MINING_NAVER_SERIES_NOVEL
-        }
-        "네이버 웹소설 유료" -> {
-            DataStoreManager.MINING_NAVER_WEBNOVEL_PAY_NOVEL
-        }
-        "네이버 웹소설 무료" -> {
-            DataStoreManager.MINING_NAVER_WEBNOVEL_FREE_NOVEL
-        }
-        "챌린지리그" -> {
-            DataStoreManager.MINING_NAVER_CHALLENGE_NOVEL
-        }
-        "베스트리그" -> {
-            DataStoreManager.MINING_NAVER_BEST_NOVEL
-        }
-        "리디 판타지" -> {
-            DataStoreManager.MINING_RIDI_FANTAGY_NOVEL
-        }
-        "리디 로맨스" -> {
-            DataStoreManager.MINING_RIDI_ROMANCE_NOVEL
-        }
-        "리디 로맨스 판타지" -> {
-            DataStoreManager.MINING_RIDI_ROMANCE_FANTAGY_NOVEL
-        }
-        "스테이지" -> {
-            DataStoreManager.MINING_KAKAO_STAGE_NOVEL
-        }
-        "원스토리 판타지" -> {
-            DataStoreManager.MINING_ONESTORY_FANTAGY_NOVEL
-        }
-        "원스토리 로맨스" -> {
-            DataStoreManager.MINING_ONESTORY_ROMANCE_NOVEL
-        }
-        "원스토리 PASS 판타지" -> {
-            DataStoreManager.MINING_ONESTORY_PASS_FANTAGY_NOVEL
-        }
-        "원스토리 PASS 로맨스" -> {
-            DataStoreManager.MINING_ONESTORY_PASS_ROMANCE_NOVEL
-        }
-        "문피아 유료" -> {
-            DataStoreManager.MINING_MUNPIA_PAY_NOVEL
-        }
-        "문피아 무료" -> {
-            DataStoreManager.MINING_MUNPIA_FREE_NOVEL
-        }
-        "톡소다" -> {
-            DataStoreManager.MINING_TOKSODA_NOVEL
-        }
-        "톡소다 자유연재" -> {
-            DataStoreManager.MINING_TOKSODA_FREE_NOVEL
-        }
-        else -> {
-            DataStoreManager.MINING_JOARA_NOVEL
-        }
-    }
-}
-
 fun weekListAll(): List<String> {
     return listOf(
         "전체",
@@ -808,6 +739,91 @@ fun geMonthDate(date : String) : Int {
         }
         else -> {
             0
+        }
+    }
+}
+
+fun getPlatformDataKeyNovel(platform : String) : Preferences.Key<String> {
+    return when (platform) {
+        "JOARA" -> {
+            DataStoreManager.JOARA
+        }
+        "JOARA_NOBLESS" -> {
+            DataStoreManager.JOARA_NOBLESS
+        }
+        "JOARA_PREMIUM" -> {
+            DataStoreManager.JOARA_PREMIUM
+        }
+        "NAVER_CHALLENGE" -> {
+            DataStoreManager.NAVER_CHALLENGE
+        }
+        "NAVER_BEST" -> {
+            DataStoreManager.NAVER_BEST
+        }
+        "NAVER_SERIES" -> {
+            DataStoreManager.NAVER_SERIES_NOVEL
+        }
+        "NAVER_WEBNOVEL_PAY" -> {
+            DataStoreManager.NAVER_WEBNOVEL_PAY
+        }
+        "NAVER_WEBNOVEL_FREE" -> {
+            DataStoreManager.NAVER_WEBNOVEL_FREE
+        }
+        "RIDI_FANTAGY" -> {
+            DataStoreManager.RIDI_FANTAGY
+        }
+        "RIDI_ROMANCE" -> {
+            DataStoreManager.RIDI_ROMANCE
+        }
+        "RIDI_ROFAN" -> {
+            DataStoreManager.RIDI_ROFAN
+        }
+        "KAKAO_STAGE" -> {
+            DataStoreManager.KAKAO_STAGE
+        }
+        "ONESTORY_FANTAGY" -> {
+            DataStoreManager.ONESTORY_FANTAGY
+        }
+        "ONESTORY_ROMANCE" -> {
+            DataStoreManager.ONESTORY_ROMANCE
+        }
+        "ONESTORY_PASS_FANTAGY" -> {
+            DataStoreManager.ONESTORY_PASS_FANTAGY
+        }
+        "ONESTORY_PASS_ROMANCE" -> {
+            DataStoreManager.ONESTORY_PASS_ROMANCE
+        }
+        "MUNPIA_PAY" -> {
+            DataStoreManager.MUNPIA_PAY
+        }
+        "MUNPIA_FREE" -> {
+            DataStoreManager.MUNPIA_FREE
+        }
+        "TOKSODA" -> {
+            DataStoreManager.TOKSODA
+        }
+        "TOKSODA_FREE" -> {
+            DataStoreManager.TOKSODA_FREE
+        }
+        else -> {
+            DataStoreManager.TEST
+        }
+    }
+}
+
+fun comicListEng(): List<String> {
+    return listOf(
+        "NAVER_SERIES"
+    )
+}
+
+fun getPlatformDataKeyComic(platform : String) : Preferences.Key<String> {
+    return when (platform) {
+        "NAVER_SERIES" -> {
+            DataStoreManager.NAVER_SERIES_COMIC
+        }
+        else -> {
+            DataStoreManager.TEST
         }
     }
 }

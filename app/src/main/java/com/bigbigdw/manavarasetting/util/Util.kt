@@ -175,49 +175,6 @@ fun setDataStore(data: String){
     mRootRef.child(child).setValue("${year}.${month}.${day} ${hour}:${min}")
 }
 
-fun getDataStoreStatus(context: Context, update : () -> Unit){
-    val mRootRef = FirebaseDatabase.getInstance().reference.child("WORKER")
-
-    mRootRef.addListenerForSingleValueEvent(object :
-        ValueEventListener {
-        override fun onDataChange(dataSnapshot: DataSnapshot) {
-            if(dataSnapshot.exists()){
-
-                val dataStore = DataStoreManager(context)
-
-                CoroutineScope(Dispatchers.IO).launch {
-                    dataStore.setDataStoreString(DataStoreManager.MINING_NAVER_SERIES_COMIC, dataSnapshot.child("MINING_NAVER_SERIES_COMIC").getValue(String::class.java) ?: "")
-                    dataStore.setDataStoreString(DataStoreManager.MINING_NAVER_SERIES_NOVEL, dataSnapshot.child("MINING_NAVER_SERIES_NOVEL").getValue(String::class.java) ?: "")
-                    dataStore.setDataStoreString(DataStoreManager.MINING_JOARA_NOVEL, dataSnapshot.child("MINING_JOARA_NOVEL").getValue(String::class.java) ?: "")
-                    dataStore.setDataStoreString(DataStoreManager.MINING_JOARA_PREMIUM_NOVEL, dataSnapshot.child("MINING_JOARA_PREMIUM_NOVEL").getValue(String::class.java) ?: "")
-                    dataStore.setDataStoreString(DataStoreManager.MINING_JOARA_NOBLESS_NOVEL, dataSnapshot.child("MINING_JOARA_NOBLESS_NOVEL").getValue(String::class.java) ?: "")
-                    dataStore.setDataStoreString(DataStoreManager.MINING_NAVER_CHALLENGE_NOVEL, dataSnapshot.child("MINING_NAVER_CHALLENGE_NOVEL").getValue(String::class.java) ?: "")
-                    dataStore.setDataStoreString(DataStoreManager.MINING_NAVER_BEST_NOVEL, dataSnapshot.child("MINING_NAVER_BEST_NOVEL").getValue(String::class.java) ?: "")
-                    dataStore.setDataStoreString(DataStoreManager.MINING_NAVER_WEBNOVEL_PAY_NOVEL, dataSnapshot.child("MINING_NAVER_WEBNOVEL_PAY_NOVEL").getValue(String::class.java) ?: "")
-                    dataStore.setDataStoreString(DataStoreManager.MINING_NAVER_WEBNOVEL_FREE_NOVEL, dataSnapshot.child("MINING_NAVER_WEBNOVEL_FREE_NOVEL").getValue(String::class.java) ?: "")
-                    dataStore.setDataStoreString(DataStoreManager.MINING_RIDI_FANTAGY_NOVEL, dataSnapshot.child("MINING_RIDI_FANTAGY_NOVEL").getValue(String::class.java) ?: "")
-                    dataStore.setDataStoreString(DataStoreManager.MINING_RIDI_ROMANCE_NOVEL, dataSnapshot.child("MINING_RIDI_ROMANCE_NOVEL").getValue(String::class.java) ?: "")
-                    dataStore.setDataStoreString(DataStoreManager.MINING_ONESTORY_FANTAGY_NOVEL, dataSnapshot.child("MINING_ONESTORY_FANTAGY_NOVEL").getValue(String::class.java) ?: "")
-                    dataStore.setDataStoreString(DataStoreManager.MINING_ONESTORY_ROMANCE_NOVEL, dataSnapshot.child("MINING_ONESTORY_ROMANCE_NOVEL").getValue(String::class.java) ?: "")
-                    dataStore.setDataStoreString(DataStoreManager.MINING_ONESTORY_PASS_FANTAGY_NOVEL, dataSnapshot.child("MINING_ONESTORY_PASS_FANTAGY_NOVEL").getValue(String::class.java) ?: "")
-                    dataStore.setDataStoreString(DataStoreManager.MINING_ONESTORY_PASS_ROMANCE_NOVEL, dataSnapshot.child("MINING_ONESTORY_PASS_ROMANCE_NOVEL").getValue(String::class.java) ?: "")
-                    dataStore.setDataStoreString(DataStoreManager.MINING_KAKAO_STAGE_NOVEL, dataSnapshot.child("MINING_KAKAO_STAGE_NOVEL").getValue(String::class.java) ?: "")
-                    dataStore.setDataStoreString(DataStoreManager.MINING_MUNPIA_PAY_NOVEL, dataSnapshot.child("MINING_MUNPIA_PAY_NOVEL").getValue(String::class.java) ?: "")
-                    dataStore.setDataStoreString(DataStoreManager.MINING_MUNPIA_FREE_NOVEL, dataSnapshot.child("MINING_MUNPIA_FREE_NOVEL").getValue(String::class.java) ?: "")
-                    dataStore.setDataStoreString(DataStoreManager.MINING_TOKSODA_NOVEL, dataSnapshot.child("MINING_TOKSODA_NOVEL").getValue(String::class.java) ?: "")
-
-                    update()
-                }
-
-            } else {
-                Log.d("HIHI", "FALSE")
-            }
-        }
-
-        override fun onCancelled(databaseError: DatabaseError) {}
-    })
-}
-
 fun checkMiningTrophyValue(yesterDayItem: ItemBookInfo) : ItemBookInfo{
 
     yesterDayItem.totalWeek = if (DBDate.getYesterdayDayOfWeek() == 7) {
@@ -246,4 +203,32 @@ fun checkMiningTrophyValue(yesterDayItem: ItemBookInfo) : ItemBookInfo{
 
     return yesterDayItem
 }
+
+fun getBookCount(context : Context, type: String, platform: String) {
+    val mRootRef =
+        FirebaseDatabase.getInstance().reference.child("BOOK").child(type).child(platform)
+
+    mRootRef.addListenerForSingleValueEvent(object :
+        ValueEventListener {
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+            val dataStore = DataStoreManager(context)
+
+            if (dataSnapshot.exists()) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    if(type == "NOVEL"){
+                        dataStore.setDataStoreString(getPlatformDataKeyNovel(platform), dataSnapshot.childrenCount.toString())
+                    } else {
+                        dataStore.setDataStoreString(getPlatformDataKeyComic(platform), dataSnapshot.childrenCount.toString())
+                    }
+                }
+            } else {
+                Log.d("HIHIHI", "FAIL == NOT EXIST")
+            }
+        }
+
+        override fun onCancelled(databaseError: DatabaseError) {}
+    })
+}
+
 

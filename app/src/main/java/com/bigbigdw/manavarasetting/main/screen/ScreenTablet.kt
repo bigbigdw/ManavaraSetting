@@ -192,16 +192,16 @@ fun ScreenTablet(
                         type = "트로피 월간 토탈",
                     )
                 }
-                "웹소설 투데이 장르 JSON" -> {
+                "웹소설 투데이 장르" -> {
                     ContentsGenre(
-                        menuType = "투데이 장르 JSON",
+                        menuType = "투데이 장르",
                         setDetailPage = setDetailPage,
                         setDetailMenu = setDetailMenu,
                         setDetailPlatform = setDetailPlatform,
                         setDetailType = setDetailType,
                     )
                 }
-                "웹소설 주간 장르 JSON" -> {
+                "웹소설 주간 장르" -> {
                     ContentsGenre(
                         menuType = "주간 장르 JSON",
                         setDetailPage = setDetailPage,
@@ -210,7 +210,7 @@ fun ScreenTablet(
                         setDetailType = setDetailType,
                     )
                 }
-                "웹소설 월간 장르 JSON" -> {
+                "웹소설 월간 장르" -> {
                     ContentsGenre(
                         menuType = "월간 장르 JSON",
                         setDetailPage = setDetailPage,

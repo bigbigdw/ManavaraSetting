@@ -38,7 +38,6 @@ import com.bigbigdw.manavarasetting.ui.theme.colorFFFFFF
 import com.bigbigdw.manavarasetting.util.DataStoreManager
 import com.bigbigdw.manavarasetting.ui.theme.colorB3000000
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
-import com.bigbigdw.manavarasetting.util.getDataStoreStatus
 import com.bigbigdw.manavarasetting.widget.ManavaraSettingWidget.paramWorkerInterval
 import com.bigbigdw.manavarasetting.widget.ManavaraSettingWidget.paramWorkerStatus
 import com.bigbigdw.manavarasetting.widget.ManavaraSettingWidget.paramWorkerTag
@@ -78,8 +77,8 @@ fun ScreenWidget(context: Context) {
 
     val dataStore = DataStoreManager(context)
 
-    val MINING_NAVER_SERIES_COMIC = dataStore.getDataStoreString(DataStoreManager.MINING_NAVER_SERIES_COMIC).collectAsState(initial = "")
-    val MINING_NAVER_SERIES_NOVEL = dataStore.getDataStoreString(DataStoreManager.MINING_NAVER_SERIES_NOVEL).collectAsState(initial = "")
+//    val MINING_NAVER_SERIES_COMIC = dataStore.getDataStoreString(DataStoreManager.MINING_NAVER_SERIES_COMIC).collectAsState(initial = "")
+//    val MINING_NAVER_SERIES_NOVEL = dataStore.getDataStoreString(DataStoreManager.MINING_NAVER_SERIES_NOVEL).collectAsState(initial = "")
 
     Column(
         modifier = GlanceModifier
@@ -197,11 +196,11 @@ class WidgetUpdate : ActionCallback {
         parameters: ActionParameters
     ) {
 
-        getDataStoreStatus(context = context, update = {
-            CoroutineScope(Dispatchers.IO).launch {
-                ManavaraSettingWidget.update(context, glanceId)
-            }
-        })
+//        getDataStoreStatus(context = context, update = {
+//            CoroutineScope(Dispatchers.IO).launch {
+//                ManavaraSettingWidget.update(context, glanceId)
+//            }
+//        })
     }
 }
 

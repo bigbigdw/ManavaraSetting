@@ -73,7 +73,6 @@ import com.bigbigdw.manavarasetting.ui.theme.color8F8F8F
 import com.bigbigdw.manavarasetting.ui.theme.color91CEC7
 import com.bigbigdw.manavarasetting.ui.theme.color998DF9
 import com.bigbigdw.manavarasetting.ui.theme.colorABD436
-import com.bigbigdw.manavarasetting.ui.theme.colorCHALLENGE
 import com.bigbigdw.manavarasetting.ui.theme.colorDCDCDD
 import com.bigbigdw.manavarasetting.ui.theme.colorEA927C
 import com.bigbigdw.manavarasetting.ui.theme.colorF17666
@@ -81,15 +80,7 @@ import com.bigbigdw.manavarasetting.ui.theme.colorF17FA0
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.ui.theme.colorFDC24E
 import com.bigbigdw.manavarasetting.ui.theme.colorFFAC59
-import com.bigbigdw.manavarasetting.ui.theme.colorJOARA
-import com.bigbigdw.manavarasetting.ui.theme.colorKAKAO
-import com.bigbigdw.manavarasetting.ui.theme.colorMUNPIA
 import com.bigbigdw.manavarasetting.ui.theme.colorNAVER
-import com.bigbigdw.manavarasetting.ui.theme.colorNOBLESS
-import com.bigbigdw.manavarasetting.ui.theme.colorONESTORY
-import com.bigbigdw.manavarasetting.ui.theme.colorPREMIUM
-import com.bigbigdw.manavarasetting.ui.theme.colorRIDI
-import com.bigbigdw.manavarasetting.ui.theme.colorTOKSODA
 import com.bigbigdw.manavarasetting.util.BestRef
 import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.MiningSource
@@ -349,9 +340,10 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             image = R.drawable.ic_launcher,
             title = "세팅바라 현황",
             body = "Periodic Worker 현황",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "세팅바라 현황"
         )
 
         TabletBorderLine()
@@ -361,9 +353,10 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             image = R.drawable.icon_fcm_wht,
             title = "FCM 관리",
             body = "FCM 테스트 & 공지사항 등록 & 토큰 획득",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "FCM 관리",
         )
 
         ItemMainSettingSingleTablet(
@@ -371,9 +364,10 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             image = R.drawable.icon_fcm_wht,
             title = "FCM 공지사항 리스트",
             body = "NOTICE 리스트 확인",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "FCM 공지사항 리스트",
         )
 
         ItemMainSettingSingleTablet(
@@ -381,9 +375,10 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             image = R.drawable.icon_fcm_wht,
             title = "FCM 알림 리스트",
             body = "ALERT 리스트 확인",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "FCM 알림 리스트",
         )
 
         TabletBorderLine()
@@ -393,9 +388,65 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             image = R.drawable.icon_novel_wht,
             title = "웹소설 현황",
             body = "웹소설 플랫폼 베스트 리스트 확인",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "웹소설 현황",
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color4AD7CF,
+            image = R.drawable.icon_best_wht,
+            title = "마나바라 베스트 웹소설 DB",
+            body = "마나바라에 기록된 베스트 웹소설 리스트",
+            setter = setMenu,
+            getter = getMenu,
+            onClick = {  },
+            value = "베스트 웹소설 DB"
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color4AD7CF,
+            image = R.drawable.icon_trophy_wht,
+            title = "마나바라 트로피 웹소설 DB",
+            body = "마나바라에 기록된 트로피 웹소설 리스트",
+            setter = setMenu,
+            getter = getMenu,
+            onClick = {  },
+            value = "트로피 웹소설 DB"
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color91CEC7,
+            image = R.drawable.ic_launcher,
+            title = "웹소설 투데이 장르",
+            body = "투데이 장르 JSON 확인",
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "웹소설 투데이 장르",
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color79B4F8,
+            image = R.drawable.ic_launcher,
+            title = "웹소설 주간 장르",
+            body = "주간 장르 JSON 확인",
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "웹소설 주간 장르",
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color8AA6BD,
+            image = R.drawable.ic_launcher,
+            title = "웹소설 월간 장르",
+            body = "월간 장르 JSON 확인",
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "웹소설 월간 장르",
         )
 
         TabletBorderLine()
@@ -406,9 +457,10 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
                 image = getPlatformLogoEng(item),
                 title = changePlatformNameKor(item),
                 body = getPlatformDescriptionEng(item),
-                setMenu = setMenu,
-                getMenu = getMenu,
-                onClick = { onClick() }
+                setter = setMenu,
+                getter = getMenu,
+                onClick = { onClick() },
+                value = changePlatformNameKor(item),
             )
         }
 
@@ -419,9 +471,10 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             image = R.drawable.icon_best_wht,
             title = "웹소설 베스트 리스트",
             body = "웹소설 플랫폼 베스트 리스트 확인",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "웹소설 베스트 리스트",
         )
 
         ItemMainSettingSingleTablet(
@@ -429,9 +482,10 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             image = R.drawable.icon_best_wht,
             title = "투데이 장르 베스트",
             body = "투데이 장르 베스트 확인",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "투데이 장르 베스트",
         )
 
         ItemMainSettingSingleTablet(
@@ -439,9 +493,10 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             image = R.drawable.icon_best_wht,
             title = "주간 장르 베스트",
             body = "투데이 장르 베스트 확인",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "주간 장르 베스트",
         )
 
         ItemMainSettingSingleTablet(
@@ -449,9 +504,10 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             image = R.drawable.icon_best_wht,
             title = "월간 장르 베스트",
             body = "투데이 장르 베스트 확인",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "월간 장르 베스트",
         )
 
         ItemMainSettingSingleTablet(
@@ -459,9 +515,10 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             image = R.drawable.icon_json_wht,
             title = "웹소설 JSON 투데이",
             body = "웹소설 플랫폼 JSON 베스트 투데이",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "웹소설 JSON 투데이",
         )
 
         ItemMainSettingSingleTablet(
@@ -469,9 +526,10 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             image = R.drawable.icon_json_wht,
             title = "웹소설 JSON 주간",
             body = "웹소설 플랫폼 JSON 베스트 주간",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "웹소설 JSON 주간",
         )
 
         ItemMainSettingSingleTablet(
@@ -479,9 +537,10 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             image = R.drawable.icon_json_wht,
             title = "웹소설 JSON 월간",
             body = "웹툰 플랫폼 JSON 베스트 월간",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "웹소설 JSON 월간",
         )
 
         ItemMainSettingSingleTablet(
@@ -489,9 +548,10 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             image = R.drawable.icon_json_wht,
             title = "웹소설 JSON 주간 트로피",
             body = "웹소설 플랫폼 JSON 주간 트로피",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "웹소설 JSON 주간 트로피",
         )
 
         ItemMainSettingSingleTablet(
@@ -499,9 +559,10 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             image = R.drawable.icon_json_wht,
             title = "웹소설 JSON 월간 트로피",
             body = "웹툰 플랫폼 JSON 베스트 월간",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "웹소설 JSON 월간 트로피",
         )
 
         ItemMainSettingSingleTablet(
@@ -509,9 +570,10 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             image = R.drawable.icon_trophy_wht,
             title = "웹소설 트로피 주간 토탈",
             body = "트로피 수동 정산 & Worker 관리",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "웹소설 트로피 주간 토탈",
         )
 
         ItemMainSettingSingleTablet(
@@ -519,39 +581,10 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             image = R.drawable.icon_trophy_wht,
             title = "웹소설 트로피 월간 토탈",
             body = "장르별 월간 트로피 리스트 확인",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = color91CEC7,
-            image = R.drawable.ic_launcher,
-            title = "웹소설 투데이 장르 JSON",
-            body = "투데이 장르 JSON 확인",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = color79B4F8,
-            image = R.drawable.ic_launcher,
-            title = "웹소설 주간 장르 JSON",
-            body = "주간 장르 JSON 확인",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = color8AA6BD,
-            image = R.drawable.ic_launcher,
-            title = "웹소설 월간 장르 JSON",
-            body = "월간 장르 JSON 확인",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "웹소설 트로피 월간 토탈",
         )
 
         TabletBorderLine()
@@ -561,9 +594,10 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             image = R.drawable.icon_webtoon_wht,
             title = "웹툰 현황",
             body = "웹툰 플랫폼 베스트 리스트 확인",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "웹툰 현황",
         )
 
         TabletBorderLine()
@@ -573,9 +607,10 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             image = R.drawable.logo_naver,
             title = "네이버 시리즈 웹툰",
             body = "네이버 시리즈 웹툰 관리",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "네이버 시리즈 웹툰",
         )
 
         TabletBorderLine()
@@ -585,9 +620,10 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             image = R.drawable.icon_best_wht,
             title = "웹툰 베스트 리스트",
             body = "웹툰 플랫폼 베스트 리스트 확인",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "웹툰 베스트 리스트",
         )
 
         ItemMainSettingSingleTablet(
@@ -595,9 +631,10 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             image = R.drawable.icon_json_wht,
             title = "웹툰 JSON 투데이",
             body = "웹툰 플랫폼 JSON 베스트 투데이",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "웹툰 JSON 투데이",
         )
 
         ItemMainSettingSingleTablet(
@@ -605,18 +642,20 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             image = R.drawable.icon_json_wht,
             title = "웹툰 JSON 주간",
             body = "웹툰 플랫폼 JSON 베스트 주간",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "웹툰 JSON 주간",
         )
         ItemMainSettingSingleTablet(
             containerColor = color5372DE,
             image = R.drawable.icon_json_wht,
             title = "웹툰 JSON 월간",
             body = "웹툰 플랫폼 JSON 베스트 월간",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "웹툰 JSON 월간",
         )
 
         ItemMainSettingSingleTablet(
@@ -624,9 +663,10 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             image = R.drawable.icon_json_wht,
             title = "웹툰 JSON 주간 트로피",
             body = "웹툰 플랫폼 JSON 주간 트로피",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "웹툰 JSON 주간 트로피",
         )
 
         ItemMainSettingSingleTablet(
@@ -634,9 +674,10 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             image = R.drawable.icon_json_wht,
             title = "웹툰 JSON 월간 트로피",
             body = "장르별 월간 JSON 확인",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "웹툰 JSON 월간 트로피",
         )
 
         ItemMainSettingSingleTablet(
@@ -644,9 +685,10 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             image = R.drawable.icon_trophy_wht,
             title = "웹툰 트로피 주간 토탈",
             body = "장르별 주간 트로피 리스트 확인",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "웹툰 트로피 주간 토탈",
         )
 
         ItemMainSettingSingleTablet(
@@ -654,9 +696,10 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             image = R.drawable.icon_trophy_wht,
             title = "웹툰 트로피 월간 토탈",
             body = "시간별 트로피 최신화 현황",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "웹툰 트로피 월간 토탈",
         )
 
         TabletBorderLine()
@@ -666,9 +709,10 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             image = R.drawable.icon_setting_wht,
             title = "위험 옵션",
             body = "건들면 돌이킬 수 없는 옵션 관리",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "위험 옵션",
         )
 
         ItemMainSettingSingleTablet(
@@ -676,9 +720,10 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             image = R.drawable.icon_setting_wht,
             title = "실험실",
             body = "일단 기능 만들고 질러보는 공간",
-            setMenu = setMenu,
-            getMenu = getMenu,
-            onClick = { onClick() }
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "실험실",
         )
 
     }

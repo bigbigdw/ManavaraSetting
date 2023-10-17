@@ -36,10 +36,8 @@ import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import com.bigbigdw.manavarasetting.util.changePlatformNameKor
-import com.bigbigdw.manavarasetting.util.getDataStoreStatus
 import com.bigbigdw.manavarasetting.util.getPlatformLogoEng
 import com.bigbigdw.manavarasetting.util.novelListEng
-import com.bigbigdw.manavarasetting.util.novelListKor
 
 @Composable
 fun ScreenMainSetting(
@@ -48,13 +46,6 @@ fun ScreenMainSetting(
 ) {
 
     val context = LocalContext.current
-
-    var isInit by remember { mutableStateOf(false) }
-
-    if(!isInit){
-        getDataStoreStatus(context = context, update = {})
-        isInit = true
-    }
 
     Box(
         modifier = Modifier.fillMaxSize().background(color = colorF6F6F6)
@@ -107,7 +98,6 @@ fun ScreenSettingMobile() {
         modifier = Modifier
             .fillMaxSize()
             .background(color = colorF6F6F6)
-            .verticalScroll(rememberScrollState())
             .padding(16.dp, 0.dp)
             .semantics { contentDescription = "Overview Screen" },
         verticalArrangement = Arrangement.Center,
@@ -129,100 +119,9 @@ fun ScreenSettingMobile() {
 @Composable
 fun ContentsSetting() {
 
-    val context = LocalContext.current
-    val workManager = WorkManager.getInstance(context)
+    ScreenManavaraRecord(type = "NOVEL")
 
-    novelListEng().forEachIndexed { index, item ->
-        TabletContentWrapBtn(
-            onClick = {
-                PeriodicWorker.doWorker(
-                    workManager = workManager,
-                    delayMills = 3,
-                    tag = "MINING",
-                    platform = item,
-                    type = "NOVEL"
-                )
-            },
-            content = {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-
-                    Image(
-                        painter = painterResource(id = getPlatformLogoEng(item)),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .width(20.dp)
-                            .height(20.dp)
-                    )
-
-                    Spacer(modifier = Modifier.size(8.dp))
-
-                    Text(
-                        text = "${changePlatformNameKor(item)} NOVEL",
-                        color = color000000,
-                        fontSize = 18.sp,
-                    )
-                }
-            }
-        )
-    }
-
-    TabletContentWrapBtn(
-        onClick = {
-            PeriodicWorker.doWorker(
-                workManager = workManager,
-                delayMills = 36,
-                tag = "MINING",
-                platform = "NAVER_SERIES",
-                type = "COMIC"
-            )
-        },
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo_naver),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(20.dp)
-                        .height(20.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(
-                    text = "네이버 시리즈 COMIC",
-                    color = color000000,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
-
-    TabletContentWrapBtn(
-        onClick = { PeriodicWorker.cancelAllWorker(
-            workManager = workManager,
-        ) },
-        content = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "모든 Worker 취소",
-                    color = color000000,
-                    fontSize = 18.sp,
-                )
-            }
-        }
-    )
+    ScreenManavaraRecord(type = "COMIC")
 
     Spacer(modifier = Modifier.size(60.dp))
 }

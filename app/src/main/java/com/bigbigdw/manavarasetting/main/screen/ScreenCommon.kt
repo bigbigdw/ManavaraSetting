@@ -293,14 +293,15 @@ fun ItemMainSettingSingleTablet(
     image: Int,
     title: String,
     body: String,
-    setMenu: (String) -> Unit,
-    getMenu: String,
-    onClick : () -> Unit
+    setter: (String) -> Unit,
+    getter: String,
+    onClick: () -> Unit,
+    value: String
 ) {
 
     Button(
         colors = ButtonDefaults.buttonColors(
-            containerColor = if (getMenu == title) {
+            containerColor = if (getter == value) {
                 colorE9E9E9
             } else {
                 colorF7F7F7
@@ -308,7 +309,7 @@ fun ItemMainSettingSingleTablet(
         ),
         shape = RoundedCornerShape(50.dp),
         onClick = {
-            setMenu(title)
+            setter(value)
             onClick()
         },
         contentPadding = PaddingValues(
@@ -318,60 +319,60 @@ fun ItemMainSettingSingleTablet(
             bottom = 6.dp,
         ),
         content = {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(0.dp, 8.dp),
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-
-            Card(
+            Row(
                 modifier = Modifier
-                    .wrapContentSize(),
-                backgroundColor = containerColor,
-                shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp)
+                    .fillMaxWidth()
+                    .padding(0.dp, 8.dp),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Box(
+
+                androidx.compose.material3.Card(
                     modifier = Modifier
-                        .height(36.dp)
-                        .width(36.dp),
-                    contentAlignment = Alignment.Center
+                        .wrapContentSize(),
+                    colors = CardDefaults.cardColors(containerColor = containerColor),
+                    shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp)
                 ) {
-                    Image(
-                        contentScale = ContentScale.FillWidth,
-                        painter = painterResource(id = image),
-                        contentDescription = null,
+                    Box(
                         modifier = Modifier
-                            .height(28.dp)
-                            .width(28.dp)
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.size(16.dp))
-
-            Column {
-                Row {
-                    Text(
-                        text = title,
-                        fontSize = 16.sp,
-                        color = color000000,
-
-                        fontWeight = FontWeight(weight = 500)
-                    )
-                }
-
-                Row {
-                    Text(
-                        text = body,
-                        fontSize = 14.sp,
-                        color = color8E8E8E,
+                            .height(36.dp)
+                            .width(36.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Image(
+                            contentScale = ContentScale.FillWidth,
+                            painter = painterResource(id = image),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .height(28.dp)
+                                .width(28.dp)
                         )
+                    }
+                }
+
+                Spacer(modifier = Modifier.size(16.dp))
+
+                Column {
+                    Row {
+                        Text(
+                            text = title,
+                            fontSize = 16.sp,
+                            color = color000000,
+
+                            fontWeight = FontWeight(weight = 500)
+                        )
+                    }
+
+                    Row {
+                        Text(
+                            text = body,
+                            fontSize = 14.sp,
+                            color = color8E8E8E,
+                        )
+                    }
                 }
             }
-        }
-    })
+        })
 }
 
 @Composable
