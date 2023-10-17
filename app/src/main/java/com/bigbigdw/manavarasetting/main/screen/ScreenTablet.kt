@@ -301,7 +301,7 @@ fun ScreenTablet(
                     ContentsWebtoon()
                 }
                 "웹소설 관리" -> {
-                    ContentsNovel(viewModelMain = viewModelMain)
+                    ContentsNovel()
                 }
                 "웹소설 베스트 DB" -> {
                     ContentsListNovel(

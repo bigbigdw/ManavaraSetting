@@ -99,6 +99,7 @@ fun ScreenSettingMobile() {
             .fillMaxSize()
             .background(color = colorF6F6F6)
             .padding(16.dp, 0.dp)
+            .verticalScroll(rememberScrollState())
             .semantics { contentDescription = "Overview Screen" },
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally

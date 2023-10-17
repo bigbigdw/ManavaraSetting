@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -34,7 +33,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.work.WorkManager
@@ -56,7 +54,6 @@ import com.bigbigdw.manavarasetting.util.getPlatformDataKeyComic
 import com.bigbigdw.manavarasetting.util.getPlatformDataKeyNovel
 import com.bigbigdw.manavarasetting.util.getPlatformLogoEng
 import com.bigbigdw.manavarasetting.util.novelListEng
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.util.concurrent.TimeUnit
 
@@ -85,7 +82,7 @@ fun ScreenMainWebtoon() {
                     .height(80.dp)
             )
 
-            MainHeader(image = R.drawable.icon_novel, title = "웹소설 관리")
+            MainHeader(image = R.drawable.icon_novel, title = "웹툰 관리")
 
             ContentsWebtoon()
 
@@ -104,6 +101,7 @@ fun ScreenMainNovel() {
                 .fillMaxSize()
                 .background(color = colorF6F6F6)
                 .padding(16.dp, 0.dp)
+                .verticalScroll(rememberScrollState())
                 .semantics { contentDescription = "Overview Screen" },
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -115,21 +113,19 @@ fun ScreenMainNovel() {
                     .height(80.dp)
             )
 
-            MainHeader(image = R.drawable.icon_webtoon, title = "웹툰 현황")
+            MainHeader(image = R.drawable.icon_webtoon, title = "웹소설 관리")
 
-            ContentsWebtoon()
+            ContentsNovel()
 
         }
     }
 }
 
 @Composable
-fun ContentsNovel(viewModelMain: ViewModelMain) {
+fun ContentsNovel() {
 
     val context = LocalContext.current
     val workManager = WorkManager.getInstance(context)
-
-    viewModelMain.getBook(platform = "JOARA", type = "NOVEL")
 
     TabletContentWrapBtn(
         onClick = {
