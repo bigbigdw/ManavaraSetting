@@ -35,6 +35,7 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.json.JSONArray
+import org.json.JSONObject
 import java.nio.charset.Charset
 import java.util.Collections
 import javax.inject.Inject
@@ -67,7 +68,7 @@ class ViewModelMain @Inject constructor() : ViewModel() {
 
             is EventMain.SetBestBookList -> {
                 current.copy(
-                    setBestBookList = event.setBestBookList
+                    bestBookList = event.bestBookList
                 )
             }
 
@@ -186,7 +187,7 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                     }
 
                     viewModelScope.launch {
-                        events.send(EventMain.SetBestBookList(setBestBookList = bestList))
+                        events.send(EventMain.SetBestBookList(bestBookList = bestList))
                     }
 
                 } else {
@@ -217,7 +218,7 @@ class ViewModelMain @Inject constructor() : ViewModel() {
             }
 
             viewModelScope.launch {
-                events.send(EventMain.SetBestBookList(setBestBookList = todayJsonList))
+                events.send(EventMain.SetBestBookList(bestBookList = todayJsonList))
             }
         }
     }
@@ -745,5 +746,35 @@ class ViewModelMain @Inject constructor() : ViewModel() {
         }
     }
 
+    fun getBook(platform: String, type: String){
+        val storage = Firebase.storage
+        val storageRef = storage.reference
+        val book = storageRef.child("${platform}/${type}/BOOK/${platform}.json")
+
+        book.getBytes(1024 * 1024)
+            .addOnSuccessListener {bytes ->
+                val jsonString = String(bytes, Charset.forName("UTF-8"))
+
+                val arrayList = ArrayList<ItemBookInfo>()
+
+                try {
+                    val jsonObject = JSONObject(jsonString)
+
+                    val keys = jsonObject.keys()
+                    while (keys.hasNext()) {
+                        val key = keys.next()
+                        val value = jsonObject[key].toString()
+                        arrayList.add(convertItemBookJson( JSONObject(value)))
+                    }
+
+                    viewModelScope.launch {
+                        events.send(EventMain.SetBestBookList(bestBookList = arrayList))
+                    }
+
+                } catch (e: Exception) {
+
+                }
+            }
+    }
 }
 

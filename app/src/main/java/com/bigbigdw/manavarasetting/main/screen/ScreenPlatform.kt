@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,24 +16,34 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
+import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
+import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color20459E
+import com.bigbigdw.manavarasetting.ui.theme.color8E8E8E
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.util.DataStoreManager
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
@@ -45,7 +56,9 @@ import com.bigbigdw.manavarasetting.util.getPlatformDataKeyComic
 import com.bigbigdw.manavarasetting.util.getPlatformDataKeyNovel
 import com.bigbigdw.manavarasetting.util.getPlatformLogoEng
 import com.bigbigdw.manavarasetting.util.novelListEng
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.util.concurrent.TimeUnit
 
 
 @Composable
@@ -72,9 +85,9 @@ fun ScreenMainWebtoon() {
                     .height(80.dp)
             )
 
-            MainHeader(image = R.drawable.icon_novel, title = "웹소설 현황")
+            MainHeader(image = R.drawable.icon_novel, title = "웹소설 관리")
 
-            ContentsNovel()
+            ContentsWebtoon()
 
         }
     }
@@ -111,17 +124,92 @@ fun ScreenMainNovel() {
 }
 
 @Composable
-fun ContentsNovel() {
+fun ContentsNovel(viewModelMain: ViewModelMain) {
 
     val context = LocalContext.current
     val workManager = WorkManager.getInstance(context)
+
+    viewModelMain.getBook(platform = "JOARA", type = "NOVEL")
+
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                time = 3,
+                tag = "NOVEL",
+                platform = "ALL",
+                type = "NOVEL"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.ic_launcher),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "마나바라 NOVEL 전체",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                time = 5,
+                timeUnit = TimeUnit.DAYS,
+                tag = "BOOK",
+                platform = "ALL",
+                type = "NOVEL"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.ic_launcher),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "마나바라 NOVEL BOOK 전체",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
 
     novelListEng().forEachIndexed { index, item ->
         TabletContentWrapBtn(
             onClick = {
                 PeriodicWorker.doWorker(
                     workManager = workManager,
-                    delayMills = 3,
+                    time = 3,
                     tag = "MINING",
                     platform = item,
                     type = "NOVEL"
@@ -169,7 +257,7 @@ fun ContentsWebtoon() {
         onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
-                delayMills = 36,
+                time = 36,
                 tag = "MINING",
                 platform = "NAVER_SERIES",
                 type = "COMIC"
@@ -617,6 +705,71 @@ fun ScreenManavaraRecord(type: String) {
                         }
                     )
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun BookDetail(
+    viewModelMain: ViewModelMain,
+    getPlatform: String,
+    getType: String
+) {
+
+    LaunchedEffect(getPlatform, getType) {
+        viewModelMain.getBook(platform = getPlatform, type = getType)
+    }
+
+    val bestList: ArrayList<ItemBookInfo> = viewModelMain.state.collectAsState().value.bestBookList
+
+    Spacer(modifier = Modifier.size(8.dp))
+
+    Column(modifier = Modifier.background(color = colorF6F6F6)) {
+
+        LazyColumn(
+            modifier = Modifier
+                .background(colorF6F6F6)
+                .padding(0.dp, 0.dp, 16.dp, 0.dp)
+        ) {
+
+            itemsIndexed(bestList) { index, item ->
+                Button(
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+                    contentPadding = PaddingValues(
+                        start = 0.dp,
+                        top = 0.dp,
+                        end = 0.dp,
+                        bottom = 0.dp,
+                    ),
+                    shape = RoundedCornerShape(20.dp),
+                    onClick = {},
+                    content = {
+                        Column(
+                            modifier = Modifier
+                                .padding(24.dp, 12.dp)
+                        ) {
+
+                            ScreenItemBestCard(item = item)
+
+                            Spacer(modifier = Modifier.size(8.dp))
+
+                            ScreenItemBestCount(item = item)
+
+                            if (item.intro.isNotEmpty()) {
+
+                                Spacer(modifier = Modifier.size(8.dp))
+
+                                Text(
+                                    text = item.intro,
+                                    color = color8E8E8E,
+                                    fontSize = 16.sp,
+                                )
+                            }
+                        }
+                    })
+
+                Spacer(modifier = Modifier.size(16.dp))
             }
         }
     }

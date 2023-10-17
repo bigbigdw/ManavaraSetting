@@ -1,6 +1,5 @@
 package com.bigbigdw.manavarasetting.main.screen
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -50,6 +49,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
+import com.bigbigdw.manavarasetting.firebase.FirebaseWorkManager
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color1E1E20
@@ -90,7 +90,9 @@ import com.bigbigdw.manavarasetting.util.getPlatformColorEng
 import com.bigbigdw.manavarasetting.util.getPlatformDescriptionEng
 import com.bigbigdw.manavarasetting.util.getPlatformLogoEng
 import com.bigbigdw.manavarasetting.util.novelListEng
+import com.bigbigdw.manavarasetting.util.saveBook
 import kotlinx.coroutines.runBlocking
+import java.util.concurrent.TimeUnit
 
 @Composable
 fun ScreenMain(
@@ -386,67 +388,23 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         ItemMainSettingSingleTablet(
             containerColor = colorEA927C,
             image = R.drawable.icon_novel_wht,
-            title = "웹소설 현황",
+            title = "웹소설 관리",
             body = "웹소설 플랫폼 베스트 리스트 확인",
             setter = setMenu,
             getter = getMenu,
             onClick = { onClick() },
-            value = "웹소설 현황",
+            value = "웹소설 관리",
         )
 
         ItemMainSettingSingleTablet(
             containerColor = color4AD7CF,
-            image = R.drawable.icon_best_wht,
-            title = "마나바라 베스트 웹소설 DB",
+            image = R.drawable.icon_novel_wht,
+            title = "웹소설 베스트 DB",
             body = "마나바라에 기록된 베스트 웹소설 리스트",
             setter = setMenu,
             getter = getMenu,
             onClick = {  },
-            value = "베스트 웹소설 DB"
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = color4AD7CF,
-            image = R.drawable.icon_trophy_wht,
-            title = "마나바라 트로피 웹소설 DB",
-            body = "마나바라에 기록된 트로피 웹소설 리스트",
-            setter = setMenu,
-            getter = getMenu,
-            onClick = {  },
-            value = "트로피 웹소설 DB"
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = color91CEC7,
-            image = R.drawable.ic_launcher,
-            title = "웹소설 투데이 장르",
-            body = "투데이 장르 JSON 확인",
-            setter = setMenu,
-            getter = getMenu,
-            onClick = { onClick() },
-            value = "웹소설 투데이 장르",
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = color79B4F8,
-            image = R.drawable.ic_launcher,
-            title = "웹소설 주간 장르",
-            body = "주간 장르 JSON 확인",
-            setter = setMenu,
-            getter = getMenu,
-            onClick = { onClick() },
-            value = "웹소설 주간 장르",
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = color8AA6BD,
-            image = R.drawable.ic_launcher,
-            title = "웹소설 월간 장르",
-            body = "월간 장르 JSON 확인",
-            setter = setMenu,
-            getter = getMenu,
-            onClick = { onClick() },
-            value = "웹소설 월간 장르",
+            value = "웹소설 베스트 DB",
         )
 
         TabletBorderLine()
@@ -585,6 +543,39 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             getter = getMenu,
             onClick = { onClick() },
             value = "웹소설 트로피 월간 토탈",
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color91CEC7,
+            image = R.drawable.ic_launcher,
+            title = "웹소설 투데이 장르",
+            body = "투데이 장르 JSON 확인",
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "웹소설 투데이 장르",
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color79B4F8,
+            image = R.drawable.ic_launcher,
+            title = "웹소설 주간 장르",
+            body = "주간 장르 JSON 확인",
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "웹소설 주간 장르",
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = color8AA6BD,
+            image = R.drawable.ic_launcher,
+            title = "웹소설 월간 장르",
+            body = "월간 장르 JSON 확인",
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "웹소설 월간 장르",
         )
 
         TabletBorderLine()
@@ -807,11 +798,6 @@ fun ContentsDangerOption(viewModelMain: ViewModelMain) {
 fun ContentsLabs() {
 
     val context = LocalContext.current
-    val workManager = WorkManager.getInstance(context)
-
-    val test = DBDate.getDayOfWeekAsNumber()
-
-    Log.d("HIHI", "DBDate.datedd() == ${test}")
 
     TabletContentWrapBtn(
         onClick = {
@@ -853,13 +839,14 @@ fun ContentsLabs() {
 
     TabletContentWrapBtn(
         onClick = {
-            PeriodicWorker.doWorker(
-                workManager = workManager,
-                delayMills = 3,
-                tag = "NOVEL",
-                platform = "ALL",
-                type = "NOVEL"
-            )
+            for(platform in novelListEng()){
+                runBlocking {
+                    saveBook(
+                        platform = platform,
+                        type = "NOVEL",
+                    )
+                }
+            }
         },
         content = {
             Row(
@@ -879,7 +866,7 @@ fun ContentsLabs() {
                 Spacer(modifier = Modifier.size(8.dp))
 
                 Text(
-                    text = "마나바라 NOVEL 전체",
+                    text = "마나바라 NOVEL BOOK 수동",
                     color = color000000,
                     fontSize = 18.sp,
                 )

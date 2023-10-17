@@ -17,7 +17,7 @@ sealed interface EventMain {
     ) : EventMain
 
     class SetBestBookList(
-        val setBestBookList : ArrayList<ItemBookInfo> = ArrayList(),
+        val bestBookList : ArrayList<ItemBookInfo> = ArrayList(),
     ) : EventMain
 
     class SetBestBookWeekList(
@@ -51,7 +51,7 @@ data class StateMain(
     val Loaded: Boolean = false,
     val fcmAlertList : ArrayList<FCMAlert> = ArrayList(),
     val fcmNoticeList : ArrayList<FCMAlert> = ArrayList(),
-    val setBestBookList : ArrayList<ItemBookInfo> = ArrayList(),
+    val bestBookList : ArrayList<ItemBookInfo> = ArrayList(),
     val fcmBestList : ArrayList<FCMAlert> = ArrayList(),
     val fcmJsonList : ArrayList<FCMAlert> = ArrayList(),
     val fcmTrophyList : ArrayList<FCMAlert> = ArrayList(),

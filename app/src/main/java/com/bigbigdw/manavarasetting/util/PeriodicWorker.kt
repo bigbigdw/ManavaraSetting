@@ -2,10 +2,8 @@ package com.bigbigdw.manavarasetting.util
 
 import android.util.Log
 import androidx.work.BackoffPolicy
-import androidx.work.Constraints
 import androidx.work.Data
 import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
@@ -19,7 +17,8 @@ import java.util.concurrent.TimeUnit
 object PeriodicWorker {
     fun doWorker(
         workManager: WorkManager,
-        delayMills: Long,
+        time: Long,
+        timeUnit: TimeUnit? = TimeUnit.HOURS,
         tag: String,
         platform: String,
         type: String
@@ -31,7 +30,7 @@ object PeriodicWorker {
             .putString(FirebaseWorkManager.TYPE, type)
             .build()
 
-        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(4, TimeUnit.HOURS)
+        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(time, timeUnit ?: TimeUnit.HOURS)
             .addTag("${tag}_${platform}_${type}")
 
             .setBackoffCriteria(

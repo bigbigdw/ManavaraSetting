@@ -15,12 +15,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
@@ -30,6 +34,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -63,6 +68,7 @@ import com.bigbigdw.manavarasetting.ui.theme.colorE9E9E9
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.ui.theme.colorF7F7F7
 import com.bigbigdw.manavarasetting.util.DBDate
+import kotlinx.coroutines.launch
 
 @Composable
 fun BackOnPressed() {
@@ -497,239 +503,215 @@ fun ItemTabletFCMList(item : FCMAlert, isLast: Boolean){
 }
 
 @Composable
-fun ItemTabletBestList(item : ItemBookInfo, isLast: Boolean){
+fun ScreenItemBestCard(item: ItemBookInfo){
+    Row(
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.Top,
+    ) {
 
-    Column {
-
-        Spacer(modifier = Modifier.size(8.dp))
-
-        Row(verticalAlignment = Alignment.CenterVertically){
+        androidx.compose.material3.Card(
+            modifier = Modifier
+                .requiredHeight(200.dp),
+            shape = RoundedCornerShape(10.dp),
+            elevation = CardDefaults.cardElevation(2.dp)
+        ) {
             AsyncImage(
                 model = item.bookImg,
                 contentDescription = null,
                 modifier = Modifier
-                    .height(220.dp)
-                    .widthIn(0.dp, 220.dp)
+                    .requiredHeight(200.dp)
+            )
+        }
+
+        Spacer(modifier = Modifier.size(12.dp))
+
+        Column(modifier = Modifier.wrapContentHeight()) {
+            Text(
+                text = item.title,
+                color = color20459E,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
             )
 
-            Spacer(modifier = Modifier.size(16.dp))
+            Text(
+                text = item.writer,
+                color = color000000,
+                fontSize = 16.sp,
+            )
 
+            Spacer(modifier = Modifier.size(4.dp))
+
+            if (item.bookCode.isNotEmpty()) {
+                Text(
+                    text = spannableString(
+                        textFront = "북코드 : ",
+                        color = color000000,
+                        textEnd = item.bookCode
+                    ),
+                    color = color8E8E8E,
+                    fontSize = 16.sp,
+                )
+            }
+
+            if (item.genre.isNotEmpty()) {
+                Text(
+                    text = spannableString(
+                        textFront = "장르 : ",
+                        color = color000000,
+                        textEnd = item.genre
+                    ),
+                    color = color8E8E8E,
+                    fontSize = 16.sp,
+                )
+            }
+
+            if (item.cntChapter.isNotEmpty()) {
+                Text(
+                    text = spannableString(
+                        textFront = "챕터 수 : ",
+                        color = color000000,
+                        textEnd = item.cntChapter
+                    ),
+                    color = color8E8E8E,
+                    fontSize = 16.sp,
+                )
+            }
+
+            if (item.cntRecom.isNotEmpty()) {
+                Text(
+                    text = spannableString(
+                        textFront = "플랫폼 평점 : ",
+                        color = color000000,
+                        textEnd = item.cntRecom
+                    ),
+                    color = color8E8E8E,
+                    fontSize = 16.sp,
+                )
+            }
+
+            if (item.cntChapter.isNotEmpty()) {
+                Text(
+                    text = spannableString(
+                        textFront = "총 편수 : ",
+                        color = color000000,
+                        textEnd = item.cntChapter
+                    ),
+                    color = color8E8E8E,
+                    fontSize = 16.sp,
+                )
+            }
+
+            if (item.cntFavorite.isNotEmpty()) {
+                Text(
+                    text = spannableString(
+                        textFront = "선호작 수 : ",
+                        color = color000000,
+                        textEnd = item.cntFavorite
+                    ),
+                    color = color8E8E8E,
+                    fontSize = 16.sp,
+                )
+            }
+
+            if (item.cntPageRead.isNotEmpty()) {
+                Text(
+                    text = spannableString(
+                        textFront = "조회 수 : ",
+                        color = color000000,
+                        textEnd = item.cntPageRead
+                    ),
+                    color = color8E8E8E,
+                    fontSize = 16.sp,
+                )
+            }
+
+            if (item.cntTotalComment.isNotEmpty()) {
+                Text(
+                    text = spannableString(
+                        textFront = "댓글 수 : ",
+                        color = color000000,
+                        textEnd = item.cntTotalComment
+                    ),
+                    color = color8E8E8E,
+                    fontSize = 16.sp,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun ScreenItemBestCount(item: ItemBookInfo) {
+    Row {
+        Box(
+            modifier = Modifier.weight(1f)
+        ) {
             Column {
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = item.title,
-                        color = color000000,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight(weight = 500)
+                Row {
+                    Image(
+                        contentScale = ContentScale.FillWidth,
+                        painter = painterResource(id = R.drawable.icon_best),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .width(20.dp)
+                            .height(20.dp)
                     )
-                }
 
-                Spacer(modifier = Modifier.size(4.dp))
+                    Spacer(modifier = Modifier.size(4.dp))
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
                     Text(
-                        text = spannableString(textFront = "작가명 : ", color = color000000, textEnd = item.writer),
+                        text = spannableString(
+                            textFront = "베스트 총합 : ",
+                            color = color000000,
+                            textEnd = "${item.total}"
+                        ),
                         color = color8E8E8E,
                         fontSize = 16.sp,
                     )
                 }
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
+                Row {
+                    Image(
+                        contentScale = ContentScale.FillWidth,
+                        painter = painterResource(id = R.drawable.icon_trophy),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .width(20.dp)
+                            .height(20.dp)
+                    )
+
+                    Spacer(modifier = Modifier.size(4.dp))
+
                     Text(
-                        text = spannableString(textFront = "북코드 : ", color = color000000, textEnd = item.bookCode),
+                        text = spannableString(
+                            textFront = "주간 총점 : ",
+                            color = color000000,
+                            textEnd = "${item.totalWeek}"
+                        ),
                         color = color8E8E8E,
                         fontSize = 16.sp,
                     )
                 }
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = spannableString(textFront = "헌재 스코어 : ", color = color000000, textEnd = item.number.toString()),
-                        color = color8E8E8E,
-                        fontSize = 16.sp,
+                Row {
+                    Image(
+                        contentScale = ContentScale.FillWidth,
+                        painter = painterResource(id = R.drawable.icon_trophy),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .width(20.dp)
+                            .height(20.dp)
                     )
-                }
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = spannableString(textFront = "타입 : ", color = color000000, textEnd = item.type),
-                        color = color8E8E8E,
-                        fontSize = 16.sp,
-                    )
-                }
+                    Spacer(modifier = Modifier.size(4.dp))
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
                     Text(
-                        text = spannableString(textFront = "조회 수 : ", color = color000000, textEnd = item.cntPageRead),
-                        color = color8E8E8E,
-                        fontSize = 16.sp,
-                    )
-                }
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = spannableString(textFront = "선호작 수 : ", color = color000000, textEnd = item.cntFavorite),
-                        color = color8E8E8E,
-                        fontSize = 16.sp,
-                    )
-                }
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = spannableString(textFront = "추천 수 : ", color = color000000, textEnd = item.cntRecom),
-                        color = color8E8E8E,
-                        fontSize = 16.sp,
-                    )
-                }
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = spannableString(textFront = "댓글 수 : ", color = color000000, textEnd = item.cntTotalComment),
-                        color = color8E8E8E,
-                        fontSize = 16.sp,
-                    )
-                }
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = spannableString(textFront = "회차 수 : ", color = color000000, textEnd = item.cntChapter),
-                        color = color8E8E8E,
-                        fontSize = 16.sp,
-                    )
-                }
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = spannableString(textFront = "스토리 : ", color = color000000, textEnd = item.intro),
-                        color = color8E8E8E,
-                        fontSize = 16.sp,
-                    )
-                }
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = spannableString(textFront = "점수 : ", color = color000000, textEnd = item.point.toString()),
-                        color = color8E8E8E,
-                        fontSize = 16.sp,
-                    )
-                }
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = spannableString(textFront = "베스트 총합 : ", color = color000000, textEnd = item.total.toString()),
-                        color = color8E8E8E,
-                        fontSize = 16.sp,
-                    )
-                }
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = spannableString(textFront = "베스트 총합 카운트 : ", color = color000000, textEnd = item.totalCount.toString()),
-                        color = color8E8E8E,
-                        fontSize = 16.sp,
-                    )
-                }
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = spannableString(textFront = "베스트 주간 :", color = color000000, textEnd = item.totalWeek.toString()),
-                        color = color8E8E8E,
-                        fontSize = 16.sp,
-                    )
-                }
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = spannableString(textFront = "베스트 주간 카운트 : ", color = color000000, textEnd = item.totalWeekCount.toString()),
-                        color = color8E8E8E,
-                        fontSize = 16.sp,
-                    )
-                }
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = spannableString(textFront = "베스트 월간 : ", color = color000000, textEnd = item.totalMonth.toString()),
-                        color = color8E8E8E,
-                        fontSize = 16.sp,
-                    )
-                }
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = spannableString(textFront = "베스트 월간 카운트 : ", color = color000000, textEnd = item.totalMonthCount.toString()),
+                        text = spannableString(
+                            textFront = "월간 총점 : ",
+                            color = color000000,
+                            textEnd = "${item.totalMonth}"
+                        ),
                         color = color8E8E8E,
                         fontSize = 16.sp,
                     )
@@ -737,13 +719,82 @@ fun ItemTabletBestList(item : ItemBookInfo, isLast: Boolean){
             }
         }
 
-        if(!isLast){
-            Spacer(modifier = Modifier.size(8.dp))
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp)
-                .background(color = colorE9E9E9))
-            Spacer(modifier = Modifier.size(2.dp))
+        Box(
+            modifier = Modifier.weight(1f)
+        ) {
+            Column {
+
+                Row {
+                    Image(
+                        contentScale = ContentScale.FillWidth,
+                        painter = painterResource(id = R.drawable.icon_best_gr),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .width(20.dp)
+                            .height(20.dp)
+                    )
+
+                    Spacer(modifier = Modifier.size(4.dp))
+
+                    Text(
+                        text = spannableString(
+                            textFront = "총 베스트 횟수 : ",
+                            color = color000000,
+                            textEnd = "${item.totalCount}"
+                        ),
+                        color = color8E8E8E,
+                        fontSize = 16.sp,
+                    )
+                }
+
+                Row {
+                    Image(
+                        contentScale = ContentScale.FillWidth,
+                        painter = painterResource(id = R.drawable.icon_trophy_gr),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .width(20.dp)
+                            .height(20.dp)
+                    )
+
+                    Spacer(modifier = Modifier.size(4.dp))
+
+                    Text(
+                        text = spannableString(
+                            textFront = "주간 베스트 횟수 : ",
+                            color = color000000,
+                            textEnd = item.totalWeekCount.toString()
+                        ),
+                        color = color8E8E8E,
+                        fontSize = 16.sp,
+                    )
+
+                }
+
+                Row {
+                    Image(
+                        contentScale = ContentScale.FillWidth,
+                        painter = painterResource(id = R.drawable.icon_trophy_gr),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .width(20.dp)
+                            .height(20.dp)
+                    )
+
+                    Spacer(modifier = Modifier.size(4.dp))
+
+                    Text(
+                        text = spannableString(
+                            textFront = "월간 베스트 횟수 : ",
+                            color = color000000,
+                            textEnd = item.totalMonthCount.toString()
+                        ),
+                        color = color8E8E8E,
+                        fontSize = 16.sp,
+                    )
+
+                }
+            }
         }
     }
 }
@@ -782,17 +833,6 @@ fun ItemTabletBestListVertical(item: ItemBookInfo){
             fontSize = 16.sp,
         )
     }
-}
-
-@Composable
-@Preview
-fun previewItem(){
-    ItemTabletBestList(
-        isLast = true, item = ItemBookInfo(
-            bookImg = "https://cf.joara.com/literature_file/1295645_1693736606_thumb.png",
-            title = "TITLE"
-        )
-    )
 }
 
 @Composable

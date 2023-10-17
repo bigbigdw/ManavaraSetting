@@ -8,6 +8,7 @@ import com.bigbigdw.manavarasetting.util.BestRef
 import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.MiningSource
 import com.bigbigdw.manavarasetting.util.novelListEng
+import com.bigbigdw.manavarasetting.util.saveBook
 import com.bigbigdw.manavarasetting.util.setDataStore
 import com.bigbigdw.massmath.Firebase.FirebaseService
 import com.google.firebase.database.FirebaseDatabase
@@ -34,7 +35,30 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                 TYPE
             )
 
-        if(workerName.contains("MINING")){
+        val year = DBDate.dateMMDDHHMMss().substring(0, 4)
+        val month = DBDate.dateMMDDHHMMss().substring(4, 6)
+        val day = DBDate.dateMMDDHHMMss().substring(6, 8)
+        val hour = DBDate.dateMMDDHHMMss().substring(8, 10)
+        val min = DBDate.dateMMDDHHMMss().substring(10, 12)
+        val sec = DBDate.dateMMDDHHMMss().substring(12, 14)
+
+        if(inputData.getString(WORKER)?.contains("BOOK") == true){
+            for(platform in novelListEng()){
+                runBlocking {
+                    saveBook(
+                        platform = platform,
+                        type = inputData.getString(TYPE) ?: "",
+                    )
+                }
+            }
+
+            postFCM(
+                data = workerName,
+                time = "${year}.${month}.${day} ${hour}:${min}:${sec}",
+                activity = "${inputData.getString(WORKER)} ${inputData.getString(TYPE)}",
+            )
+
+        } else if(workerName.contains("MINING")){
             runBlocking {
                 if (DBDate.getDayOfWeekAsNumber().toString() == "0") {
                     BestRef.setBestRef(
@@ -104,13 +128,6 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                 }
             }
 
-            val year = DBDate.dateMMDDHHMMss().substring(0, 4)
-            val month = DBDate.dateMMDDHHMMss().substring(4, 6)
-            val day = DBDate.dateMMDDHHMMss().substring(6, 8)
-            val hour = DBDate.dateMMDDHHMMss().substring(8, 10)
-            val min = DBDate.dateMMDDHHMMss().substring(10, 12)
-            val sec = DBDate.dateMMDDHHMMss().substring(12, 14)
-
             postFCM(
                 data = "마나바라 웹소설",
                 time = "${year}.${month}.${day} ${hour}:${min}:${sec}",
@@ -118,13 +135,6 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
             )
 
         } else {
-
-            val year = DBDate.dateMMDDHHMMss().substring(0, 4)
-            val month = DBDate.dateMMDDHHMMss().substring(4, 6)
-            val day = DBDate.dateMMDDHHMMss().substring(6, 8)
-            val hour = DBDate.dateMMDDHHMMss().substring(8, 10)
-            val min = DBDate.dateMMDDHHMMss().substring(10, 12)
-            val sec = DBDate.dateMMDDHHMMss().substring(12, 14)
 
             postFCM(
                 data = workerName,

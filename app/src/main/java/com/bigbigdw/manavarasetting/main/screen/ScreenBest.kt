@@ -24,9 +24,9 @@ import com.bigbigdw.manavarasetting.util.novelListEng
 @Composable
 fun ContentsListNovel(
     setDetailPage: (Boolean) -> Unit,
-    setDetailMenu: (String) -> Unit,
-    setDetailPlatform: (String) -> Unit,
-    setDetailType: (String) -> Unit,
+    setMenu: (String) -> Unit,
+    setPlatform: (String) -> Unit,
+    setType: (String) -> Unit,
     type : String
 ) {
 
@@ -34,9 +34,9 @@ fun ContentsListNovel(
         TabletContentWrapBtn(
             onClick = {
                 setDetailPage(true)
-                setDetailMenu("${changePlatformNameKor(item)} $type")
-                setDetailPlatform(item)
-                setDetailType("NOVEL")
+                setMenu("${changePlatformNameKor(item)} $type")
+                setPlatform(item)
+                setType("NOVEL")
             },
             content = {
                 Row(
@@ -71,18 +71,18 @@ fun ContentsListNovel(
 @Composable
 fun ContentsBestListComic(
     setDetailPage: (Boolean) -> Unit,
-    setDetailMenu: (String) -> Unit,
-    setDetailPlatform: (String) -> Unit,
-    setDetailType: (String) -> Unit,
+    setMenu: (String) -> Unit,
+    setPlatform: (String) -> Unit,
+    setType: (String) -> Unit,
     type : String
 ) {
 
     TabletContentWrapBtn(
         onClick = {
             setDetailPage(true)
-            setDetailMenu("네이버 시리즈 $type")
-            setDetailPlatform("NAVER_SERIES")
-            setDetailType("COMIC")
+            setMenu("네이버 시리즈 $type")
+            setPlatform("NAVER_SERIES")
+            setType("COMIC")
         },
         content = {
             Row(

@@ -2,7 +2,6 @@ package com.bigbigdw.manavarasetting.widget
 
 import android.content.Context
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.datastore.preferences.core.intPreferencesKey
@@ -41,9 +40,7 @@ import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import com.bigbigdw.manavarasetting.widget.ManavaraSettingWidget.paramWorkerInterval
 import com.bigbigdw.manavarasetting.widget.ManavaraSettingWidget.paramWorkerStatus
 import com.bigbigdw.manavarasetting.widget.ManavaraSettingWidget.paramWorkerTag
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
 
@@ -221,7 +218,7 @@ class WidgetCallback : ActionCallback {
             if (parameters[paramWorkerStatus] == "DO") {
                 PeriodicWorker.doWorker(
                     workManager = workManager,
-                    delayMills = parameters[paramWorkerInterval] ?: 0,
+                    time = parameters[paramWorkerInterval] ?: 0,
                     tag = parameters[paramWorkerTag] ?: "",
                     platform = "NAVER_SERIES",
                     type = "COMIC"

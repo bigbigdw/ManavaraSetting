@@ -88,7 +88,7 @@ fun ContentsFCM() {
         MainSettingLine(title = "WORKER 시작", onClick = {
             PeriodicWorker.doWorker(
                 workManager = workManager,
-                delayMills = 15,
+                time = 15,
                 tag = "TEST",
                 platform = "",
                 type = ""
