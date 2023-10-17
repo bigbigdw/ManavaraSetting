@@ -47,9 +47,12 @@ import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color1CE3EE
 import com.bigbigdw.manavarasetting.ui.theme.color20459E
+import com.bigbigdw.manavarasetting.ui.theme.color8E8E8E
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.ui.theme.colorF7F7F7
 import com.bigbigdw.manavarasetting.util.DBDate
+import com.bigbigdw.manavarasetting.util.DataStoreManager
+import com.bigbigdw.manavarasetting.util.FCM
 import com.bigbigdw.manavarasetting.util.changePlatformNameKor
 import com.bigbigdw.manavarasetting.util.genreListEng
 import com.bigbigdw.manavarasetting.util.getPlatformLogoEng
@@ -274,11 +277,41 @@ fun GenreDetailJson(
                     item { Spacer(modifier = Modifier.size(60.dp)) }
                 }
 
-                if (getDate == "전체") {  
+                if (getDate == "전체") {
                     LazyColumn(
                         modifier = Modifier
                             .background(colorF6F6F6)
                     ) {
+
+                        item{
+                            Button(
+                                colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+                                onClick = {  },
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                shape = RoundedCornerShape(20.dp),
+                                content = {
+
+                                    Column {
+
+                                        Text(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            text = "전체 리스트는 장르 누적 순위로 표시됩니다.",
+                                            color = color8E8E8E,
+                                            fontSize = 16.sp,
+                                        )
+
+                                        Text(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            text = "각 일별 순위는 1위부터 3위까지 표시됩니다. 일별 탭에서 모든 순위를 확인 할 수 있습니다.",
+                                            color = color8E8E8E,
+                                            fontSize = 16.sp,
+                                        )
+
+                                    }
+                                }
+                            )
+                        }
 
                         item { ItemTabletTitle(str = "${DBDate.month()}월 전체", isTopPadding = false) }
 
@@ -296,10 +329,14 @@ fun GenreDetailJson(
                                 ItemTabletTitle(str = "${DBDate.month()}월 ${index}일")
 
                                 item.forEachIndexed{ innerIndex, innnerItem ->
-                                    ListGenreToday(
-                                        itemBestKeyword = innnerItem,
-                                        index = innerIndex
-                                    )
+
+                                    if(innerIndex < 3){
+                                        ListGenreToday(
+                                            itemBestKeyword = innnerItem,
+                                            index = innerIndex,
+                                            changeColor = color8E8E8E
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -386,6 +423,7 @@ fun ScreenItemKeyword(
 fun ListGenreToday(
     itemBestKeyword: ItemKeyword,
     index: Int,
+    changeColor : Color ? = color1CE3EE
 ) {
 
     Row(
@@ -449,7 +487,7 @@ fun ListGenreToday(
                             .wrapContentSize(),
                         fontSize = 16.sp,
                         textAlign = TextAlign.Left,
-                        color = color1CE3EE,
+                        color = changeColor ?: color1CE3EE,
                         fontWeight = FontWeight.Bold,
                         overflow = TextOverflow.Ellipsis
                     )

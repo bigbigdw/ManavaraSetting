@@ -116,32 +116,23 @@ fun ContentsFCM() {
 
             Column {
 
-                Row(
+                Text(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "FCM 토큰",
-                        color = color000000,
-                        fontSize = 18.sp,
-                    )
-                }
+                    text = "FCM 토큰",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
 
                 if(dataStore.getDataStoreString(DataStoreManager.FCM_TOKEN).collectAsState(initial = "").value?.isNotBlank() == true){
                     Spacer(modifier = Modifier.size(4.dp))
 
-                    Row(
+                    Text(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Start,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = dataStore.getDataStoreString(DataStoreManager.FCM_TOKEN).collectAsState(initial = "").value ?: "",
-                            color = color8E8E8E,
-                            fontSize = 16.sp,
-                        )
-                    }
+                        text = dataStore.getDataStoreString(DataStoreManager.FCM_TOKEN).collectAsState(initial = "").value ?: "",
+                        color = color8E8E8E,
+                        fontSize = 16.sp,
+                    )
+
                     Spacer(modifier = Modifier.size(16.dp))
                 }
             }
