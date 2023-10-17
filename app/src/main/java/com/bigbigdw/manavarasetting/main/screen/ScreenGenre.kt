@@ -326,7 +326,7 @@ fun GenreDetailJson(
 
                             if(item.size > 0){
 
-                                ItemTabletTitle(str = "${DBDate.month()}월 ${index}일")
+                                ItemTabletTitle(str = "${DBDate.month()}월 ${index + 1}일")
 
                                 item.forEachIndexed{ innerIndex, innnerItem ->
 
