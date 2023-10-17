@@ -105,25 +105,25 @@ fun ContentsGenre(
 @Composable
 fun GenreDetail(
     viewModelMain: ViewModelMain,
-    getDetailPlatform: String,
-    getDetailType: String,
+    getPlatform: String,
+    getType: String,
     menuType: String
 ) {
 
     val state = viewModelMain.state.collectAsState().value
 
-    LaunchedEffect(menuType) {
+    LaunchedEffect(menuType, getPlatform, getType) {
         when (menuType) {
             "투데이" -> {
-                viewModelMain.getGenreDay(platform = getDetailPlatform, type = getDetailType)
+                viewModelMain.getGenreDay(platform = getPlatform, type = getType)
             }
 
             "주간" -> {
-                viewModelMain.getGenreDayWeek(platform = getDetailPlatform, type = getDetailType)
+                viewModelMain.getGenreDayWeek(platform = getPlatform, type = getType)
             }
 
             else -> {
-                viewModelMain.getGenreDayMonth(platform = getDetailPlatform, type = getDetailType)
+                viewModelMain.getGenreDayMonth(platform = getPlatform, type = getType)
             }
         }
     }
@@ -147,26 +147,26 @@ fun GenreDetail(
 @Composable
 fun GenreDetailJson(
     viewModelMain: ViewModelMain,
-    getDetailPlatform: String,
-    getDetailType: String,
+    getPlatform: String,
+    getType: String,
     menuType: String
 ) {
 
-    LaunchedEffect(menuType) {
+    LaunchedEffect(menuType, getPlatform, getType) {
         when (menuType) {
             "투데이" -> {
-                viewModelMain.getJsonGenreList(platform = getDetailPlatform, type = getDetailType)
+                viewModelMain.getJsonGenreList(platform = getPlatform, type = getType)
             }
             "주간" -> {
                 viewModelMain.getJsonGenreWeekList(
-                    platform = getDetailPlatform,
-                    type = getDetailType
+                    platform = getPlatform,
+                    type = getType
                 )
             }
             else -> {
                 viewModelMain.getJsonGenreMonthList(
-                    platform = getDetailPlatform,
-                    type = getDetailType
+                    platform = getPlatform,
+                    type = getType
                 )
             }
         }

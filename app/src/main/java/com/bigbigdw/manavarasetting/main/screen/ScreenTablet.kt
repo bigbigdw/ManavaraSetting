@@ -367,22 +367,22 @@ fun ScreenTabletDetail(
         } else if (getDetailMenu.contains("투데이 장르 베스트")) {
             GenreDetail(
                 viewModelMain = viewModelMain,
-                getDetailPlatform = getDetailPlatform,
-                getDetailType = getDetailType,
+                getPlatform = getDetailPlatform,
+                getType = getDetailType,
                 menuType = "투데이 장르 베스트"
             )
         } else if (getDetailMenu.contains("주간 장르 베스트")) {
             GenreDetail(
                 viewModelMain = viewModelMain,
-                getDetailPlatform = getDetailPlatform,
-                getDetailType = getDetailType,
+                getPlatform = getDetailPlatform,
+                getType = getDetailType,
                 menuType = "주간"
             )
         } else if (getDetailMenu.contains("월간 장르 베스트")) {
             GenreDetail(
                 viewModelMain = viewModelMain,
-                getDetailPlatform = getDetailPlatform,
-                getDetailType = getDetailType,
+                getPlatform = getDetailPlatform,
+                getType = getDetailType,
                 menuType = "월간"
             )
         } else if (getDetailMenu.contains("JSON 투데이 베스트")) {
@@ -437,22 +437,22 @@ fun ScreenTabletDetail(
         } else if (getDetailMenu.contains("투데이 장르 JSON")) {
             GenreDetailJson(
                 viewModelMain = viewModelMain,
-                getDetailPlatform = getDetailPlatform,
-                getDetailType = getDetailType,
+                getPlatform = getDetailPlatform,
+                getType = getDetailType,
                 menuType = "투데이"
             )
         } else if (getDetailMenu.contains("주간 장르 JSON")) {
             GenreDetailJson(
                 viewModelMain = viewModelMain,
-                getDetailPlatform = getDetailPlatform,
-                getDetailType = getDetailType,
+                getPlatform = getDetailPlatform,
+                getType = getDetailType,
                 menuType = "주간"
             )
         } else if (getDetailMenu.contains("월간 장르 JSON")) {
             GenreDetailJson(
                 viewModelMain = viewModelMain,
-                getDetailPlatform = getDetailPlatform,
-                getDetailType = getDetailType,
+                getPlatform = getDetailPlatform,
+                getType = getDetailType,
                 menuType = "월간"
             )
         } else if (getDetailMenu.contains("웹소설 베스트 DB")) {

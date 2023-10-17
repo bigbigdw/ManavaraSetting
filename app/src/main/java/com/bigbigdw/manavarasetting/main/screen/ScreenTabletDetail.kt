@@ -50,7 +50,7 @@ fun ContentsBestListDetail(
     getType: String
 ) {
 
-    LaunchedEffect(getPlatform, getType){
+    LaunchedEffect(type, getPlatform, getType){
         if (type == "BEST") {
             viewModelMain.getBestList(platform = getPlatform, type = getType)
         } else {
