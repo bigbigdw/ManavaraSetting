@@ -799,41 +799,41 @@ fun ScreenItemBestCount(item: ItemBookInfo) {
     }
 }
 
-@Composable
-fun ItemTabletBestListVertical(item: ItemBookInfo){
-
-    Column(modifier = Modifier
-        .padding(8.dp)
-        .widthIn(0.dp, 220.dp)){
-
-        AsyncImage(
-            model = item.bookImg,
-            contentDescription = null,
-            modifier = Modifier
-                .height(220.dp)
-                .widthIn(0.dp, 220.dp)
-        )
-
-        Text(
-            text = item.title,
-            color = color000000,
-            fontSize = 18.sp,
-            fontWeight = FontWeight(weight = 500)
-        )
-
-        Text(
-            text = spannableString(textFront = "작가명 : ", color = color000000, textEnd = item.writer),
-            color = color8E8E8E,
-            fontSize = 16.sp,
-        )
-
-        Text(
-            text = spannableString(textFront = "북코드 : ", color = color000000, textEnd = item.bookCode),
-            color = color8E8E8E,
-            fontSize = 16.sp,
-        )
-    }
-}
+//@Composable
+//fun ItemTabletBestListVertical(item: ItemBookInfo){
+//
+//    Column(modifier = Modifier
+//        .padding(8.dp)
+//        .widthIn(0.dp, 220.dp)){
+//
+//        AsyncImage(
+//            model = item.bookImg,
+//            contentDescription = null,
+//            modifier = Modifier
+//                .height(220.dp)
+//                .widthIn(0.dp, 220.dp)
+//        )
+//
+//        Text(
+//            text = item.title,
+//            color = color000000,
+//            fontSize = 18.sp,
+//            fontWeight = FontWeight(weight = 500)
+//        )
+//
+//        Text(
+//            text = spannableString(textFront = "작가명 : ", color = color000000, textEnd = item.writer),
+//            color = color8E8E8E,
+//            fontSize = 16.sp,
+//        )
+//
+//        Text(
+//            text = spannableString(textFront = "북코드 : ", color = color000000, textEnd = item.bookCode),
+//            color = color8E8E8E,
+//            fontSize = 16.sp,
+//        )
+//    }
+//}
 
 @Composable
 fun ItemTabletTrophyList(item : ItemBestInfo, isLast: Boolean){

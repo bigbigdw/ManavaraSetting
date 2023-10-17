@@ -400,7 +400,7 @@ fun ScreenTabletDetail(
                 getType = getDetailType,
             )
         } else if (getDetailMenu.contains("JSON 월간 베스트")) {
-            ContentsBestListDetailWeek(
+            ContentsBestListDetailMonth(
                 viewModelMain = viewModelMain,
                 menu = "월간",
                 getPlatform = getDetailPlatform,

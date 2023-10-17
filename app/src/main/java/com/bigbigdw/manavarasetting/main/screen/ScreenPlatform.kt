@@ -770,3 +770,43 @@ fun BookDetail(
         }
     }
 }
+
+@Composable
+fun ScreenBookItem(item : ItemBookInfo){
+    Button(
+        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+        contentPadding = PaddingValues(
+            start = 0.dp,
+            top = 0.dp,
+            end = 0.dp,
+            bottom = 0.dp,
+        ),
+        shape = RoundedCornerShape(20.dp),
+        onClick = {},
+        content = {
+            Column(
+                modifier = Modifier
+                    .padding(24.dp, 12.dp)
+            ) {
+
+                ScreenItemBestCard(item = item)
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                ScreenItemBestCount(item = item)
+
+                if (item.intro.isNotEmpty()) {
+
+                    Spacer(modifier = Modifier.size(8.dp))
+
+                    Text(
+                        text = item.intro,
+                        color = color8E8E8E,
+                        fontSize = 16.sp,
+                    )
+                }
+            }
+        })
+
+    Spacer(modifier = Modifier.size(16.dp))
+}
