@@ -9,8 +9,6 @@ import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.MiningSource
 import com.bigbigdw.manavarasetting.util.novelListEng
 import com.bigbigdw.manavarasetting.util.saveBook
-import com.bigbigdw.manavarasetting.util.setDataStore
-import com.bigbigdw.massmath.Firebase.FirebaseService
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.runBlocking
 import retrofit2.Call

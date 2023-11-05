@@ -1,7 +1,5 @@
-package com.bigbigdw.massmath.Firebase
+package com.bigbigdw.manavarasetting.firebase
 
-import com.bigbigdw.manavarasetting.firebase.DataFCMBody
-import com.bigbigdw.manavarasetting.firebase.FWorkManagerResult
 import retrofit2.Call
 import retrofit2.http.*
 

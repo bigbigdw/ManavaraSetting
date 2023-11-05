@@ -95,6 +95,9 @@ fun ScreenTablet(
                 "세팅바라 현황" -> {
                     ContentsSetting()
                 }
+                "회원관리" -> {
+                    ScreenTest()
+                }
                 "FCM 관리" -> {
                     ContentsFCM()
                 }
