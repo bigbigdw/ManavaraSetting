@@ -1,5 +1,6 @@
 package com.bigbigdw.manavarasetting.main.screen
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -165,7 +166,7 @@ fun ContentsFCM() {
         }
     )
 
-    ItemTabletTitle(str = "FCM 공지사항 등록")
+    ItemTabletTitle(str = "FCM ALERT 등록")
 
     TabletContentWrap {
         TextField(
@@ -225,14 +226,7 @@ fun ContentsFCM() {
 fun ContentsFCMList(viewModelMain: ViewModelMain, child : String){
 
     LaunchedEffect(child){
-        when (child) {
-            "ALERT" -> {
-                viewModelMain.getFCMList(child = child)
-            }
-            "NOTICE" -> {
-                viewModelMain.getFCMList(child = child)
-            }
-        }
+        viewModelMain.getFCMList(child = child)
     }
 
     val fcmAlertList = when (child) {
@@ -244,9 +238,11 @@ fun ContentsFCMList(viewModelMain: ViewModelMain, child : String){
         }
 
         else -> {
-            viewModelMain.state.collectAsState().value.fcmAlertList
+            viewModelMain.state.collectAsState().value.fcmNoticeList
         }
     }
+
+    Log.d("HIHI", "fcmAlertList == $fcmAlertList")
 
     TabletContentWrap {
         Spacer(modifier = Modifier.size(8.dp))

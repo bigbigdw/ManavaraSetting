@@ -375,29 +375,51 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         ItemMainSettingSingleTablet(
             containerColor = color998DF9,
             image = R.drawable.icon_fcm_wht,
-            title = "FCM 공지사항 리스트",
+            title = "FCM NOTICE 리스트",
             body = "NOTICE 리스트 확인",
             setter = setMenu,
             getter = getMenu,
             onClick = { onClick() },
-            value = "FCM 공지사항 리스트",
+            value = "FCM NOTICE 리스트",
         )
 
         ItemMainSettingSingleTablet(
             containerColor = colorEA927C,
             image = R.drawable.icon_fcm_wht,
-            title = "FCM 알림 리스트",
+            title = "FCM ALERT 리스트",
             body = "ALERT 리스트 확인",
             setter = setMenu,
             getter = getMenu,
             onClick = { onClick() },
-            value = "FCM 알림 리스트",
+            value = "FCM ALERT 리스트",
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = colorABD436,
+            image = R.drawable.icon_fcm_wht,
+            title = "FCM USER 리스트",
+            body = "USER 리스트 확인",
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "FCM USER 리스트",
+        )
+
+        ItemMainSettingSingleTablet(
+            containerColor = colorF17FA0,
+            image = R.drawable.icon_fcm_wht,
+            title = "FCM CS 리스트",
+            body = "CS 리스트 확인",
+            setter = setMenu,
+            getter = getMenu,
+            onClick = { onClick() },
+            value = "FCM CS 리스트",
         )
 
         TabletBorderLine()
 
         ItemMainSettingSingleTablet(
-            containerColor = colorABD436,
+            containerColor = color21C2EC,
             image = R.drawable.icon_novel_wht,
             title = "웹소설 관리",
             body = "웹소설 플랫폼 베스트 리스트 확인",
@@ -408,7 +430,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = colorF17FA0,
+            containerColor = color31C3AE,
             image = R.drawable.icon_novel_wht,
             title = "웹소설 베스트 DB",
             body = "마나바라에 기록된 베스트 웹소설 리스트",
@@ -436,7 +458,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         TabletBorderLine()
 
         ItemMainSettingSingleTablet(
-            containerColor = color21C2EC,
+            containerColor = color7C81FF,
             image = R.drawable.icon_best_wht,
             title = "웹소설 베스트 리스트",
             body = "웹소설 플랫폼 베스트 리스트 확인",
@@ -447,7 +469,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color31C3AE,
+            containerColor = color64C157,
             image = R.drawable.icon_best_wht,
             title = "투데이 장르 베스트",
             body = "투데이 장르 베스트 확인",
@@ -458,7 +480,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color7C81FF,
+            containerColor = colorF17666,
             image = R.drawable.icon_best_wht,
             title = "주간 장르 베스트",
             body = "투데이 장르 베스트 확인",
@@ -469,7 +491,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color64C157,
+            containerColor = color536FD2,
             image = R.drawable.icon_best_wht,
             title = "월간 장르 베스트",
             body = "투데이 장르 베스트 확인",
@@ -480,7 +502,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = colorF17666,
+            containerColor = color4996E8,
             image = R.drawable.icon_json_wht,
             title = "웹소설 JSON 투데이",
             body = "웹소설 플랫폼 JSON 베스트 투데이",
@@ -491,7 +513,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color536FD2,
+            containerColor = colorFDC24E,
             image = R.drawable.icon_json_wht,
             title = "웹소설 JSON 주간",
             body = "웹소설 플랫폼 JSON 베스트 주간",
@@ -502,7 +524,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color4996E8,
+            containerColor = color80BF78,
             image = R.drawable.icon_json_wht,
             title = "웹소설 JSON 월간",
             body = "웹툰 플랫폼 JSON 베스트 월간",
@@ -513,7 +535,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = colorFDC24E,
+            containerColor = color91CEC7,
             image = R.drawable.icon_json_wht,
             title = "웹소설 JSON 주간 트로피",
             body = "웹소설 플랫폼 JSON 주간 트로피",
@@ -524,7 +546,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color80BF78,
+            containerColor = color79B4F8,
             image = R.drawable.icon_json_wht,
             title = "웹소설 JSON 월간 트로피",
             body = "웹툰 플랫폼 JSON 베스트 월간",
@@ -535,7 +557,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color91CEC7,
+            containerColor = color8AA6BD,
             image = R.drawable.icon_trophy_wht,
             title = "웹소설 트로피 주간 토탈",
             body = "트로피 수동 정산 & Worker 관리",
@@ -546,7 +568,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color79B4F8,
+            containerColor = color2EA259,
             image = R.drawable.icon_trophy_wht,
             title = "웹소설 트로피 월간 토탈",
             body = "장르별 월간 트로피 리스트 확인",
@@ -557,7 +579,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color8AA6BD,
+            containerColor = color808CF8,
             image = R.drawable.ic_launcher,
             title = "웹소설 투데이 장르",
             body = "투데이 장르 JSON 확인",
@@ -568,7 +590,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color2EA259,
+            containerColor = colorFFAC59,
             image = R.drawable.ic_launcher,
             title = "웹소설 주간 장르",
             body = "주간 장르 JSON 확인",
@@ -579,7 +601,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color808CF8,
+            containerColor = color4AD7CF,
             image = R.drawable.ic_launcher,
             title = "웹소설 월간 장르",
             body = "월간 장르 JSON 확인",
@@ -592,7 +614,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         TabletBorderLine()
 
         ItemMainSettingSingleTablet(
-            containerColor = colorFFAC59,
+            containerColor = color5372DE,
             image = R.drawable.icon_webtoon_wht,
             title = "웹툰 현황",
             body = "웹툰 플랫폼 베스트 리스트 확인",
@@ -618,7 +640,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         TabletBorderLine()
 
         ItemMainSettingSingleTablet(
-            containerColor = color808CF8,
+            containerColor = color998DF9,
             image = R.drawable.icon_best_wht,
             title = "웹툰 베스트 리스트",
             body = "웹툰 플랫폼 베스트 리스트 확인",
@@ -629,7 +651,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = colorFFAC59,
+            containerColor = colorEA927C,
             image = R.drawable.icon_json_wht,
             title = "웹툰 JSON 투데이",
             body = "웹툰 플랫폼 JSON 베스트 투데이",
@@ -640,7 +662,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color4AD7CF,
+            containerColor = colorABD436,
             image = R.drawable.icon_json_wht,
             title = "웹툰 JSON 주간",
             body = "웹툰 플랫폼 JSON 베스트 주간",
@@ -650,7 +672,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             value = "웹툰 JSON 주간",
         )
         ItemMainSettingSingleTablet(
-            containerColor = color5372DE,
+            containerColor = colorF17FA0,
             image = R.drawable.icon_json_wht,
             title = "웹툰 JSON 월간",
             body = "웹툰 플랫폼 JSON 베스트 월간",
@@ -661,7 +683,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = color998DF9,
+            containerColor = color21C2EC,
             image = R.drawable.icon_json_wht,
             title = "웹툰 JSON 주간 트로피",
             body = "웹툰 플랫폼 JSON 주간 트로피",
@@ -672,7 +694,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = colorEA927C,
+            containerColor = color31C3AE,
             image = R.drawable.icon_json_wht,
             title = "웹툰 JSON 월간 트로피",
             body = "장르별 월간 JSON 확인",
@@ -683,7 +705,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = colorABD436,
+            containerColor = color7C81FF,
             image = R.drawable.icon_trophy_wht,
             title = "웹툰 트로피 주간 토탈",
             body = "장르별 주간 트로피 리스트 확인",
@@ -694,7 +716,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
         )
 
         ItemMainSettingSingleTablet(
-            containerColor = colorF17FA0,
+            containerColor = color64C157,
             image = R.drawable.icon_trophy_wht,
             title = "웹툰 트로피 월간 토탈",
             body = "시간별 트로피 최신화 현황",

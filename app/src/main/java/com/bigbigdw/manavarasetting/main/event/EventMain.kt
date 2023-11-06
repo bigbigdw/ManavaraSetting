@@ -45,6 +45,10 @@ sealed interface EventMain {
         val genreDay : ArrayList<ItemKeyword> = ArrayList(),
         val genreDayList : ArrayList<ArrayList<ItemKeyword>> = ArrayList()
     ) : EventMain
+
+    class SetUserList(
+        val userList : ArrayList<UserInfo> = ArrayList()
+    ) : EventMain
 }
 
 data class StateMain(
@@ -61,5 +65,14 @@ data class StateMain(
     val fcmJsonCount : Int = 0,
     val fcmTrophyCount : Int = 0,
     val genreDay : ArrayList<ItemKeyword> = ArrayList(),
-    val genreDayList : ArrayList<ArrayList<ItemKeyword>> = ArrayList()
+    val genreDayList : ArrayList<ArrayList<ItemKeyword>> = ArrayList(),
+    val userList : ArrayList<UserInfo> = ArrayList()
+)
+
+data class UserInfo (
+    var userNickName: String = "",
+    var userEmail: String = "",
+    var userFcmToken : String = "",
+    var userUID : String = "",
+    var userStatus : String = "LOCKED",
 )

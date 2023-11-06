@@ -41,6 +41,8 @@ class ActivitySpalsh : ComponentActivity() {
         registerNotification()
         registerNotificationAdmin()
         askNotificationPermission()
+        registerCS()
+        registerUser()
 
         setContent {
             ScreenSplash()
@@ -89,6 +91,44 @@ class ActivitySpalsh : ComponentActivity() {
         notificationChannel.description = channelDescription
         notificationManager.createNotificationChannel(notificationChannel)
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun registerCS(){
+
+        FirebaseMessaging.getInstance().subscribeToTopic("cs")
+
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+
+        val channelId = "유저 CS"
+        val channelName = "유저 CS"
+        val channelDescription = "유저 CS"
+
+        val notificationChannel: NotificationChannel?
+
+        notificationChannel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
+        notificationChannel.description = channelDescription
+        notificationManager.createNotificationChannel(notificationChannel)
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun registerUser(){
+
+        FirebaseMessaging.getInstance().subscribeToTopic("user")
+
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+
+        val channelId = "유저 관련"
+        val channelName = "유저 관련"
+        val channelDescription = "유저 관련"
+
+        val notificationChannel: NotificationChannel?
+
+        notificationChannel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
+        notificationChannel.description = channelDescription
+        notificationManager.createNotificationChannel(notificationChannel)
+    }
+
 
     private fun checkLogin(){
 

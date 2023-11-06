@@ -32,6 +32,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -59,6 +60,7 @@ import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.firebase.FCMAlert
 import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
+import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color20459E
 import com.bigbigdw.manavarasetting.ui.theme.color8E8E8E
@@ -149,69 +151,21 @@ fun ScreenTest() {
 }
 
 @Composable
-fun ItemMainSetting(
-    image: Int,
-    titleWorker: String,
-    valueWorker: String,
-    statusTitle: String,
-    valueStatus: String
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(24.dp, 0.dp),
-        horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Image(
-            contentScale = ContentScale.FillWidth,
-            painter = painterResource(id = image),
-            contentDescription = null,
-            modifier = Modifier
-                .height(16.dp)
-                .width(16.dp)
-        )
-        Spacer(modifier = Modifier.size(4.dp))
-        Text(
-            text = titleWorker,
-            fontSize = 18.sp,
-            textAlign = TextAlign.Center,
-            color = color000000,
-        )
-        Text(
-            text = valueWorker,
-            fontSize = 18.sp,
-            textAlign = TextAlign.Center,
-            color = color20459E,
-        )
-    }
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(24.dp, 0.dp),
-        horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Image(
-            contentScale = ContentScale.FillWidth,
-            painter = painterResource(id = image),
-            contentDescription = null,
-            modifier = Modifier
-                .height(16.dp)
-                .width(16.dp)
-        )
-        Spacer(modifier = Modifier.size(4.dp))
-        Text(
-            text = statusTitle,
-            fontSize = 18.sp,
-            textAlign = TextAlign.Center,
-        )
-        Text(
-            text = valueStatus,
-            fontSize = 18.sp,
-            textAlign = TextAlign.Center,
-            color = color20459E,
-        )
+fun ScreenUser(viewModelMain: ViewModelMain) {
+
+    viewModelMain.getUserList()
+
+    Column {
+
+        val userList = viewModelMain.state.collectAsState().value.userList
+
+        userList.forEachIndexed { index, userInfo ->
+            Text(
+                text = "SETTING",
+                textAlign = TextAlign.Center,
+                color = Color.Black,
+            )
+        }
     }
 }
 
@@ -401,7 +355,9 @@ fun TabletContentWrap(content: @Composable () -> Unit){
         elevation = 0.dp
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth().padding(24.dp, 4.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(24.dp, 4.dp)
         ) {
             Spacer(modifier = Modifier.size(4.dp))
 

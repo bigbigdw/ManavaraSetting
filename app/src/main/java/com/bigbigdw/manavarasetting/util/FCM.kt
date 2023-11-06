@@ -27,11 +27,11 @@ object FCM {
 
     fun postFCMAlertTest(context: Context, message : String) {
 
-        val year = DBDate.dateMMDDHHMM().substring(0,4)
-        val month = DBDate.dateMMDDHHMM().substring(4,6)
-        val day = DBDate.dateMMDDHHMM().substring(6,8)
-        val hour = DBDate.dateMMDDHHMM().substring(8,10)
-        val min = DBDate.dateMMDDHHMM().substring(10,12)
+        val year = dateMMDDHHMM().substring(0,4)
+        val month = dateMMDDHHMM().substring(4,6)
+        val day = dateMMDDHHMM().substring(6,8)
+        val hour = dateMMDDHHMM().substring(8,10)
+        val min = dateMMDDHHMM().substring(10,12)
 
         val fcmBody = DataFCMBody(
             "/topics/all",

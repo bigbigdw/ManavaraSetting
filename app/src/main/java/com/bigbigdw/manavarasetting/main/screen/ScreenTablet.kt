@@ -95,17 +95,23 @@ fun ScreenTablet(
                 "세팅바라 현황" -> {
                     ContentsSetting()
                 }
-                "회원관리" -> {
-                    ScreenTest()
+                "회원 관리" -> {
+                    ScreenUser(viewModelMain = viewModelMain)
                 }
                 "FCM 관리" -> {
                     ContentsFCM()
                 }
-                "FCM 공지사항 리스트" -> {
+                "FCM NOTICE 리스트" -> {
                     ContentsFCMList(viewModelMain = viewModelMain, child = "NOTICE")
                 }
-                "FCM 알림 리스트" -> {
+                "FCM ALERT 리스트" -> {
                     ContentsFCMList(viewModelMain = viewModelMain, child = "ALERT")
+                }
+                "FCM USER 리스트" -> {
+                    ContentsFCMList(viewModelMain = viewModelMain, child = "USER")
+                }
+                "FCM CS 리스트" -> {
+                    ContentsFCMList(viewModelMain = viewModelMain, child = "CS")
                 }
                 "웹소설 베스트 리스트" -> {
                     ContentsListNovel(
