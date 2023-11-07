@@ -19,13 +19,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
@@ -36,7 +33,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,7 +48,6 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -64,6 +59,7 @@ import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color20459E
 import com.bigbigdw.manavarasetting.ui.theme.color8E8E8E
+import com.bigbigdw.manavarasetting.ui.theme.color8F8F8F
 import com.bigbigdw.manavarasetting.ui.theme.colorA7ACB7
 import com.bigbigdw.manavarasetting.ui.theme.colorDCDCDD
 import com.bigbigdw.manavarasetting.ui.theme.colorEDE6FD
@@ -71,7 +67,7 @@ import com.bigbigdw.manavarasetting.ui.theme.colorE9E9E9
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.ui.theme.colorF7F7F7
 import com.bigbigdw.manavarasetting.util.DBDate
-import kotlinx.coroutines.launch
+import com.bigbigdw.manavarasetting.util.changeUserState
 
 @Composable
 fun BackOnPressed() {
@@ -155,29 +151,108 @@ fun ScreenUser(viewModelMain: ViewModelMain) {
 
     viewModelMain.getUserList()
 
+    val userList = viewModelMain.state.collectAsState().value.userList
+
     Column {
 
-        val userList = viewModelMain.state.collectAsState().value.userList
-
         userList.forEachIndexed { index, userInfo ->
-            Text(
-                text = "SETTING",
-                textAlign = TextAlign.Center,
-                color = Color.Black,
-            )
+            TabletContentWrap {
+                Text(
+                    modifier = Modifier.padding(0.dp, 4.dp),
+                    text = spannableString(
+                        textFront = "이메일 : ",
+                        color = color20459E,
+                        textEnd = userInfo.userEmail
+                    ),
+                    color = Color.Black,
+                )
+
+                Text(
+                    modifier = Modifier.padding(0.dp, 4.dp),
+                    text = spannableString(
+                        textFront = "닉네임 : ",
+                        color = color20459E,
+                        textEnd = userInfo.userNickName
+                    ),
+                    color = Color.Black,
+                )
+
+                Text(
+                    modifier = Modifier.padding(0.dp, 4.dp),
+                    text = spannableString(
+                        textFront = "UID : ",
+                        color = color20459E,
+                        textEnd = userInfo.userUID
+                    ),
+                    color = Color.Black,
+                )
+
+                Text(
+                    modifier = Modifier.padding(0.dp, 4.dp),
+                    text = spannableString(
+                        textFront = "FCM 토큰 : ",
+                        color = color20459E,
+                        textEnd = userInfo.userFcmToken
+                    ),
+                    color = Color.Black,
+                )
+
+                Box(modifier = Modifier.padding(16.dp), contentAlignment = Alignment.Center) {
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(22.dp)
+                    )
+                    Button(
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = if (userInfo.userStatus == "ALLOW") {
+                                color8F8F8F
+                            } else {
+                                color20459E
+                            }
+                        ),
+                        onClick = {
+                            changeUserState(
+                                UID = userInfo.userUID,
+                                status = userInfo.userStatus
+                            )
+
+                            viewModelMain.getUserList()
+                        },
+                        modifier = Modifier
+                            .width(260.dp)
+                            .height(56.dp),
+                        shape = RoundedCornerShape(50.dp)
+
+                    ) {
+                        Text(
+                            text = if (userInfo.userStatus == "ALLOW") {
+                                "비활성화"
+                            } else {
+                                "활성화"
+                            },
+                            textAlign = TextAlign.Center,
+                            color = colorEDE6FD,
+                            fontSize = 16.sp,
+                        )
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.size(16.dp))
         }
     }
 }
 
 @Composable
-fun BtnMobile(func: () -> Unit, btnText: String) {
+fun BtnMobile(func: () -> Unit, btnText: String, color : Color = color20459E) {
     Spacer(
         modifier = Modifier
             .fillMaxWidth()
             .height(22.dp)
     )
     Button(
-        colors = ButtonDefaults.buttonColors(containerColor = color20459E),
+        colors = ButtonDefaults.buttonColors(containerColor = color),
         onClick = func,
         modifier = Modifier
             .width(260.dp)
