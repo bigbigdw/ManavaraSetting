@@ -105,12 +105,7 @@ fun ScreenMain(
 
     val isExpandedScreen = widthSizeClass == WindowWidthSizeClass.Expanded
 
-//    if(isExpandedScreen){
-//        WindowCompat.setDecorFitsSystemWindows(window, false)
-//    }
-
     val context = LocalContext.current
-    val workManager = WorkManager.getInstance(context)
 
     if (!isExpandedScreen) {
         ScreenMainMobile(
@@ -119,6 +114,8 @@ fun ScreenMain(
             viewModelMain = viewModelMain,
             isExpandedScreen = isExpandedScreen
         )
+
+        BackOnPressed()
     } else {
         ScreenMainTablet(
             navController = navController,
@@ -786,7 +783,7 @@ fun ContentsDangerOption(viewModelMain: ViewModelMain) {
     )
 
     TabletContentWrapBtn(
-        onClick = { viewModelMain.resetBest(str = "BOOK") },
+        onClick = { viewModelMain.resetBest(str = "DATA") },
         content = {
             Row(
                 modifier = Modifier.fillMaxWidth(),

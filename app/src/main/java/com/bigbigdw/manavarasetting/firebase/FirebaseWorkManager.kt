@@ -159,7 +159,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
 
         miningAlert("마나바라 세팅", "$time $data", "ALERT", activity = activity)
 
-
+        miningTime()
 
         val call = Retrofit.Builder()
             .baseUrl("https://fcm.googleapis.com")
@@ -202,5 +202,9 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                     activity = activity
                 )
             )
+    }
+
+    private fun miningTime() {
+        FirebaseDatabase.getInstance().reference.child("MINING").setValue(DBDate.dateMMDDHHMM())
     }
 }

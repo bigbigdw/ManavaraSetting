@@ -46,7 +46,7 @@ object BestRef {
     }
 
     fun setBestData(platform: String, bookCode: String, type: String): DatabaseReference {
-        return mRootRef.child("DATA").child(type).child(platform).child(bookCode).child(DBDate.year()).child(DBDate.month()).child(DBDate.datedd())
+        return mRootRef.child("DATA").child(type).child(platform).child(bookCode).child(DBDate.dateMMDD())
     }
 
     fun setBestGenre(platform: String, genreDate: String, type: String): DatabaseReference {

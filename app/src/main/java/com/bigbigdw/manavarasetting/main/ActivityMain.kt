@@ -31,15 +31,12 @@ class ActivityMain : ComponentActivity() {
         setContent {
             val widthSizeClass = calculateWindowSizeClass(this).widthSizeClass
 
-//            ManavaraSettingTheme{
-//            }
-
             ScreenMain(
                 viewModelMain = viewModelMain,
                 widthSizeClass = widthSizeClass
             )
 
-            BackOnPressed()
+
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.bigbigdw.manavarasetting.main.screen
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,32 +11,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.R
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
-import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
-import com.bigbigdw.manavarasetting.util.PeriodicWorker
-import com.bigbigdw.manavarasetting.util.changePlatformNameKor
-import com.bigbigdw.manavarasetting.util.getPlatformLogoEng
-import com.bigbigdw.manavarasetting.util.novelListEng
 
 @Composable
 fun ScreenMainSetting(
@@ -60,6 +47,8 @@ fun ScreenMainSetting(
                 val (getDetailMenu, setDetailMenu) = remember { mutableStateOf("") }
                 val (getDetailPlatform, setDetailPlatform) = remember { mutableStateOf("") }
                 val (getDetailType, setDetailType) = remember { mutableStateOf("") }
+
+                BackOnPressedTablet(getDetailPage = getDetailPage, setDetailPage = setDetailPage)
 
                 ScreenTableList(setMenu = setMenu, getMenu = getMenu, onClick = {setDetailPage(false)})
 
