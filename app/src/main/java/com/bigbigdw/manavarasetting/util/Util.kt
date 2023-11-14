@@ -3,6 +3,9 @@ package com.bigbigdw.manavarasetting.util
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.viewModelScope
+import com.bigbigdw.manavarasetting.main.event.EventMain
+import com.bigbigdw.manavarasetting.main.event.UserInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
 import com.bigbigdw.manavarasetting.main.model.ItemKeyword
@@ -277,6 +280,17 @@ fun saveBook(platform: String, type: String){
 
         override fun onCancelled(databaseError: DatabaseError) {}
     })
+}
+
+fun changeUserState(UID: String, status : String){
+
+    val result = if(status != "ALLOW"){
+        "ALLOW"
+    } else {
+        "LOCKED"
+    }
+
+    FirebaseDatabase.getInstance().reference.child("USER").child(UID).child("USERINFO").child("userStatus").setValue(result)
 }
 
 

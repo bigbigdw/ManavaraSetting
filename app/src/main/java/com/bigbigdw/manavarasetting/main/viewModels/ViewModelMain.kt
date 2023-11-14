@@ -7,6 +7,7 @@ import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.firebase.FCMAlert
 import com.bigbigdw.manavarasetting.main.event.EventMain
 import com.bigbigdw.manavarasetting.main.event.StateMain
+import com.bigbigdw.manavarasetting.main.event.UserInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
 import com.bigbigdw.manavarasetting.main.model.ItemKeyword
@@ -108,6 +109,12 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                 )
             }
 
+            is EventMain.SetUserList -> {
+                current.copy(
+                    userList = event.userList,
+                )
+            }
+
             else -> {
                 current.copy(Loaded = false)
             }
@@ -148,12 +155,16 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                             fcmlist = fcmlist.reversed() as ArrayList<FCMAlert>
                         }
 
-                        if (child == "ALERT") {
-                            events.send(EventMain.SetFcmAlertList(fcmAlertList = fcmlist))
-                        } else if (child == "NOTICE") {
-                            events.send(EventMain.SetFcmNoticeList(fcmNoticeList = fcmlist))
-                        } else {
-                            events.send(EventMain.SetFcmNoticeList(fcmNoticeList = fcmlist))
+                        when (child) {
+                            "ALERT" -> {
+                                events.send(EventMain.SetFcmAlertList(fcmAlertList = fcmlist))
+                            }
+                            "NOTICE" -> {
+                                events.send(EventMain.SetFcmNoticeList(fcmNoticeList = fcmlist))
+                            }
+                            else -> {
+                                events.send(EventMain.SetFcmNoticeList(fcmNoticeList = fcmlist))
+                            }
                         }
                     }
 
@@ -776,5 +787,34 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                 }
             }
     }
+
+    fun getUserList() {
+        val mRootRef = FirebaseDatabase.getInstance().reference.child("USER")
+
+        val userList = ArrayList<UserInfo>()
+
+        mRootRef.addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if(dataSnapshot.exists()){
+
+                    for(child in dataSnapshot.children){
+                        val userInfo = child.child("USERINFO").getValue(UserInfo::class.java)
+
+                        if (userInfo != null) {
+                            userList.add(userInfo)
+                        }
+                    }
+
+                    viewModelScope.launch {
+                        events.send(EventMain.SetUserList(userList = userList))
+                    }
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
+    }
+
 }
 
