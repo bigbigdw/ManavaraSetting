@@ -66,6 +66,7 @@ import com.bigbigdw.manavarasetting.ui.theme.colorE9E9E9
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.ui.theme.colorF7F7F7
 import com.bigbigdw.manavarasetting.util.DBDate
+import com.bigbigdw.manavarasetting.util.changeUserState
 
 @Composable
 fun BackOnPressed() {
