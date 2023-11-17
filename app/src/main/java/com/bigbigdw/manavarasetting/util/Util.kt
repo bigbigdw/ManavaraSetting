@@ -89,6 +89,7 @@ fun convertItemBestJson(jsonObject : JSONObject) : ItemBestInfo {
         totalCount = jsonObject.optInt("totalCount"),
         bookCode = jsonObject.optString("bookCode"),
         currentDiff = jsonObject.optInt("currentDiff"),
+        date = jsonObject.optString("date"),
     )
 }
 
@@ -105,6 +106,7 @@ fun convertItemBest(bestItemData : ItemBestInfo) : JsonObject {
     jsonObject.addProperty("totalCount", bestItemData.totalCount)
     jsonObject.addProperty("bookCode", bestItemData.bookCode)
     jsonObject.addProperty("currentDiff", bestItemData.currentDiff)
+    jsonObject.addProperty("date", bestItemData.date)
     return jsonObject
 }
 
@@ -128,6 +130,7 @@ fun setItemBestInfoRef(ref: MutableMap<String?, Any>): ItemBestInfo {
         totalCount = ref["totalCount"] as Int,
         bookCode = ref["bookCode"] as String,
         currentDiff = ref["currentDiff"] as Int,
+        date = ref["date"] as String,
     )
 }
 

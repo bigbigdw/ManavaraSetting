@@ -669,15 +669,13 @@ private fun doResultMining(
     runBlocking {
         uploadJsonTrophyWeek(
             platform = platform,
-            type = type,
-            itemBestInfoList = itemBestInfoList
+            type = type
         )
     }
     runBlocking {
         uploadJsonTrophyMonth(
             platform = platform,
-            type = type,
-            itemBestInfoList = itemBestInfoList
+            type = type
         )
     }
 }

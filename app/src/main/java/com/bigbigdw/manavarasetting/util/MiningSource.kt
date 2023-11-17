@@ -285,7 +285,6 @@ object MiningSource {
                                 ref["cntPageRead"] = books[i].cntPageRead
                                 ref["cntFavorite"] = books[i].cntFavorite
                                 ref["cntRecom"] = books[i].cntRecom
-                                ref["cntTotalComment"] = books[i].cntTotalComment
                                 ref["number"] = number
                                 ref["point"] = point
 
