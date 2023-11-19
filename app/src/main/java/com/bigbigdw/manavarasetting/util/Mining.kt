@@ -120,8 +120,7 @@ fun doMining(
                     doResultMining(
                         platform = platform,
                         type = type,
-                        itemBookInfoList = itemBookInfoList,
-                        itemBestInfoList = itemBestInfoList
+                        itemBookInfoList = itemBookInfoList
                     )
                 }
             }
@@ -150,8 +149,7 @@ fun doMining(
                     doResultMining(
                         platform = platform,
                         type = type,
-                        itemBookInfoList = itemBookInfoList,
-                        itemBestInfoList = itemBestInfoList
+                        itemBookInfoList = itemBookInfoList
                     )
                 }
             }
@@ -218,8 +216,7 @@ fun doMining(
             doResultMining(
                 platform = platform,
                 type = type,
-                itemBookInfoList = itemBookInfoList,
-                itemBestInfoList = itemBestInfoList
+                itemBookInfoList = itemBookInfoList
             )
         }
     } else if(platform == "NAVER_WEBNOVEL_PAY") {
@@ -233,8 +230,7 @@ fun doMining(
             doResultMining(
                 platform = platform,
                 type = type,
-                itemBookInfoList = itemBookInfoList,
-                itemBestInfoList = itemBestInfoList
+                itemBookInfoList = itemBookInfoList
             )
         }
     }  else if(platform == "NAVER_CHALLENGE") {
@@ -248,8 +244,7 @@ fun doMining(
             doResultMining(
                 platform = platform,
                 type = type,
-                itemBookInfoList = itemBookInfoList,
-                itemBestInfoList = itemBestInfoList
+                itemBookInfoList = itemBookInfoList
             )
         }
     } else if(platform == "NAVER_BEST") {
@@ -263,8 +258,7 @@ fun doMining(
             doResultMining(
                 platform = platform,
                 type = type,
-                itemBookInfoList = itemBookInfoList,
-                itemBestInfoList = itemBestInfoList
+                itemBookInfoList = itemBookInfoList
             )
         }
     } else if(platform == "ONESTORY_FANTAGY") {
@@ -297,8 +291,7 @@ fun doMining(
                     doResultMining(
                         platform = platform,
                         type = type,
-                        itemBookInfoList = itemBookInfoList,
-                        itemBestInfoList = itemBestInfoList
+                        itemBookInfoList = itemBookInfoList
                     )
                 }
             }
@@ -334,8 +327,7 @@ fun doMining(
                     doResultMining(
                         platform = platform,
                         type = type,
-                        itemBookInfoList = itemBookInfoList,
-                        itemBestInfoList = itemBestInfoList
+                        itemBookInfoList = itemBookInfoList
                     )
                 }
             }
@@ -371,8 +363,7 @@ fun doMining(
                     doResultMining(
                         platform = platform,
                         type = type,
-                        itemBookInfoList = itemBookInfoList,
-                        itemBestInfoList = itemBestInfoList
+                        itemBookInfoList = itemBookInfoList
                     )
                 }
             }
@@ -408,8 +399,7 @@ fun doMining(
                     doResultMining(
                         platform = platform,
                         type = type,
-                        itemBookInfoList = itemBookInfoList,
-                        itemBestInfoList = itemBestInfoList
+                        itemBookInfoList = itemBookInfoList
                     )
                 }
             }
@@ -647,8 +637,7 @@ fun doMining(
 private fun doResultMining(
     platform: String,
     type: String,
-    itemBookInfoList: JsonArray,
-    itemBestInfoList: JsonArray
+    itemBookInfoList: JsonArray
 ) {
     val storage = Firebase.storage
     val storageRef = storage.reference
@@ -690,8 +679,7 @@ fun doMining(
         doResultMining(
             platform = platform,
             type = type,
-            itemBookInfoList = itemBookInfoList,
-            itemBestInfoList = itemBestInfoList
+            itemBookInfoList = itemBookInfoList
         )
     }
 

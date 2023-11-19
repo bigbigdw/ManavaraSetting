@@ -235,8 +235,12 @@ fun uploadJsonTrophyWeek(
                 val jsonArrayByteArray = itemList.toString().toByteArray(Charsets.UTF_8)
 
                 jsonArrayRef.putBytes(jsonArrayByteArray)
-                    .addOnSuccessListener {}
-                    .addOnFailureListener {}
+                    .addOnSuccessListener {
+                        Log.d("uploadJsonTrophyWeek", "SUCEESS")
+                    }
+                    .addOnFailureListener {
+                        Log.d("uploadJsonTrophyWeek", "FAIL")
+                    }
             }
         }
 

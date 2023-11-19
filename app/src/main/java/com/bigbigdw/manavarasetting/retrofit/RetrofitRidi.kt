@@ -5,8 +5,10 @@ import com.bigbigdw.moavara.Retrofit.baseCallback
 
 class RetrofitRidi {
     private val apiRidi = Retrofit.apiRidi
-
-        fun getRidiRomance(value : String, map: MutableMap<String?, Any>, dataListener: RetrofitDataListener<String>) {
+        fun getRidiRomance(
+            map: MutableMap<String?, Any>,
+            dataListener: RetrofitDataListener<String>
+        ) {
         apiRidi.getRidi(queryMap = map).enqueue(baseCallback(dataListener))
     }
 }

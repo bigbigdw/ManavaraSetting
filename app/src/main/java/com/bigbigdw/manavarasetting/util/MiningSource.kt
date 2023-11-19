@@ -861,7 +861,6 @@ object MiningSource {
             param["order_by"] = "popular"
 
             apiRidi.getRidiRomance(
-                value = mining,
                 map = param,
                 object : RetrofitDataListener<String> {
                     override fun onSuccess(data: String) {
