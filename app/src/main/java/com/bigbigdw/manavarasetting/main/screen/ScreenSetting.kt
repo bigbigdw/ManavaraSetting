@@ -100,7 +100,7 @@ fun ScreenSettingMobile() {
                 .height(80.dp)
         )
 
-        MainHeader(image = R.drawable.ic_launcher, title = "세팅바라 현황")
+        MainHeader(image = R.drawable.logo_transparent, title = "세팅바라 현황")
 
         ContentsSetting()
     }

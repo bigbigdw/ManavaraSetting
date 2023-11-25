@@ -336,7 +336,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
 
         ItemMainSettingSingleTablet(
             containerColor = color52A9FF,
-            image = R.drawable.ic_launcher,
+            image = R.drawable.logo_transparent,
             title = "세팅바라 현황",
             body = "Periodic Worker 현황",
             setter = setMenu,
@@ -347,7 +347,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
 
         ItemMainSettingSingleTablet(
             containerColor = color4AD7CF,
-            image = R.drawable.ic_launcher,
+            image = R.drawable.logo_transparent,
             title = "회원 관리",
             body = "회원 관리",
             setter = setMenu,
@@ -577,7 +577,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
 
         ItemMainSettingSingleTablet(
             containerColor = color808CF8,
-            image = R.drawable.ic_launcher,
+            image = R.drawable.logo_transparent,
             title = "웹소설 투데이 장르",
             body = "투데이 장르 JSON 확인",
             setter = setMenu,
@@ -588,7 +588,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
 
         ItemMainSettingSingleTablet(
             containerColor = colorFFAC59,
-            image = R.drawable.ic_launcher,
+            image = R.drawable.logo_transparent,
             title = "웹소설 주간 장르",
             body = "주간 장르 JSON 확인",
             setter = setMenu,
@@ -599,7 +599,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
 
         ItemMainSettingSingleTablet(
             containerColor = color4AD7CF,
-            image = R.drawable.ic_launcher,
+            image = R.drawable.logo_transparent,
             title = "웹소설 월간 장르",
             body = "월간 장르 JSON 확인",
             setter = setMenu,
@@ -849,7 +849,7 @@ fun ContentsLabs() {
             ) {
 
                 Image(
-                    painter = painterResource(id = R.drawable.ic_launcher),
+                    painter = painterResource(id = R.drawable.logo_transparent),
                     contentDescription = null,
                     modifier = Modifier
                         .width(20.dp)

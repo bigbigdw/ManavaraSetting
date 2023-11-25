@@ -986,7 +986,7 @@ fun ScreenEmpty(str : String = "마나바라") {
                 ) {
                     Image(
                         contentScale = ContentScale.FillWidth,
-                        painter = painterResource(id = R.drawable.ic_launcher),
+                        painter = painterResource(id = R.drawable.logo_transparent),
                         contentDescription = null,
                         modifier = Modifier
                             .height(72.dp)

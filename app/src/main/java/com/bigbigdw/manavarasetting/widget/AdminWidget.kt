@@ -97,7 +97,7 @@ fun ScreenWidget(context: Context) {
 
             Image(
                 modifier = GlanceModifier.size(28.dp),
-                provider = ImageProvider(R.drawable.ic_launcher),
+                provider = ImageProvider(R.drawable.logo_transparent),
                 contentDescription = "Image"
             )
 

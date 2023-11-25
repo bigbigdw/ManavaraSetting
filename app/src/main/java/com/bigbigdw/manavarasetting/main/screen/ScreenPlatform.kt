@@ -145,7 +145,7 @@ fun ContentsNovel() {
             ) {
 
                 Image(
-                    painter = painterResource(id = R.drawable.ic_launcher),
+                    painter = painterResource(id = R.drawable.logo_transparent),
                     contentDescription = null,
                     modifier = Modifier
                         .width(20.dp)
@@ -182,7 +182,7 @@ fun ContentsNovel() {
             ) {
 
                 Image(
-                    painter = painterResource(id = R.drawable.ic_launcher),
+                    painter = painterResource(id = R.drawable.logo_transparent),
                     contentDescription = null,
                     modifier = Modifier
                         .width(20.dp)
@@ -517,7 +517,7 @@ fun ContentsPlatform(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.ic_launcher),
+                        painter = painterResource(id = R.drawable.logo_transparent),
                         contentDescription = null,
                         modifier = Modifier
                             .width(20.dp)
@@ -550,7 +550,7 @@ fun ContentsPlatform(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.ic_launcher),
+                        painter = painterResource(id = R.drawable.logo_transparent),
                         contentDescription = null,
                         modifier = Modifier
                             .width(20.dp)
@@ -583,7 +583,7 @@ fun ContentsPlatform(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.ic_launcher),
+                        painter = painterResource(id = R.drawable.logo_transparent),
                         contentDescription = null,
                         modifier = Modifier
                             .width(20.dp)

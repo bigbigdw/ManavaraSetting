@@ -375,7 +375,7 @@ fun getPlatformLogoEng(platform: String) : Int {
             R.drawable.logo_toksoda
         }
         else -> {
-            R.drawable.ic_launcher
+            R.drawable.logo_transparent
         }
     }
 }

@@ -803,7 +803,7 @@ object MiningSource {
                                 ref["bookCode"] = it[i].brcd
                                 ref["intro"] = it[i].lnIntro
                                 ref["cntRecom"] = it[i].intrstCnt
-                                ref["cntPageRead"] = it[i].goodAllCnt
+                                ref["cntPageRead"] = it[i].inqrCnt
                                 ref["cntFavorite"] = it[i].goodAllCnt
                                 ref["cntChapter"] = "총 ${it[i].whlEpsdCnt}화"
 
