@@ -417,7 +417,7 @@ fun getBestMonthTrophy(
     }
 }
 
-fun getBestWeekTrophyJSON(context: Context, platform: String, type: String) {
+fun setBestWeekTrophyJSON(context: Context, platform: String, type: String) {
 
     val mRootRef = FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform).child("TROPHY_WEEK_TOTAL")
 
@@ -457,7 +457,33 @@ fun getBestWeekTrophyJSON(context: Context, platform: String, type: String) {
     })
 }
 
-fun getBestMonthTrophyJSON(context: Context, platform: String, type: String) {
+fun getBestWeekTrophyJSON(
+    context: Context,
+    platform: String,
+    type: String,
+    callbacks: (MutableMap<String, ItemBestInfo>) -> Unit
+){
+    val filePath = File(context.filesDir, "${platform}_WEEK_TROPHY_${type}.json").absolutePath
+
+    try {
+        val jsonString = File(filePath).readText(Charset.forName("UTF-8"))
+
+        val json = Json { ignoreUnknownKeys = true }
+        val itemList = json.decodeFromString<List<ItemBestInfo>>(jsonString)
+
+        val todayJsonMap = mutableMapOf<String, ItemBestInfo>()
+
+        for (item in itemList) {
+            todayJsonMap[item.bookCode] = item
+        }
+
+        callbacks.invoke(todayJsonMap)
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+}
+
+fun setBestMonthTrophyJSON(context: Context, platform: String, type: String) {
 
     val mRootRef = FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform).child("TROPHY_MONTH_TOTAL")
 
@@ -496,3 +522,30 @@ fun getBestMonthTrophyJSON(context: Context, platform: String, type: String) {
         override fun onCancelled(databaseError: DatabaseError) {}
     })
 }
+
+fun getBestMonthTrophyJSON(
+    context: Context,
+    platform: String,
+    type: String,
+    callbacks: (MutableMap<String, ItemBestInfo>) -> Unit
+){
+    val filePath = File(context.filesDir, "${platform}_MONTH_TROPHY_${type}.json").absolutePath
+
+    try {
+        val jsonString = File(filePath).readText(Charset.forName("UTF-8"))
+
+        val json = Json { ignoreUnknownKeys = true }
+        val itemList = json.decodeFromString<List<ItemBestInfo>>(jsonString)
+
+        val todayJsonMap = mutableMapOf<String, ItemBestInfo>()
+
+        for (item in itemList) {
+            todayJsonMap[item.bookCode] = item
+        }
+
+        callbacks.invoke(todayJsonMap)
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+}
+

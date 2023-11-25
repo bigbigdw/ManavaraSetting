@@ -8,17 +8,10 @@ import androidx.activity.viewModels
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.lifecycle.lifecycleScope
-import androidx.work.WorkManager
-import com.bigbigdw.manavarasetting.main.screen.BackOnPressed
 import com.bigbigdw.manavarasetting.main.screen.ScreenMain
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
-import com.bigbigdw.manavarasetting.ui.theme.ManavaraSettingTheme
-import com.bigbigdw.manavarasetting.util.getBestListTodayStorage
-import com.bigbigdw.manavarasetting.util.getBestMonthListStorage
-import com.bigbigdw.manavarasetting.util.getBestMonthTrophyJSON
-import com.bigbigdw.manavarasetting.util.getBestWeekListStorage
-import com.bigbigdw.manavarasetting.util.getBestWeekTrophy
-import com.bigbigdw.manavarasetting.util.getBestWeekTrophyJSON
+import com.bigbigdw.manavarasetting.util.setBestMonthTrophyJSON
+import com.bigbigdw.manavarasetting.util.setBestWeekTrophyJSON
 import com.bigbigdw.manavarasetting.util.novelListEng
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -32,13 +25,13 @@ class ActivityMain : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         for (platform in novelListEng()) {
-            getBestWeekTrophyJSON(
+            setBestWeekTrophyJSON(
                 context = this@ActivityMain,
                 platform = platform,
                 type = "NOVEL"
             )
 
-            getBestMonthTrophyJSON(
+            setBestMonthTrophyJSON(
                 context = this@ActivityMain,
                 platform = platform,
                 type = "NOVEL"
