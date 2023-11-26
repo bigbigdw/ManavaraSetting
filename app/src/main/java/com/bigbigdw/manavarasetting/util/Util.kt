@@ -12,6 +12,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -324,6 +325,31 @@ fun saveKeyword(context: Context, platform: String, type: String){
                             genreDate = "KEYWORD_MONTH",
                             type = type
                         ).child(DBDate.datedd()).setValue(keywordList)
+
+                        val jsonArray = JsonArray()
+
+                        keywordList.forEach { (key, value) ->
+                            val jsonObject = JsonObject()
+                            jsonObject.addProperty("key", key)
+                            jsonObject.addProperty("value", value)
+                            jsonArray.add(jsonObject)
+                        }
+
+                        val storage = Firebase.storage
+                        val storageRef = storage.reference
+                        val genreToday = storageRef.child("${platform}/${type}/KEYWORD_DAY/${DBDate.dateMMDD()}.json")
+                        val genreWeek =  storageRef.child("${platform}/${type}/KEYWORD_WEEK/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
+                        val genreMonth = storageRef.child("${platform}/${type}/KEYWORD_MONTH/${DBDate.year()}_${DBDate.month()}.json")
+
+                        runBlocking {
+                            makeTodayJson(
+                                today = genreToday,
+                                todayArray = jsonArray,
+                                week = genreWeek,
+                                month = genreMonth,
+                                type = "KEYWORD"
+                            )
+                        }
                     }
 
                     number += 1

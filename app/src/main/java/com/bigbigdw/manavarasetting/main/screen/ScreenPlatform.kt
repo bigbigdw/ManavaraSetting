@@ -237,6 +237,302 @@ fun ContentsNovel() {
         }
     )
 
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                time = 6,
+                timeUnit = TimeUnit.DAYS,
+                tag = "TEST",
+                platform = "JOARA",
+                type = "NOVEL"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo_joara),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "JOARA 플랫폼 최신화",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                time = 6,
+                timeUnit = TimeUnit.DAYS,
+                tag = "TEST",
+                platform = "NAVER",
+                type = "NOVEL"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo_naver),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "NAVER 플랫폼 최신화",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                time = 6,
+                timeUnit = TimeUnit.DAYS,
+                tag = "TEST",
+                platform = "RIDI",
+                type = "NOVEL"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo_ridibooks),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "RIDI 플랫폼 최신화",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                time = 6,
+                timeUnit = TimeUnit.DAYS,
+                tag = "TEST",
+                platform = "ONESTORY",
+                type = "NOVEL"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo_onestore),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "ONESTORY 플랫폼 최신화",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                time = 6,
+                timeUnit = TimeUnit.DAYS,
+                tag = "TEST",
+                platform = "TOKSODA",
+                type = "NOVEL"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo_toksoda),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "TOKSODA 플랫폼 최신화",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                time = 6,
+                timeUnit = TimeUnit.DAYS,
+                tag = "TEST",
+                platform = "NAVER_SERIES",
+                type = "NOVEL"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo_naver),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "TOKSODA 플랫폼 최신화",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                time = 6,
+                timeUnit = TimeUnit.DAYS,
+                tag = "TEST",
+                platform = "KAKAO_STAGE",
+                type = "NOVEL"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo_kakaostage),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "KAKAO_STAGE 플랫폼 최신화",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                time = 6,
+                timeUnit = TimeUnit.DAYS,
+                tag = "TEST",
+                platform = "MUNPIA",
+                type = "NOVEL"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo_munpia),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "MUNPIA 플랫폼 최신화",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
     novelListEng().forEachIndexed { index, item ->
         TabletContentWrapBtn(
             onClick = {
