@@ -5,18 +5,18 @@ import android.util.Log
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
 import com.bigbigdw.manavarasetting.util.DBDate.dateMMDD
-import com.bigbigdw.manavarasetting.retrofit.result.BestMoonpiaResult
-import com.bigbigdw.moavara.Retrofit.BestResultKakaoStageNovel
+import com.bigbigdw.manavarasetting.retrofit.result.BestResultKakaoStageNovel
 import com.bigbigdw.manavarasetting.retrofit.result.BestToksodaResult
-import com.bigbigdw.moavara.Retrofit.JoaraBestListResult
+import com.bigbigdw.manavarasetting.retrofit.result.JoaraBestListResult
 import com.bigbigdw.manavarasetting.retrofit.result.OneStoreBookResult
-import com.bigbigdw.moavara.Retrofit.RetrofitDataListener
-import com.bigbigdw.moavara.Retrofit.RetrofitJoara
-import com.bigbigdw.moavara.Retrofit.RetrofitKaKao
-import com.bigbigdw.manavarasetting.retrofit.RetrofitMoonPia
-import com.bigbigdw.manavarasetting.retrofit.RetrofitOnestore
+import com.bigbigdw.manavarasetting.retrofit.RetrofitDataListener
+import com.bigbigdw.manavarasetting.retrofit.RetrofitJoara
+import com.bigbigdw.manavarasetting.retrofit.RetrofitKaKao
+import com.bigbigdw.manavarasetting.retrofit.RetrofitMunPia
+import com.bigbigdw.manavarasetting.retrofit.RetrofitOnestory
 import com.bigbigdw.manavarasetting.retrofit.RetrofitRidi
-import com.bigbigdw.moavara.Retrofit.RetrofitToksoda
+import com.bigbigdw.manavarasetting.retrofit.result.BestMunpiaResult
+import com.bigbigdw.manavarasetting.retrofit.RetrofitToksoda
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.google.gson.JsonArray
@@ -402,7 +402,7 @@ object MiningSource {
             try {
                 val ref: MutableMap<String?, Any> = HashMap()
 
-                val apiOneStory = RetrofitOnestore()
+                val apiOneStory = RetrofitOnestory()
                 val param: MutableMap<String?, Any> = HashMap()
                 param["menuId"] = platformType
                 param["startKey"] = when (page) {
@@ -497,7 +497,7 @@ object MiningSource {
             try {
                 val ref: MutableMap<String?, Any> = HashMap()
 
-                val apiOneStory = RetrofitOnestore()
+                val apiOneStory = RetrofitOnestory()
                 val param: MutableMap<String?, Any> = HashMap()
                 param["menuId"] = platformType
                 param["freepassGrpCd"] = "PD013333"
@@ -674,7 +674,7 @@ object MiningSource {
         for(page in 1..4){
             val ref: MutableMap<String?, Any> = HashMap()
 
-            val apiMoonPia = RetrofitMoonPia()
+            val apiMoonPia = RetrofitMunPia()
             val param: MutableMap<String?, Any> = HashMap()
 
             param["section"] = platformType
@@ -697,8 +697,8 @@ object MiningSource {
 
             apiMoonPia.postMoonPiaBest(
                 param,
-                object : RetrofitDataListener<BestMoonpiaResult> {
-                    override fun onSuccess(data: BestMoonpiaResult) {
+                object : RetrofitDataListener<BestMunpiaResult> {
+                    override fun onSuccess(data: BestMunpiaResult) {
 
                         data.api?.items.let {
 

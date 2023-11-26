@@ -1,6 +1,5 @@
-package com.bigbigdw.moavara.Retrofit
+package com.bigbigdw.manavarasetting.retrofit.result
 
-import com.google.gson.JsonObject
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 

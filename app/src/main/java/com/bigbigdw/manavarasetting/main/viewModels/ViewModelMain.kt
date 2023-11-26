@@ -10,7 +10,7 @@ import com.bigbigdw.manavarasetting.main.event.StateMain
 import com.bigbigdw.manavarasetting.main.event.UserInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
-import com.bigbigdw.manavarasetting.main.model.ItemKeyword
+import com.bigbigdw.manavarasetting.main.model.ItemGenre
 import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import com.bigbigdw.manavarasetting.util.convertItemBestJson
@@ -402,7 +402,7 @@ class ViewModelMain @Inject constructor() : ViewModel() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
 
-                    val arrayList = ArrayList<ItemKeyword>()
+                    val arrayList = ArrayList<ItemGenre>()
 
                     for (snapshot in dataSnapshot.children) {
                         val key = snapshot.key
@@ -411,7 +411,7 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                         if (key != null && value != null) {
 
                             arrayList.add(
-                                ItemKeyword(
+                                ItemGenre(
                                     title = key,
                                     value = value.toString()
                                 )
@@ -419,7 +419,7 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                         }
                     }
 
-                    val cmpAsc: java.util.Comparator<ItemKeyword> =
+                    val cmpAsc: java.util.Comparator<ItemGenre> =
                         Comparator { o1, o2 -> o2.value.toInt().compareTo(o1.value.toInt()) }
                     Collections.sort(arrayList, cmpAsc)
 
@@ -446,7 +446,7 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                 if(dataSnapshot.exists()){
 
                     val dataMap = HashMap<String, Any>()
-                    val arrayList = ArrayList<ItemKeyword>()
+                    val arrayList = ArrayList<ItemGenre>()
 
                     for (i in 0..7) {
 
@@ -476,14 +476,14 @@ class ViewModelMain @Inject constructor() : ViewModel() {
 
                     for ((key, value) in dataMap) {
                         arrayList.add(
-                            ItemKeyword(
+                            ItemGenre(
                                 title = key,
                                 value = value.toString()
                             )
                         )
                     }
 
-                    val cmpAsc: java.util.Comparator<ItemKeyword> =
+                    val cmpAsc: java.util.Comparator<ItemGenre> =
                         Comparator { o1, o2 -> o2.value.toInt().compareTo(o1.value.toInt()) }
                     Collections.sort(arrayList, cmpAsc)
 
@@ -513,7 +513,7 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                 if(dataSnapshot.exists()){
 
                     val dataMap = HashMap<String, Any>()
-                    val arrayList = ArrayList<ItemKeyword>()
+                    val arrayList = ArrayList<ItemGenre>()
 
                     for (i in 1..31) {
 
@@ -543,14 +543,14 @@ class ViewModelMain @Inject constructor() : ViewModel() {
 
                     for ((key, value) in dataMap) {
                         arrayList.add(
-                            ItemKeyword(
+                            ItemGenre(
                                 title = key,
                                 value = value.toString()
                             )
                         )
                     }
 
-                    val cmpAsc: java.util.Comparator<ItemKeyword> =
+                    val cmpAsc: java.util.Comparator<ItemGenre> =
                         Comparator { o1, o2 -> o2.value.toInt().compareTo(o1.value.toInt()) }
                     Collections.sort(arrayList, cmpAsc)
 
@@ -577,15 +577,15 @@ class ViewModelMain @Inject constructor() : ViewModel() {
         todayFile.addOnSuccessListener { bytes ->
             val jsonString = String(bytes, Charset.forName("UTF-8"))
             val json = Json { ignoreUnknownKeys = true }
-            val itemList = json.decodeFromString<List<ItemKeyword>>(jsonString)
+            val itemList = json.decodeFromString<List<ItemGenre>>(jsonString)
 
-            val jsonList = ArrayList<ItemKeyword>()
+            val jsonList = ArrayList<ItemGenre>()
 
             for (item in itemList) {
                 jsonList.add(item)
             }
 
-            val cmpAsc: java.util.Comparator<ItemKeyword> =
+            val cmpAsc: java.util.Comparator<ItemGenre> =
                 Comparator { o1, o2 -> o2.value.toInt().compareTo(o1.value.toInt()) }
             Collections.sort(jsonList, cmpAsc)
 
@@ -607,8 +607,8 @@ class ViewModelMain @Inject constructor() : ViewModel() {
             val jsonString = String(bytes, Charset.forName("UTF-8"))
 
             val jsonArray = JSONArray(jsonString)
-            val weekJsonList = ArrayList<ArrayList<ItemKeyword>>()
-            val sumList = ArrayList<ItemKeyword>()
+            val weekJsonList = ArrayList<ArrayList<ItemGenre>>()
+            val sumList = ArrayList<ItemGenre>()
 
             val dataMap = HashMap<String, Long>()
 
@@ -616,7 +616,7 @@ class ViewModelMain @Inject constructor() : ViewModel() {
 
                 try {
                     val jsonArrayItem = jsonArray.getJSONArray(i)
-                    val itemList = ArrayList<ItemKeyword>()
+                    val itemList = ArrayList<ItemGenre>()
 
                     for (j in 0 until jsonArrayItem.length()) {
 
@@ -625,11 +625,11 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                             itemList.add(convertItemKeyword(jsonObject))
                             sumList.add(convertItemKeyword(jsonObject))
                         } catch (e: Exception) {
-                            itemList.add(ItemKeyword())
+                            itemList.add(ItemGenre())
                         }
                     }
 
-                    val cmpAsc: java.util.Comparator<ItemKeyword> =
+                    val cmpAsc: java.util.Comparator<ItemGenre> =
                         Comparator { o1, o2 -> o2.value.toInt().compareTo(o1.value.toInt()) }
                     Collections.sort(itemList, cmpAsc)
 
@@ -655,18 +655,18 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                 }
             }
 
-            val arrayList = ArrayList<ItemKeyword>()
+            val arrayList = ArrayList<ItemGenre>()
 
             for ((key, value) in dataMap) {
                 arrayList.add(
-                    ItemKeyword(
+                    ItemGenre(
                         title = key,
                         value = value.toString()
                     )
                 )
             }
 
-            val cmpAsc: java.util.Comparator<ItemKeyword> =
+            val cmpAsc: java.util.Comparator<ItemGenre> =
                 Comparator { o1, o2 -> o2.value.toInt().compareTo(o1.value.toInt()) }
             Collections.sort(arrayList, cmpAsc)
 
@@ -688,8 +688,8 @@ class ViewModelMain @Inject constructor() : ViewModel() {
             val jsonString = String(bytes, Charset.forName("UTF-8"))
 
             val jsonArray = JSONArray(jsonString)
-            val weekJsonList = ArrayList<ArrayList<ItemKeyword>>()
-            val sumList = ArrayList<ItemKeyword>()
+            val weekJsonList = ArrayList<ArrayList<ItemGenre>>()
+            val sumList = ArrayList<ItemGenre>()
 
             val dataMap = HashMap<String, Long>()
 
@@ -697,7 +697,7 @@ class ViewModelMain @Inject constructor() : ViewModel() {
 
                 try {
                     val jsonArrayItem = jsonArray.getJSONArray(i)
-                    val itemList = ArrayList<ItemKeyword>()
+                    val itemList = ArrayList<ItemGenre>()
 
                     for (j in 0 until jsonArrayItem.length()) {
 
@@ -706,11 +706,11 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                             itemList.add(convertItemKeyword(jsonObject))
                             sumList.add(convertItemKeyword(jsonObject))
                         } catch (e: Exception) {
-                            itemList.add(ItemKeyword())
+                            itemList.add(ItemGenre())
                         }
                     }
 
-                    val cmpAsc: java.util.Comparator<ItemKeyword> =
+                    val cmpAsc: java.util.Comparator<ItemGenre> =
                         Comparator { o1, o2 -> o2.value.toInt().compareTo(o1.value.toInt()) }
                     Collections.sort(itemList, cmpAsc)
 
@@ -736,18 +736,18 @@ class ViewModelMain @Inject constructor() : ViewModel() {
                 }
             }
 
-            val arrayList = ArrayList<ItemKeyword>()
+            val arrayList = ArrayList<ItemGenre>()
 
             for ((key, value) in dataMap) {
                 arrayList.add(
-                    ItemKeyword(
+                    ItemGenre(
                         title = key,
                         value = value.toString()
                     )
                 )
             }
 
-            val cmpAsc: java.util.Comparator<ItemKeyword> =
+            val cmpAsc: java.util.Comparator<ItemGenre> =
                 Comparator { o1, o2 -> o2.value.toInt().compareTo(o1.value.toInt()) }
             Collections.sort(arrayList, cmpAsc)
 

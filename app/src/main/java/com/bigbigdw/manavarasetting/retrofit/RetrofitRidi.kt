@@ -1,8 +1,5 @@
 package com.bigbigdw.manavarasetting.retrofit
 
-import com.bigbigdw.moavara.Retrofit.RetrofitDataListener
-import com.bigbigdw.moavara.Retrofit.baseCallback
-
 class RetrofitRidi {
     private val apiRidi = Retrofit.apiRidi
         fun getRidiRomance(

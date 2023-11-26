@@ -10,6 +10,9 @@ import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.lifecycle.lifecycleScope
 import com.bigbigdw.manavarasetting.main.screen.ScreenMain
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
+import com.bigbigdw.manavarasetting.util.getBestListTodayStorage
+import com.bigbigdw.manavarasetting.util.getBestMonthListStorage
+import com.bigbigdw.manavarasetting.util.getBestWeekListStorage
 import com.bigbigdw.manavarasetting.util.setBestMonthTrophyJSON
 import com.bigbigdw.manavarasetting.util.setBestWeekTrophyJSON
 import com.bigbigdw.manavarasetting.util.novelListEng
@@ -23,21 +26,6 @@ class ActivityMain : ComponentActivity() {
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        for (platform in novelListEng()) {
-            setBestWeekTrophyJSON(
-                context = this@ActivityMain,
-                platform = platform,
-                type = "NOVEL"
-            )
-
-            setBestMonthTrophyJSON(
-                context = this@ActivityMain,
-                platform = platform,
-                type = "NOVEL"
-            )
-
-        }
 
         viewModelMain.sideEffects
             .onEach { Toast.makeText(this@ActivityMain, it, Toast.LENGTH_SHORT).show() }

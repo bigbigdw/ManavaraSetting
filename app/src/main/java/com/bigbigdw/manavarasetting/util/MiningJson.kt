@@ -3,12 +3,7 @@ package com.bigbigdw.manavarasetting.util
 import android.content.Context
 import android.util.Log
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
-import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
-import com.bigbigdw.manavarasetting.main.model.ItemKeyword
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.bigbigdw.manavarasetting.main.model.ItemGenre
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
@@ -208,7 +203,6 @@ private fun makeMonthJson(
 }
 
 fun uploadJsonTrophyWeek(
-    context : Context,
     platform: String,
     type: String,
     itemBestInfoList: JsonArray
@@ -217,8 +211,7 @@ fun uploadJsonTrophyWeek(
     val storageRef = storage.reference
     val jsonArrayRef = storageRef.child("${platform}/${type}/WEEK_TROPHY/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
 
-    getBestWeekTrophyJSON(
-        context = context,
+    getBestWeekTrophy(
         platform = platform,
         type = type,
     ){
@@ -264,8 +257,7 @@ fun uploadJsonTrophyMonth(
     val jsonArrayRef =
         storageRef.child("${platform}/${type}/MONTH_TROPHY/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
 
-    getBestMonthTrophyJSON(
-        context = context,
+    getBestMonthTrophy(
         platform = platform,
         type = type,
     ) {
@@ -325,7 +317,7 @@ fun doResultMiningGenre(
     for ((key, value) in genreValuesMap) {
         jsonArray.add(
             convertItemKeywordJson(
-                itemBestKeyword = ItemKeyword(
+                itemBestKeyword = ItemGenre(
                     title = key,
                     value = value.toString()
                 )
@@ -342,16 +334,16 @@ fun doResultMiningGenre(
     val storage = Firebase.storage
     val storageRef = storage.reference
 
-    val today = storageRef.child("${platform}/${type}/GENRE_DAY/${DBDate.dateMMDD()}.json")
-    val week =  storageRef.child("${platform}/${type}/GENRE_WEEK/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
-    val month = storageRef.child("${platform}/${type}/GENRE_MONTH/${DBDate.year()}_${DBDate.month()}.json")
+    val genreToday = storageRef.child("${platform}/${type}/GENRE_DAY/${DBDate.dateMMDD()}.json")
+    val genreWeek =  storageRef.child("${platform}/${type}/GENRE_WEEK/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
+    val genreMonth = storageRef.child("${platform}/${type}/GENRE_MONTH/${DBDate.year()}_${DBDate.month()}.json")
 
     runBlocking {
         makeTodayJson(
-            today = today,
+            today = genreToday,
             todayArray = jsonArray,
-            week = week,
-            month = month,
+            week = genreWeek,
+            month = genreMonth,
             type = "GENRE"
         )
     }

@@ -3,12 +3,9 @@ package com.bigbigdw.manavarasetting.util
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
-import androidx.lifecycle.viewModelScope
-import com.bigbigdw.manavarasetting.main.event.EventMain
-import com.bigbigdw.manavarasetting.main.event.UserInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
-import com.bigbigdw.manavarasetting.main.model.ItemKeyword
+import com.bigbigdw.manavarasetting.main.model.ItemGenre
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -19,6 +16,7 @@ import com.google.gson.JsonObject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -110,7 +108,7 @@ fun convertItemBest(bestItemData : ItemBestInfo) : JsonObject {
     return jsonObject
 }
 
-fun convertItemKeywordJson(itemBestKeyword : ItemKeyword) : JsonObject {
+fun convertItemKeywordJson(itemBestKeyword : ItemGenre) : JsonObject {
     val jsonObject = JsonObject()
 
     jsonObject.addProperty("title", itemBestKeyword.title)
@@ -161,9 +159,9 @@ fun setItemBookInfoRef(ref: MutableMap<String?, Any>): ItemBookInfo {
 }
 
 @SuppressLint("SuspiciousIndentation")
-fun convertItemKeyword(jsonObject: JSONObject): ItemKeyword {
+fun convertItemKeyword(jsonObject: JSONObject): ItemGenre {
 
-    return ItemKeyword(
+    return ItemGenre(
         title = jsonObject.optString("title"),
         value = jsonObject.optString("value")
     )
@@ -246,7 +244,7 @@ fun saveBook(platform: String, type: String){
     val storage = Firebase.storage
     val storageRef = storage.reference
 
-    val today = storageRef.child("${platform}/${type}/BOOK/${platform}.json")
+    val book = storageRef.child("${platform}/${type}/BOOK/${platform}.json")
 
     mRootRef.addListenerForSingleValueEvent(object :
         ValueEventListener {
@@ -269,7 +267,7 @@ fun saveBook(platform: String, type: String){
                         }
                     }
 
-                    today.putBytes(jsonObject.toString().toByteArray(Charsets.UTF_8))
+                    book.putBytes(jsonObject.toString().toByteArray(Charsets.UTF_8))
                         .addOnSuccessListener {
                             Log.d("HIHI", "saveBook addOnSuccessListener == $it")
                         }
@@ -283,6 +281,56 @@ fun saveBook(platform: String, type: String){
 
         override fun onCancelled(databaseError: DatabaseError) {}
     })
+}
+
+fun saveKeyword(context: Context, platform: String, type: String){
+    getBestListTodayStorage(
+        context = context,
+        platform = platform,
+        type = type
+    ){ bookList ->
+        val keywordList = mutableMapOf<String, String>()
+        var number  = 0
+
+        for (i in 0 until bookList.size) {
+
+            val item = bookList[i]
+
+            runBlocking {
+                getKeyword(
+                    context = context,
+                    platform = platform,
+                    bookCode = item.bookCode
+                ){
+                    it.forEach { (key, value) ->
+                        keywordList[key] = keywordList[key]?.let { "$it, $value" } ?: value
+                    }
+
+                    if(number == bookList.size - 1){
+                        BestRef.setBestGenre(
+                            platform = platform,
+                            genreDate = "KEYWORD_DAY",
+                            type = type
+                        ).setValue(keywordList)
+
+                        BestRef.setBestGenre(
+                            platform = platform,
+                            genreDate = "KEYWORD_WEEK",
+                            type = type
+                        ).child(DBDate.getDayOfWeekAsNumber().toString()).setValue(keywordList)
+
+                        BestRef.setBestGenre(
+                            platform = platform,
+                            genreDate = "KEYWORD_MONTH",
+                            type = type
+                        ).child(DBDate.datedd()).setValue(keywordList)
+                    }
+
+                    number += 1
+                }
+            }
+        }
+    }
 }
 
 fun changeUserState(UID: String, status : String){

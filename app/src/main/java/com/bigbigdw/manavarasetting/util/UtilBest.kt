@@ -4,6 +4,15 @@ import android.content.Context
 import android.util.Log
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
+import com.bigbigdw.manavarasetting.main.model.ItemGenre
+import com.bigbigdw.manavarasetting.retrofit.Param
+import com.bigbigdw.manavarasetting.retrofit.RetrofitJoara
+import com.bigbigdw.manavarasetting.retrofit.RetrofitOnestory
+import com.bigbigdw.manavarasetting.retrofit.result.BestToksodaDetailResult
+import com.bigbigdw.manavarasetting.retrofit.result.JoaraBestDetailResult
+import com.bigbigdw.manavarasetting.retrofit.result.OnestoreBookDetail
+import com.bigbigdw.manavarasetting.retrofit.RetrofitDataListener
+import com.bigbigdw.manavarasetting.retrofit.RetrofitToksoda
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -15,6 +24,8 @@ import com.google.gson.JsonArray
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.json.JSONArray
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 import java.io.File
 import java.io.FileWriter
 import java.nio.charset.Charset
@@ -25,7 +36,7 @@ fun getBestListTodayJson(
     platform: String,
     type: String,
     callbacks: (ArrayList<ItemBookInfo>) -> Unit
-){
+) {
     val filePath = File(context.filesDir, "${platform}_TODAY_${type}.json").absolutePath
 
     try {
@@ -48,7 +59,12 @@ fun getBestListTodayJson(
     }
 }
 
-fun getBestListTodayStorage(context: Context, platform : String, type : String, callbacks: (ArrayList<ItemBookInfo>) -> Unit){
+fun getBestListTodayStorage(
+    context: Context,
+    platform: String,
+    type: String,
+    callbacks: (ArrayList<ItemBookInfo>) -> Unit
+) {
 
     try {
         val storage = Firebase.storage
@@ -80,9 +96,15 @@ fun getBestListTodayStorage(context: Context, platform : String, type : String, 
     }
 }
 
-private fun getBestList(platform : String, type : String, callbacks: (ArrayList<ItemBookInfo>) -> Unit) {
+private fun getBestList(
+    platform: String,
+    type: String,
+    callbacks: (ArrayList<ItemBookInfo>) -> Unit
+) {
 
-    val mRootRef = FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform).child("DAY")
+    val mRootRef =
+        FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform)
+            .child("DAY")
 
     mRootRef.addListenerForSingleValueEvent(object :
         ValueEventListener {
@@ -108,9 +130,14 @@ private fun getBestList(platform : String, type : String, callbacks: (ArrayList<
     })
 }
 
-fun getBookMap(platform : String, type : String, callbacks: (MutableMap<String, ItemBookInfo>) -> Unit) {
+fun getBookMap(
+    platform: String,
+    type: String,
+    callbacks: (MutableMap<String, ItemBookInfo>) -> Unit
+) {
 
-    val mRootRef = FirebaseDatabase.getInstance().reference.child("BOOK").child(type).child(platform)
+    val mRootRef =
+        FirebaseDatabase.getInstance().reference.child("BOOK").child(type).child(platform)
 
     mRootRef.addListenerForSingleValueEvent(object :
         ValueEventListener {
@@ -136,7 +163,12 @@ fun getBookMap(platform : String, type : String, callbacks: (MutableMap<String, 
     })
 }
 
-fun getBookItemWeekTrophy(bookCode: String, platform : String, type : String, callbacks: (ArrayList<ItemBestInfo>) -> Unit){
+fun getBookItemWeekTrophy(
+    bookCode: String,
+    platform: String,
+    type: String,
+    callbacks: (ArrayList<ItemBestInfo>) -> Unit
+) {
 
     val weekArray = ArrayList<ItemBestInfo>()
 
@@ -149,7 +181,7 @@ fun getBookItemWeekTrophy(bookCode: String, platform : String, type : String, ca
         override fun onDataChange(dataSnapshot: DataSnapshot) {
             if (dataSnapshot.exists()) {
 
-                for(i in 0..6){
+                for (i in 0..6) {
                     weekArray.add(ItemBestInfo())
                 }
 
@@ -231,7 +263,8 @@ fun getBestWeekListStorage(
 
     val storage = Firebase.storage
     val storageRef = storage.reference
-    val weekRef = storageRef.child("${platform}/${type}/WEEK/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
+    val weekRef =
+        storageRef.child("${platform}/${type}/WEEK/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
     val weekFile = File(context.filesDir, "${platform}_WEEK_${type}.json")
 
     weekRef.getFile(weekFile).addOnSuccessListener {
@@ -243,22 +276,22 @@ fun getBestWeekListStorage(
 
         for (i in 0 until jsonArray.length()) {
 
-            try{
+            try {
                 val jsonArrayItem = jsonArray.getJSONArray(i)
                 val itemList = ArrayList<ItemBookInfo>()
 
                 for (j in 0 until jsonArrayItem.length()) {
 
-                    try{
+                    try {
                         val jsonObject = jsonArrayItem.getJSONObject(j)
                         itemList.add(convertItemBookJson(jsonObject))
-                    }catch (e : Exception){
+                    } catch (e: Exception) {
                         itemList.add(ItemBookInfo())
                     }
                 }
 
                 weekJsonList.add(itemList)
-            } catch (e : Exception){
+            } catch (e: Exception) {
                 weekJsonList.add(ArrayList())
             }
         }
@@ -270,12 +303,13 @@ fun getBestWeekListStorage(
 fun getBestWeekTrophy(
     platform: String,
     type: String,
-    callbacks: (ArrayList<ItemBestInfo>) -> Unit
+    callbacks: (MutableMap<String, ItemBestInfo>) -> Unit
 ) {
 
     val storage = Firebase.storage
     val storageRef = storage.reference
-    val weekTrophyRef = storageRef.child("${platform}/${type}/WEEK_TROPHY/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
+    val weekTrophyRef =
+        storageRef.child("${platform}/${type}/WEEK_TROPHY/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
     val weekTrophyFile = weekTrophyRef.getBytes(1024 * 1024)
 
     weekTrophyFile.addOnSuccessListener { bytes ->
@@ -287,10 +321,10 @@ fun getBestWeekTrophy(
             Comparator { o1, o2 -> o2.total.compareTo(o1.total) }
         Collections.sort(itemList, cmpAsc)
 
-        val weekJsonList = ArrayList<ItemBestInfo>()
+        val weekJsonList = mutableMapOf<String, ItemBestInfo>()
 
         for (item in itemList) {
-            weekJsonList.add(item)
+            weekJsonList[item.bookCode] = item
         }
 
         callbacks.invoke(weekJsonList)
@@ -315,22 +349,22 @@ fun getBestMonthTrophyJson(
 
         for (i in 0 until jsonArray.length()) {
 
-            try{
+            try {
                 val jsonArrayItem = jsonArray.getJSONArray(i)
                 val itemList = ArrayList<ItemBookInfo>()
 
                 for (j in 0 until jsonArrayItem.length()) {
 
-                    try{
+                    try {
                         val jsonObject = jsonArrayItem.getJSONObject(j)
                         itemList.add(convertItemBookJson(jsonObject))
-                    }catch (e : Exception){
+                    } catch (e: Exception) {
                         itemList.add(ItemBookInfo())
                     }
                 }
 
                 monthJsonList.add(itemList)
-            } catch (e : Exception){
+            } catch (e: Exception) {
                 monthJsonList.add(ArrayList())
             }
         }
@@ -338,7 +372,7 @@ fun getBestMonthTrophyJson(
         callbacks.invoke(monthJsonList)
 
     } catch (e: Exception) {
-        getBestMonthListStorage(context = context, platform = platform, type = type){
+        getBestMonthListStorage(context = context, platform = platform, type = type) {
             callbacks.invoke(it)
         }
     }
@@ -353,7 +387,8 @@ fun getBestMonthListStorage(
 
     val storage = Firebase.storage
     val storageRef = storage.reference
-    val monthRef = storageRef.child("${platform}/${type}/MONTH/${DBDate.year()}_${DBDate.month()}.json")
+    val monthRef =
+        storageRef.child("${platform}/${type}/MONTH/${DBDate.year()}_${DBDate.month()}.json")
     val monthFile = File(context.filesDir, "${platform}_MONTH_${type}.json")
 
     monthRef.getFile(monthFile).addOnSuccessListener { bytes ->
@@ -363,22 +398,22 @@ fun getBestMonthListStorage(
 
         for (i in 0 until jsonArray.length()) {
 
-            try{
+            try {
                 val jsonArrayItem = jsonArray.getJSONArray(i)
                 val itemList = ArrayList<ItemBookInfo>()
 
                 for (j in 0 until jsonArrayItem.length()) {
 
-                    try{
+                    try {
                         val jsonObject = jsonArrayItem.getJSONObject(j)
                         itemList.add(convertItemBookJson(jsonObject))
-                    }catch (e : Exception){
+                    } catch (e: Exception) {
                         itemList.add(ItemBookInfo())
                     }
                 }
 
                 monthJsonList.add(itemList)
-            } catch (e : Exception){
+            } catch (e: Exception) {
                 monthJsonList.add(ArrayList())
             }
         }
@@ -390,12 +425,13 @@ fun getBestMonthListStorage(
 fun getBestMonthTrophy(
     platform: String,
     type: String,
-    callbacks: (ArrayList<ItemBestInfo>) -> Unit
+    callbacks: (MutableMap<String, ItemBestInfo>) -> Unit
 ) {
 
     val storage = Firebase.storage
     val storageRef = storage.reference
-    val monthTrophyRef =  storageRef.child("${platform}/${type}/MONTH_TROPHY/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
+    val monthTrophyRef =
+        storageRef.child("${platform}/${type}/MONTH_TROPHY/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
     val monthTrophyFile = monthTrophyRef.getBytes(1024 * 1024)
 
     monthTrophyFile.addOnSuccessListener { bytes ->
@@ -403,14 +439,14 @@ fun getBestMonthTrophy(
         val json = Json { ignoreUnknownKeys = true }
         val itemList = json.decodeFromString<List<ItemBestInfo>>(jsonString)
 
-        val monthJsonList = ArrayList<ItemBestInfo>()
+        val monthJsonList = mutableMapOf<String, ItemBestInfo>()
 
         val cmpAsc: java.util.Comparator<ItemBestInfo> =
             Comparator { o1, o2 -> o2.total.compareTo(o1.total) }
         Collections.sort(itemList, cmpAsc)
 
         for (item in itemList) {
-            monthJsonList.add(item)
+            monthJsonList[item.bookCode] = item
         }
 
         callbacks.invoke(monthJsonList)
@@ -419,7 +455,9 @@ fun getBestMonthTrophy(
 
 fun setBestWeekTrophyJSON(context: Context, platform: String, type: String) {
 
-    val mRootRef = FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform).child("TROPHY_WEEK_TOTAL")
+    val mRootRef =
+        FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform)
+            .child("TROPHY_WEEK_TOTAL")
 
     mRootRef.addListenerForSingleValueEvent(object :
         ValueEventListener {
@@ -462,7 +500,7 @@ fun getBestWeekTrophyJSON(
     platform: String,
     type: String,
     callbacks: (MutableMap<String, ItemBestInfo>) -> Unit
-){
+) {
     val filePath = File(context.filesDir, "${platform}_WEEK_TROPHY_${type}.json").absolutePath
 
     try {
@@ -485,7 +523,9 @@ fun getBestWeekTrophyJSON(
 
 fun setBestMonthTrophyJSON(context: Context, platform: String, type: String) {
 
-    val mRootRef = FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform).child("TROPHY_MONTH_TOTAL")
+    val mRootRef =
+        FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform)
+            .child("TROPHY_MONTH_TOTAL")
 
     mRootRef.addListenerForSingleValueEvent(object :
         ValueEventListener {
@@ -528,7 +568,7 @@ fun getBestMonthTrophyJSON(
     platform: String,
     type: String,
     callbacks: (MutableMap<String, ItemBestInfo>) -> Unit
-){
+) {
     val filePath = File(context.filesDir, "${platform}_MONTH_TROPHY_${type}.json").absolutePath
 
     try {
@@ -547,5 +587,194 @@ fun getBestMonthTrophyJSON(
     } catch (e: Exception) {
         e.printStackTrace()
     }
+}
+
+fun getKeyword(
+    platform: String,
+    bookCode: String,
+    context: Context,
+    callbacks: (MutableMap<String, String>) -> Unit
+) {
+
+    when (platform) {
+        "JOARA", "JOARA_NOBLESS", "JOARA_PREMIUM" -> {
+            setLayoutJoara(bookCode = bookCode, context = context, callbacks = callbacks)
+        }
+
+        "NAVER_WEBNOVEL_FREE", "NAVER_WEBNOVEL_PAY", "NAVER_BEST", "NAVER_CHALLENGE" -> {
+            setLayoutNaver(bookCode = bookCode, callbacks = callbacks)
+        }
+
+        "RIDI_FANTAGY", "RIDI_ROMANCE", "RIDI_ROFAN" -> {
+            setLayoutRidi(bookCode = bookCode, callbacks = callbacks)
+        }
+
+        "ONESTORY_FANTAGY", "ONESTORY_ROMANCE", "ONESTORY_PASS_FANTAGY", "ONESTORY_PASS_ROMANCE" -> {
+            setLayoutOneStory(bookCode = bookCode, callbacks = callbacks)
+        }
+
+        "TOKSODA", "TOKSODA_FREE" -> {
+            setLayoutToksoda(bookCode = bookCode, callbacks = callbacks)
+        }
+    }
+}
+
+private fun setLayoutJoara(
+    bookCode: String,
+    context: Context,
+    callbacks: (MutableMap<String, String>) -> Unit
+) {
+    val apiJoara = RetrofitJoara()
+    val JoaraRef = Param.getItemAPI(context)
+    JoaraRef["book_code"] = bookCode
+    JoaraRef["category"] = "1"
+
+    apiJoara.getBookDetailJoa(
+        JoaraRef,
+        object : RetrofitDataListener<JoaraBestDetailResult> {
+            override fun onSuccess(data: JoaraBestDetailResult) {
+
+                val itemList = mutableMapOf<String, String>()
+
+                if (data.book != null) {
+
+                    for (keyword in data.book.keyword) {
+
+                        itemList[keyword
+                            .replace("/", " ")
+                            .replace(".", " ")
+                            .replace("#", " ")
+                            .replace("$", " ")
+                            .replace("[", " ")
+                            .replace("]", " ")] = bookCode
+                    }
+
+                    callbacks(itemList)
+                }
+            }
+        })
+}
+
+private fun setLayoutNaver(bookCode: String, callbacks: (MutableMap<String, String>) -> Unit) {
+    Thread {
+
+        val doc: Document =
+            Jsoup.connect("https://novel.naver.com/webnovel/list?novelId=${bookCode}").post()
+
+        val keywordList = mutableMapOf<String, String>()
+
+        for (i in doc.select(".tag_collection").indices) {
+
+
+
+            val wordList = doc.select(".tag_collection")[i].text().split(" ").toMutableList()
+
+            wordList.replaceAll { it
+                .replace("/", " ")
+                .replace(".", " ")
+                .replace("#", " ")
+                .replace("$", " ")
+                .replace("[", " ")
+                .replace("]", " ") }
+
+            for(keyword in wordList){
+                Log.d("HIHI", "bookCode = $bookCode keyword = $keyword")
+                keywordList[keyword] = bookCode
+            }
+        }
+
+        callbacks(keywordList)
+
+    }.start()
+}
+
+private fun setLayoutRidi(bookCode: String, callbacks: (MutableMap<String, String>) -> Unit) {
+    Thread {
+
+        val doc: Document =
+            Jsoup.connect("https://ridibooks.com/books/${bookCode}").get()
+
+        val keywordList = mutableMapOf<String, String>()
+
+        for (i in doc.select(".keyword_list li").indices) {
+
+            Log.d("HIHI", "bookCode = $bookCode keyword = ${doc.select(".keyword_list li")[i].select(".keyword").text()}")
+
+            keywordList[doc.select(".keyword_list li")[i].select(".keyword").text()
+                .replace("/", " ")
+                .replace(".", " ")
+                .replace("#", " ")
+                .replace("$", " ")
+                .replace("[", " ")
+                .replace("]", " ")] = bookCode
+        }
+
+        callbacks(keywordList)
+
+    }.start()
+}
+
+private fun setLayoutOneStory(bookCode: String, callbacks: (MutableMap<String, String>) -> Unit) {
+
+    val apiOnestory = RetrofitOnestory()
+    val param: MutableMap<String?, Any> = HashMap()
+
+    param["channelId"] = bookCode
+    param["bookpassYn"] = "N"
+
+    apiOnestory.getOneStoreDetail(
+        bookCode,
+        param,
+        object : RetrofitDataListener<OnestoreBookDetail> {
+            override fun onSuccess(data: OnestoreBookDetail) {
+
+                val itemList = mutableMapOf<String, String>()
+
+                for (keyword in data.params.tagList.indices) {
+                    itemList[data.params.tagList[keyword].tagNm
+                        .replace("/", " ")
+                        .replace(".", " ")
+                        .replace("#", " ")
+                        .replace("$", " ")
+                        .replace("[", " ")
+                        .replace("]", " ")] = bookCode
+                }
+
+                callbacks(itemList)
+
+            }
+        })
+}
+
+private fun setLayoutToksoda(bookCode: String, callbacks: (MutableMap<String, String>) -> Unit) {
+
+    val apiToksoda = RetrofitToksoda()
+    val param: MutableMap<String?, Any> = HashMap()
+
+    param["brcd"] = bookCode
+    param["_"] = "1657265744728"
+
+    apiToksoda.getBestDetail(
+        param,
+        object : RetrofitDataListener<BestToksodaDetailResult> {
+            override fun onSuccess(data: BestToksodaDetailResult) {
+
+                val itemList = mutableMapOf<String, String>()
+
+                if (data.result.hashTagList != null) {
+                    for (keyword in data.result.hashTagList) {
+                        itemList[keyword.hashtagNm
+                            .replace("/", " ")
+                            .replace(".", " ")
+                            .replace("#", " ")
+                            .replace("$", " ")
+                            .replace("[", " ")
+                            .replace("]", " ")] = bookCode
+                    }
+
+                    callbacks(itemList)
+                }
+            }
+        })
 }
 

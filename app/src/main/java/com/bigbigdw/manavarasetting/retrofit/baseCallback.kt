@@ -1,4 +1,4 @@
-package com.bigbigdw.moavara.Retrofit
+package com.bigbigdw.manavarasetting.retrofit
 
 
 import retrofit2.Call

@@ -1,4 +1,4 @@
-package com.bigbigdw.moavara.Retrofit
+package com.bigbigdw.manavarasetting.retrofit.result
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
@@ -86,3 +86,14 @@ class JoaraBestChapter {
     @Expose
     val sortno: String = ""
 }
+
+class JoaraBestDetailResult {
+    @SerializedName("status")
+    @Expose
+    val status: String = ""
+
+    @SerializedName("book")
+    @Expose
+    val book: JoaraBestListValue? = null
+}
+

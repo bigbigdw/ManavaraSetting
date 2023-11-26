@@ -1,6 +1,6 @@
-package com.bigbigdw.moavara.Retrofit
+package com.bigbigdw.manavarasetting.retrofit
 
-import com.bigbigdw.manavarasetting.retrofit.Retrofit
+import com.bigbigdw.manavarasetting.retrofit.result.BestResultKakaoStageNovel
 
 class RetrofitKaKao {
     private val apiKakaoStage = Retrofit.apiKakaoStage

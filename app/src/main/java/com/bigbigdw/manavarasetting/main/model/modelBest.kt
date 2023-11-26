@@ -74,9 +74,15 @@ data class ItemBestInfo (
     var date: String = "",
 )
 @Serializable
-class ItemKeyword(
+class ItemGenre(
     @SerialName("title")
     var title: String = "",
     @SerialName("value")
     var value: String = ""
+)
+
+@Serializable
+class ItemKeyword(
+    var title: String = "",
+    var value: ArrayList<String> = ArrayList()
 )

@@ -46,112 +46,51 @@ class OnestoreBookItem {
     var thumbnailImageUrl: String = ""
 
 }
-
-class BestMoonpiaResult {
-    @SerializedName("api")
-    @Expose
-    val api: BestMoonpiaContents? = null
+class OnestoreBookDetail {
+    var params: OnestoreBookDetailContents = OnestoreBookDetailContents()
 }
 
-class BestMoonpiaContents {
-    @SerializedName("items")
+class OnestoreBookDetailContents {
+    @SerializedName("artistNm")
     @Expose
-    val items: List<BestMoonpiaContentsItems>? = null
+    var artistNm: String = ""
+
+    @SerializedName("favoriteCount")
+    @Expose
+    var favoriteCount: String = ""
+
+    @SerializedName("menuNm")
+    @Expose
+    var menuNm: String = ""
+
+    @SerializedName("orgFilePos")
+    @Expose
+    var orgFilePos: String = ""
+
+    @SerializedName("pageViewTotal")
+    @Expose
+    var pageViewTotal: String = ""
+
+    @SerializedName("ratingAvgScore")
+    @Expose
+    var ratingAvgScore: String = ""
+
+    @SerializedName("prodNm")
+    @Expose
+    var prodNm: String = ""
+
+    @SerializedName("tagList")
+    @Expose
+    var tagList: ArrayList<OnestoreBookDetailKeywords> = ArrayList()
+
+    @SerializedName("commentCount")
+    @Expose
+    var commentCount: String = ""
 }
 
-class BestMoonpiaContentsItems {
-    @SerializedName("author")
+class OnestoreBookDetailKeywords {
+    @SerializedName("tagNm")
     @Expose
-    var author: String = ""
-
-    @SerializedName("nvStory")
-    @Expose
-    var nvStory: String = ""
-
-    @SerializedName("nvGnMainTitle")
-    @Expose
-    var nvGnMainTitle: String = ""
-
-    @SerializedName("nvSrl")
-    @Expose
-    var nvSrl: String = ""
-
-    @SerializedName("nvCover")
-    @Expose
-    var nvCover: String = ""
-
-    @SerializedName("nvTitle")
-    @Expose
-    var nvTitle: String = ""
-
-    @SerializedName("nsrData")
-    @Expose
-    val nsrData: BestMoonpiaNsrData? = null
-}
-
-class BestMoonpiaNsrData {
-    @SerializedName("hit")
-    @Expose
-    var hit: String = ""
-
-    @SerializedName("hour")
-    @Expose
-    var hour: String = ""
-
-    @SerializedName("number")
-    @Expose
-    var number: String = ""
-
-    @SerializedName("prefer")
-    @Expose
-    var prefer: String = ""
-}
-
-class BestToksodaResult {
-    @SerializedName("resultList")
-    @Expose
-    val resultList: List<BestToksodaToksodaResultList>? = null
-}
-
-class BestToksodaToksodaResultList {
-    @SerializedName("athrnm")
-    @Expose
-    var athrnm: String = ""
-
-    @SerializedName("brcd")
-    @Expose
-    var brcd: String = ""
-
-    @SerializedName("wrknm")
-    @Expose
-    var wrknm: String = ""
-
-    @SerializedName("whlEpsdCnt")
-    @Expose
-    var whlEpsdCnt: String = ""
-
-    @SerializedName("lnIntro")
-    @Expose
-    var lnIntro: String = ""
-
-    @SerializedName("lgctgrNm")
-    @Expose
-    var lgctgrNm: String = ""
-
-    @SerializedName("inqrCnt")
-    @Expose
-    var inqrCnt: String = ""
-
-    @SerializedName("imgPath")
-    @Expose
-    var imgPath: String = ""
-
-    @SerializedName("intrstCnt")
-    @Expose
-    var intrstCnt: String = ""
-
-    @SerializedName("goodAllCnt")
-    @Expose
-    var goodAllCnt: String = ""
+    var tagNm: String = ""
 }
 

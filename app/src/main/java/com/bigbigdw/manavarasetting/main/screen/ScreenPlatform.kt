@@ -200,6 +200,43 @@ fun ContentsNovel() {
         }
     )
 
+    TabletContentWrapBtn(
+        onClick = {
+            PeriodicWorker.doWorker(
+                workManager = workManager,
+                time = 12,
+                timeUnit = TimeUnit.DAYS,
+                tag = "KEYWORD",
+                platform = "ALL",
+                type = "NOVEL"
+            )
+        },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo_transparent),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "마나바라 NOVEL 키워드",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
     novelListEng().forEachIndexed { index, item ->
         TabletContentWrapBtn(
             onClick = {

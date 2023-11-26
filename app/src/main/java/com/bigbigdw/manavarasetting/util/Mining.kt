@@ -690,7 +690,6 @@ private fun doResultMining(
     }
     runBlocking {
         uploadJsonTrophyWeek(
-            context = context,
             platform = platform,
             type = type,
             itemBestInfoList = itemBestInfoList

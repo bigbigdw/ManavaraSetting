@@ -9,6 +9,7 @@ import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.MiningSource
 import com.bigbigdw.manavarasetting.util.novelListEng
 import com.bigbigdw.manavarasetting.util.saveBook
+import com.bigbigdw.manavarasetting.util.saveKeyword
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.runBlocking
 import retrofit2.Call
@@ -51,44 +52,10 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
             }
 
             postFCM(
-                data = workerName,
+                data = "마나바라 BOOK 최신화 ${inputData.getString(TYPE)}",
                 time = "${year}.${month}.${day} ${hour}:${min}:${sec}",
                 activity = "${inputData.getString(WORKER)} ${inputData.getString(TYPE)}",
             )
-
-        } else if(workerName.contains("MINING")){
-            runBlocking {
-                if (DBDate.getDayOfWeekAsNumber().toString() == "0") {
-                    BestRef.setBestRef(
-                        platform = inputData.getString(PLATFORM) ?: "",
-                        type = inputData.getString(TYPE) ?: "",
-                    ).child("TROPHY_WEEK").removeValue()
-
-                    BestRef.setBestRef(
-                        platform = inputData.getString(PLATFORM) ?: "",
-                        type = inputData.getString(TYPE) ?: "",
-                    ).child("TROPHY_WEEK_TOTAL").removeValue()
-                }
-
-                if (DBDate.datedd() == "01") {
-                    BestRef.setBestRef(
-                        platform = inputData.getString(PLATFORM) ?: "",
-                        type = inputData.getString(TYPE) ?: "",
-                    ).child("TROPHY_MONTH").removeValue()
-
-                    BestRef.setBestRef(
-                        platform = inputData.getString(PLATFORM) ?: "",
-                        type = inputData.getString(TYPE) ?: "",
-                    ).child("TROPHY_MONTH_TOTAL").removeValue()
-                }
-
-                MiningSource.mining(
-                    platform = inputData.getString(PLATFORM) ?: "",
-                    type = inputData.getString(TYPE) ?: "",
-                    context = applicationContext
-                )
-
-            }
 
         } else if(inputData.getString(WORKER)?.contains("NOVEL") == true){
 
@@ -127,9 +94,67 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
             }
 
             postFCM(
-                data = "마나바라 웹소설",
+                data = "마나바라 베스트 최신화 ${inputData.getString(TYPE)}",
                 time = "${year}.${month}.${day} ${hour}:${min}:${sec}",
                 activity = "NOVEL",
+            )
+
+        }  else if(inputData.getString(WORKER)?.contains("KEYWORD") == true){
+
+            for(platform in arrayListOf("JOARA", "JOARA_NOBLESS", "JOARA_PREMIUM")){
+                runBlocking {
+                    saveKeyword(
+                        context = applicationContext,
+                        platform = platform,
+                        type = inputData.getString(TYPE) ?: "",
+                    )
+                }
+            }
+
+            for(platform in arrayListOf("NAVER_WEBNOVEL_FREE", "NAVER_WEBNOVEL_PAY", "NAVER_BEST", "NAVER_CHALLENGE")){
+                runBlocking {
+                    saveKeyword(
+                        context = applicationContext,
+                        platform = platform,
+                        type = inputData.getString(TYPE) ?: "",
+                    )
+                }
+            }
+
+            for(platform in arrayListOf("RIDI_FANTAGY", "RIDI_ROMANCE", "RIDI_ROFAN")){
+                runBlocking {
+                    saveKeyword(
+                        context = applicationContext,
+                        platform = platform,
+                        type = inputData.getString(TYPE) ?: "",
+                    )
+                }
+            }
+
+            for(platform in arrayListOf("ONESTORY_FANTAGY", "ONESTORY_ROMANCE", "ONESTORY_PASS_FANTAGY", "ONESTORY_PASS_ROMANCE")){
+                runBlocking {
+                    saveKeyword(
+                        context = applicationContext,
+                        platform = platform,
+                        type = inputData.getString(TYPE) ?: "",
+                    )
+                }
+            }
+
+            for(platform in arrayListOf("TOKSODA", "TOKSODA_FREE")){
+                runBlocking {
+                    saveKeyword(
+                        context = applicationContext,
+                        platform = platform,
+                        type = inputData.getString(TYPE) ?: "",
+                    )
+                }
+            }
+
+            postFCM(
+                data = "마나바라 키워드 리스트 최신화 ${inputData.getString(TYPE)}",
+                time = "${year}.${month}.${day} ${hour}:${min}:${sec}",
+                activity = "${inputData.getString(WORKER)} ${inputData.getString(TYPE)}",
             )
 
         } else {

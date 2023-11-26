@@ -1,6 +1,6 @@
-package com.bigbigdw.moavara.Retrofit.Api
+package com.bigbigdw.manavarasetting.retrofit.api
 
-import com.bigbigdw.moavara.Retrofit.*
+import com.bigbigdw.manavarasetting.retrofit.result.BestResultKakaoStageNovel
 import retrofit2.Call
 import retrofit2.http.*
 

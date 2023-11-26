@@ -3,7 +3,7 @@ package com.bigbigdw.manavarasetting.main.event
 import com.bigbigdw.manavarasetting.firebase.FCMAlert
 import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
-import com.bigbigdw.manavarasetting.main.model.ItemKeyword
+import com.bigbigdw.manavarasetting.main.model.ItemGenre
 
 sealed interface EventMain {
     object Loaded : EventMain
@@ -38,12 +38,12 @@ sealed interface EventMain {
     ) : EventMain
 
     class SetGenreDay(
-        val genreDay : ArrayList<ItemKeyword> = ArrayList()
+        val genreDay : ArrayList<ItemGenre> = ArrayList()
     ) : EventMain
 
     class SetGenreWeek(
-        val genreDay : ArrayList<ItemKeyword> = ArrayList(),
-        val genreDayList : ArrayList<ArrayList<ItemKeyword>> = ArrayList()
+        val genreDay : ArrayList<ItemGenre> = ArrayList(),
+        val genreDayList : ArrayList<ArrayList<ItemGenre>> = ArrayList()
     ) : EventMain
 
     class SetUserList(
@@ -64,8 +64,8 @@ data class StateMain(
     val fcmBestCount : Int = 0,
     val fcmJsonCount : Int = 0,
     val fcmTrophyCount : Int = 0,
-    val genreDay : ArrayList<ItemKeyword> = ArrayList(),
-    val genreDayList : ArrayList<ArrayList<ItemKeyword>> = ArrayList(),
+    val genreDay : ArrayList<ItemGenre> = ArrayList(),
+    val genreDayList : ArrayList<ArrayList<ItemGenre>> = ArrayList(),
     val userList : ArrayList<UserInfo> = ArrayList()
 )
 
