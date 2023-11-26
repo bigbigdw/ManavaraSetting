@@ -475,6 +475,27 @@ fun ScreenTabletDetail(
                 getType = getDetailType,
                 menuType = "월간"
             )
+        }  else if (getDetailMenu.contains("투데이 키워드 JSON")) {
+            KeywordDetailJson(
+                viewModelMain = viewModelMain,
+                getPlatform = getDetailPlatform,
+                getType = getDetailType,
+                menuType = "투데이"
+            )
+        } else if (getDetailMenu.contains("주간 키워드 JSON")) {
+            KeywordDetailJson(
+                viewModelMain = viewModelMain,
+                getPlatform = getDetailPlatform,
+                getType = getDetailType,
+                menuType = "주간"
+            )
+        } else if (getDetailMenu.contains("월간 키워드 JSON")) {
+            KeywordDetailJson(
+                viewModelMain = viewModelMain,
+                getPlatform = getDetailPlatform,
+                getType = getDetailType,
+                menuType = "월간"
+            )
         } else if (getDetailMenu.contains("웹소설 베스트 DB")) {
             BookDetail(
                 viewModelMain = viewModelMain,

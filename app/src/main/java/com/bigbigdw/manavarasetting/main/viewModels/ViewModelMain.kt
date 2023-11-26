@@ -11,11 +11,12 @@ import com.bigbigdw.manavarasetting.main.event.UserInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
 import com.bigbigdw.manavarasetting.main.model.ItemGenre
+import com.bigbigdw.manavarasetting.main.model.ItemKeyword
 import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.PeriodicWorker
 import com.bigbigdw.manavarasetting.util.convertItemBestJson
 import com.bigbigdw.manavarasetting.util.convertItemBookJson
-import com.bigbigdw.manavarasetting.util.convertItemKeyword
+import com.bigbigdw.manavarasetting.util.convertItemGenre
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -112,6 +113,19 @@ class ViewModelMain @Inject constructor() : ViewModel() {
             is EventMain.SetUserList -> {
                 current.copy(
                     userList = event.userList,
+                )
+            }
+
+            is EventMain.SetKeywordDay -> {
+                current.copy(
+                    keywordDay = event.keywordDay,
+                )
+            }
+
+            is EventMain.SetKeywordWeek -> {
+                current.copy(
+                    keywordDay = event.keywordDay,
+                    keywordDayList = event.keywordDayList,
                 )
             }
 
@@ -622,8 +636,8 @@ class ViewModelMain @Inject constructor() : ViewModel() {
 
                         try {
                             val jsonObject = jsonArrayItem.getJSONObject(j)
-                            itemList.add(convertItemKeyword(jsonObject))
-                            sumList.add(convertItemKeyword(jsonObject))
+                            itemList.add(convertItemGenre(jsonObject))
+                            sumList.add(convertItemGenre(jsonObject))
                         } catch (e: Exception) {
                             itemList.add(ItemGenre())
                         }
@@ -703,8 +717,8 @@ class ViewModelMain @Inject constructor() : ViewModel() {
 
                         try {
                             val jsonObject = jsonArrayItem.getJSONObject(j)
-                            itemList.add(convertItemKeyword(jsonObject))
-                            sumList.add(convertItemKeyword(jsonObject))
+                            itemList.add(convertItemGenre(jsonObject))
+                            sumList.add(convertItemGenre(jsonObject))
                         } catch (e: Exception) {
                             itemList.add(ItemGenre())
                         }
@@ -816,5 +830,28 @@ class ViewModelMain @Inject constructor() : ViewModel() {
         })
     }
 
+    fun setGenreDay(genreDay: ArrayList<ItemGenre>){
+        viewModelScope.launch {
+            events.send(EventMain.SetGenreDay(genreDay = genreDay))
+        }
+    }
+
+    fun setGenreWeek(genreDayList: ArrayList<ArrayList<ItemGenre>>, genreDay: ArrayList<ItemGenre>){
+        viewModelScope.launch {
+            events.send(EventMain.SetGenreWeek(genreDayList = genreDayList, genreDay = genreDay))
+        }
+    }
+
+    fun setKeywordDay(keywordDay: ArrayList<ItemKeyword>){
+        viewModelScope.launch {
+            events.send(EventMain.SetKeywordDay(keywordDay = keywordDay))
+        }
+    }
+
+    fun setKeywordWeek(keywordDayList: ArrayList<ArrayList<ItemKeyword>>, keywordDay: ArrayList<ItemKeyword>){
+        viewModelScope.launch {
+            events.send(EventMain.SetKeywordWeek(keywordDay = keywordDay, keywordDayList = keywordDayList))
+        }
+    }
 }
 

@@ -53,6 +53,7 @@ import com.bigbigdw.manavarasetting.util.getBookCount
 import com.bigbigdw.manavarasetting.util.getPlatformDataKeyComic
 import com.bigbigdw.manavarasetting.util.getPlatformDataKeyNovel
 import com.bigbigdw.manavarasetting.util.getPlatformLogoEng
+import com.bigbigdw.manavarasetting.util.keywordListEng
 import com.bigbigdw.manavarasetting.util.novelListEng
 import kotlinx.coroutines.runBlocking
 import java.util.concurrent.TimeUnit
@@ -293,7 +294,7 @@ fun ContentsNovel() {
             ) {
 
                 Image(
-                    painter = painterResource(id = R.drawable.logo_naver),
+                    painter = painterResource(id = R.drawable.logo_naver_challenge),
                     contentDescription = null,
                     modifier = Modifier
                         .width(20.dp)
@@ -451,7 +452,7 @@ fun ContentsNovel() {
                 Spacer(modifier = Modifier.size(8.dp))
 
                 Text(
-                    text = "TOKSODA 플랫폼 최신화",
+                    text = "NAVER_SERIES 플랫폼 최신화",
                     color = color000000,
                     fontSize = 18.sp,
                 )
@@ -928,6 +929,107 @@ fun ContentsPlatform(
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         text = "월간 장르",
+                        color = color000000,
+                        fontSize = 18.sp,
+                    )
+                }
+            }
+        )
+    }
+
+    if(keywordListEng().contains(platform)){
+        TabletContentWrapBtn(
+            onClick = {
+                setDetailPage(true)
+                setMenu("${changePlatformNameKor(platform)} 투데이 키워드 JSON")
+                setPlatform(platform)
+                setType(type)
+            },
+            content = {
+                Row(
+
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.logo_transparent),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .width(20.dp)
+                            .height(20.dp)
+                    )
+
+                    Spacer(modifier = Modifier.size(8.dp))
+
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = "투데이 키워드",
+                        color = color000000,
+                        fontSize = 18.sp,
+                    )
+                }
+            }
+        )
+
+        TabletContentWrapBtn(
+            onClick = {
+                setDetailPage(true)
+                setMenu("${changePlatformNameKor(platform)} 주간 키워드 JSON")
+                setPlatform(platform)
+                setType(type)
+            },
+            content = {
+                Row(
+
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.logo_transparent),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .width(20.dp)
+                            .height(20.dp)
+                    )
+
+                    Spacer(modifier = Modifier.size(8.dp))
+
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = "주간 키워드",
+                        color = color000000,
+                        fontSize = 18.sp,
+                    )
+                }
+            }
+        )
+
+        TabletContentWrapBtn(
+            onClick = {
+                setDetailPage(true)
+                setMenu("${changePlatformNameKor(platform)} 월간 키워드 JSON")
+                setPlatform(platform)
+                setType(type)
+            },
+            content = {
+                Row(
+
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.logo_transparent),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .width(20.dp)
+                            .height(20.dp)
+                    )
+
+                    Spacer(modifier = Modifier.size(8.dp))
+
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = "월간 키워드",
                         color = color000000,
                         fontSize = 18.sp,
                     )

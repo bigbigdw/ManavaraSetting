@@ -83,6 +83,8 @@ class ItemGenre(
 
 @Serializable
 class ItemKeyword(
-    var title: String = "",
-    var value: ArrayList<String> = ArrayList()
+    @SerialName("key")
+    var key: String = "",
+    @SerialName("value")
+    var value: String = ""
 )

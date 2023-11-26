@@ -6,6 +6,7 @@ import android.util.Log
 import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
 import com.bigbigdw.manavarasetting.main.model.ItemGenre
+import com.bigbigdw.manavarasetting.main.model.ItemKeyword
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -160,10 +161,19 @@ fun setItemBookInfoRef(ref: MutableMap<String?, Any>): ItemBookInfo {
 }
 
 @SuppressLint("SuspiciousIndentation")
-fun convertItemKeyword(jsonObject: JSONObject): ItemGenre {
+fun convertItemGenre(jsonObject: JSONObject): ItemGenre {
 
     return ItemGenre(
         title = jsonObject.optString("title"),
+        value = jsonObject.optString("value")
+    )
+}
+
+@SuppressLint("SuspiciousIndentation")
+fun convertItemKeyword(jsonObject: JSONObject): ItemKeyword {
+
+    return ItemKeyword(
+        key = jsonObject.optString("key"),
         value = jsonObject.optString("value")
     )
 }
