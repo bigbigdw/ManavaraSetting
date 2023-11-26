@@ -301,7 +301,6 @@ fun saveKeyword(context: Context, platform: String, type: String){
         type = type
     ){ bookList ->
         val keywordList = mutableMapOf<String, String>()
-        var number  = 0
 
         for (i in 0 until bookList.size) {
 
@@ -317,7 +316,7 @@ fun saveKeyword(context: Context, platform: String, type: String){
                         keywordList[key] = keywordList[key]?.let { "$it, $value" } ?: value
                     }
 
-                    if(number == bookList.size - 1){
+                    if(i == bookList.size - 1){
                         BestRef.setBestGenre(
                             platform = platform,
                             genreDate = "KEYWORD_DAY",
@@ -361,8 +360,6 @@ fun saveKeyword(context: Context, platform: String, type: String){
                             )
                         }
                     }
-
-                    number += 1
                 }
             }
         }
