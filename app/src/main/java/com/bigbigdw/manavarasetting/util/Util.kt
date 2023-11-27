@@ -3,6 +3,7 @@ package com.bigbigdw.manavarasetting.util
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
+import com.bigbigdw.manavarasetting.firebase.FirebaseWorkManager
 import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
 import com.bigbigdw.manavarasetting.main.model.ItemGenre
@@ -315,6 +316,24 @@ fun saveKeyword(context: Context, platform: String, type: String, callback : (Mu
                     it.forEach { (key, value) ->
                         keywordList[key] = keywordList[key]?.let { "$it, $value" } ?: value
                     }
+
+                    BestRef.setBestGenre(
+                        platform = platform,
+                        genreDate = "KEYWORD_DAY",
+                        type = type,
+                    ).setValue(it)
+
+                    BestRef.setBestGenre(
+                        platform = platform,
+                        genreDate = "KEYWORD_WEEK",
+                        type = type,
+                    ).child(DBDate.getDayOfWeekAsNumber().toString()).setValue(it)
+
+                    BestRef.setBestGenre(
+                        platform = platform,
+                        genreDate = "KEYWORD_MONTH",
+                        type = type,
+                    ).child(DBDate.datedd()).setValue(it)
                 }
             }
         }

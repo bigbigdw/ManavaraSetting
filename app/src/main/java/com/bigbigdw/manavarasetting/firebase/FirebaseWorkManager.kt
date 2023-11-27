@@ -113,23 +113,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                         platform = platform,
                         type = inputData.getString(TYPE) ?: "",
                     ){
-                        BestRef.setBestGenre(
-                            platform = platform,
-                            genreDate = "KEYWORD_DAY",
-                            type = inputData.getString(TYPE) ?: "",
-                        ).setValue(it)
 
-                        BestRef.setBestGenre(
-                            platform = platform,
-                            genreDate = "KEYWORD_WEEK",
-                            type = inputData.getString(TYPE) ?: "",
-                        ).child(DBDate.getDayOfWeekAsNumber().toString()).setValue(it)
-
-                        BestRef.setBestGenre(
-                            platform = platform,
-                            genreDate = "KEYWORD_MONTH",
-                            type = inputData.getString(TYPE) ?: "",
-                        ).child(DBDate.datedd()).setValue(it)
 
                         val jsonArray = JsonArray()
 
@@ -253,23 +237,6 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                             platform = platform,
                             type = inputData.getString(TYPE) ?: "",
                         ){
-                            BestRef.setBestGenre(
-                                platform = platform,
-                                genreDate = "KEYWORD_DAY",
-                                type = inputData.getString(TYPE) ?: "",
-                            ).setValue(it)
-
-                            BestRef.setBestGenre(
-                                platform = platform,
-                                genreDate = "KEYWORD_WEEK",
-                                type = inputData.getString(TYPE) ?: "",
-                            ).child(DBDate.getDayOfWeekAsNumber().toString()).setValue(it)
-
-                            BestRef.setBestGenre(
-                                platform = platform,
-                                genreDate = "KEYWORD_MONTH",
-                                type = inputData.getString(TYPE) ?: "",
-                            ).child(DBDate.datedd()).setValue(it)
 
                             val jsonArray = JsonArray()
 
