@@ -231,11 +231,13 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                         ).child("TROPHY_MONTH_TOTAL").removeValue()
                     }
 
-                    MiningSource.mining(
-                        platform = platform,
-                        type = inputData.getString(TYPE) ?: "",
-                        context = applicationContext
-                    )
+                    runBlocking {
+                        MiningSource.mining(
+                            platform = platform,
+                            type = inputData.getString(TYPE) ?: "",
+                            context = applicationContext
+                        )
+                    }
 
                     runBlocking {
                         saveKeyword(
