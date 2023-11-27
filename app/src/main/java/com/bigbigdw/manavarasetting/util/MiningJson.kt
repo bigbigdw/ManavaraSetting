@@ -4,10 +4,6 @@ import android.content.Context
 import android.util.Log
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
 import com.bigbigdw.manavarasetting.main.model.ItemGenre
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
@@ -208,80 +204,104 @@ private fun makeMonthJson(
 
 fun uploadJsonTrophyWeek(
     platform: String,
-    type: String
+    type: String,
+    itemBestInfoList: JsonArray
 ) {
-
     val storage = Firebase.storage
     val storageRef = storage.reference
     val jsonArrayRef = storageRef.child("${platform}/${type}/WEEK_TROPHY/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
 
-    val mRootRef = FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform).child("TROPHY_WEEK_TOTAL")
+    getBestWeekTrophy(
+        platform = platform,
+        type = type,
+    ){
 
-    mRootRef.addListenerForSingleValueEvent(object :
-        ValueEventListener {
-        override fun onDataChange(dataSnapshot: DataSnapshot) {
-            if (dataSnapshot.exists()) {
+        for (book in itemBestInfoList) {
 
-                val itemList = JsonArray()
+            val item = convertItemBestJson(JSONObject(book.asJsonObject.toString()))
 
-                for (item in dataSnapshot.children) {
+            if (it.containsKey(item.bookCode)) {
+                it[item.bookCode] = item
+            }
 
-                    val book = item.getValue(ItemBestInfo::class.java)
+        }
 
-                    if (book != null) {
-                        itemList.add(convertItemBest(book))
-                    }
-                }
+        val mapList: ArrayList<ItemBestInfo> = ArrayList(it.values)
+        val itemList = JsonArray()
 
-                val jsonArrayByteArray = itemList.toString().toByteArray(Charsets.UTF_8)
+        for (item in mapList) {
+            itemList.add(convertItemBest(item))
+        }
 
-                jsonArrayRef.putBytes(jsonArrayByteArray)
+        val jsonArrayByteArray = itemList.toString().toByteArray(Charsets.UTF_8)
+
+        jsonArrayRef.putBytes(jsonArrayByteArray)
+            .addOnSuccessListener {
+                Log.d("uploadJsonTrophyWeek", "SUCEESS")
+            }
+            .addOnFailureListener {
+                Log.d("uploadJsonTrophyWeek", "FAIL")
+
+
+                val makeNewArray = itemBestInfoList.toString().toByteArray(Charsets.UTF_8)
+
+                jsonArrayRef.putBytes(makeNewArray)
                     .addOnSuccessListener {}
                     .addOnFailureListener {}
             }
-        }
-
-        override fun onCancelled(databaseError: DatabaseError) {}
-    })
+    }
 }
 
 fun uploadJsonTrophyMonth(
+    context : Context,
     platform: String,
-    type: String
+    type: String,
+    itemBestInfoList: JsonArray
 ) {
 
     val storage = Firebase.storage
     val storageRef = storage.reference
-    val jsonArrayRef = storageRef.child("${platform}/${type}/MONTH_TROPHY/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
+    val jsonArrayRef =
+        storageRef.child("${platform}/${type}/MONTH_TROPHY/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
 
-    val mRootRef = FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform).child("TROPHY_MONTH_TOTAL")
+    getBestMonthTrophy(
+        platform = platform,
+        type = type,
+    ) {
 
-    mRootRef.addListenerForSingleValueEvent(object :
-        ValueEventListener {
-        override fun onDataChange(dataSnapshot: DataSnapshot) {
-            if (dataSnapshot.exists()) {
+        for (book in itemBestInfoList) {
 
-                val itemList = JsonArray()
+            val item = convertItemBestJson(JSONObject(book.asJsonObject.toString()))
 
-                for (item in dataSnapshot.children) {
+            if (it.containsKey(item.bookCode)) {
+                it[item.bookCode] = item
+            }
 
-                    val book = item.getValue(ItemBestInfo::class.java)
+        }
 
-                    if (book != null) {
-                        itemList.add(convertItemBest(book))
-                    }
-                }
+        val mapList: ArrayList<ItemBestInfo> = ArrayList(it.values)
+        val itemList = JsonArray()
 
-                val jsonArrayByteArray = itemList.toString().toByteArray(Charsets.UTF_8)
+        for (item in mapList) {
+            itemList.add(convertItemBest(item))
+        }
 
-                jsonArrayRef.putBytes(jsonArrayByteArray)
+        val jsonArrayByteArray = itemList.toString().toByteArray(Charsets.UTF_8)
+
+        jsonArrayRef.putBytes(jsonArrayByteArray)
+            .addOnSuccessListener {
+                Log.d("uploadJsonTrophyMonth", "SUCEESS")
+            }
+            .addOnFailureListener {
+                Log.d("uploadJsonTrophyMonth", "FAIL")
+
+                val makeNewArray = itemBestInfoList.toString().toByteArray(Charsets.UTF_8)
+
+                jsonArrayRef.putBytes(makeNewArray)
                     .addOnSuccessListener {}
                     .addOnFailureListener {}
             }
-        }
-
-        override fun onCancelled(databaseError: DatabaseError) {}
-    })
+    }
 }
 
 fun doResultMiningGenre(

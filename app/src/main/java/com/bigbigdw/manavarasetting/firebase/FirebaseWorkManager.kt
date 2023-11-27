@@ -7,10 +7,15 @@ import androidx.work.WorkerParameters
 import com.bigbigdw.manavarasetting.util.BestRef
 import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.MiningSource
+import com.bigbigdw.manavarasetting.util.makeTodayJson
 import com.bigbigdw.manavarasetting.util.novelListEng
 import com.bigbigdw.manavarasetting.util.saveBook
 import com.bigbigdw.manavarasetting.util.saveKeyword
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
 import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
@@ -107,51 +112,54 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                         context = applicationContext,
                         platform = platform,
                         type = inputData.getString(TYPE) ?: "",
-                    )
+                    ){
+                        BestRef.setBestGenre(
+                            platform = platform,
+                            genreDate = "KEYWORD_DAY",
+                            type = inputData.getString(TYPE) ?: "",
+                        ).setValue(it)
+
+                        BestRef.setBestGenre(
+                            platform = platform,
+                            genreDate = "KEYWORD_WEEK",
+                            type = inputData.getString(TYPE) ?: "",
+                        ).child(DBDate.getDayOfWeekAsNumber().toString()).setValue(it)
+
+                        BestRef.setBestGenre(
+                            platform = platform,
+                            genreDate = "KEYWORD_MONTH",
+                            type = inputData.getString(TYPE) ?: "",
+                        ).child(DBDate.datedd()).setValue(it)
+
+                        val jsonArray = JsonArray()
+
+                        it.forEach { (key, value) ->
+                            val jsonObject = JsonObject()
+                            jsonObject.addProperty("key", key)
+                            jsonObject.addProperty("value", value)
+                            jsonArray.add(jsonObject)
+                        }
+
+                        val storage = Firebase.storage
+                        val storageRef = storage.reference
+                        val genreToday = storageRef.child("${platform}/${inputData.getString(TYPE) ?: ""}/KEYWORD_DAY/${DBDate.dateMMDD()}.json")
+                        val genreWeek =  storageRef.child("${platform}/${inputData.getString(TYPE) ?: ""}/KEYWORD_WEEK/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
+                        val genreMonth = storageRef.child("${platform}/${inputData.getString(TYPE) ?: ""}/KEYWORD_MONTH/${DBDate.year()}_${DBDate.month()}.json")
+
+                        runBlocking {
+                            makeTodayJson(
+                                today = genreToday,
+                                todayArray = jsonArray,
+                                week = genreWeek,
+                                month = genreMonth,
+                                type = "KEYWORD"
+                            )
+                        }
+                    }
                 }
             }
 
             Thread.sleep(1000)
-
-            for(platform in arrayListOf("NAVER_WEBNOVEL_FREE", "NAVER_WEBNOVEL_PAY", "NAVER_BEST", "NAVER_CHALLENGE")){
-                runBlocking {
-                    saveKeyword(
-                        context = applicationContext,
-                        platform = platform,
-                        type = inputData.getString(TYPE) ?: "",
-                    )
-                }
-            }
-
-            for(platform in arrayListOf("JOARA", "JOARA_NOBLESS", "JOARA_PREMIUM")){
-                runBlocking {
-                    saveKeyword(
-                        context = applicationContext,
-                        platform = platform,
-                        type = inputData.getString(TYPE) ?: "",
-                    )
-                }
-            }
-
-            for(platform in arrayListOf("ONESTORY_FANTAGY", "ONESTORY_ROMANCE", "ONESTORY_PASS_FANTAGY", "ONESTORY_PASS_ROMANCE")){
-                runBlocking {
-                    saveKeyword(
-                        context = applicationContext,
-                        platform = platform,
-                        type = inputData.getString(TYPE) ?: "",
-                    )
-                }
-            }
-
-            for(platform in arrayListOf("TOKSODA", "TOKSODA_FREE")){
-                runBlocking {
-                    saveKeyword(
-                        context = applicationContext,
-                        platform = platform,
-                        type = inputData.getString(TYPE) ?: "",
-                    )
-                }
-            }
 
             postFCM(
                 data = "마나바라 키워드 리스트 최신화 ${inputData.getString(TYPE)}",
@@ -244,7 +252,50 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                             context = applicationContext,
                             platform = platform,
                             type = inputData.getString(TYPE) ?: "",
-                        )
+                        ){
+                            BestRef.setBestGenre(
+                                platform = platform,
+                                genreDate = "KEYWORD_DAY",
+                                type = inputData.getString(TYPE) ?: "",
+                            ).setValue(it)
+
+                            BestRef.setBestGenre(
+                                platform = platform,
+                                genreDate = "KEYWORD_WEEK",
+                                type = inputData.getString(TYPE) ?: "",
+                            ).child(DBDate.getDayOfWeekAsNumber().toString()).setValue(it)
+
+                            BestRef.setBestGenre(
+                                platform = platform,
+                                genreDate = "KEYWORD_MONTH",
+                                type = inputData.getString(TYPE) ?: "",
+                            ).child(DBDate.datedd()).setValue(it)
+
+                            val jsonArray = JsonArray()
+
+                            it.forEach { (key, value) ->
+                                val jsonObject = JsonObject()
+                                jsonObject.addProperty("key", key)
+                                jsonObject.addProperty("value", value)
+                                jsonArray.add(jsonObject)
+                            }
+
+                            val storage = Firebase.storage
+                            val storageRef = storage.reference
+                            val genreToday = storageRef.child("${platform}/${inputData.getString(TYPE) ?: ""}/KEYWORD_DAY/${DBDate.dateMMDD()}.json")
+                            val genreWeek =  storageRef.child("${platform}/${inputData.getString(TYPE) ?: ""}/KEYWORD_WEEK/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
+                            val genreMonth = storageRef.child("${platform}/${inputData.getString(TYPE) ?: ""}/KEYWORD_MONTH/${DBDate.year()}_${DBDate.month()}.json")
+
+                            runBlocking {
+                                makeTodayJson(
+                                    today = genreToday,
+                                    todayArray = jsonArray,
+                                    week = genreWeek,
+                                    month = genreMonth,
+                                    type = "KEYWORD"
+                                )
+                            }
+                        }
                     }
 
                     runBlocking {

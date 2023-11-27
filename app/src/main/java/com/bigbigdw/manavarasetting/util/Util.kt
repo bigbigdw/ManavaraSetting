@@ -294,7 +294,7 @@ fun saveBook(platform: String, type: String){
     })
 }
 
-fun saveKeyword(context: Context, platform: String, type: String){
+fun saveKeyword(context: Context, platform: String, type: String, callback : (MutableMap<String, String>) -> Unit){
     getBestListTodayStorage(
         context = context,
         platform = platform,
@@ -315,54 +315,11 @@ fun saveKeyword(context: Context, platform: String, type: String){
                     it.forEach { (key, value) ->
                         keywordList[key] = keywordList[key]?.let { "$it, $value" } ?: value
                     }
-
-                    if(i == bookList.size - 1){
-                        BestRef.setBestGenre(
-                            platform = platform,
-                            genreDate = "KEYWORD_DAY",
-                            type = type
-                        ).setValue(keywordList)
-
-                        BestRef.setBestGenre(
-                            platform = platform,
-                            genreDate = "KEYWORD_WEEK",
-                            type = type
-                        ).child(DBDate.getDayOfWeekAsNumber().toString()).setValue(keywordList)
-
-                        BestRef.setBestGenre(
-                            platform = platform,
-                            genreDate = "KEYWORD_MONTH",
-                            type = type
-                        ).child(DBDate.datedd()).setValue(keywordList)
-
-                        val jsonArray = JsonArray()
-
-                        keywordList.forEach { (key, value) ->
-                            val jsonObject = JsonObject()
-                            jsonObject.addProperty("key", key)
-                            jsonObject.addProperty("value", value)
-                            jsonArray.add(jsonObject)
-                        }
-
-                        val storage = Firebase.storage
-                        val storageRef = storage.reference
-                        val genreToday = storageRef.child("${platform}/${type}/KEYWORD_DAY/${DBDate.dateMMDD()}.json")
-                        val genreWeek =  storageRef.child("${platform}/${type}/KEYWORD_WEEK/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
-                        val genreMonth = storageRef.child("${platform}/${type}/KEYWORD_MONTH/${DBDate.year()}_${DBDate.month()}.json")
-
-                        runBlocking {
-                            makeTodayJson(
-                                today = genreToday,
-                                todayArray = jsonArray,
-                                week = genreWeek,
-                                month = genreMonth,
-                                type = "KEYWORD"
-                            )
-                        }
-                    }
                 }
             }
         }
+
+        callback(keywordList)
     }
 }
 
