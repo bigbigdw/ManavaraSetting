@@ -118,11 +118,9 @@ fun doMining(
                     }
 
                     doResultMining(
-                        context = context,
                         platform = platform,
                         type = type,
-                        itemBookInfoList = itemBookInfoList,
-                        itemBestInfoList = itemBestInfoList
+                        itemBookInfoList = itemBookInfoList
                     )
                 }
             }
@@ -149,11 +147,9 @@ fun doMining(
                     }
 
                     doResultMining(
-                        context = context,
                         platform = platform,
                         type = type,
-                        itemBookInfoList = itemBookInfoList,
-                        itemBestInfoList = itemBestInfoList
+                        itemBookInfoList = itemBookInfoList
                     )
                 }
             }
@@ -221,11 +217,9 @@ fun doMining(
             yesterDayItemMap = yesterDayItemMap
         ) { itemBookInfoList, itemBestInfoList ->
             doResultMining(
-                context = context,
                 platform = platform,
                 type = type,
-                itemBookInfoList = itemBookInfoList,
-                itemBestInfoList = itemBestInfoList
+                itemBookInfoList = itemBookInfoList
             )
         }
     } else if(platform == "NAVER_WEBNOVEL_PAY") {
@@ -237,11 +231,9 @@ fun doMining(
             yesterDayItemMap = yesterDayItemMap
         ) { itemBookInfoList, itemBestInfoList ->
             doResultMining(
-                context = context,
                 platform = platform,
                 type = type,
-                itemBookInfoList = itemBookInfoList,
-                itemBestInfoList = itemBestInfoList
+                itemBookInfoList = itemBookInfoList
             )
         }
     }  else if(platform == "NAVER_CHALLENGE") {
@@ -253,11 +245,9 @@ fun doMining(
             yesterDayItemMap = yesterDayItemMap
         ) { itemBookInfoList, itemBestInfoList ->
             doResultMining(
-                context = context,
                 platform = platform,
                 type = type,
-                itemBookInfoList = itemBookInfoList,
-                itemBestInfoList = itemBestInfoList
+                itemBookInfoList = itemBookInfoList
             )
         }
     } else if(platform == "NAVER_BEST") {
@@ -269,11 +259,9 @@ fun doMining(
             yesterDayItemMap = yesterDayItemMap
         ) { itemBookInfoList, itemBestInfoList ->
             doResultMining(
-                context = context,
                 platform = platform,
                 type = type,
-                itemBookInfoList = itemBookInfoList,
-                itemBestInfoList = itemBestInfoList
+                itemBookInfoList = itemBookInfoList
             )
         }
     } else if(platform == "ONESTORY_FANTAGY") {
@@ -304,11 +292,9 @@ fun doMining(
                     }
 
                     doResultMining(
-                        context = context,
                         platform = platform,
                         type = type,
-                        itemBookInfoList = itemBookInfoList,
-                        itemBestInfoList = itemBestInfoList
+                        itemBookInfoList = itemBookInfoList
                     )
                 }
             }
@@ -342,11 +328,9 @@ fun doMining(
                     }
 
                     doResultMining(
-                        context = context,
                         platform = platform,
                         type = type,
-                        itemBookInfoList = itemBookInfoList,
-                        itemBestInfoList = itemBestInfoList
+                        itemBookInfoList = itemBookInfoList
                     )
                 }
             }
@@ -380,11 +364,9 @@ fun doMining(
                     }
 
                     doResultMining(
-                        context = context,
                         platform = platform,
                         type = type,
-                        itemBookInfoList = itemBookInfoList,
-                        itemBestInfoList = itemBestInfoList
+                        itemBookInfoList = itemBookInfoList
                     )
                 }
             }
@@ -418,11 +400,9 @@ fun doMining(
                     }
 
                     doResultMining(
-                        context = context,
                         platform = platform,
                         type = type,
-                        itemBookInfoList = itemBookInfoList,
-                        itemBestInfoList = itemBestInfoList
+                        itemBookInfoList = itemBookInfoList
                     )
                 }
             }
@@ -666,11 +646,9 @@ fun doMining(
 }
 
 private fun doResultMining(
-    context: Context,
     platform: String,
     type: String,
-    itemBookInfoList: JsonArray,
-    itemBestInfoList: JsonArray
+    itemBookInfoList: JsonArray
 ) {
     val storage = Firebase.storage
     val storageRef = storage.reference
@@ -711,11 +689,9 @@ fun doMining(
 ) {
     runBlocking {
         doResultMining(
-            context = context,
             platform = platform,
             type = type,
-            itemBookInfoList = itemBookInfoList,
-            itemBestInfoList = itemBestInfoList
+            itemBookInfoList = itemBookInfoList
         )
     }
 
