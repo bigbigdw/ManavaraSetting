@@ -1,12 +1,14 @@
 package com.bigbigdw.manavarasetting.util
 
 import android.content.Context
+import com.bigbigdw.manavarasetting.firebase.FirebaseWorkManager
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
 import com.bigbigdw.manavarasetting.util.MiningSource.miningNaverSeriesComic
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.google.gson.JsonArray
+import com.google.gson.JsonObject
 import kotlinx.coroutines.runBlocking
 
 fun miningValue(
@@ -699,6 +701,39 @@ private fun doResultMining(
             platform = platform,
             type = type,
         )
+    }
+
+    runBlocking {
+        saveKeyword(
+            context = context,
+            platform = platform,
+            type = type,
+            itemBookInfoList = itemBookInfoList
+        ){
+
+            val jsonArray = JsonArray()
+
+            it.forEach { (key, value) ->
+                val jsonObject = JsonObject()
+                jsonObject.addProperty("key", key)
+                jsonObject.addProperty("value", value)
+                jsonArray.add(jsonObject)
+            }
+
+            val genreToday = storageRef.child("${platform}/${type}/KEYWORD_DAY/${DBDate.dateMMDD()}.json")
+            val genreWeek =  storageRef.child("${platform}/${type}/KEYWORD_WEEK/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
+            val genreMonth = storageRef.child("${platform}/${type}/KEYWORD_MONTH/${DBDate.year()}_${DBDate.month()}.json")
+
+            runBlocking {
+                makeTodayJson(
+                    today = genreToday,
+                    todayArray = jsonArray,
+                    week = genreWeek,
+                    month = genreMonth,
+                    type = "KEYWORD"
+                )
+            }
+        }
     }
 }
 

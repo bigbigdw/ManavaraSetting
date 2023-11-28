@@ -104,54 +104,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                 activity = "NOVEL",
             )
 
-        }  else if(inputData.getString(WORKER)?.contains("KEYWORD") == true){
-
-            for(platform in arrayListOf("RIDI_FANTAGY", "RIDI_ROMANCE", "RIDI_ROFAN")){
-                runBlocking {
-                    saveKeyword(
-                        context = applicationContext,
-                        platform = platform,
-                        type = inputData.getString(TYPE) ?: "",
-                    ){
-
-
-                        val jsonArray = JsonArray()
-
-                        it.forEach { (key, value) ->
-                            val jsonObject = JsonObject()
-                            jsonObject.addProperty("key", key)
-                            jsonObject.addProperty("value", value)
-                            jsonArray.add(jsonObject)
-                        }
-
-                        val storage = Firebase.storage
-                        val storageRef = storage.reference
-                        val genreToday = storageRef.child("${platform}/${inputData.getString(TYPE) ?: ""}/KEYWORD_DAY/${DBDate.dateMMDD()}.json")
-                        val genreWeek =  storageRef.child("${platform}/${inputData.getString(TYPE) ?: ""}/KEYWORD_WEEK/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
-                        val genreMonth = storageRef.child("${platform}/${inputData.getString(TYPE) ?: ""}/KEYWORD_MONTH/${DBDate.year()}_${DBDate.month()}.json")
-
-                        runBlocking {
-                            makeTodayJson(
-                                today = genreToday,
-                                todayArray = jsonArray,
-                                week = genreWeek,
-                                month = genreMonth,
-                                type = "KEYWORD"
-                            )
-                        }
-                    }
-                }
-            }
-
-            Thread.sleep(1000)
-
-            postFCM(
-                data = "마나바라 키워드 리스트 최신화 ${inputData.getString(TYPE)}",
-                time = "${year}.${month}.${day} ${hour}:${min}:${sec}",
-                activity = "${inputData.getString(WORKER)} ${inputData.getString(TYPE)}",
-            )
-
-        }  else if(inputData.getString(WORKER)?.contains("TEST") == true){
+        } else if(inputData.getString(WORKER)?.contains("TEST") == true){
 
             val list = if (inputData.getString(PLATFORM)?.contains("JOARA") == true) {
                 arrayListOf("JOARA", "JOARA_NOBLESS", "JOARA_PREMIUM")
@@ -229,40 +182,6 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                             type = inputData.getString(TYPE) ?: "",
                             context = applicationContext
                         )
-                    }
-
-                    runBlocking {
-                        saveKeyword(
-                            context = applicationContext,
-                            platform = platform,
-                            type = inputData.getString(TYPE) ?: "",
-                        ){
-
-                            val jsonArray = JsonArray()
-
-                            it.forEach { (key, value) ->
-                                val jsonObject = JsonObject()
-                                jsonObject.addProperty("key", key)
-                                jsonObject.addProperty("value", value)
-                                jsonArray.add(jsonObject)
-                            }
-
-                            val storage = Firebase.storage
-                            val storageRef = storage.reference
-                            val genreToday = storageRef.child("${platform}/${inputData.getString(TYPE) ?: ""}/KEYWORD_DAY/${DBDate.dateMMDD()}.json")
-                            val genreWeek =  storageRef.child("${platform}/${inputData.getString(TYPE) ?: ""}/KEYWORD_WEEK/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
-                            val genreMonth = storageRef.child("${platform}/${inputData.getString(TYPE) ?: ""}/KEYWORD_MONTH/${DBDate.year()}_${DBDate.month()}.json")
-
-                            runBlocking {
-                                makeTodayJson(
-                                    today = genreToday,
-                                    todayArray = jsonArray,
-                                    week = genreWeek,
-                                    month = genreMonth,
-                                    type = "KEYWORD"
-                                )
-                            }
-                        }
                     }
 
                     runBlocking {

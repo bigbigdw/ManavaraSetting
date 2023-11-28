@@ -20,33 +20,34 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
 @SuppressLint("SuspiciousIndentation")
-fun convertItemBook(bestItemData : ItemBookInfo) : JsonObject {
+fun convertItemBook(bestItemData: ItemBookInfo): JsonObject {
     val jsonObject = JsonObject()
-        jsonObject.addProperty("writer", bestItemData.writer)
-        jsonObject.addProperty("title", bestItemData.title)
-        jsonObject.addProperty("bookImg", bestItemData.bookImg)
-        jsonObject.addProperty("bookCode", bestItemData.bookCode)
-        jsonObject.addProperty("type", bestItemData.type)
-        jsonObject.addProperty("intro", bestItemData.intro)
-        jsonObject.addProperty("cntPageRead", bestItemData.cntPageRead)
-        jsonObject.addProperty("cntFavorite", bestItemData.cntFavorite)
-        jsonObject.addProperty("cntRecom", bestItemData.cntRecom)
-        jsonObject.addProperty("cntTotalComment", bestItemData.cntTotalComment)
-        jsonObject.addProperty("cntChapter", bestItemData.cntChapter)
-        jsonObject.addProperty("number", bestItemData.number)
-        jsonObject.addProperty("point", bestItemData.point)
-        jsonObject.addProperty("total", bestItemData.total)
-        jsonObject.addProperty("totalCount", bestItemData.totalCount)
-        jsonObject.addProperty("totalWeek", bestItemData.totalWeek)
-        jsonObject.addProperty("totalWeekCount", bestItemData.totalWeekCount)
-        jsonObject.addProperty("totalMonth", bestItemData.totalMonth)
-        jsonObject.addProperty("totalMonthCount", bestItemData.totalMonthCount)
-        jsonObject.addProperty("currentDiff", bestItemData.currentDiff)
-        jsonObject.addProperty("genre", bestItemData.genre)
+    jsonObject.addProperty("writer", bestItemData.writer)
+    jsonObject.addProperty("title", bestItemData.title)
+    jsonObject.addProperty("bookImg", bestItemData.bookImg)
+    jsonObject.addProperty("bookCode", bestItemData.bookCode)
+    jsonObject.addProperty("type", bestItemData.type)
+    jsonObject.addProperty("intro", bestItemData.intro)
+    jsonObject.addProperty("cntPageRead", bestItemData.cntPageRead)
+    jsonObject.addProperty("cntFavorite", bestItemData.cntFavorite)
+    jsonObject.addProperty("cntRecom", bestItemData.cntRecom)
+    jsonObject.addProperty("cntTotalComment", bestItemData.cntTotalComment)
+    jsonObject.addProperty("cntChapter", bestItemData.cntChapter)
+    jsonObject.addProperty("number", bestItemData.number)
+    jsonObject.addProperty("point", bestItemData.point)
+    jsonObject.addProperty("total", bestItemData.total)
+    jsonObject.addProperty("totalCount", bestItemData.totalCount)
+    jsonObject.addProperty("totalWeek", bestItemData.totalWeek)
+    jsonObject.addProperty("totalWeekCount", bestItemData.totalWeekCount)
+    jsonObject.addProperty("totalMonth", bestItemData.totalMonth)
+    jsonObject.addProperty("totalMonthCount", bestItemData.totalMonthCount)
+    jsonObject.addProperty("currentDiff", bestItemData.currentDiff)
+    jsonObject.addProperty("genre", bestItemData.genre)
     return jsonObject
 }
 
@@ -77,7 +78,7 @@ fun convertItemBookJson(jsonObject: JSONObject): ItemBookInfo {
     )
 }
 
-fun convertItemBestJson(jsonObject : JSONObject) : ItemBestInfo {
+fun convertItemBestJson(jsonObject: JSONObject): ItemBestInfo {
 
     return ItemBestInfo(
         point = jsonObject.optInt("point"),
@@ -94,7 +95,7 @@ fun convertItemBestJson(jsonObject : JSONObject) : ItemBestInfo {
     )
 }
 
-fun convertItemBest(bestItemData : ItemBestInfo) : JsonObject {
+fun convertItemBest(bestItemData: ItemBestInfo): JsonObject {
     val jsonObject = JsonObject()
 
     jsonObject.addProperty("number", bestItemData.number)
@@ -111,7 +112,7 @@ fun convertItemBest(bestItemData : ItemBestInfo) : JsonObject {
     return jsonObject
 }
 
-fun convertItemKeywordJson(itemBestKeyword : ItemGenre) : JsonObject {
+fun convertItemKeywordJson(itemBestKeyword: ItemGenre): JsonObject {
     val jsonObject = JsonObject()
 
     jsonObject.addProperty("title", itemBestKeyword.title)
@@ -180,21 +181,21 @@ fun convertItemKeyword(jsonObject: JSONObject): ItemKeyword {
 }
 
 
-fun setDataStore(data: String){
+fun setDataStore(data: String) {
     val mRootRef = FirebaseDatabase.getInstance().reference.child("WORKER")
 
-    val year = DBDate.dateMMDDHHMM().substring(0,4)
-    val month = DBDate.dateMMDDHHMM().substring(4,6)
-    val day = DBDate.dateMMDDHHMM().substring(6,8)
-    val hour = DBDate.dateMMDDHHMM().substring(8,10)
-    val min = DBDate.dateMMDDHHMM().substring(10,12)
+    val year = DBDate.dateMMDDHHMM().substring(0, 4)
+    val month = DBDate.dateMMDDHHMM().substring(4, 6)
+    val day = DBDate.dateMMDDHHMM().substring(6, 8)
+    val hour = DBDate.dateMMDDHHMM().substring(8, 10)
+    val min = DBDate.dateMMDDHHMM().substring(10, 12)
 
     val child = data.replace(" 최신화 완료", "")
 
     mRootRef.child(child).setValue("${year}.${month}.${day} ${hour}:${min}")
 }
 
-fun checkMiningTrophyValue(yesterDayItem: ItemBookInfo) : ItemBookInfo{
+fun checkMiningTrophyValue(yesterDayItem: ItemBookInfo): ItemBookInfo {
 
     yesterDayItem.totalWeek = if (DBDate.getYesterdayDayOfWeek() == 7) {
         0
@@ -223,7 +224,7 @@ fun checkMiningTrophyValue(yesterDayItem: ItemBookInfo) : ItemBookInfo{
     return yesterDayItem
 }
 
-fun getBookCount(context : Context, type: String, platform: String) {
+fun getBookCount(context: Context, type: String, platform: String) {
     val mRootRef =
         FirebaseDatabase.getInstance().reference.child("BOOK").child(type).child(platform)
 
@@ -235,10 +236,16 @@ fun getBookCount(context : Context, type: String, platform: String) {
 
             if (dataSnapshot.exists()) {
                 CoroutineScope(Dispatchers.IO).launch {
-                    if(type == "NOVEL"){
-                        dataStore.setDataStoreString(getPlatformDataKeyNovel(platform), dataSnapshot.childrenCount.toString())
+                    if (type == "NOVEL") {
+                        dataStore.setDataStoreString(
+                            getPlatformDataKeyNovel(platform),
+                            dataSnapshot.childrenCount.toString()
+                        )
                     } else {
-                        dataStore.setDataStoreString(getPlatformDataKeyComic(platform), dataSnapshot.childrenCount.toString())
+                        dataStore.setDataStoreString(
+                            getPlatformDataKeyComic(platform),
+                            dataSnapshot.childrenCount.toString()
+                        )
                     }
                 }
             } else {
@@ -250,8 +257,9 @@ fun getBookCount(context : Context, type: String, platform: String) {
     })
 }
 
-fun saveBook(platform: String, type: String){
-    val mRootRef = FirebaseDatabase.getInstance().reference.child("BOOK").child(type).child(platform)
+fun saveBook(platform: String, type: String) {
+    val mRootRef =
+        FirebaseDatabase.getInstance().reference.child("BOOK").child(type).child(platform)
 
     val storage = Firebase.storage
     val storageRef = storage.reference
@@ -295,62 +303,69 @@ fun saveBook(platform: String, type: String){
     })
 }
 
-fun saveKeyword(context: Context, platform: String, type: String, callback : (MutableMap<String, String>) -> Unit){
-    getBestListTodayStorage(
-        context = context,
-        platform = platform,
-        type = type
-    ){ bookList ->
-        val keywordList = mutableMapOf<String, String>()
+fun saveKeyword(
+    context: Context,
+    platform: String,
+    type: String,
+    itemBookInfoList: JsonArray,
+    callback: (MutableMap<String, String>) -> Unit
+) {
 
-        for (i in 0 until bookList.size) {
+    val list = JSONArray(itemBookInfoList.toString())
+    val keywordList = mutableMapOf<String, String>()
 
-            val item = bookList[i]
+    itemBookInfoList.forEachIndexed { i, _ ->
+        val item = convertItemBestJson(list.getJSONObject(i))
 
-            runBlocking {
-                getKeyword(
-                    context = context,
-                    platform = platform,
-                    bookCode = item.bookCode
-                ){
-                    it.forEach { (key, value) ->
-                        keywordList[key] = keywordList[key]?.let { "$it, $value" } ?: value
-                    }
+        getKeyword(
+            context = context,
+            platform = platform,
+            bookCode = item.bookCode
+        ){
 
-                    BestRef.setBestGenre(
-                        platform = platform,
-                        genreDate = "KEYWORD_DAY",
-                        type = type,
-                    ).setValue(it)
-
-                    BestRef.setBestGenre(
-                        platform = platform,
-                        genreDate = "KEYWORD_WEEK",
-                        type = type,
-                    ).child(DBDate.getDayOfWeekAsNumber().toString()).setValue(it)
-
-                    BestRef.setBestGenre(
-                        platform = platform,
-                        genreDate = "KEYWORD_MONTH",
-                        type = type,
-                    ).child(DBDate.datedd()).setValue(it)
+            it.forEach { (key, value) ->
+                synchronized(keywordList) {
+                    keywordList[key] = keywordList[key]?.let { "$it, $value" } ?: value
                 }
             }
-        }
 
-        callback(keywordList)
+            if(i == itemBookInfoList.size() - 1){
+                BestRef.setBestGenre(
+                    platform = platform,
+                    genreDate = "KEYWORD_DAY",
+                    type = type,
+                ).setValue(it)
+
+                BestRef.setBestGenre(
+                    platform = platform,
+                    genreDate = "KEYWORD_WEEK",
+                    type = type,
+                ).child(DBDate.getDayOfWeekAsNumber().toString()).setValue(it)
+
+                BestRef.setBestGenre(
+                    platform = platform,
+                    genreDate = "KEYWORD_MONTH",
+                    type = type,
+                ).child(DBDate.datedd()).setValue(it)
+
+                callback(keywordList)
+            }
+        }
     }
+
+
 }
 
-fun changeUserState(UID: String, status : String){
+fun changeUserState(UID: String, status: String) {
 
-    val result = if(status != "ALLOW"){
+    val result = if (status != "ALLOW") {
         "ALLOW"
     } else {
         "LOCKED"
     }
 
-    FirebaseDatabase.getInstance().reference.child("USER").child(UID).child("USERINFO").child("userStatus").setValue(result)
+    FirebaseDatabase.getInstance().reference.child("USER").child(UID).child("USERINFO")
+        .child("userStatus").setValue(result)
 }
 
 
