@@ -82,6 +82,14 @@ private fun uploadWeekJson(
             val jsonString = String(bytes, Charset.forName("UTF-8"))
             val monthArray = JsonParser().parse(jsonString).asJsonArray
 
+            val totalWeekCount = DBDate.getDaysInMonth()
+
+            if(monthArray.size() == 0){
+                for (i in 0 until totalWeekCount) {
+                    monthArray.add("")
+                }
+            }
+
             if(type == "GENRE" || type == "KEYWORD"){
                 makeMonthGenreJson(
                     jsonMonthArray = monthArray,
@@ -116,8 +124,11 @@ private fun uploadWeekJson(
             } else {
                 val jsonArray = JsonArray()
 
+                val yearNum = DBDate.year().toInt()
+                val monthNum = DBDate.month().toInt()
+
                 val totalWeekCount = DBDate.getNumberOfWeeksInMonth(
-                    year = DBDate.year().toInt(), month = DBDate.month().toInt()
+                    year = yearNum, month = monthNum
                 )
 
                 for (i in 0 until totalWeekCount) {

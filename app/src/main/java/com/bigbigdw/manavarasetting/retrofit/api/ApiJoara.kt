@@ -2,7 +2,6 @@ package com.bigbigdw.manavarasetting.retrofit.api
 
 import com.bigbigdw.manavarasetting.retrofit.result.JoaraBestDetailResult
 import com.bigbigdw.manavarasetting.retrofit.result.JoaraBestListResult
-import com.bigbigdw.moavara.Retrofit.*
 import retrofit2.Call
 import retrofit2.http.*
 

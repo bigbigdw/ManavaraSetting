@@ -133,8 +133,8 @@ object DBDate {
 
         val weekFields = WeekFields.of(Locale.getDefault())
 
-        val firstWeekNumber = firstDayOfMonth.get(weekFields.weekOfWeekBasedYear())
-        val lastWeekNumber = lastDayOfMonth.get(weekFields.weekOfWeekBasedYear())
+        val firstWeekNumber = firstDayOfMonth.get(weekFields.weekOfMonth())
+        val lastWeekNumber = lastDayOfMonth.get(weekFields.weekOfMonth())
 
         return lastWeekNumber - firstWeekNumber + 1
     }

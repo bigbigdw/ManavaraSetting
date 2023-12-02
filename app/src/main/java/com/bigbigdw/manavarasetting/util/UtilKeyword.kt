@@ -1,6 +1,7 @@
 package com.bigbigdw.manavarasetting.util
 
 import android.content.Context
+import android.util.Log
 import com.bigbigdw.manavarasetting.main.model.ItemKeyword
 import com.bigbigdw.manavarasetting.retrofit.Param
 import com.bigbigdw.manavarasetting.retrofit.RetrofitDataListener
@@ -89,32 +90,35 @@ private fun setLayoutJoara(
 private fun setLayoutNaver(bookCode: String, callbacks: (MutableMap<String, String>) -> Unit) {
     Thread {
 
-        val doc: Document =
-            Jsoup.connect("https://novel.naver.com/webnovel/list?novelId=${bookCode}").post()
+        try{
 
-        val keywordList = mutableMapOf<String, String>()
+            val keywordList = mutableMapOf<String, String>()
 
-        for (i in doc.select(".tag_collection").indices) {
+            val doc: Document =
+                Jsoup.connect("https://novel.naver.com/webnovel/list?novelId=${bookCode}").post()
 
-            val wordList = doc.select(".tag_collection")[i].text().split(" ").toMutableList()
+            for (i in doc.select(".tag_collection").indices) {
 
-            wordList.replaceAll {
-                it
-                    .replace("/", " ")
-                    .replace(".", " ")
-                    .replace("#", " ")
-                    .replace("$", " ")
-                    .replace("[", " ")
-                    .replace("]", " ")
+                val wordList = doc.select(".tag_collection")[i].text().split(" ").toMutableList()
+
+                wordList.replaceAll {
+                    it
+                        .replace("/", " ")
+                        .replace(".", " ")
+                        .replace("#", " ")
+                        .replace("$", " ")
+                        .replace("[", " ")
+                        .replace("]", " ")
+                }
+
+                for (keyword in wordList) {
+
+                    keywordList[keyword] = bookCode
+                }
             }
-
-            for (keyword in wordList) {
-
-                keywordList[keyword] = bookCode
-            }
+        }catch (e : Exception){
+            Log.d("MINING-TEST", "EXCEPTION = e == $e")
         }
-
-        callbacks(keywordList)
 
     }.start()
 }
@@ -122,23 +126,27 @@ private fun setLayoutNaver(bookCode: String, callbacks: (MutableMap<String, Stri
 private fun setLayoutRidi(bookCode: String, callbacks: (MutableMap<String, String>) -> Unit) {
     Thread {
 
-        val doc: Document =
-            Jsoup.connect("https://ridibooks.com/books/${bookCode}").get()
+        try{
+            val keywordList = mutableMapOf<String, String>()
 
-        val keywordList = mutableMapOf<String, String>()
+            val doc: Document =
+                Jsoup.connect("https://ridibooks.com/books/${bookCode}").get()
 
-        for (i in doc.select(".keyword_list li").indices) {
+            for (i in doc.select(".keyword_list li").indices) {
 
-            keywordList[doc.select(".keyword_list li")[i].select(".keyword").text()
-                .replace("/", " ")
-                .replace(".", " ")
-                .replace("#", " ")
-                .replace("$", " ")
-                .replace("[", " ")
-                .replace("]", " ")] = bookCode
+                keywordList[doc.select(".keyword_list li")[i].select(".keyword").text()
+                    .replace("/", " ")
+                    .replace(".", " ")
+                    .replace("#", " ")
+                    .replace("$", " ")
+                    .replace("[", " ")
+                    .replace("]", " ")] = bookCode
+            }
+
+            callbacks(keywordList)
+        }catch (e : Exception){
+            Log.d("MINING-TEST", "EXCEPTION = e == $e")
         }
-
-        callbacks(keywordList)
 
     }.start()
 }
