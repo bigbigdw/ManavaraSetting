@@ -13,7 +13,7 @@ import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
 import com.bigbigdw.manavarasetting.main.model.ItemGenre
 import com.bigbigdw.manavarasetting.main.model.ItemKeyword
 import com.bigbigdw.manavarasetting.util.DBDate
-import com.bigbigdw.manavarasetting.util.PeriodicWorker
+import com.bigbigdw.manavarasetting.util.MiningWorker
 import com.bigbigdw.manavarasetting.util.convertItemBestJson
 import com.bigbigdw.manavarasetting.util.convertItemBookJson
 import com.bigbigdw.manavarasetting.util.convertItemGenre
@@ -302,7 +302,7 @@ class ViewModelMain @Inject constructor() : ViewModel() {
         val jsonArrayRef = if (menu == "주간") {
             storageRef.child("${platform}/${type}/WEEK_TROPHY/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
         } else {
-            storageRef.child("${platform}/${type}/MONTH_TROPHY/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
+            storageRef.child("${platform}/${type}/MONTH_TROPHY/${DBDate.year()}_${DBDate.month()}.json")
         }
 
         val file = jsonArrayRef.getBytes(1024 * 1024)
@@ -392,7 +392,7 @@ class ViewModelMain @Inject constructor() : ViewModel() {
     fun checkWorker(workManager: WorkManager, tag: String, platform: String, type: String) {
         viewModelScope.launch {
             _sideEffects.send(
-                PeriodicWorker.checkWorker(
+                MiningWorker.checkWorker(
                     workManager = workManager,
                     tag = tag,
                     platform = platform,

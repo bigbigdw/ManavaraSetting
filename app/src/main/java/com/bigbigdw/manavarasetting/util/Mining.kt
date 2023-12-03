@@ -1,9 +1,10 @@
 package com.bigbigdw.manavarasetting.util
 
 import android.content.Context
-import com.bigbigdw.manavarasetting.firebase.FirebaseWorkManager
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
+import com.bigbigdw.manavarasetting.main.model.ItemGenre
+import com.bigbigdw.manavarasetting.main.model.ItemKeyword
 import com.bigbigdw.manavarasetting.util.MiningSource.miningNaverSeriesComic
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -68,8 +69,17 @@ fun miningValue(
 fun miningGenre(
     ref: MutableMap<String, Int>,
     platform: String,
-    type: String
+    type: String,
+    genreList: ArrayList<ItemGenre>
 ) {
+
+    for(item in genreList){
+        BestRef.setGenreRef(
+            platform = platform,
+            type = type
+        ).child(item.title).child(item.date).setValue(item)
+    }
+
     BestRef.setBestGenre(
         platform = platform,
         genreDate = "GENRE_DAY",
@@ -123,8 +133,7 @@ fun doMining(
                         context = context,
                         platform = platform,
                         type = type,
-                        itemBookInfoList = itemBookInfoList,
-                        itemBestInfoList = itemBestInfoList
+                        itemBookInfoList = itemBookInfoList
                     )
                 }
             }
@@ -154,8 +163,7 @@ fun doMining(
                         context = context,
                         platform = platform,
                         type = type,
-                        itemBookInfoList = itemBookInfoList,
-                        itemBestInfoList = itemBestInfoList
+                        itemBookInfoList = itemBookInfoList
                     )
                 }
             }
@@ -173,8 +181,7 @@ fun doMining(
                 context = context,
                 platform = platform,
                 type = type,
-                itemBookInfoList = itemBookInfoList,
-                itemBestInfoList = itemBestInfoList
+                itemBookInfoList = itemBookInfoList
             )
 
         }
@@ -191,8 +198,7 @@ fun doMining(
                 context = context,
                 platform = platform,
                 type = type,
-                itemBookInfoList = itemBookInfoList,
-                itemBestInfoList = itemBestInfoList
+                itemBookInfoList = itemBookInfoList
             )
 
         }
@@ -209,8 +215,7 @@ fun doMining(
                 context = context,
                 platform = platform,
                 type = type,
-                itemBookInfoList = itemBookInfoList,
-                itemBestInfoList = itemBestInfoList
+                itemBookInfoList = itemBookInfoList
             )
 
         }
@@ -226,8 +231,7 @@ fun doMining(
                 context = context,
                 platform = platform,
                 type = type,
-                itemBookInfoList = itemBookInfoList,
-                itemBestInfoList = itemBestInfoList
+                itemBookInfoList = itemBookInfoList
             )
         }
     } else if(platform == "NAVER_WEBNOVEL_PAY") {
@@ -242,8 +246,7 @@ fun doMining(
                 context = context,
                 platform = platform,
                 type = type,
-                itemBookInfoList = itemBookInfoList,
-                itemBestInfoList = itemBestInfoList
+                itemBookInfoList = itemBookInfoList
             )
         }
     }  else if(platform == "NAVER_CHALLENGE") {
@@ -258,8 +261,7 @@ fun doMining(
                 context = context,
                 platform = platform,
                 type = type,
-                itemBookInfoList = itemBookInfoList,
-                itemBestInfoList = itemBestInfoList
+                itemBookInfoList = itemBookInfoList
             )
         }
     } else if(platform == "NAVER_BEST") {
@@ -274,8 +276,7 @@ fun doMining(
                 context = context,
                 platform = platform,
                 type = type,
-                itemBookInfoList = itemBookInfoList,
-                itemBestInfoList = itemBestInfoList
+                itemBookInfoList = itemBookInfoList
             )
         }
     } else if(platform == "ONESTORY_FANTAGY") {
@@ -309,8 +310,7 @@ fun doMining(
                         context = context,
                         platform = platform,
                         type = type,
-                        itemBookInfoList = itemBookInfoList,
-                        itemBestInfoList = itemBestInfoList
+                        itemBookInfoList = itemBookInfoList
                     )
                 }
             }
@@ -347,8 +347,7 @@ fun doMining(
                         context = context,
                         platform = platform,
                         type = type,
-                        itemBookInfoList = itemBookInfoList,
-                        itemBestInfoList = itemBestInfoList
+                        itemBookInfoList = itemBookInfoList
                     )
                 }
             }
@@ -385,8 +384,7 @@ fun doMining(
                         context = context,
                         platform = platform,
                         type = type,
-                        itemBookInfoList = itemBookInfoList,
-                        itemBestInfoList = itemBestInfoList
+                        itemBookInfoList = itemBookInfoList
                     )
                 }
             }
@@ -423,8 +421,7 @@ fun doMining(
                         context = context,
                         platform = platform,
                         type = type,
-                        itemBookInfoList = itemBookInfoList,
-                        itemBestInfoList = itemBestInfoList
+                        itemBookInfoList = itemBookInfoList
                     )
                 }
             }
@@ -441,8 +438,7 @@ fun doMining(
                 context = context,
                 platform = platform,
                 type = type,
-                itemBookInfoList = itemBookInfoList,
-                itemBestInfoList = itemBestInfoList
+                itemBookInfoList = itemBookInfoList
             )
 
         }
@@ -473,8 +469,7 @@ fun doMining(
                     context = context,
                     platform = platform,
                     type = type,
-                    itemBookInfoList = itemBookInfoList,
-                    itemBestInfoList = itemBestInfoList
+                    itemBookInfoList = itemBookInfoList
                 )
 
             }
@@ -506,8 +501,7 @@ fun doMining(
                     context = context,
                     platform = platform,
                     type = type,
-                    itemBookInfoList = itemBookInfoList,
-                    itemBestInfoList = itemBestInfoList
+                    itemBookInfoList = itemBookInfoList
                 )
             }
         }
@@ -539,8 +533,7 @@ fun doMining(
                     context = context,
                     platform = platform,
                     type = type,
-                    itemBookInfoList = itemBookInfoList,
-                    itemBestInfoList = itemBestInfoList
+                    itemBookInfoList = itemBookInfoList
                 )
             }
         }
@@ -573,8 +566,7 @@ fun doMining(
                     context = context,
                     platform = platform,
                     type = type,
-                    itemBookInfoList = itemBookInfoList,
-                    itemBestInfoList = itemBestInfoList
+                    itemBookInfoList = itemBookInfoList
                 )
             }
         }
@@ -603,8 +595,7 @@ fun doMining(
                 context = context,
                 platform = platform,
                 type = type,
-                itemBookInfoList = itemBookInfoList,
-                itemBestInfoList = itemBestInfoList
+                itemBookInfoList = itemBookInfoList
             )
         }
     }  else if (platform == "RIDI_ROFAN") {
@@ -631,8 +622,7 @@ fun doMining(
                 context = context,
                 platform = platform,
                 type = type,
-                itemBookInfoList = itemBookInfoList,
-                itemBestInfoList = itemBestInfoList
+                itemBookInfoList = itemBookInfoList
             )
         }
     } else if (platform == "RIDI_ROMANCE") {
@@ -659,8 +649,7 @@ fun doMining(
                 context = context,
                 platform = platform,
                 type = type,
-                itemBookInfoList = itemBookInfoList,
-                itemBestInfoList = itemBestInfoList
+                itemBookInfoList = itemBookInfoList
             )
 
         }
@@ -671,8 +660,7 @@ private fun doResultMining(
     context: Context,
     platform: String,
     type: String,
-    itemBookInfoList: JsonArray,
-    itemBestInfoList: JsonArray
+    itemBookInfoList: JsonArray
 ) {
     val storage = Firebase.storage
     val storageRef = storage.reference
@@ -713,11 +701,28 @@ private fun doResultMining(
 
             val jsonArray = JsonArray()
 
+            val keywordList = ArrayList<ItemKeyword>()
+
             it.forEach { (key, value) ->
                 val jsonObject = JsonObject()
                 jsonObject.addProperty("key", key)
                 jsonObject.addProperty("value", value)
                 jsonArray.add(jsonObject)
+
+                keywordList.add(
+                    ItemKeyword(
+                        key = key,
+                        value = value,
+                        date = DBDate.dateMMDD()
+                    )
+                )
+            }
+
+            for(item in keywordList){
+                BestRef.setKeywordRef(
+                    platform = platform,
+                    type = type
+                ).child(item.key).child(item.date).setValue(item)
             }
 
             val genreToday = storageRef.child("${platform}/${type}/KEYWORD_DAY/${DBDate.dateMMDD()}.json")
@@ -741,16 +746,14 @@ fun doMining(
     context: Context,
     platform: String,
     type: String,
-    itemBookInfoList: JsonArray,
-    itemBestInfoList: JsonArray
+    itemBookInfoList: JsonArray
 ) {
     runBlocking {
         doResultMining(
             context = context,
             platform = platform,
             type = type,
-            itemBookInfoList = itemBookInfoList,
-            itemBestInfoList = itemBestInfoList
+            itemBookInfoList = itemBookInfoList
         )
     }
 

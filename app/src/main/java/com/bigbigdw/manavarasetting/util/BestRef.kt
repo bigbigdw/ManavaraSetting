@@ -57,4 +57,11 @@ object BestRef {
         return mRootRef.child("BEST").child(type).child(platform)
     }
 
+    fun setGenreRef(platform: String, type: String): DatabaseReference {
+        return mRootRef.child("GENRE").child(type).child(platform)
+    }
+
+    fun setKeywordRef(platform: String, type: String): DatabaseReference {
+        return mRootRef.child("KEYWORD").child(type).child(platform)
+    }
 }

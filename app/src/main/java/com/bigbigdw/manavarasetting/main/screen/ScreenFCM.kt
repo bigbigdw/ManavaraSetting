@@ -45,7 +45,7 @@ import com.bigbigdw.manavarasetting.ui.theme.color898989
 import com.bigbigdw.manavarasetting.ui.theme.color8E8E8E
 import com.bigbigdw.manavarasetting.ui.theme.colorF6F6F6
 import com.bigbigdw.manavarasetting.util.FCM
-import com.bigbigdw.manavarasetting.util.PeriodicWorker
+import com.bigbigdw.manavarasetting.util.MiningWorker
 
 @Composable
 fun ScreenMainFCM() {
@@ -88,7 +88,7 @@ fun ContentsFCM() {
 
     val itemFcmWorker = listOf(
         MainSettingLine(title = "WORKER 시작", onClick = {
-            PeriodicWorker.doWorker(
+            MiningWorker.doWorkerPeriodic(
                 workManager = workManager,
                 time = 15,
                 tag = "TEST",
@@ -97,7 +97,7 @@ fun ContentsFCM() {
             )
         }),
         MainSettingLine(title = "WORKER 취소", onClick = {
-            PeriodicWorker.cancelWorker(
+            MiningWorker.cancelWorker(
                 workManager = workManager,
                 tag = "TEST",
                 platform = "",

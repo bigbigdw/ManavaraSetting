@@ -78,13 +78,18 @@ class ItemGenre(
     @SerialName("title")
     var title: String = "",
     @SerialName("value")
-    var value: String = ""
+    var value: String = "",
+    @SerialName("date")
+    var date: String = "",
 )
+
 
 @Serializable
 class ItemKeyword(
     @SerialName("key")
     var key: String = "",
     @SerialName("value")
-    var value: String = ""
+    var value: String = "",
+    @SerialName("date")
+    var date: String = "",
 )

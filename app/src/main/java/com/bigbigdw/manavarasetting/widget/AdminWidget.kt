@@ -36,7 +36,7 @@ import com.bigbigdw.manavarasetting.ui.theme.color1CE3EE
 import com.bigbigdw.manavarasetting.ui.theme.colorFFFFFF
 import com.bigbigdw.manavarasetting.util.DataStoreManager
 import com.bigbigdw.manavarasetting.ui.theme.colorB3000000
-import com.bigbigdw.manavarasetting.util.PeriodicWorker
+import com.bigbigdw.manavarasetting.util.MiningWorker
 import com.bigbigdw.manavarasetting.widget.ManavaraSettingWidget.paramWorkerInterval
 import com.bigbigdw.manavarasetting.widget.ManavaraSettingWidget.paramWorkerStatus
 import com.bigbigdw.manavarasetting.widget.ManavaraSettingWidget.paramWorkerTag
@@ -216,7 +216,7 @@ class WidgetCallback : ActionCallback {
         updateAppWidgetState(context, glanceId) { prefs ->
 
             if (parameters[paramWorkerStatus] == "DO") {
-                PeriodicWorker.doWorker(
+                MiningWorker.doWorkerPeriodic(
                     workManager = workManager,
                     time = parameters[paramWorkerInterval] ?: 0,
                     tag = parameters[paramWorkerTag] ?: "",
@@ -225,7 +225,7 @@ class WidgetCallback : ActionCallback {
                 )
 
             } else if (parameters[paramWorkerStatus] == "CANCEL") {
-                PeriodicWorker.cancelWorker(
+                MiningWorker.cancelWorker(
                     workManager = workManager,
                     tag = "TEST",
                     platform = "NAVER_SERIES",

@@ -5,14 +5,18 @@ import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import androidx.work.WorkManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.bigbigdw.manavarasetting.util.BestRef
 import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.MiningSource
+import com.bigbigdw.manavarasetting.util.MiningWorker
+import com.bigbigdw.manavarasetting.util.getNextNovelInListEng
 import com.bigbigdw.manavarasetting.util.makeTodayJson
 import com.bigbigdw.manavarasetting.util.novelListEng
 import com.bigbigdw.manavarasetting.util.saveBook
+import com.bigbigdw.manavarasetting.util.saveData
 import com.bigbigdw.manavarasetting.util.saveKeyword
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
@@ -24,6 +28,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 
 class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
@@ -53,6 +58,11 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
             for(platform in novelListEng()){
                 runBlocking {
                     saveBook(
+                        platform = platform,
+                        type = inputData.getString(TYPE) ?: "",
+                    )
+
+                    saveData(
                         platform = platform,
                         type = inputData.getString(TYPE) ?: "",
                     )
@@ -206,7 +216,76 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                 activity = "NOVEL",
             )
 
-        } else {
+        } else if(inputData.getString(WORKER)?.contains("MINING") == true){
+
+            runBlocking {
+                if (DBDate.getDayOfWeekAsNumber().toString() == "0") {
+                    BestRef.setBestRef(
+                        platform = inputData.getString(PLATFORM) ?: "",
+                        type = inputData.getString(TYPE) ?: "",
+                    ).child("TROPHY_WEEK").removeValue()
+
+                    BestRef.setBestRef(
+                        platform = inputData.getString(PLATFORM) ?: "",
+                        type = inputData.getString(TYPE) ?: "",
+                    ).child("TROPHY_WEEK_TOTAL").removeValue()
+                }
+
+                if (DBDate.datedd() == "01") {
+                    BestRef.setBestRef(
+                        platform = inputData.getString(PLATFORM) ?: "",
+                        type = inputData.getString(TYPE) ?: "",
+                    ).child("TROPHY_MONTH").removeValue()
+
+                    BestRef.setBestRef(
+                        platform = inputData.getString(PLATFORM) ?: "",
+                        type = inputData.getString(TYPE) ?: "",
+                    ).child("TROPHY_MONTH_TOTAL").removeValue()
+                }
+
+                MiningSource.mining(
+                    platform = inputData.getString(PLATFORM) ?: "",
+                    type = inputData.getString(TYPE) ?: "",
+                    context = applicationContext
+                )
+            }
+
+            runBlocking {
+                saveBook(
+                    platform = inputData.getString(PLATFORM) ?: "",
+                    type = inputData.getString(TYPE) ?: "",
+                )
+
+                saveData(
+                    platform = inputData.getString(PLATFORM) ?: "",
+                    type = inputData.getString(TYPE) ?: "",
+                )
+            }
+
+            runBlocking {
+                val workManager = WorkManager.getInstance(applicationContext)
+
+                Log.d("MINING", "getNextNovelInListEng(inputData.getString(PLATFORM) ?: \"\") == ${getNextNovelInListEng(inputData.getString(PLATFORM) ?: "")}")
+
+                if (getNextNovelInListEng(inputData.getString(PLATFORM) ?: "").isNotEmpty()) {
+                    MiningWorker.doWorkerOnetime(
+                        workManager = workManager,
+                        time = 15,
+                        timeUnit = TimeUnit.MINUTES,
+                        tag = "MINING",
+                        platform = getNextNovelInListEng(inputData.getString(PLATFORM) ?: ""),
+                        type = "NOVEL"
+                    )
+                }
+            }
+
+            postFCM(
+                data = "마나바라 ${inputData.getString(PLATFORM)} 베스트 최신화",
+                time = "${year}.${month}.${day} ${hour}:${min}:${sec}",
+                activity = "NOVEL",
+            )
+
+        }  else {
 
             postFCM(
                 data = workerName,

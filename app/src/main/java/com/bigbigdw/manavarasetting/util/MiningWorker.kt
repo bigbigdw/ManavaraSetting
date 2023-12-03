@@ -4,18 +4,16 @@ import android.util.Log
 import androidx.work.BackoffPolicy
 import androidx.work.Data
 import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequest
 import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.bigbigdw.manavarasetting.firebase.FirebaseWorkManager
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import java.util.concurrent.TimeUnit
 
-object PeriodicWorker {
-    fun doWorker(
+object MiningWorker {
+    fun doWorkerPeriodic(
         workManager: WorkManager,
         time: Long,
         timeUnit: TimeUnit? = TimeUnit.HOURS,
@@ -41,22 +39,38 @@ object PeriodicWorker {
             .setInputData(inputData)
             .build()
 
-        val currentUser :  FirebaseUser?
-        val auth: FirebaseAuth = Firebase.auth
-
-        currentUser = auth.currentUser
-
-//        if(currentUser?.uid == "A8uh2QkVQaV3Q3rE8SgBNKzV6VH2"){
-//            workManager.enqueueUniquePeriodicWork(
-//                "${tag}_${platform}_${type}",
-//                ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,
-//                workRequest
-//            )
-//        }
 
         workManager.enqueueUniquePeriodicWork(
             "${tag}_${platform}_${type}",
             ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,
+            workRequest
+        )
+    }
+
+    fun doWorkerOnetime(
+        workManager: WorkManager,
+        time: Long,
+        timeUnit: TimeUnit = TimeUnit.HOURS,
+        tag: String,
+        platform: String,
+        type: String
+    ){
+
+        val inputData = Data.Builder()
+            .putString(FirebaseWorkManager.WORKER, tag)
+            .putString(FirebaseWorkManager.PLATFORM, platform)
+            .putString(FirebaseWorkManager.TYPE, type)
+            .build()
+
+        val workRequest = OneTimeWorkRequest.Builder(FirebaseWorkManager::class.java)
+            .addTag("${tag}_${platform}_${type}")
+            .setInputData(inputData)
+            .setInitialDelay(time, timeUnit)
+            .build()
+
+        workManager.enqueueUniqueWork(
+            "${tag}_${platform}_${type}",
+            ExistingWorkPolicy.REPLACE,
             workRequest
         )
     }

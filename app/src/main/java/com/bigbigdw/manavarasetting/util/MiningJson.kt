@@ -1,6 +1,5 @@
 package com.bigbigdw.manavarasetting.util
 
-import android.content.Context
 import android.util.Log
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
 import com.bigbigdw.manavarasetting.main.model.ItemGenre
@@ -263,7 +262,7 @@ fun uploadJsonTrophyMonth(
 
     val storage = Firebase.storage
     val storageRef = storage.reference
-    val jsonArrayRef = storageRef.child("${platform}/${type}/MONTH_TROPHY/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
+    val jsonArrayRef = storageRef.child("${platform}/${type}/MONTH_TROPHY/${DBDate.year()}_${DBDate.month()}.json")
 
     val mRootRef = FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform).child("TROPHY_MONTH_TOTAL")
 
@@ -302,6 +301,7 @@ fun doResultMiningGenre(
 ) {
     val genreValuesMap = HashMap<String, Int>()
     val jsonArray = JsonArray()
+    val genreList = ArrayList<ItemGenre>()
 
     for (i in 0 until itemBookInfoList.size()) {
         val item = JSONObject(itemBookInfoList[i].asJsonObject.toString())
@@ -320,17 +320,27 @@ fun doResultMiningGenre(
 
     for ((key, value) in genreValuesMap) {
         jsonArray.add(
-            convertItemKeywordJson(
-                itemBestKeyword = ItemGenre(
+            convertItemGenreJson(
+                itemGenre = ItemGenre(
                     title = key,
-                    value = value.toString()
+                    value = value.toString(),
+                    date = DBDate.dateMMDD()
                 )
+            )
+        )
+
+        genreList.add(
+            ItemGenre(
+                title = key,
+                value = value.toString(),
+                date = DBDate.dateMMDD()
             )
         )
     }
 
     miningGenre(
         ref = genreValuesMap,
+        genreList = genreList,
         platform = platform,
         type = type,
     )

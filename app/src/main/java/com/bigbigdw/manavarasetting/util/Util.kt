@@ -3,7 +3,6 @@ package com.bigbigdw.manavarasetting.util
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
-import com.bigbigdw.manavarasetting.firebase.FirebaseWorkManager
 import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
 import com.bigbigdw.manavarasetting.main.model.ItemGenre
@@ -19,7 +18,6 @@ import com.google.gson.JsonObject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -112,13 +110,24 @@ fun convertItemBest(bestItemData: ItemBestInfo): JsonObject {
     return jsonObject
 }
 
-fun convertItemKeywordJson(itemBestKeyword: ItemGenre): JsonObject {
+fun convertItemGenreJson(itemGenre: ItemGenre): JsonObject {
     val jsonObject = JsonObject()
 
-    jsonObject.addProperty("title", itemBestKeyword.title)
-    jsonObject.addProperty("value", itemBestKeyword.value)
+    jsonObject.addProperty("title", itemGenre.title)
+    jsonObject.addProperty("value", itemGenre.value)
+    jsonObject.addProperty("date", itemGenre.date)
     return jsonObject
 }
+
+fun convertItemKeywordJson(itemKeyword: ItemKeyword): JsonObject {
+    val jsonObject = JsonObject()
+
+    jsonObject.addProperty("key", itemKeyword.key)
+    jsonObject.addProperty("value", itemKeyword.value)
+    jsonObject.addProperty("date", itemKeyword.date)
+    return jsonObject
+}
+
 
 fun setItemBestInfoRef(ref: MutableMap<String?, Any>): ItemBestInfo {
     return ItemBestInfo(
@@ -167,7 +176,8 @@ fun convertItemGenre(jsonObject: JSONObject): ItemGenre {
 
     return ItemGenre(
         title = jsonObject.optString("title"),
-        value = jsonObject.optString("value")
+        value = jsonObject.optString("value"),
+        date = jsonObject.optString("date"),
     )
 }
 
@@ -176,7 +186,8 @@ fun convertItemKeyword(jsonObject: JSONObject): ItemKeyword {
 
     return ItemKeyword(
         key = jsonObject.optString("key"),
-        value = jsonObject.optString("value")
+        value = jsonObject.optString("value"),
+        date = jsonObject.optString("date")
     )
 }
 
@@ -303,6 +314,52 @@ fun saveBook(platform: String, type: String) {
     })
 }
 
+fun saveData(platform: String, type: String) {
+    val mRootRef =
+        FirebaseDatabase.getInstance().reference.child("DATA").child(type).child(platform)
+
+    val storage = Firebase.storage
+    val storageRef = storage.reference
+
+    val book = storageRef.child("${platform}/${type}/DATA/${platform}.json")
+
+    mRootRef.addListenerForSingleValueEvent(object :
+        ValueEventListener {
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            if (dataSnapshot.exists()) {
+
+                val jsonObject = JSONObject()
+
+                try {
+
+                    for (snapshot in dataSnapshot.children) {
+                        val key = snapshot.key
+                        val value = snapshot.value
+
+                        if (key != null && value != null) {
+
+                            val item: ItemBookInfo? = snapshot.getValue(ItemBookInfo::class.java)
+
+                            jsonObject.put(key, item?.let { convertItemBook(it) })
+                        }
+                    }
+
+                    book.putBytes(jsonObject.toString().toByteArray(Charsets.UTF_8))
+                        .addOnSuccessListener {
+                            Log.d("HIHI", "saveBook addOnSuccessListener == $it")
+                        }
+
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+
+            }
+        }
+
+        override fun onCancelled(databaseError: DatabaseError) {}
+    })
+}
+
 fun saveKeyword(
     context: Context,
     platform: String,
@@ -368,4 +425,16 @@ fun changeUserState(UID: String, status: String) {
         .child("userStatus").setValue(result)
 }
 
+fun getNextNovelInListEng(currentNovel: String): String {
+    val novelList = novelListEng()
+    val currentIndex = novelList.indexOf(currentNovel)
+
+    return if (currentIndex != -1 && currentIndex < novelList.size - 1) {
+        // 현재 아이템이 리스트에 있고, 마지막 아이템이 아닌 경우
+        novelList[currentIndex + 1]
+    } else {
+        // 현재 아이템이 리스트에 없거나, 마지막 아이템인 경우
+        ""
+    }
+}
 

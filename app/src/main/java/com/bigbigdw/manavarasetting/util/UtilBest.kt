@@ -431,7 +431,7 @@ fun getBestMonthTrophy(
     val storage = Firebase.storage
     val storageRef = storage.reference
     val monthTrophyRef =
-        storageRef.child("${platform}/${type}/MONTH_TROPHY/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
+        storageRef.child("${platform}/${type}/MONTH_TROPHY/${DBDate.year()}_${DBDate.month()}.json")
     val monthTrophyFile = monthTrophyRef.getBytes(1024 * 1024)
 
     monthTrophyFile.addOnSuccessListener { bytes ->
