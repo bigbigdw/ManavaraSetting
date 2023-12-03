@@ -69,7 +69,7 @@ fun getBestListTodayStorage(
     try {
         val storage = Firebase.storage
         val storageRef = storage.reference
-        val todayFileRef = storageRef.child("${platform}/${type}/DAY/${DBDate.dateMMDD()}.json")
+        val todayFileRef = storageRef.child("${platform}/${type}/BEST_DAY/${DBDate.dateMMDD()}.json")
         val localFile = File(context.filesDir, "${platform}_TODAY_${type}.json")
 
         todayFileRef.getFile(localFile).addOnSuccessListener {
@@ -264,7 +264,7 @@ fun getBestWeekListStorage(
     val storage = Firebase.storage
     val storageRef = storage.reference
     val weekRef =
-        storageRef.child("${platform}/${type}/WEEK/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
+        storageRef.child("${platform}/${type}/BEST_WEEK/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
     val weekFile = File(context.filesDir, "${platform}_WEEK_${type}.json")
 
     weekRef.getFile(weekFile).addOnSuccessListener {
@@ -309,7 +309,7 @@ fun getBestWeekTrophy(
     val storage = Firebase.storage
     val storageRef = storage.reference
     val weekTrophyRef =
-        storageRef.child("${platform}/${type}/WEEK_TROPHY/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
+        storageRef.child("${platform}/${type}/TROPHY_WEEK/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
     val weekTrophyFile = weekTrophyRef.getBytes(1024 * 1024)
 
     weekTrophyFile.addOnSuccessListener { bytes ->
@@ -388,7 +388,7 @@ fun getBestMonthListStorage(
     val storage = Firebase.storage
     val storageRef = storage.reference
     val monthRef =
-        storageRef.child("${platform}/${type}/MONTH/${DBDate.year()}_${DBDate.month()}.json")
+        storageRef.child("${platform}/${type}/BEST_MONTH/${DBDate.year()}_${DBDate.month()}.json")
     val monthFile = File(context.filesDir, "${platform}_MONTH_${type}.json")
 
     monthRef.getFile(monthFile).addOnSuccessListener { bytes ->
@@ -431,7 +431,7 @@ fun getBestMonthTrophy(
     val storage = Firebase.storage
     val storageRef = storage.reference
     val monthTrophyRef =
-        storageRef.child("${platform}/${type}/MONTH_TROPHY/${DBDate.year()}_${DBDate.month()}.json")
+        storageRef.child("${platform}/${type}/TROPHY_MONTH/${DBDate.year()}_${DBDate.month()}.json")
     val monthTrophyFile = monthTrophyRef.getBytes(1024 * 1024)
 
     monthTrophyFile.addOnSuccessListener { bytes ->

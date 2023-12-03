@@ -223,7 +223,7 @@ fun uploadJsonTrophyWeek(
 
     val storage = Firebase.storage
     val storageRef = storage.reference
-    val jsonArrayRef = storageRef.child("${platform}/${type}/WEEK_TROPHY/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
+    val jsonArrayRef = storageRef.child("${platform}/${type}/TROPHY_WEEK/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
 
     val mRootRef = FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform).child("TROPHY_WEEK_TOTAL")
 
@@ -262,7 +262,7 @@ fun uploadJsonTrophyMonth(
 
     val storage = Firebase.storage
     val storageRef = storage.reference
-    val jsonArrayRef = storageRef.child("${platform}/${type}/MONTH_TROPHY/${DBDate.year()}_${DBDate.month()}.json")
+    val jsonArrayRef = storageRef.child("${platform}/${type}/BEST_MONTH_TROPHY/${DBDate.year()}_${DBDate.month()}.json")
 
     val mRootRef = FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform).child("TROPHY_MONTH_TOTAL")
 

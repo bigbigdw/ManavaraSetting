@@ -54,7 +54,7 @@ object MiningSource {
             val storageRef = storage.reference
 
             val yesterdayFileRef =
-                storageRef.child("${platform}/${type}/DAY/${DBDate.dateYesterday()}.json")
+                storageRef.child("${platform}/${type}/BEST_DAY/${DBDate.dateYesterday()}.json")
 
             val yesterdayFile = yesterdayFileRef.getBytes(1024 * 1024)
 

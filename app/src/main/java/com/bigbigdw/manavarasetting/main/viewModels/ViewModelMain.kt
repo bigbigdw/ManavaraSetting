@@ -227,7 +227,7 @@ class ViewModelMain @Inject constructor() : ViewModel() {
     fun getBestJsonList(platform: String, type: String) {
         val storage = Firebase.storage
         val storageRef = storage.reference
-        val todayFileRef = storageRef.child("${platform}/${type}/DAY/${DBDate.dateMMDD()}.json")
+        val todayFileRef = storageRef.child("${platform}/${type}/BEST_DAY/${DBDate.dateMMDD()}.json")
 
         val todayFile = todayFileRef.getBytes(1024 * 1024)
 
@@ -253,9 +253,9 @@ class ViewModelMain @Inject constructor() : ViewModel() {
         val storageRef = storage.reference
 
         val fileRef: StorageReference = if (menu == "주간") {
-            storageRef.child("${platform}/${type}/WEEK/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
+            storageRef.child("${platform}/${type}/BEST_WEEK/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
         } else {
-            storageRef.child("${platform}/${type}/MONTH/${DBDate.year()}_${DBDate.month()}.json")
+            storageRef.child("${platform}/${type}/BEST_MONTH/${DBDate.year()}_${DBDate.month()}.json")
         }
 
         val file = fileRef.getBytes(1024 * 1024)
@@ -300,9 +300,9 @@ class ViewModelMain @Inject constructor() : ViewModel() {
         val storageRef = storage.reference
 
         val jsonArrayRef = if (menu == "주간") {
-            storageRef.child("${platform}/${type}/WEEK_TROPHY/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
+            storageRef.child("${platform}/${type}/TROPHY_WEEK/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
         } else {
-            storageRef.child("${platform}/${type}/MONTH_TROPHY/${DBDate.year()}_${DBDate.month()}.json")
+            storageRef.child("${platform}/${type}/TROPHY_MONTH/${DBDate.year()}_${DBDate.month()}.json")
         }
 
         val file = jsonArrayRef.getBytes(1024 * 1024)

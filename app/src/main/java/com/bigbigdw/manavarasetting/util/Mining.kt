@@ -665,9 +665,9 @@ private fun doResultMining(
     val storage = Firebase.storage
     val storageRef = storage.reference
 
-    val today = storageRef.child("${platform}/${type}/DAY/${DBDate.dateMMDD()}.json")
-    val week =  storageRef.child("${platform}/${type}/WEEK/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
-    val month = storageRef.child("${platform}/${type}/MONTH/${DBDate.year()}_${DBDate.month()}.json")
+    val today = storageRef.child("${platform}/${type}/BEST_DAY/${DBDate.dateMMDD()}.json")
+    val week =  storageRef.child("${platform}/${type}/BEST_WEEK/${DBDate.year()}_${DBDate.month()}_${DBDate.getCurrentWeekNumber()}.json")
+    val month = storageRef.child("${platform}/${type}/BEST_MONTH/${DBDate.year()}_${DBDate.month()}.json")
 
     runBlocking {
         makeTodayJson(
