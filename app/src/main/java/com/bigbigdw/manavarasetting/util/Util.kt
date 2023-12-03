@@ -360,6 +360,52 @@ fun saveData(platform: String, type: String) {
     })
 }
 
+fun saveKeywordData(platform: String, type: String) {
+    val mRootRef =
+        FirebaseDatabase.getInstance().reference.child("KEYWORD").child(type).child(platform)
+
+    val storage = Firebase.storage
+    val storageRef = storage.reference
+
+    val book = storageRef.child("${platform}/${type}/KEYWORD/${platform}.json")
+
+    mRootRef.addListenerForSingleValueEvent(object :
+        ValueEventListener {
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            if (dataSnapshot.exists()) {
+
+                val jsonObject = JSONObject()
+
+                try {
+
+                    for (snapshot in dataSnapshot.children) {
+                        val key = snapshot.key
+                        val value = snapshot.value
+
+                        if (key != null && value != null) {
+
+                            val item: ItemBookInfo? = snapshot.getValue(ItemBookInfo::class.java)
+
+                            jsonObject.put(key, item?.let { convertItemBook(it) })
+                        }
+                    }
+
+                    book.putBytes(jsonObject.toString().toByteArray(Charsets.UTF_8))
+                        .addOnSuccessListener {
+                            Log.d("HIHI", "saveBook addOnSuccessListener == $it")
+                        }
+
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+
+            }
+        }
+
+        override fun onCancelled(databaseError: DatabaseError) {}
+    })
+}
+
 fun saveKeyword(
     context: Context,
     platform: String,

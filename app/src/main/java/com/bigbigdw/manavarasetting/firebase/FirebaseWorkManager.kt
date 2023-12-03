@@ -18,6 +18,7 @@ import com.bigbigdw.manavarasetting.util.novelListEng
 import com.bigbigdw.manavarasetting.util.saveBook
 import com.bigbigdw.manavarasetting.util.saveData
 import com.bigbigdw.manavarasetting.util.saveKeyword
+import com.bigbigdw.manavarasetting.util.saveKeywordData
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -62,10 +63,15 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                         type = inputData.getString(TYPE) ?: "",
                     )
 
-                    saveData(
-                        platform = platform,
-                        type = inputData.getString(TYPE) ?: "",
-                    )
+//                    saveData(
+//                        platform = platform,
+//                        type = inputData.getString(TYPE) ?: "",
+//                    )
+//
+//                    saveKeywordData(
+//                        platform = platform,
+//                        type = inputData.getString(TYPE) ?: "",
+//                    )
                 }
             }
 
