@@ -262,7 +262,7 @@ fun uploadJsonTrophyMonth(
 
     val storage = Firebase.storage
     val storageRef = storage.reference
-    val jsonArrayRef = storageRef.child("${platform}/${type}/BEST_MONTH_TROPHY/${DBDate.year()}_${DBDate.month()}.json")
+    val jsonArrayRef = storageRef.child("${platform}/${type}/TROPHY_MONTH/${DBDate.year()}_${DBDate.month()}.json")
 
     val mRootRef = FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform).child("TROPHY_MONTH_TOTAL")
 
