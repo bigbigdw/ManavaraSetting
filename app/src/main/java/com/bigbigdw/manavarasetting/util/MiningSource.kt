@@ -20,6 +20,7 @@ import com.bigbigdw.manavarasetting.retrofit.RetrofitToksoda
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.google.gson.JsonArray
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -105,66 +106,70 @@ object MiningSource {
         yesterDayItemMap: MutableMap<String, ItemBookInfo>,
         callBack: (MutableMap<Int, ItemBookInfo>, MutableMap<Int, ItemBestInfo>) -> Unit,
     ){
-        Thread{
-            try{
+        runBlocking {
+            launch {
+                Thread{
+                    try{
 
-                for(pageCount in 1..5) {
-                    val doc: Document =
-                        Jsoup.connect("https://series.naver.com/comic/top100List.series?rankingTypeCode=DAILY&categoryCode=ALL&page=${pageCount + 1}")
-                            .post()
-                    val naverSeries: Elements = doc.select(".comic_top_lst li")
-                    val ref: MutableMap<String?, Any> = HashMap()
-
-
-                    for (i in naverSeries.indices) {
-                        val bookCode = naverSeries.select(".comic_cont a")[i].absUrl("href").replace("https://series.naver.com/comic/detail.series?productNo=", "")
-                        val point = (naverSeries.size * 5) - ((naverSeries.size * (pageCount - 1)) + i)
-                        val number = ((naverSeries.size * (pageCount - 1)) + i)
-
-                        val yesterDayItem = checkMiningTrophyValue(yesterDayItemMap[bookCode] ?: ItemBookInfo())
-
-                        ref["genre"] = ""
-
-                        ref["writerName"] = naverSeries[i].select(".comic_cont .info .ellipsis .author").first()?.text() ?: ""
-                        ref["subject"] = naverSeries.select(".comic_cont h3 a")[i].text()
-                        ref["bookImg"] = naverSeries.select("a img")[i].absUrl("src")
-                        ref["bookCode"] = bookCode
-                        ref["cntRecom"] = naverSeries.select(".comic_cont .info .score_num")[i].text()
-                        ref["cntChapter"] = naverSeries[i].select(".comic_cont .info .ellipsis")[1]?.text() ?: ""
-                        ref["intro"] = naverSeries.select(".comic_cont .dsc")[i].text()
-                        ref["number"] = number
-                        ref["point"] = point
-
-                        ref["total"] = yesterDayItem.point + point
-                        ref["totalCount"] = yesterDayItem.totalCount + 1
-                        ref["totalWeek"] = yesterDayItem.totalWeek + point
-                        ref["totalWeekCount"] = yesterDayItem.totalWeekCount + 1
-                        ref["totalMonth"] = yesterDayItem.totalMonth + point
-                        ref["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
-                        ref["currentDiff"] = (yesterDayItemMap[bookCode]?.number ?: 0) - number
+                        for(pageCount in 1..5) {
+                            val doc: Document =
+                                Jsoup.connect("https://series.naver.com/comic/top100List.series?rankingTypeCode=DAILY&categoryCode=ALL&page=${pageCount + 1}")
+                                    .timeout(5000).post()
+                            val naverSeries: Elements = doc.select(".comic_top_lst li")
+                            val ref: MutableMap<String?, Any> = HashMap()
 
 
-                        ref["date"] = dateMMDD()
-                        ref["type"] = platform
+                            for (i in naverSeries.indices) {
+                                val bookCode = naverSeries.select(".comic_cont a")[i].absUrl("href").replace("https://series.naver.com/comic/detail.series?productNo=", "")
+                                val point = (naverSeries.size * 5) - ((naverSeries.size * (pageCount - 1)) + i)
+                                val number = ((naverSeries.size * (pageCount - 1)) + i)
 
-                        miningValue(
-                            ref = ref,
-                            num = (naverSeries.size * (pageCount - 1)) + i,
-                            platform = platform,
-                            type = type
-                        )
+                                val yesterDayItem = checkMiningTrophyValue(yesterDayItemMap[bookCode] ?: ItemBookInfo())
 
-                        totalBookItem[number] = setItemBookInfoRef(ref)
-                        totalBestItem[number] = setItemBestInfoRef(ref)
+                                ref["genre"] = ""
+
+                                ref["writerName"] = naverSeries[i].select(".comic_cont .info .ellipsis .author").first()?.text() ?: ""
+                                ref["subject"] = naverSeries.select(".comic_cont h3 a")[i].text()
+                                ref["bookImg"] = naverSeries.select("a img")[i].absUrl("src")
+                                ref["bookCode"] = bookCode
+                                ref["cntRecom"] = naverSeries.select(".comic_cont .info .score_num")[i].text()
+                                ref["cntChapter"] = naverSeries[i].select(".comic_cont .info .ellipsis")[1]?.text() ?: ""
+                                ref["intro"] = naverSeries.select(".comic_cont .dsc")[i].text()
+                                ref["number"] = number
+                                ref["point"] = point
+
+                                ref["total"] = yesterDayItem.point + point
+                                ref["totalCount"] = yesterDayItem.totalCount + 1
+                                ref["totalWeek"] = yesterDayItem.totalWeek + point
+                                ref["totalWeekCount"] = yesterDayItem.totalWeekCount + 1
+                                ref["totalMonth"] = yesterDayItem.totalMonth + point
+                                ref["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
+                                ref["currentDiff"] = (yesterDayItemMap[bookCode]?.number ?: 0) - number
+
+
+                                ref["date"] = dateMMDD()
+                                ref["type"] = platform
+
+                                miningValue(
+                                    ref = ref,
+                                    num = (naverSeries.size * (pageCount - 1)) + i,
+                                    platform = platform,
+                                    type = type
+                                )
+
+                                totalBookItem[number] = setItemBookInfoRef(ref)
+                                totalBestItem[number] = setItemBestInfoRef(ref)
+                            }
+
+                            callBack.invoke(totalBookItem, totalBestItem)
+
+                        }
+                    } catch (e : Exception){
+                        Log.d("DO_MINING", "miningNaverSeriesComic $e")
                     }
-
-                    callBack.invoke(totalBookItem, totalBestItem)
-
-                }
-            } catch (e : Exception){
-                Log.d("DO_MINING", "miningNaverSeriesComic $e")
+                }.start()
             }
-        }.start()
+        }
     }
 
     fun miningNaverSeriesNovel(
@@ -175,63 +180,67 @@ object MiningSource {
         yesterDayItemMap: MutableMap<String, ItemBookInfo>,
         callBack: (MutableMap<Int, ItemBookInfo>, MutableMap<Int, ItemBestInfo>) -> Unit,
     ){
-        Thread{
-            try {
+        runBlocking {
+            launch {
+                Thread{
+                    try {
 
-                for(pageCount in 1..5) {
-                    val doc: Document = Jsoup.connect("https://series.naver.com/novel/top100List.series?rankingTypeCode=DAILY&categoryCode=ALL&page=${pageCount}").post()
-                    val naverSeries: Elements = doc.select(".comic_top_lst li")
-                    val ref: MutableMap<String?, Any> = HashMap()
+                        for(pageCount in 1..5) {
+                            val doc: Document = Jsoup.connect("https://series.naver.com/novel/top100List.series?rankingTypeCode=DAILY&categoryCode=ALL&page=${pageCount}").timeout(5000).post()
+                            val naverSeries: Elements = doc.select(".comic_top_lst li")
+                            val ref: MutableMap<String?, Any> = HashMap()
 
 
-                    for (i in naverSeries.indices) {
-                        val bookCode = naverSeries.select(".comic_cont a")[i].absUrl("href").replace("https://series.naver.com/novel/detail.series?productNo=", "")
-                        val point = (naverSeries.size * 5) - ((naverSeries.size * (pageCount - 1)) + i)
+                            for (i in naverSeries.indices) {
+                                val bookCode = naverSeries.select(".comic_cont a")[i].absUrl("href").replace("https://series.naver.com/novel/detail.series?productNo=", "")
+                                val point = (naverSeries.size * 5) - ((naverSeries.size * (pageCount - 1)) + i)
 
-                        val yesterDayItem = checkMiningTrophyValue(yesterDayItemMap[bookCode] ?: ItemBookInfo())
-                        val number = ((naverSeries.size * (pageCount - 1)) + i)
+                                val yesterDayItem = checkMiningTrophyValue(yesterDayItemMap[bookCode] ?: ItemBookInfo())
+                                val number = ((naverSeries.size * (pageCount - 1)) + i)
 
-                        ref["genre"] = ""
+                                ref["genre"] = ""
 
-                        ref["writerName"] = naverSeries[i].select(".comic_cont .info .ellipsis .author").first()?.text() ?: ""
-                        ref["subject"] = naverSeries.select(".comic_cont h3 a")[i].text()
-                        ref["bookImg"] = naverSeries.select("a img")[i].absUrl("src")
-                        ref["bookCode"] = bookCode
-                        ref["cntRecom"] = naverSeries.select(".comic_cont .info .score_num")[i].text()
-                        ref["cntChapter"] = naverSeries[i].select(".comic_cont .info .ellipsis")[1]?.text() ?: ""
-                        ref["intro"] = naverSeries.select(".comic_cont .dsc")[i].text()
-                        ref["number"] = number
-                        ref["point"] = point
+                                ref["writerName"] = naverSeries[i].select(".comic_cont .info .ellipsis .author").first()?.text() ?: ""
+                                ref["subject"] = naverSeries.select(".comic_cont h3 a")[i].text()
+                                ref["bookImg"] = naverSeries.select("a img")[i].absUrl("src")
+                                ref["bookCode"] = bookCode
+                                ref["cntRecom"] = naverSeries.select(".comic_cont .info .score_num")[i].text()
+                                ref["cntChapter"] = naverSeries[i].select(".comic_cont .info .ellipsis")[1]?.text() ?: ""
+                                ref["intro"] = naverSeries.select(".comic_cont .dsc")[i].text()
+                                ref["number"] = number
+                                ref["point"] = point
 
-                        ref["total"] = yesterDayItem.point + point
-                        ref["totalCount"] = yesterDayItem.totalCount + 1
-                        ref["totalWeek"] = yesterDayItem.totalWeek + point
-                        ref["totalWeekCount"] = yesterDayItem.totalWeekCount + 1
-                        ref["totalMonth"] = yesterDayItem.totalMonth + point
-                        ref["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
-                        ref["currentDiff"] = (yesterDayItemMap[bookCode]?.number ?: 0) - number
+                                ref["total"] = yesterDayItem.point + point
+                                ref["totalCount"] = yesterDayItem.totalCount + 1
+                                ref["totalWeek"] = yesterDayItem.totalWeek + point
+                                ref["totalWeekCount"] = yesterDayItem.totalWeekCount + 1
+                                ref["totalMonth"] = yesterDayItem.totalMonth + point
+                                ref["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
+                                ref["currentDiff"] = (yesterDayItemMap[bookCode]?.number ?: 0) - number
 
-                        ref["date"] = dateMMDD()
-                        ref["type"] = platform
+                                ref["date"] = dateMMDD()
+                                ref["type"] = platform
 
-                        miningValue(
-                            ref = ref,
-                            num = (naverSeries.size * (pageCount - 1)) + i,
-                            platform = platform,
-                            type = type
-                        )
+                                miningValue(
+                                    ref = ref,
+                                    num = (naverSeries.size * (pageCount - 1)) + i,
+                                    platform = platform,
+                                    type = type
+                                )
 
-                        totalBookItem[number] = setItemBookInfoRef(ref)
-                        totalBestItem[number] = setItemBestInfoRef(ref)
+                                totalBookItem[number] = setItemBookInfoRef(ref)
+                                totalBestItem[number] = setItemBestInfoRef(ref)
+                            }
+
+                            callBack.invoke(totalBookItem, totalBestItem)
+
+                        }
+                    }catch (e : Exception){
+                        Log.d("DO_MINING", "miningNaverSeriesNovel $e")
                     }
-
-                    callBack.invoke(totalBookItem, totalBestItem)
-
-                }
-            }catch (e : Exception){
-                Log.d("DO_MINING", "miningNaverSeriesNovel $e")
+                }.start()
             }
-        }.start()
+        }
     }
 
     fun miningJoara(
@@ -327,65 +336,70 @@ object MiningSource {
         yesterDayItemMap: MutableMap<String, ItemBookInfo>,
         callBack: (JsonArray, JsonArray) -> Unit
     ){
-        Thread{
-            try{
-                val itemBookInfoList = JsonArray()
-                val itemBestInfoList = JsonArray()
 
-                val doc: Document = Jsoup.connect("https://novel.naver.com/${mining}/ranking?genre=999&periodType=DAILY").post()
-                val naverSeries: Elements = if(platformType == "FREE"){
-                    doc.select(".ranking_wrap_left .ranking_list li")
-                } else {
-                    doc.select(".ranking_wrap_right .ranking_list li")
-                }
-                val ref: MutableMap<String?, Any> = HashMap()
+        runBlocking {
+            launch {
+                Thread{
+                    try{
+                        val itemBookInfoList = JsonArray()
+                        val itemBestInfoList = JsonArray()
 
-                for (i in naverSeries.indices) {
-                    val bookCode = naverSeries.select("a")[i].absUrl("href").replace("https://novel.naver.com/${mining}/list?novelId=", "")
-                    val point = naverSeries.size - i
-                    val number = i
+                        val doc: Document = Jsoup.connect("https://novel.naver.com/${mining}/ranking?genre=999&periodType=DAILY").post()
+                        val naverSeries: Elements = if(platformType == "FREE"){
+                            doc.select(".ranking_wrap_left .ranking_list li")
+                        } else {
+                            doc.select(".ranking_wrap_right .ranking_list li")
+                        }
+                        val ref: MutableMap<String?, Any> = HashMap()
 
-                    val yesterDayItem = checkMiningTrophyValue(yesterDayItemMap[bookCode] ?: ItemBookInfo())
+                        for (i in naverSeries.indices) {
+                            val bookCode = naverSeries.select("a")[i].absUrl("href").replace("https://novel.naver.com/${mining}/list?novelId=", "")
+                            val point = naverSeries.size - i
+                            val number = i
 
-                    ref["writerName"] = naverSeries.select(".info_group .author")[i].text()
-                    ref["subject"] = naverSeries.select(".title_group .title")[i].text()
-                    ref["bookImg"] = naverSeries.select("div img")[i].absUrl("src")
-                    ref["bookCode"] = bookCode
-                    ref["cntRecom"] = naverSeries.select(".score_area")[i].text().replace("별점", "")
-                    ref["cntPageRead"] = naverSeries[i].select(".info_group .count").next().first()!!.text()
-                    ref["cntFavorite"] = naverSeries.select(".meta_data_group .count")[i].text()
-                    ref["cntChapter"] = naverSeries[i].select(".info_group .count").first()!!.text()
-                    ref["number"] = number
-                    ref["point"] = point
+                            val yesterDayItem = checkMiningTrophyValue(yesterDayItemMap[bookCode] ?: ItemBookInfo())
 
-                    ref["total"] = yesterDayItem.point + point
-                    ref["totalCount"] = yesterDayItem.totalCount + 1
-                    ref["totalWeek"] = yesterDayItem.totalWeek + point
-                    ref["totalWeekCount"] = yesterDayItem.totalWeekCount + 1
-                    ref["totalMonth"] = yesterDayItem.totalMonth + point
-                    ref["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
-                    ref["currentDiff"] = (yesterDayItemMap[bookCode]?.number ?: 0) - number
+                            ref["writerName"] = naverSeries.select(".info_group .author")[i].text()
+                            ref["subject"] = naverSeries.select(".title_group .title")[i].text()
+                            ref["bookImg"] = naverSeries.select("div img")[i].absUrl("src")
+                            ref["bookCode"] = bookCode
+                            ref["cntRecom"] = naverSeries.select(".score_area")[i].text().replace("별점", "")
+                            ref["cntPageRead"] = naverSeries[i].select(".info_group .count").next().first()!!.text()
+                            ref["cntFavorite"] = naverSeries.select(".meta_data_group .count")[i].text()
+                            ref["cntChapter"] = naverSeries[i].select(".info_group .count").first()!!.text()
+                            ref["number"] = number
+                            ref["point"] = point
 
-                    ref["date"] = dateMMDD()
-                    ref["type"] = platform
+                            ref["total"] = yesterDayItem.point + point
+                            ref["totalCount"] = yesterDayItem.totalCount + 1
+                            ref["totalWeek"] = yesterDayItem.totalWeek + point
+                            ref["totalWeekCount"] = yesterDayItem.totalWeekCount + 1
+                            ref["totalMonth"] = yesterDayItem.totalMonth + point
+                            ref["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
+                            ref["currentDiff"] = (yesterDayItemMap[bookCode]?.number ?: 0) - number
 
-                    miningValue(
-                        ref = ref,
-                        num = i,
-                        platform = platform,
-                        type = type
-                    )
+                            ref["date"] = dateMMDD()
+                            ref["type"] = platform
 
-                    itemBookInfoList.add(convertItemBook(setItemBookInfoRef(ref)))
-                    itemBestInfoList.add(convertItemBest(setItemBestInfoRef(ref)))
-                }
+                            miningValue(
+                                ref = ref,
+                                num = i,
+                                platform = platform,
+                                type = type
+                            )
 
-                callBack.invoke(itemBookInfoList, itemBestInfoList)
-            }catch (e : Exception){
-                Log.d("DO_MINING", "miningNaver $e")
+                            itemBookInfoList.add(convertItemBook(setItemBookInfoRef(ref)))
+                            itemBestInfoList.add(convertItemBest(setItemBestInfoRef(ref)))
+                        }
+
+                        callBack.invoke(itemBookInfoList, itemBestInfoList)
+                    }catch (e : Exception){
+                        Log.d("DO_MINING", "miningNaver $e")
+                    }
+
+                }.start()
             }
-
-        }.start()
+        }
     }
 
     fun miningOnestory(

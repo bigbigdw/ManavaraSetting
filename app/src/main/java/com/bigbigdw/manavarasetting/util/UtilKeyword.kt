@@ -14,6 +14,8 @@ import com.bigbigdw.manavarasetting.retrofit.result.OnestoreBookDetail
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.json.JSONArray
@@ -114,6 +116,7 @@ private fun setLayoutNaver(bookCode: String, callbacks: (MutableMap<String, Stri
                 for (keyword in wordList) {
 
                     keywordList[keyword] = bookCode
+                    callbacks(keywordList)
                 }
             }
         }catch (e : Exception){
@@ -121,6 +124,8 @@ private fun setLayoutNaver(bookCode: String, callbacks: (MutableMap<String, Stri
         }
 
     }.start()
+
+    Thread.sleep(1000)
 }
 
 private fun setLayoutRidi(bookCode: String, callbacks: (MutableMap<String, String>) -> Unit) {
@@ -130,7 +135,7 @@ private fun setLayoutRidi(bookCode: String, callbacks: (MutableMap<String, Strin
             val keywordList = mutableMapOf<String, String>()
 
             val doc: Document =
-                Jsoup.connect("https://ridibooks.com/books/${bookCode}").get()
+                Jsoup.connect("https://ridibooks.com/books/${bookCode}").timeout(5000).get()
 
             for (i in doc.select(".keyword_list li").indices) {
 
@@ -149,6 +154,8 @@ private fun setLayoutRidi(bookCode: String, callbacks: (MutableMap<String, Strin
         }
 
     }.start()
+
+    Thread.sleep(1000)
 }
 
 private fun setLayoutOneStory(bookCode: String, callbacks: (MutableMap<String, String>) -> Unit) {

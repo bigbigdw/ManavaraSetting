@@ -133,7 +133,7 @@ fun ContentsNovel() {
             onClick = {
                 MiningWorker.doWorkerPeriodic(
                     workManager = workManager,
-                    time = 6,
+                    time = 12,
                     timeUnit = TimeUnit.HOURS,
                     tag = "MINING",
                     platform = item,
