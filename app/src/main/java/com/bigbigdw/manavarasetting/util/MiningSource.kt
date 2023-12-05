@@ -114,7 +114,7 @@ object MiningSource {
                         for(pageCount in 1..5) {
                             val doc: Document =
                                 Jsoup.connect("https://series.naver.com/comic/top100List.series?rankingTypeCode=DAILY&categoryCode=ALL&page=${pageCount + 1}")
-                                    .timeout(5000).post()
+                                    .post()
                             val naverSeries: Elements = doc.select(".comic_top_lst li")
                             val ref: MutableMap<String?, Any> = HashMap()
 
@@ -186,7 +186,7 @@ object MiningSource {
                     try {
 
                         for(pageCount in 1..5) {
-                            val doc: Document = Jsoup.connect("https://series.naver.com/novel/top100List.series?rankingTypeCode=DAILY&categoryCode=ALL&page=${pageCount}").timeout(5000).post()
+                            val doc: Document = Jsoup.connect("https://series.naver.com/novel/top100List.series?rankingTypeCode=DAILY&categoryCode=ALL&page=${pageCount}").post()
                             val naverSeries: Elements = doc.select(".comic_top_lst li")
                             val ref: MutableMap<String?, Any> = HashMap()
 

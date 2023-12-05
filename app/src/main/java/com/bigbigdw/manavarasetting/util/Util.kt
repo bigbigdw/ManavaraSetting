@@ -16,7 +16,9 @@ import com.google.firebase.storage.ktx.storage
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONException
@@ -406,6 +408,7 @@ fun saveKeywordData(platform: String, type: String) {
     })
 }
 
+@OptIn(DelicateCoroutinesApi::class)
 fun saveKeyword(
     context: Context,
     platform: String,
@@ -419,39 +422,40 @@ fun saveKeyword(
 
     itemBookInfoList.forEachIndexed { i, _ ->
         val item = convertItemBestJson(list.getJSONObject(i))
+        GlobalScope.launch {
+            getKeyword(
+                context = context,
+                platform = platform,
+                bookCode = item.bookCode
+            ){
 
-        getKeyword(
-            context = context,
-            platform = platform,
-            bookCode = item.bookCode
-        ){
-
-            it.forEach { (key, value) ->
-                synchronized(keywordList) {
-                    keywordList[key] = keywordList[key]?.let { "$it, $value" } ?: value
+                it.forEach { (key, value) ->
+                    synchronized(keywordList) {
+                        keywordList[key] = keywordList[key]?.let { "$it, $value" } ?: value
+                    }
                 }
-            }
 
-            if(i == itemBookInfoList.size() - 1){
-                BestRef.setBestGenre(
-                    platform = platform,
-                    genreDate = "KEYWORD_DAY",
-                    type = type,
-                ).setValue(it)
+                if(i == itemBookInfoList.size() - 1){
+                    BestRef.setBestGenre(
+                        platform = platform,
+                        genreDate = "KEYWORD_DAY",
+                        type = type,
+                    ).setValue(it)
 
-                BestRef.setBestGenre(
-                    platform = platform,
-                    genreDate = "KEYWORD_WEEK",
-                    type = type,
-                ).child(DBDate.getDayOfWeekAsNumber().toString()).setValue(it)
+                    BestRef.setBestGenre(
+                        platform = platform,
+                        genreDate = "KEYWORD_WEEK",
+                        type = type,
+                    ).child(DBDate.getDayOfWeekAsNumber().toString()).setValue(it)
 
-                BestRef.setBestGenre(
-                    platform = platform,
-                    genreDate = "KEYWORD_MONTH",
-                    type = type,
-                ).child(DBDate.datedd()).setValue(it)
+                    BestRef.setBestGenre(
+                        platform = platform,
+                        genreDate = "KEYWORD_MONTH",
+                        type = type,
+                    ).child(DBDate.datedd()).setValue(it)
 
-                callback(keywordList)
+                    callback(keywordList)
+                }
             }
         }
     }

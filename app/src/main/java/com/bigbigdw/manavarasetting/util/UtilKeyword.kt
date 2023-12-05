@@ -14,14 +14,15 @@ import com.bigbigdw.manavarasetting.retrofit.result.OnestoreBookDetail
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.json.JSONArray
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.nio.charset.Charset
+import kotlinx.coroutines.GlobalScope
 
 fun getKeyword(
     platform: String,
@@ -90,72 +91,60 @@ private fun setLayoutJoara(
 }
 
 private fun setLayoutNaver(bookCode: String, callbacks: (MutableMap<String, String>) -> Unit) {
-    Thread {
+    try{
 
-        try{
+        val keywordList = mutableMapOf<String, String>()
 
-            val keywordList = mutableMapOf<String, String>()
+        val doc: Document =
+            Jsoup.connect("https://novel.naver.com/webnovel/list?novelId=${bookCode}").post()
 
-            val doc: Document =
-                Jsoup.connect("https://novel.naver.com/webnovel/list?novelId=${bookCode}").post()
+        for (i in doc.select(".tag_collection").indices) {
 
-            for (i in doc.select(".tag_collection").indices) {
+            val wordList = doc.select(".tag_collection")[i].text().split(" ").toMutableList()
 
-                val wordList = doc.select(".tag_collection")[i].text().split(" ").toMutableList()
-
-                wordList.replaceAll {
-                    it
-                        .replace("/", " ")
-                        .replace(".", " ")
-                        .replace("#", " ")
-                        .replace("$", " ")
-                        .replace("[", " ")
-                        .replace("]", " ")
-                }
-
-                for (keyword in wordList) {
-
-                    keywordList[keyword] = bookCode
-                    callbacks(keywordList)
-                }
-            }
-        }catch (e : Exception){
-            Log.d("MINING-TEST", "EXCEPTION = e == $e")
-        }
-
-    }.start()
-
-    Thread.sleep(1000)
-}
-
-private fun setLayoutRidi(bookCode: String, callbacks: (MutableMap<String, String>) -> Unit) {
-    Thread {
-
-        try{
-            val keywordList = mutableMapOf<String, String>()
-
-            val doc: Document =
-                Jsoup.connect("https://ridibooks.com/books/${bookCode}").timeout(5000).get()
-
-            for (i in doc.select(".keyword_list li").indices) {
-
-                keywordList[doc.select(".keyword_list li")[i].select(".keyword").text()
+            wordList.replaceAll {
+                it
                     .replace("/", " ")
                     .replace(".", " ")
                     .replace("#", " ")
                     .replace("$", " ")
                     .replace("[", " ")
-                    .replace("]", " ")] = bookCode
+                    .replace("]", " ")
             }
 
-            callbacks(keywordList)
-        }catch (e : Exception){
-            Log.d("MINING-TEST", "EXCEPTION = e == $e")
+            for (keyword in wordList) {
+
+                keywordList[keyword] = bookCode
+                callbacks(keywordList)
+            }
+        }
+    }catch (e : Exception){
+        Log.d("MINING-TEST", "NAVER EXCEPTION = e == $e")
+    }
+}
+
+private fun setLayoutRidi(bookCode: String, callbacks: (MutableMap<String, String>) -> Unit) {
+    try{
+        val keywordList = mutableMapOf<String, String>()
+
+        val doc: Document =
+            Jsoup.connect("https://ridibooks.com/books/${bookCode}").get()
+
+        for (i in doc.select(".keyword_list li").indices) {
+
+            keywordList[doc.select(".keyword_list li")[i].select(".keyword").text()
+                .replace("/", " ")
+                .replace(".", " ")
+                .replace("#", " ")
+                .replace("$", " ")
+                .replace("[", " ")
+                .replace("]", " ")] = bookCode
         }
 
-    }.start()
-
-    Thread.sleep(1000)
+        callbacks(keywordList)
+    }catch (e : Exception){
+        Log.d("MINING-TEST", "RIDI EXCEPTION = e == $e")
+    }
 }
 
 private fun setLayoutOneStory(bookCode: String, callbacks: (MutableMap<String, String>) -> Unit) {
