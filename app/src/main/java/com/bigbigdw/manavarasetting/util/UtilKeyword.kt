@@ -91,9 +91,10 @@ private fun setLayoutJoara(
 }
 
 private fun setLayoutNaver(bookCode: String, callbacks: (MutableMap<String, String>) -> Unit) {
-    try{
 
-        val keywordList = mutableMapOf<String, String>()
+    val keywordList = mutableMapOf<String, String>()
+
+    try{
 
         val doc: Document =
             Jsoup.connect("https://novel.naver.com/webnovel/list?novelId=${bookCode}").post()
@@ -113,37 +114,50 @@ private fun setLayoutNaver(bookCode: String, callbacks: (MutableMap<String, Stri
             }
 
             for (keyword in wordList) {
-
                 keywordList[keyword] = bookCode
-                callbacks(keywordList)
             }
         }
+
+        callbacks(keywordList)
     }catch (e : Exception){
         Log.d("MINING-TEST", "NAVER EXCEPTION = e == $e")
+        callbacks(keywordList)
     }
 }
 
 private fun setLayoutRidi(bookCode: String, callbacks: (MutableMap<String, String>) -> Unit) {
+
+    val keywordList = mutableMapOf<String, String>()
+
     try{
-        val keywordList = mutableMapOf<String, String>()
 
         val doc: Document =
             Jsoup.connect("https://ridibooks.com/books/${bookCode}").get()
 
         for (i in doc.select(".keyword_list li").indices) {
 
-            keywordList[doc.select(".keyword_list li")[i].select(".keyword").text()
-                .replace("/", " ")
-                .replace(".", " ")
-                .replace("#", " ")
-                .replace("$", " ")
-                .replace("[", " ")
-                .replace("]", " ")] = bookCode
+            val wordList = doc.select(".keyword_list li")[i].select(".keyword").text().split(" ").toMutableList()
+
+            wordList.replaceAll {
+                it
+                    .replace("/", " ")
+                    .replace(".", " ")
+                    .replace("#", " ")
+                    .replace("$", " ")
+                    .replace("[", " ")
+                    .replace("]", " ")
+            }
+
+            for (keyword in wordList) {
+                keywordList[keyword] = bookCode
+            }
+
         }
 
         callbacks(keywordList)
     }catch (e : Exception){
         Log.d("MINING-TEST", "RIDI EXCEPTION = e == $e")
+        callbacks(keywordList)
     }
 }
 

@@ -282,6 +282,15 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                         platform = getNextNovelInListEng(inputData.getString(PLATFORM) ?: ""),
                         type = "NOVEL"
                     )
+                } else {
+                    MiningWorker.doWorkerOnetime(
+                        workManager = workManager,
+                        time = 12,
+                        timeUnit = TimeUnit.HOURS,
+                        tag = "MINING",
+                        platform = "JOARA",
+                        type = "NOVEL"
+                    )
                 }
             }
 

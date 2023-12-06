@@ -1072,10 +1072,10 @@ fun ContentsLabs() {
 
     TabletContentWrapBtn(
         onClick = {
-            MiningWorker.doWorkerPeriodic(
+            MiningWorker.doWorkerOnetime(
                 workManager = workManager,
-                time = 6,
-                timeUnit = TimeUnit.DAYS,
+                time = 5,
+                timeUnit = TimeUnit.MINUTES,
                 tag = "TEST",
                 platform = "JOARA",
                 type = "NOVEL"
