@@ -417,6 +417,8 @@ fun saveKeyword(
     callback: (MutableMap<String, String>) -> Unit
 ) {
 
+    Log.d("MINING", "saveKeyword PLATFORM == $platform")
+
     val list = JSONArray(itemBookInfoList.toString())
     val keywordList = mutableMapOf<String, String>()
 
