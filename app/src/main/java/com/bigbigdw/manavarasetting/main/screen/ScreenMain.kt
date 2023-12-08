@@ -1076,7 +1076,7 @@ fun ContentsLabs() {
                 workManager = workManager,
                 time = 5,
                 timeUnit = TimeUnit.MINUTES,
-                tag = "TEST",
+                tag = "MINING",
                 platform = "JOARA",
                 type = "NOVEL"
             )

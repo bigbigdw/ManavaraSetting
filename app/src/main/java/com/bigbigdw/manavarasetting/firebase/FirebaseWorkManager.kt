@@ -12,6 +12,7 @@ import com.bigbigdw.manavarasetting.util.BestRef
 import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.MiningSource
 import com.bigbigdw.manavarasetting.util.MiningWorker
+import com.bigbigdw.manavarasetting.util.findIndexInNovelList
 import com.bigbigdw.manavarasetting.util.getNextNovelInListEng
 import com.bigbigdw.manavarasetting.util.makeTodayJson
 import com.bigbigdw.manavarasetting.util.novelListEng
@@ -273,7 +274,10 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
 
                 Log.d("MINING", "getNextNovelInListEng(inputData.getString(PLATFORM) ?: \"\") == ${getNextNovelInListEng(inputData.getString(PLATFORM) ?: "")}")
 
-                if (getNextNovelInListEng(inputData.getString(PLATFORM) ?: "").isNotEmpty()) {
+                if (findIndexInNovelList(inputData.getString(PLATFORM) ?: "") < (novelListEng().size - 1)) {
+
+                    Log.d("MINING", "OneTIme == ${inputData.getString(PLATFORM) ?: ""}")
+
                     MiningWorker.doWorkerOnetime(
                         workManager = workManager,
                         time = 15,
@@ -283,13 +287,21 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                         type = "NOVEL"
                     )
                 } else {
-                    MiningWorker.doWorkerOnetime(
+
+                    Log.d("MINING", "Periodic == ${inputData.getString(PLATFORM) ?: ""}")
+
+                    MiningWorker.cancelAllWorker(
+                        workManager = workManager,
+                    )
+
+                    MiningWorker.doWorkerPeriodic(
                         workManager = workManager,
                         time = 12,
                         timeUnit = TimeUnit.HOURS,
                         tag = "MINING",
                         platform = "JOARA",
-                        type = "NOVEL"
+                        type = "NOVEL",
+                        needDelay = true
                     )
                 }
             }

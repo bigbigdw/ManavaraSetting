@@ -490,3 +490,8 @@ fun getNextNovelInListEng(currentNovel: String): String {
     }
 }
 
+fun findIndexInNovelList(target: String): Int {
+    val novelList = novelListEng()
+    return novelList.indexOf(target)
+}
+

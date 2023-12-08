@@ -19,7 +19,8 @@ object MiningWorker {
         timeUnit: TimeUnit? = TimeUnit.HOURS,
         tag: String,
         platform: String,
-        type: String
+        type: String,
+        needDelay : Boolean = false
     ){
 
         val inputData = Data.Builder()
@@ -28,17 +29,30 @@ object MiningWorker {
             .putString(FirebaseWorkManager.TYPE, type)
             .build()
 
-        val workRequest = PeriodicWorkRequestBuilder<FirebaseWorkManager>(time, timeUnit ?: TimeUnit.HOURS)
-            .addTag("${tag}_${platform}_${type}")
+        val workRequest =
 
-            .setBackoffCriteria(
-                BackoffPolicy.LINEAR,
-                PeriodicWorkRequest.MIN_PERIODIC_FLEX_MILLIS,
-                TimeUnit.MILLISECONDS
-            )
-            .setInputData(inputData)
-            .build()
-
+            if(needDelay){
+                PeriodicWorkRequestBuilder<FirebaseWorkManager>(time, timeUnit ?: TimeUnit.HOURS)
+                    .addTag("${tag}_${platform}_${type}")
+                    .setBackoffCriteria(
+                        BackoffPolicy.LINEAR,
+                        PeriodicWorkRequest.MIN_PERIODIC_FLEX_MILLIS,
+                        TimeUnit.MILLISECONDS
+                    )
+                    .setInputData(inputData)
+                    .setInitialDelay(15, TimeUnit.MINUTES)
+                    .build()
+            } else {
+                PeriodicWorkRequestBuilder<FirebaseWorkManager>(time, timeUnit ?: TimeUnit.HOURS)
+                    .addTag("${tag}_${platform}_${type}")
+                    .setBackoffCriteria(
+                        BackoffPolicy.LINEAR,
+                        PeriodicWorkRequest.MIN_PERIODIC_FLEX_MILLIS,
+                        TimeUnit.MILLISECONDS
+                    )
+                    .setInputData(inputData)
+                    .build()
+            }
 
         workManager.enqueueUniquePeriodicWork(
             "${tag}_${platform}_${type}",

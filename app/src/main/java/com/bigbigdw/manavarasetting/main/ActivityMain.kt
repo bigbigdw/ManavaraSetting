@@ -1,6 +1,7 @@
 package com.bigbigdw.manavarasetting.main
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -8,8 +9,10 @@ import androidx.activity.viewModels
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.lifecycle.lifecycleScope
+import com.bigbigdw.manavarasetting.firebase.FirebaseWorkManager
 import com.bigbigdw.manavarasetting.main.screen.ScreenMain
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
+import com.bigbigdw.manavarasetting.util.findIndexInNovelList
 import com.bigbigdw.manavarasetting.util.getBestListTodayStorage
 import com.bigbigdw.manavarasetting.util.getBestMonthListStorage
 import com.bigbigdw.manavarasetting.util.getBestWeekListStorage
