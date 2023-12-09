@@ -1,6 +1,6 @@
 package com.bigbigdw.manavarasetting.util
 
-import com.bigbigdw.manavarasetting.main.model.ItemGenre
+import com.bigbigdw.manavarasetting.main.model.ItemKeyword
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -33,7 +33,7 @@ fun getJsonFiles(
     }
 }
 
-fun getJsonGenreList(platform: String, type: String, callbacks: (ArrayList<ItemGenre>) -> Unit){
+fun getJsonGenreList(platform: String, type: String, callbacks: (ArrayList<ItemKeyword>) -> Unit){
     val storage = Firebase.storage
     val storageRef = storage.reference
     val todayFileRef = storageRef.child("${platform}/${type}/GENRE_DAY/${DBDate.dateMMDD()}.json")
@@ -43,15 +43,15 @@ fun getJsonGenreList(platform: String, type: String, callbacks: (ArrayList<ItemG
     todayFile.addOnSuccessListener { bytes ->
         val jsonString = String(bytes, Charset.forName("UTF-8"))
         val json = Json { ignoreUnknownKeys = true }
-        val itemList = json.decodeFromString<List<ItemGenre>>(jsonString)
+        val itemList = json.decodeFromString<List<ItemKeyword>>(jsonString)
 
-        val jsonList = ArrayList<ItemGenre>()
+        val jsonList = ArrayList<ItemKeyword>()
 
         for (item in itemList) {
             jsonList.add(item)
         }
 
-        val cmpAsc: java.util.Comparator<ItemGenre> =
+        val cmpAsc: java.util.Comparator<ItemKeyword> =
             Comparator { o1, o2 -> o2.value.toInt().compareTo(o1.value.toInt()) }
         Collections.sort(jsonList, cmpAsc)
 
@@ -59,7 +59,7 @@ fun getJsonGenreList(platform: String, type: String, callbacks: (ArrayList<ItemG
     }
 }
 
-fun getJsonGenreWeekList(platform: String, type: String, callbacks: (ArrayList<ArrayList<ItemGenre>>, ArrayList<ItemGenre>) -> Unit) {
+fun getJsonGenreWeekList(platform: String, type: String, callbacks: (ArrayList<ArrayList<ItemKeyword>>, ArrayList<ItemKeyword>) -> Unit) {
     val storage = Firebase.storage
     val storageRef = storage.reference
 
@@ -71,8 +71,8 @@ fun getJsonGenreWeekList(platform: String, type: String, callbacks: (ArrayList<A
         val jsonString = String(bytes, Charset.forName("UTF-8"))
 
         val jsonArray = JSONArray(jsonString)
-        val weekJsonList = ArrayList<ArrayList<ItemGenre>>()
-        val sumList = ArrayList<ItemGenre>()
+        val weekJsonList = ArrayList<ArrayList<ItemKeyword>>()
+        val sumList = ArrayList<ItemKeyword>()
 
         val dataMap = HashMap<String, Long>()
 
@@ -80,20 +80,20 @@ fun getJsonGenreWeekList(platform: String, type: String, callbacks: (ArrayList<A
 
             try {
                 val jsonArrayItem = jsonArray.getJSONArray(i)
-                val itemList = ArrayList<ItemGenre>()
+                val itemList = ArrayList<ItemKeyword>()
 
                 for (j in 0 until jsonArrayItem.length()) {
 
                     try {
                         val jsonObject = jsonArrayItem.getJSONObject(j)
-                        itemList.add(convertItemGenre(jsonObject))
-                        sumList.add(convertItemGenre(jsonObject))
+                        itemList.add(convertItemKeyword(jsonObject))
+                        sumList.add(convertItemKeyword(jsonObject))
                     } catch (e: Exception) {
-                        itemList.add(ItemGenre())
+                        itemList.add(ItemKeyword())
                     }
                 }
 
-                val cmpAsc: java.util.Comparator<ItemGenre> =
+                val cmpAsc: java.util.Comparator<ItemKeyword> =
                     Comparator { o1, o2 -> o2.value.toInt().compareTo(o1.value.toInt()) }
                 Collections.sort(itemList, cmpAsc)
 
@@ -105,7 +105,7 @@ fun getJsonGenreWeekList(platform: String, type: String, callbacks: (ArrayList<A
 
         for(item in sumList){
 
-            val key = item.title
+            val key = item.key
             val value = item.value
 
             if(dataMap[key] != null){
@@ -119,18 +119,18 @@ fun getJsonGenreWeekList(platform: String, type: String, callbacks: (ArrayList<A
             }
         }
 
-        val arrayList = ArrayList<ItemGenre>()
+        val arrayList = ArrayList<ItemKeyword>()
 
         for ((key, value) in dataMap) {
             arrayList.add(
-                ItemGenre(
-                    title = key,
+                ItemKeyword(
+                    key = key,
                     value = value.toString()
                 )
             )
         }
 
-        val cmpAsc: java.util.Comparator<ItemGenre> =
+        val cmpAsc: java.util.Comparator<ItemKeyword> =
             Comparator { o1, o2 -> o2.value.toInt().compareTo(o1.value.toInt()) }
         Collections.sort(arrayList, cmpAsc)
 
@@ -139,7 +139,7 @@ fun getJsonGenreWeekList(platform: String, type: String, callbacks: (ArrayList<A
     }
 }
 
-fun getJsonGenreMonthList(platform: String, type: String, callbacks: (ArrayList<ArrayList<ItemGenre>>, ArrayList<ItemGenre>) -> Unit) {
+fun getJsonGenreMonthList(platform: String, type: String, callbacks: (ArrayList<ArrayList<ItemKeyword>>, ArrayList<ItemKeyword>) -> Unit) {
     val storage = Firebase.storage
     val storageRef = storage.reference
 
@@ -151,8 +151,8 @@ fun getJsonGenreMonthList(platform: String, type: String, callbacks: (ArrayList<
         val jsonString = String(bytes, Charset.forName("UTF-8"))
 
         val jsonArray = JSONArray(jsonString)
-        val weekJsonList = ArrayList<ArrayList<ItemGenre>>()
-        val sumList = ArrayList<ItemGenre>()
+        val weekJsonList = ArrayList<ArrayList<ItemKeyword>>()
+        val sumList = ArrayList<ItemKeyword>()
 
         val dataMap = HashMap<String, Long>()
 
@@ -160,20 +160,20 @@ fun getJsonGenreMonthList(platform: String, type: String, callbacks: (ArrayList<
 
             try {
                 val jsonArrayItem = jsonArray.getJSONArray(i)
-                val itemList = ArrayList<ItemGenre>()
+                val itemList = ArrayList<ItemKeyword>()
 
                 for (j in 0 until jsonArrayItem.length()) {
 
                     try {
                         val jsonObject = jsonArrayItem.getJSONObject(j)
-                        itemList.add(convertItemGenre(jsonObject))
-                        sumList.add(convertItemGenre(jsonObject))
+                        itemList.add(convertItemKeyword(jsonObject))
+                        sumList.add(convertItemKeyword(jsonObject))
                     } catch (e: Exception) {
-                        itemList.add(ItemGenre())
+                        itemList.add(ItemKeyword())
                     }
                 }
 
-                val cmpAsc: java.util.Comparator<ItemGenre> =
+                val cmpAsc: java.util.Comparator<ItemKeyword> =
                     Comparator { o1, o2 -> o2.value.toInt().compareTo(o1.value.toInt()) }
                 Collections.sort(itemList, cmpAsc)
 
@@ -185,7 +185,7 @@ fun getJsonGenreMonthList(platform: String, type: String, callbacks: (ArrayList<
 
         for(item in sumList){
 
-            val key = item.title
+            val key = item.key
             val value = item.value
 
             if(dataMap[key] != null){
@@ -199,18 +199,18 @@ fun getJsonGenreMonthList(platform: String, type: String, callbacks: (ArrayList<
             }
         }
 
-        val arrayList = ArrayList<ItemGenre>()
+        val arrayList = ArrayList<ItemKeyword>()
 
         for ((key, value) in dataMap) {
             arrayList.add(
-                ItemGenre(
-                    title = key,
+                ItemKeyword(
+                    key = key,
                     value = value.toString()
                 )
             )
         }
 
-        val cmpAsc: java.util.Comparator<ItemGenre> =
+        val cmpAsc: java.util.Comparator<ItemKeyword> =
             Comparator { o1, o2 -> o2.value.toInt().compareTo(o1.value.toInt()) }
         Collections.sort(arrayList, cmpAsc)
 
@@ -221,7 +221,7 @@ fun getJsonGenreMonthList(platform: String, type: String, callbacks: (ArrayList<
 fun getGenreDay(
     platform: String,
     type: String,
-    callbacks: (ArrayList<ItemGenre>) -> Unit
+    callbacks: (ArrayList<ItemKeyword>) -> Unit
 ) {
 
     val mRootRef =
@@ -233,7 +233,7 @@ fun getGenreDay(
         override fun onDataChange(dataSnapshot: DataSnapshot) {
             if (dataSnapshot.exists()) {
 
-                val arrayList = ArrayList<ItemGenre>()
+                val arrayList = ArrayList<ItemKeyword>()
 
                 for (snapshot in dataSnapshot.children) {
                     val key = snapshot.key
@@ -242,15 +242,15 @@ fun getGenreDay(
                     if (key != null && value != null) {
 
                         arrayList.add(
-                            ItemGenre(
-                                title = key,
+                            ItemKeyword(
+                                key = key,
                                 value = value.toString()
                             )
                         )
                     }
                 }
 
-                val cmpAsc: java.util.Comparator<ItemGenre> =
+                val cmpAsc: java.util.Comparator<ItemKeyword> =
                     Comparator { o1, o2 -> o2.value.toInt().compareTo(o1.value.toInt()) }
                 Collections.sort(arrayList, cmpAsc)
 
@@ -266,7 +266,7 @@ fun getGenreDay(
 fun getGenreDayWeek(
     platform: String,
     type: String,
-    callbacks: (ArrayList<ItemGenre>) -> Unit
+    callbacks: (ArrayList<ItemKeyword>) -> Unit
 ) {
 
     val mRootRef =  FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform).child("GENRE_WEEK")
@@ -277,7 +277,7 @@ fun getGenreDayWeek(
             if(dataSnapshot.exists()){
 
                 val dataMap = HashMap<String, Any>()
-                val arrayList = ArrayList<ItemGenre>()
+                val arrayList = ArrayList<ItemKeyword>()
 
                 for (i in 0..7) {
 
@@ -307,14 +307,14 @@ fun getGenreDayWeek(
 
                 for ((key, value) in dataMap) {
                     arrayList.add(
-                        ItemGenre(
-                            title = key,
+                        ItemKeyword(
+                            key = key,
                             value = value.toString()
                         )
                     )
                 }
 
-                val cmpAsc: java.util.Comparator<ItemGenre> =
+                val cmpAsc: java.util.Comparator<ItemKeyword> =
                     Comparator { o1, o2 -> o2.value.toInt().compareTo(o1.value.toInt()) }
                 Collections.sort(arrayList, cmpAsc)
 
@@ -330,7 +330,7 @@ fun getGenreDayWeek(
 fun getGenreDayMonth(
     platform: String,
     type: String,
-    callbacks: (ArrayList<ItemGenre>) -> Unit
+    callbacks: (ArrayList<ItemKeyword>) -> Unit
 ) {
 
     val mRootRef =  FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform).child("GENRE_MONTH")
@@ -341,7 +341,7 @@ fun getGenreDayMonth(
             if(dataSnapshot.exists()){
 
                 val dataMap = HashMap<String, Any>()
-                val arrayList = ArrayList<ItemGenre>()
+                val arrayList = ArrayList<ItemKeyword>()
 
                 for (i in 1..31) {
 
@@ -371,14 +371,14 @@ fun getGenreDayMonth(
 
                 for ((key, value) in dataMap) {
                     arrayList.add(
-                        ItemGenre(
-                            title = key,
+                        ItemKeyword(
+                            key = key,
                             value = value.toString()
                         )
                     )
                 }
 
-                val cmpAsc: java.util.Comparator<ItemGenre> =
+                val cmpAsc: java.util.Comparator<ItemKeyword> =
                     Comparator { o1, o2 -> o2.value.toInt().compareTo(o1.value.toInt()) }
                 Collections.sort(arrayList, cmpAsc)
 

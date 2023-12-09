@@ -5,7 +5,6 @@ import android.content.Context
 import android.util.Log
 import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
-import com.bigbigdw.manavarasetting.main.model.ItemGenre
 import com.bigbigdw.manavarasetting.main.model.ItemKeyword
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -112,15 +111,6 @@ fun convertItemBest(bestItemData: ItemBestInfo): JsonObject {
     return jsonObject
 }
 
-fun convertItemGenreJson(itemGenre: ItemGenre): JsonObject {
-    val jsonObject = JsonObject()
-
-    jsonObject.addProperty("title", itemGenre.title)
-    jsonObject.addProperty("value", itemGenre.value)
-    jsonObject.addProperty("date", itemGenre.date)
-    return jsonObject
-}
-
 fun convertItemKeywordJson(itemKeyword: ItemKeyword): JsonObject {
     val jsonObject = JsonObject()
 
@@ -170,16 +160,6 @@ fun setItemBookInfoRef(ref: MutableMap<String?, Any>): ItemBookInfo {
         totalMonthCount = ref["totalMonthCount"] as Int,
         currentDiff = ref["currentDiff"] as Int,
         genre = ref["genre"] as String? ?: "",
-    )
-}
-
-@SuppressLint("SuspiciousIndentation")
-fun convertItemGenre(jsonObject: JSONObject): ItemGenre {
-
-    return ItemGenre(
-        title = jsonObject.optString("title"),
-        value = jsonObject.optString("value"),
-        date = jsonObject.optString("date"),
     )
 }
 

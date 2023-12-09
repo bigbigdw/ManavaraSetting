@@ -2,7 +2,7 @@ package com.bigbigdw.manavarasetting.util
 
 import android.util.Log
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
-import com.bigbigdw.manavarasetting.main.model.ItemGenre
+import com.bigbigdw.manavarasetting.main.model.ItemKeyword
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -301,7 +301,7 @@ fun doResultMiningGenre(
 ) {
     val genreValuesMap = HashMap<String, Int>()
     val jsonArray = JsonArray()
-    val genreList = ArrayList<ItemGenre>()
+    val genreList = ArrayList<ItemKeyword>()
 
     for (i in 0 until itemBookInfoList.size()) {
         val item = JSONObject(itemBookInfoList[i].asJsonObject.toString())
@@ -320,9 +320,9 @@ fun doResultMiningGenre(
 
     for ((key, value) in genreValuesMap) {
         jsonArray.add(
-            convertItemGenreJson(
-                itemGenre = ItemGenre(
-                    title = key,
+            convertItemKeywordJson(
+                itemKeyword = ItemKeyword(
+                    key = key,
                     value = value.toString(),
                     date = DBDate.dateMMDD()
                 )
@@ -330,8 +330,8 @@ fun doResultMiningGenre(
         )
 
         genreList.add(
-            ItemGenre(
-                title = key,
+            ItemKeyword(
+                key = key,
                 value = value.toString(),
                 date = DBDate.dateMMDD()
             )

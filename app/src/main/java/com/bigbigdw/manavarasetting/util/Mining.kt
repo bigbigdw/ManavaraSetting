@@ -3,7 +3,6 @@ package com.bigbigdw.manavarasetting.util
 import android.content.Context
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
-import com.bigbigdw.manavarasetting.main.model.ItemGenre
 import com.bigbigdw.manavarasetting.main.model.ItemKeyword
 import com.bigbigdw.manavarasetting.util.MiningSource.miningNaverSeriesComic
 import com.google.firebase.ktx.Firebase
@@ -70,14 +69,14 @@ fun miningGenre(
     ref: MutableMap<String, Int>,
     platform: String,
     type: String,
-    genreList: ArrayList<ItemGenre>
+    genreList: ArrayList<ItemKeyword>
 ) {
 
     for(item in genreList){
         BestRef.setGenreRef(
             platform = platform,
             type = type
-        ).child(item.title).child(item.date).setValue(item)
+        ).child(item.key).child(item.date).setValue(item)
     }
 
     BestRef.setBestGenre(

@@ -4,15 +4,6 @@ import android.content.Context
 import android.util.Log
 import com.bigbigdw.manavarasetting.main.model.ItemBestInfo
 import com.bigbigdw.manavarasetting.main.model.ItemBookInfo
-import com.bigbigdw.manavarasetting.main.model.ItemGenre
-import com.bigbigdw.manavarasetting.retrofit.Param
-import com.bigbigdw.manavarasetting.retrofit.RetrofitJoara
-import com.bigbigdw.manavarasetting.retrofit.RetrofitOnestory
-import com.bigbigdw.manavarasetting.retrofit.result.BestToksodaDetailResult
-import com.bigbigdw.manavarasetting.retrofit.result.JoaraBestDetailResult
-import com.bigbigdw.manavarasetting.retrofit.result.OnestoreBookDetail
-import com.bigbigdw.manavarasetting.retrofit.RetrofitDataListener
-import com.bigbigdw.manavarasetting.retrofit.RetrofitToksoda
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase

@@ -42,7 +42,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.bigbigdw.manavarasetting.main.model.ItemGenre
+import com.bigbigdw.manavarasetting.main.model.ItemKeyword
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
 import com.bigbigdw.manavarasetting.ui.theme.color000000
 import com.bigbigdw.manavarasetting.ui.theme.color1CE3EE
@@ -130,7 +130,7 @@ fun GenreDetail(
         }
     }
 
-    val bestList: ArrayList<ItemGenre> = state.genreDay
+    val bestList: ArrayList<ItemKeyword> = state.genreDay
 
     Spacer(modifier = Modifier.size(8.dp))
 
@@ -419,7 +419,7 @@ fun ScreenItemKeyword(
 
 @Composable
 fun ListGenreToday(
-    itemBestKeyword: ItemGenre,
+    itemBestKeyword: ItemKeyword,
     index: Int,
     changeColor : Color ? = color1CE3EE
 ) {
@@ -464,7 +464,7 @@ fun ListGenreToday(
                     )
                     Text(
                         maxLines = 1,
-                        text = itemBestKeyword.title,
+                        text = itemBestKeyword.key,
                         modifier = Modifier
                             .wrapContentHeight()
                             .weight(1f),

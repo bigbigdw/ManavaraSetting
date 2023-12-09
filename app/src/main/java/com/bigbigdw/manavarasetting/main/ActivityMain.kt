@@ -1,6 +1,11 @@
 package com.bigbigdw.manavarasetting.main
 
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.PowerManager
+import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -29,6 +34,18 @@ class ActivityMain : ComponentActivity() {
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val pm = getSystemService(POWER_SERVICE) as PowerManager
+        val packageName = packageName
+
+        if (pm.isIgnoringBatteryOptimizations(packageName)) {
+            Log.d("ACTIVITYMAIN","pm.isIgnoringBatteryOptimizations(packageName)")
+        } else {
+            val intent = Intent()
+            intent.action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+            intent.data = Uri.parse("package:$packageName")
+            startActivityForResult(intent, 0)
+        }
 
         viewModelMain.sideEffects
             .onEach { Toast.makeText(this@ActivityMain, it, Toast.LENGTH_SHORT).show() }
