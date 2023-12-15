@@ -35,6 +35,11 @@ class ActivityMain : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
+
+        Log.d("ACTIVITYMAIN","${findIndexInNovelList("TOKSODA_FREE")}")
+        Log.d("ACTIVITYMAIN","${novelListEng().size}")
+
         val pm = getSystemService(POWER_SERVICE) as PowerManager
         val packageName = packageName
 

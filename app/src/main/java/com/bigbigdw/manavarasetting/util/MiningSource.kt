@@ -148,7 +148,7 @@ object MiningSource {
 
 
                                 ref["date"] = dateMMDD()
-                                ref["type"] = platform
+                                ref["platform"] = platform
 
                                 miningValue(
                                     ref = ref,
@@ -219,7 +219,7 @@ object MiningSource {
                                 ref["currentDiff"] = (yesterDayItemMap[bookCode]?.number ?: 0) - number
 
                                 ref["date"] = dateMMDD()
-                                ref["type"] = platform
+                                ref["platform"] = platform
 
                                 miningValue(
                                     ref = ref,
@@ -306,7 +306,7 @@ object MiningSource {
                                 ref["currentDiff"] = (yesterDayItemMap[bookCode]?.number ?: 0) - number
 
                                 ref["date"] = dateMMDD()
-                                ref["type"] = platform
+                                ref["platform"] = platform
 
                                 miningValue(
                                     ref = ref,
@@ -379,7 +379,7 @@ object MiningSource {
                             ref["currentDiff"] = (yesterDayItemMap[bookCode]?.number ?: 0) - number
 
                             ref["date"] = dateMMDD()
-                            ref["type"] = platform
+                            ref["platform"] = platform
 
                             miningValue(
                                 ref = ref,
@@ -473,7 +473,7 @@ object MiningSource {
                                     ref["currentDiff"] = (yesterDayItemMap[bookCode]?.number ?: 0) - number
 
                                     ref["date"] = dateMMDD()
-                                    ref["type"] = platform
+                                    ref["platform"] = platform
 
                                     miningValue(
                                         ref = ref,
@@ -570,7 +570,7 @@ object MiningSource {
                                     ref["currentDiff"] = (yesterDayItemMap[bookCode]?.number ?: 0) - number
 
                                     ref["date"] = dateMMDD()
-                                    ref["type"] = platform
+                                    ref["platform"] = platform
 
                                     miningValue(
                                         ref = ref,
@@ -655,7 +655,7 @@ object MiningSource {
                             ref["currentDiff"] = (yesterDayItemMap[bookCode]?.number ?: 0) - number
 
                             ref["date"] = dateMMDD()
-                            ref["type"] = platform
+                            ref["platform"] = platform
 
                             miningValue(
                                 ref = ref,
@@ -748,7 +748,7 @@ object MiningSource {
                                     ref["currentDiff"] = (yesterDayItemMap[bookCode]?.number ?: 0) - number
 
                                     ref["date"] = dateMMDD()
-                                    ref["type"] = platform
+                                    ref["platform"] = platform
 
                                     miningValue(
                                         ref = ref,
@@ -833,7 +833,7 @@ object MiningSource {
                                 ref["currentDiff"] = (yesterDayItemMap[bookCode]?.number ?: 0) - number
 
                                 ref["date"] = dateMMDD()
-                                ref["type"] = platform
+                                ref["platform"] = platform
 
                                 miningValue(
                                     ref = ref,
@@ -931,7 +931,7 @@ object MiningSource {
                                     ref["totalMonthCount"] = yesterDayItem.totalMonthCount + 1
                                     ref["currentDiff"] = (yesterDayItemMap[bookCode]?.number ?: 0) - number
                                     ref["date"] = dateMMDD()
-                                    ref["type"] = platform
+                                    ref["platform"] = platform
 
                                     miningValue(
                                         ref = ref,

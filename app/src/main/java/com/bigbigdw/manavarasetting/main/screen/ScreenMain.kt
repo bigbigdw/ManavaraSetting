@@ -820,6 +820,40 @@ fun ContentsDangerOption(viewModelMain: ViewModelMain) {
         }
     )
 
+    TabletContentWrapBtn(
+        onClick = { viewModelMain.resetBest(str = "GENRE") },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "GENRE 초기화",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
+    TabletContentWrapBtn(
+        onClick = { viewModelMain.resetBest(str = "KEYWORD") },
+        content = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "KEYWORD 초기화",
+                    color = color000000,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    )
+
     Spacer(modifier = Modifier.size(60.dp))
 }
 

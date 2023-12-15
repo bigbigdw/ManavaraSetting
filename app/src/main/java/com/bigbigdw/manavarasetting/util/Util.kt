@@ -30,7 +30,7 @@ fun convertItemBook(bestItemData: ItemBookInfo): JsonObject {
     jsonObject.addProperty("title", bestItemData.title)
     jsonObject.addProperty("bookImg", bestItemData.bookImg)
     jsonObject.addProperty("bookCode", bestItemData.bookCode)
-    jsonObject.addProperty("type", bestItemData.type)
+    jsonObject.addProperty("type", bestItemData.platform)
     jsonObject.addProperty("intro", bestItemData.intro)
     jsonObject.addProperty("cntPageRead", bestItemData.cntPageRead)
     jsonObject.addProperty("cntFavorite", bestItemData.cntFavorite)
@@ -58,7 +58,7 @@ fun convertItemBookJson(jsonObject: JSONObject): ItemBookInfo {
         title = jsonObject.optString("title"),
         bookImg = jsonObject.optString("bookImg"),
         bookCode = jsonObject.optString("bookCode"),
-        type = jsonObject.optString("type"),
+        platform = jsonObject.optString("type"),
         intro = jsonObject.optString("intro"),
         cntPageRead = jsonObject.optString("cntPageRead"),
         cntFavorite = jsonObject.optString("cntFavorite"),
@@ -145,7 +145,7 @@ fun setItemBookInfoRef(ref: MutableMap<String?, Any>): ItemBookInfo {
         bookCode = ref["bookCode"] as String,
         number = ref["number"] as Int,
         point = ref["point"] as Int,
-        type = ref["type"] as String,
+        platform = ref["platform"] as String,
         intro = ref["intro"] as String? ?: "",
         cntPageRead = ref["cntPageRead"] as String? ?: "",
         cntFavorite = ref["cntFavorite"] as String? ?: "",
@@ -422,19 +422,19 @@ fun saveKeyword(
                         platform = platform,
                         genreDate = "KEYWORD_DAY",
                         type = type,
-                    ).setValue(it)
+                    ).setValue(keywordList)
 
                     BestRef.setBestGenre(
                         platform = platform,
                         genreDate = "KEYWORD_WEEK",
                         type = type,
-                    ).child(DBDate.getDayOfWeekAsNumber().toString()).setValue(it)
+                    ).child(DBDate.getDayOfWeekAsNumber().toString()).setValue(keywordList)
 
                     BestRef.setBestGenre(
                         platform = platform,
                         genreDate = "KEYWORD_MONTH",
                         type = type,
-                    ).child(DBDate.datedd()).setValue(it)
+                    ).child(DBDate.datedd()).setValue(keywordList)
 
                     callback(keywordList)
                 }

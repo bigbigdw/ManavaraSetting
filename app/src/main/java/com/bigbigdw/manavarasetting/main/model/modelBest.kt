@@ -13,8 +13,8 @@ data class ItemBookInfo(
     var bookImg: String = "",
     @SerialName("bookCode")
     var bookCode: String = "",
-    @SerialName("type")
-    var type: String = "",
+    @SerialName("platform")
+    var platform: String = "",
     @SerialName("intro")
     var intro: String = "",
     @SerialName("cntPageRead")
