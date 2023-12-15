@@ -15,17 +15,10 @@ import com.bigbigdw.manavarasetting.util.MiningWorker
 import com.bigbigdw.manavarasetting.util.changePlatformNameKor
 import com.bigbigdw.manavarasetting.util.findIndexInNovelList
 import com.bigbigdw.manavarasetting.util.getNextNovelInListEng
-import com.bigbigdw.manavarasetting.util.makeTodayJson
 import com.bigbigdw.manavarasetting.util.novelListEng
 import com.bigbigdw.manavarasetting.util.saveBook
-import com.bigbigdw.manavarasetting.util.saveData
-import com.bigbigdw.manavarasetting.util.saveKeyword
-import com.bigbigdw.manavarasetting.util.saveKeywordData
+import com.bigbigdw.manavarasetting.util.saveGenreKeyword
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
-import com.google.gson.JsonArray
-import com.google.gson.JsonObject
 import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
@@ -264,9 +257,28 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
                     type = inputData.getString(TYPE) ?: "",
                 )
 
-                saveData(
+                saveGenreKeyword(
                     platform = inputData.getString(PLATFORM) ?: "",
                     type = inputData.getString(TYPE) ?: "",
+                    child = "TROPHY"
+                )
+
+                saveGenreKeyword(
+                    platform = inputData.getString(PLATFORM) ?: "",
+                    type = inputData.getString(TYPE) ?: "",
+                    child = "DATA"
+                )
+
+                saveGenreKeyword(
+                    platform = inputData.getString(PLATFORM) ?: "",
+                    type = inputData.getString(TYPE) ?: "",
+                    child = "KEYWORD"
+                )
+
+                saveGenreKeyword(
+                    platform = inputData.getString(PLATFORM) ?: "",
+                    type = inputData.getString(TYPE) ?: "",
+                    child = "GENRE"
                 )
             }
 

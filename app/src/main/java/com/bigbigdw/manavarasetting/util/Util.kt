@@ -47,6 +47,7 @@ fun convertItemBook(bestItemData: ItemBookInfo): JsonObject {
     jsonObject.addProperty("totalMonthCount", bestItemData.totalMonthCount)
     jsonObject.addProperty("currentDiff", bestItemData.currentDiff)
     jsonObject.addProperty("genre", bestItemData.genre)
+    jsonObject.addProperty("belong", bestItemData.belong)
     return jsonObject
 }
 
@@ -74,6 +75,7 @@ fun convertItemBookJson(jsonObject: JSONObject): ItemBookInfo {
         totalMonth = jsonObject.optInt("totalMonth"),
         totalMonthCount = jsonObject.optInt("totalMonthCount"),
         currentDiff = jsonObject.optInt("currentDiff"),
+        belong = jsonObject.optString("belong"),
     )
 }
 
@@ -160,6 +162,7 @@ fun setItemBookInfoRef(ref: MutableMap<String?, Any>): ItemBookInfo {
         totalMonthCount = ref["totalMonthCount"] as Int,
         currentDiff = ref["currentDiff"] as Int,
         genre = ref["genre"] as String? ?: "",
+        belong = ref["belong"] as String? ?: "",
     )
 }
 
@@ -250,21 +253,21 @@ fun getBookCount(context: Context, type: String, platform: String) {
     })
 }
 
-fun saveBook(platform: String, type: String) {
+fun saveBook(platform: String, type: String, child : String = "BOOK") {
     val mRootRef =
-        FirebaseDatabase.getInstance().reference.child("BOOK").child(type).child(platform)
+        FirebaseDatabase.getInstance().reference.child(child).child(type).child(platform)
 
     val storage = Firebase.storage
     val storageRef = storage.reference
 
-    val book = storageRef.child("${platform}/${type}/BOOK/${platform}.json")
+    val book = storageRef.child("${platform}/${type}/${child}/${platform}.json")
 
     mRootRef.addListenerForSingleValueEvent(object :
         ValueEventListener {
         override fun onDataChange(dataSnapshot: DataSnapshot) {
             if (dataSnapshot.exists()) {
 
-                val jsonObject = JSONObject()
+                val jsonArray = JsonObject()
 
                 try {
 
@@ -275,12 +278,11 @@ fun saveBook(platform: String, type: String) {
                         if (key != null && value != null) {
 
                             val item: ItemBookInfo? = snapshot.getValue(ItemBookInfo::class.java)
-
-                            jsonObject.put(key, item?.let { convertItemBook(it) })
+                            jsonArray.add(item?.bookCode, item?.let { convertItemBook(it) })
                         }
                     }
 
-                    book.putBytes(jsonObject.toString().toByteArray(Charsets.UTF_8))
+                    book.putBytes(jsonArray.toString().toByteArray(Charsets.UTF_8))
                         .addOnSuccessListener {
                             Log.d("HIHI", "saveBook addOnSuccessListener == $it")
                         }
@@ -296,79 +298,40 @@ fun saveBook(platform: String, type: String) {
     })
 }
 
-fun saveData(platform: String, type: String) {
+fun saveGenreKeyword(platform: String, type: String, child : String = "DATA") {
     val mRootRef =
-        FirebaseDatabase.getInstance().reference.child("DATA").child(type).child(platform)
+        FirebaseDatabase.getInstance().reference.child(child).child(type).child(platform)
 
     val storage = Firebase.storage
     val storageRef = storage.reference
 
-    val book = storageRef.child("${platform}/${type}/DATA/${platform}.json")
+    val book = storageRef.child("${platform}/${type}/${child}/${platform}.json")
 
     mRootRef.addListenerForSingleValueEvent(object :
         ValueEventListener {
         override fun onDataChange(dataSnapshot: DataSnapshot) {
             if (dataSnapshot.exists()) {
 
-                val jsonObject = JSONObject()
+                val jsonObject = JsonObject()
 
                 try {
 
                     for (snapshot in dataSnapshot.children) {
-                        val key = snapshot.key
-                        val value = snapshot.value
 
-                        if (key != null && value != null) {
+                        for(item in snapshot.children){
+                            val key = item.key
+                            val value = item.value
 
-                            val item: ItemBookInfo? = snapshot.getValue(ItemBookInfo::class.java)
+                            if (key != null && value != null) {
 
-                            jsonObject.put(key, item?.let { convertItemBook(it) })
-                        }
-                    }
-
-                    book.putBytes(jsonObject.toString().toByteArray(Charsets.UTF_8))
-                        .addOnSuccessListener {
-                            Log.d("HIHI", "saveBook addOnSuccessListener == $it")
-                        }
-
-                } catch (e: JSONException) {
-                    e.printStackTrace()
-                }
-
-            }
-        }
-
-        override fun onCancelled(databaseError: DatabaseError) {}
-    })
-}
-
-fun saveKeywordData(platform: String, type: String) {
-    val mRootRef =
-        FirebaseDatabase.getInstance().reference.child("KEYWORD").child(type).child(platform)
-
-    val storage = Firebase.storage
-    val storageRef = storage.reference
-
-    val book = storageRef.child("${platform}/${type}/KEYWORD/${platform}.json")
-
-    mRootRef.addListenerForSingleValueEvent(object :
-        ValueEventListener {
-        override fun onDataChange(dataSnapshot: DataSnapshot) {
-            if (dataSnapshot.exists()) {
-
-                val jsonObject = JSONObject()
-
-                try {
-
-                    for (snapshot in dataSnapshot.children) {
-                        val key = snapshot.key
-                        val value = snapshot.value
-
-                        if (key != null && value != null) {
-
-                            val item: ItemBookInfo? = snapshot.getValue(ItemBookInfo::class.java)
-
-                            jsonObject.put(key, item?.let { convertItemBook(it) })
+                                if(child == "DATA"){
+                                    val dataItem: ItemBookInfo? = item.getValue(ItemBookInfo::class.java)
+                                    jsonObject.add(dataItem?.bookCode, dataItem?.let { convertItemBook(it) })
+                                } else {
+                                    val genreKeywordItem: ItemKeyword? = item.getValue(ItemKeyword::class.java)
+                                    jsonObject.add(genreKeywordItem?.key, genreKeywordItem?.let { convertItemKeywordJson(it) })
+                                }
+                            }
                         }
                     }
 

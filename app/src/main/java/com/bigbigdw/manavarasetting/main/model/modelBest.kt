@@ -47,6 +47,8 @@ data class ItemBookInfo(
     var point: Int = 0,
     @SerialName("genre")
     var genre: String = "",
+    @SerialName("belong")
+    var belong: String = "",
     )
 @Serializable
 data class ItemBestInfo (

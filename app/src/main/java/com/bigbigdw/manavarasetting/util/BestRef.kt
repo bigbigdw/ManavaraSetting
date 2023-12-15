@@ -33,8 +33,8 @@ object BestRef {
     }
 
     fun setBestTrophy(platform: String, bookCode: String, type: String): DatabaseReference {
-        return setBestRef(platform = platform, type = type).child("TROPHY").child(bookCode).child(DBDate.dateYYYY())
-            .child(DBDate.dateMM()).child(DBDate.datedd())
+        return mRootRef.child("TROPHY").child(type).child(platform).child(bookCode).child(DBDate.dateMMDD())
+
     }
 
     fun setBookDailyBest(platform: String, num: Int, type: String): DatabaseReference {
