@@ -95,7 +95,7 @@ private fun getBestList(
 
     val mRootRef =
         FirebaseDatabase.getInstance().reference.child("BEST").child(type).child(platform)
-            .child("DAY")
+            .child("BEST_DAY")
 
     mRootRef.addListenerForSingleValueEvent(object :
         ValueEventListener {

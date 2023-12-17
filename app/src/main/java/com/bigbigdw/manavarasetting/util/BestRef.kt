@@ -38,7 +38,7 @@ object BestRef {
     }
 
     fun setBookDailyBest(platform: String, num: Int, type: String): DatabaseReference {
-        return setBestRef(platform = platform, type = type).child("DAY").child(num.toString())
+        return setBestRef(platform = platform, type = type).child("BEST_DAY").child(num.toString())
     }
 
     fun setBookCode(platform: String, bookCode: String, type: String): DatabaseReference {
