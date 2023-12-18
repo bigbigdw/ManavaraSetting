@@ -30,7 +30,7 @@ fun convertItemBook(bestItemData: ItemBookInfo): JsonObject {
     jsonObject.addProperty("title", bestItemData.title)
     jsonObject.addProperty("bookImg", bestItemData.bookImg)
     jsonObject.addProperty("bookCode", bestItemData.bookCode)
-    jsonObject.addProperty("type", bestItemData.platform)
+    jsonObject.addProperty("platform", bestItemData.platform)
     jsonObject.addProperty("intro", bestItemData.intro)
     jsonObject.addProperty("cntPageRead", bestItemData.cntPageRead)
     jsonObject.addProperty("cntFavorite", bestItemData.cntFavorite)
@@ -59,7 +59,7 @@ fun convertItemBookJson(jsonObject: JSONObject): ItemBookInfo {
         title = jsonObject.optString("title"),
         bookImg = jsonObject.optString("bookImg"),
         bookCode = jsonObject.optString("bookCode"),
-        platform = jsonObject.optString("type"),
+        platform = jsonObject.optString("platform"),
         intro = jsonObject.optString("intro"),
         cntPageRead = jsonObject.optString("cntPageRead"),
         cntFavorite = jsonObject.optString("cntFavorite"),
