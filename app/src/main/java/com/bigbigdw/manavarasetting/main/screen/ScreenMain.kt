@@ -1108,7 +1108,7 @@ fun ContentsLabs() {
         onClick = {
             MiningWorker.doWorkerOnetime(
                 workManager = workManager,
-                time = 5,
+                time = 30,
                 timeUnit = TimeUnit.MINUTES,
                 tag = "MINING",
                 platform = "JOARA",

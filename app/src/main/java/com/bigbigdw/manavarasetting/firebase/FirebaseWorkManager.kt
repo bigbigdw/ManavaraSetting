@@ -16,7 +16,6 @@ import com.bigbigdw.manavarasetting.util.changePlatformNameKor
 import com.bigbigdw.manavarasetting.util.findIndexInNovelList
 import com.bigbigdw.manavarasetting.util.getNextNovelInListEng
 import com.bigbigdw.manavarasetting.util.miningListAllEng
-import com.bigbigdw.manavarasetting.util.novelListEng
 import com.bigbigdw.manavarasetting.util.saveBook
 import com.bigbigdw.manavarasetting.util.saveGenreKeyword
 import com.google.firebase.database.FirebaseDatabase
@@ -54,6 +53,50 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
         if(inputData.getString(WORKER)?.contains("MINING") == true){
 
             runBlocking {
+                if (DBDate.getDayOfWeekAsNumber().toString() == "0") {
+                    BestRef.setBestRef(
+                        platform = inputData.getString(PLATFORM) ?: "",
+                        type = inputData.getString(TYPE) ?: "",
+                    ).child("TROPHY_WEEK").removeValue()
+
+                    BestRef.setBestRef(
+                        platform = inputData.getString(PLATFORM) ?: "",
+                        type = inputData.getString(TYPE) ?: "",
+                    ).child("TROPHY_WEEK_TOTAL").removeValue()
+
+                    BestRef.setBestRef(
+                        platform = inputData.getString(PLATFORM) ?: "",
+                        type = inputData.getString(TYPE) ?: "",
+                    ).child("GENRE_WEEK").removeValue()
+
+                    BestRef.setBestRef(
+                        platform = inputData.getString(PLATFORM) ?: "",
+                        type = inputData.getString(TYPE) ?: "",
+                    ).child("KEYWORD_WEEK").removeValue()
+                }
+
+                if (DBDate.datedd() == "01") {
+                    BestRef.setBestRef(
+                        platform = inputData.getString(PLATFORM) ?: "",
+                        type = inputData.getString(TYPE) ?: "",
+                    ).child("TROPHY_MONTH").removeValue()
+
+                    BestRef.setBestRef(
+                        platform = inputData.getString(PLATFORM) ?: "",
+                        type = inputData.getString(TYPE) ?: "",
+                    ).child("TROPHY_MONTH_TOTAL").removeValue()
+
+                    BestRef.setBestRef(
+                        platform = inputData.getString(PLATFORM) ?: "",
+                        type = inputData.getString(TYPE) ?: "",
+                    ).child("GENRE_MONTH").removeValue()
+
+                    BestRef.setBestRef(
+                        platform = inputData.getString(PLATFORM) ?: "",
+                        type = inputData.getString(TYPE) ?: "",
+                    ).child("KEYWORD_MONTH").removeValue()
+                }
+
                 MiningSource.mining(
                     platform = inputData.getString(PLATFORM) ?: "",
                     type = inputData.getString(TYPE) ?: "",
@@ -95,12 +138,14 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
             runBlocking {
                 val workManager = WorkManager.getInstance(applicationContext)
 
-                Log.d("MINING", "getNextNovelInListEng(inputData.getString(PLATFORM) ?: \"\") == ${getNextNovelInListEng(inputData.getString(PLATFORM) ?: "")}")
+                Log.d("MINING_MONITOR", "getNextNovelInListEng == ${getNextNovelInListEng("${inputData.getString(TYPE)}+${inputData.getString(PLATFORM)}")}")
+                Log.d("MINING_MONITOR", "OneTime inputData.getString(PLATFORM) == ${inputData.getString(PLATFORM)}")
+                Log.d("MINING_MONITOR", "OneTime inputData.getString(TYPE) == ${inputData.getString(TYPE)}")
 
-                if (findIndexInNovelList("${inputData.getString(TYPE)}_${inputData.getString(PLATFORM)}") == (miningListAllEng().size - 1)) {
+                if (findIndexInNovelList("${inputData.getString(TYPE)}+${inputData.getString(PLATFORM)}") == (miningListAllEng().size - 1)) {
 
-                    Log.d("MINING", "Periodic platform == ${getNextNovelInListEng("${inputData.getString(TYPE)}_${inputData.getString(PLATFORM)}").replace("${inputData.getString(TYPE)}_", "")}")
-                    Log.d("MINING", "Periodic platform == ${getNextNovelInListEng("${inputData.getString(TYPE)}_${inputData.getString(PLATFORM)}").replace("_${inputData.getString(PLATFORM)}", "")}")
+                    Log.d("MINING_MONITOR", "Periodic platform == ${getNextNovelInListEng("${inputData.getString(TYPE)}+${inputData.getString(PLATFORM)}").replace("${inputData.getString(TYPE)}+", "")}")
+                    Log.d("MINING_MONITOR", "Periodic platform == ${getNextNovelInListEng("${inputData.getString(TYPE)}+${inputData.getString(PLATFORM)}").replace("+${inputData.getString(PLATFORM)}", "")}")
 
                     MiningWorker.cancelAllWorker(
                         workManager = workManager,
@@ -117,11 +162,11 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
 
                 } else {
 
-                    val platform = getNextNovelInListEng("${inputData.getString(TYPE)}_${inputData.getString(PLATFORM)}").replace("${inputData.getString(TYPE)}_", "")
-                    val type = getNextNovelInListEng("${inputData.getString(TYPE)}_${inputData.getString(PLATFORM)}").replace("_${platform}", "")
+                    val platform = getNextNovelInListEng("${inputData.getString(TYPE)}+${inputData.getString(PLATFORM)}").replace("${inputData.getString(TYPE)}+", "")
+                    val type = getNextNovelInListEng("${inputData.getString(TYPE)}+${inputData.getString(PLATFORM)}").replace("+${platform}", "")
 
-                    Log.d("MINING", "OneTime platform == $platform")
-                    Log.d("MINING", "OneTime platform == $type")
+                    Log.d("MINING_MONITOR", "OneTime platform == $platform")
+                    Log.d("MINING_MONITOR", "OneTime type == $type")
 
                     MiningWorker.doWorkerOnetime(
                         workManager = workManager,
