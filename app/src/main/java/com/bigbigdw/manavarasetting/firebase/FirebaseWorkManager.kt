@@ -15,6 +15,7 @@ import com.bigbigdw.manavarasetting.util.MiningWorker
 import com.bigbigdw.manavarasetting.util.changePlatformNameKor
 import com.bigbigdw.manavarasetting.util.findIndexInNovelList
 import com.bigbigdw.manavarasetting.util.getNextNovelInListEng
+import com.bigbigdw.manavarasetting.util.miningListAllEng
 import com.bigbigdw.manavarasetting.util.novelListEng
 import com.bigbigdw.manavarasetting.util.saveBook
 import com.bigbigdw.manavarasetting.util.saveGenreKeyword
@@ -96,9 +97,10 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
 
                 Log.d("MINING", "getNextNovelInListEng(inputData.getString(PLATFORM) ?: \"\") == ${getNextNovelInListEng(inputData.getString(PLATFORM) ?: "")}")
 
-                if (findIndexInNovelList(inputData.getString(PLATFORM) ?: "") == (novelListEng().size - 1)) {
+                if (findIndexInNovelList("${inputData.getString(TYPE)}_${inputData.getString(PLATFORM)}") == (miningListAllEng().size - 1)) {
 
-                    Log.d("MINING", "Periodic == ${inputData.getString(PLATFORM) ?: ""}")
+                    Log.d("MINING", "Periodic platform == ${getNextNovelInListEng("${inputData.getString(TYPE)}_${inputData.getString(PLATFORM)}").replace("${inputData.getString(TYPE)}_", "")}")
+                    Log.d("MINING", "Periodic platform == ${getNextNovelInListEng("${inputData.getString(TYPE)}_${inputData.getString(PLATFORM)}").replace("_${inputData.getString(PLATFORM)}", "")}")
 
                     MiningWorker.cancelAllWorker(
                         workManager = workManager,
@@ -106,8 +108,8 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
 
                     MiningWorker.doWorkerOnetime(
                         workManager = workManager,
-                        time = 6,
-                        timeUnit = TimeUnit.HOURS,
+                        time = 30,
+                        timeUnit = TimeUnit.MINUTES,
                         tag = "MINING",
                         platform = "JOARA",
                         type = "NOVEL"
@@ -115,22 +117,26 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
 
                 } else {
 
-                    Log.d("MINING", "OneTIme == ${inputData.getString(PLATFORM) ?: ""}")
+                    val platform = getNextNovelInListEng("${inputData.getString(TYPE)}_${inputData.getString(PLATFORM)}").replace("${inputData.getString(TYPE)}_", "")
+                    val type = getNextNovelInListEng("${inputData.getString(TYPE)}_${inputData.getString(PLATFORM)}").replace("_${platform}", "")
+
+                    Log.d("MINING", "OneTime platform == $platform")
+                    Log.d("MINING", "OneTime platform == $type")
 
                     MiningWorker.doWorkerOnetime(
                         workManager = workManager,
                         time = 30,
                         timeUnit = TimeUnit.MINUTES,
                         tag = "MINING",
-                        platform = getNextNovelInListEng(inputData.getString(PLATFORM) ?: ""),
-                        type = "NOVEL"
+                        platform = platform,
+                        type = type,
                     )
 
                 }
             }
 
             postFCM(
-                data = "${changePlatformNameKor(inputData.getString(PLATFORM) ?: "")} 베스트 최신화",
+                data = "${inputData.getString(TYPE) ?: ""} ${changePlatformNameKor(inputData.getString(PLATFORM) ?: "")} 최신화",
                 time = "${year}.${month}.${day} ${hour}:${min}:${sec}",
                 activity = "NOVEL",
             )

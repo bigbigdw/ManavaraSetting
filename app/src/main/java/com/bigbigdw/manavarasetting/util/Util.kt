@@ -421,7 +421,7 @@ fun changeUserState(UID: String, status: String) {
 }
 
 fun getNextNovelInListEng(currentNovel: String): String {
-    val novelList = novelListEng()
+    val novelList = miningListAllEng()
     val currentIndex = novelList.indexOf(currentNovel)
 
     return if (currentIndex != -1 && currentIndex < novelList.size - 1) {
@@ -434,7 +434,7 @@ fun getNextNovelInListEng(currentNovel: String): String {
 }
 
 fun findIndexInNovelList(target: String): Int {
-    val novelList = novelListEng()
+    val novelList = miningListAllEng()
     return novelList.indexOf(target)
 }
 

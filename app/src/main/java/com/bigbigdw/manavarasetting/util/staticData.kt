@@ -835,3 +835,29 @@ fun getPlatformDataKeyComic(platform : String) : Preferences.Key<String> {
         }
     }
 }
+
+fun miningListAllEng(): List<String> {
+    return listOf(
+        "NOVEL_JOARA",
+        "NOVEL_JOARA_NOBLESS",
+        "NOVEL_JOARA_PREMIUM",
+        "NOVEL_NAVER_SERIES",
+        "NOVEL_NAVER_WEBNOVEL_PAY",
+        "NOVEL_NAVER_WEBNOVEL_FREE",
+        "NOVEL_NAVER_CHALLENGE",
+        "NOVEL_NAVER_BEST",
+        "NOVEL_RIDI_FANTAGY",
+        "NOVEL_RIDI_ROMANCE",
+        "NOVEL_RIDI_ROFAN",
+        "NOVEL_KAKAO_STAGE",
+        "NOVEL_ONESTORY_FANTAGY",
+        "NOVEL_ONESTORY_ROMANCE",
+        "NOVEL_ONESTORY_PASS_FANTAGY",
+        "NOVEL_ONESTORY_PASS_ROMANCE",
+        "NOVEL_MUNPIA_PAY",
+        "NOVEL_MUNPIA_FREE",
+        "NOVEL_TOKSODA",
+        "NOVEL_TOKSODA_FREE",
+        "COMIC_NAVER_SERIES",
+    )
+}
