@@ -162,7 +162,7 @@ class FirebaseWorkManager(context: Context, workerParams: WorkerParameters) :
 
                 } else {
 
-                    val platform = getNextNovelInListEng("${inputData.getString(TYPE)}+${inputData.getString(PLATFORM)}").replace("${inputData.getString(TYPE)}+", "")
+                    val platform = getNextNovelInListEng("${inputData.getString(TYPE)}+${inputData.getString(PLATFORM)}").replace("NOVEL+", "").replace("COMIC+", "")
                     val type = getNextNovelInListEng("${inputData.getString(TYPE)}+${inputData.getString(PLATFORM)}").replace("+${platform}", "")
 
                     Log.d("MINING_MONITOR", "OneTime platform == $platform")
