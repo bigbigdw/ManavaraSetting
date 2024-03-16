@@ -574,39 +574,6 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             value = "웹소설 트로피 월간 토탈",
         )
 
-        ItemMainSettingSingleTablet(
-            containerColor = color808CF8,
-            image = R.drawable.logo_transparent,
-            title = "웹소설 투데이 장르",
-            body = "투데이 장르 JSON 확인",
-            setter = setMenu,
-            getter = getMenu,
-            onClick = { onClick() },
-            value = "웹소설 투데이 장르",
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = colorFFAC59,
-            image = R.drawable.logo_transparent,
-            title = "웹소설 주간 장르",
-            body = "주간 장르 JSON 확인",
-            setter = setMenu,
-            getter = getMenu,
-            onClick = { onClick() },
-            value = "웹소설 주간 장르",
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = color4AD7CF,
-            image = R.drawable.logo_transparent,
-            title = "웹소설 월간 장르",
-            body = "월간 장르 JSON 확인",
-            setter = setMenu,
-            getter = getMenu,
-            onClick = { onClick() },
-            value = "웹소설 월간 장르",
-        )
-
         TabletBorderLine()
 
         ItemMainSettingSingleTablet(
