@@ -17,6 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import com.bigbigdw.manavarasetting.firebase.FirebaseWorkManager
 import com.bigbigdw.manavarasetting.main.screen.ScreenMain
 import com.bigbigdw.manavarasetting.main.viewModels.ViewModelMain
+import com.bigbigdw.manavarasetting.util.DBDate
 import com.bigbigdw.manavarasetting.util.findIndexInNovelList
 import com.bigbigdw.manavarasetting.util.getBestListTodayStorage
 import com.bigbigdw.manavarasetting.util.getBestMonthListStorage
@@ -35,7 +36,7 @@ class ActivityMain : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
+        Log.d("HIHI", DBDate.dateMMDD());
 
         Log.d("ACTIVITYMAIN","${findIndexInNovelList("TOKSODA_FREE")}")
         Log.d("ACTIVITYMAIN","${novelListEng().size}")

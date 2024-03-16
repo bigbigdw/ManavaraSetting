@@ -523,7 +523,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             containerColor = color80BF78,
             image = R.drawable.icon_json_wht,
             title = "웹소설 JSON 월간",
-            body = "웹툰 플랫폼 JSON 베스트 월간",
+            body = "웹소설 플랫폼 JSON 베스트 월간",
             setter = setMenu,
             getter = getMenu,
             onClick = { onClick() },
@@ -545,7 +545,7 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             containerColor = color79B4F8,
             image = R.drawable.icon_json_wht,
             title = "웹소설 JSON 월간 트로피",
-            body = "웹툰 플랫폼 JSON 베스트 월간",
+            body = "웹소설 플랫폼 JSON 베스트 월간",
             setter = setMenu,
             getter = getMenu,
             onClick = { onClick() },
@@ -605,121 +605,6 @@ fun ScreenTableList(setMenu: (String) -> Unit, getMenu: String, onClick: () -> U
             getter = getMenu,
             onClick = { onClick() },
             value = "웹소설 월간 장르",
-        )
-
-        TabletBorderLine()
-
-        ItemMainSettingSingleTablet(
-            containerColor = color5372DE,
-            image = R.drawable.icon_webtoon_wht,
-            title = "웹툰 현황",
-            body = "웹툰 플랫폼 베스트 리스트 확인",
-            setter = setMenu,
-            getter = getMenu,
-            onClick = { onClick() },
-            value = "웹툰 현황",
-        )
-
-        TabletBorderLine()
-
-        ItemMainSettingSingleTablet(
-            containerColor = colorNAVER,
-            image = R.drawable.logo_naver,
-            title = "네이버 시리즈 웹툰",
-            body = "네이버 시리즈 웹툰 관리",
-            setter = setMenu,
-            getter = getMenu,
-            onClick = { onClick() },
-            value = "시리즈",
-        )
-
-        TabletBorderLine()
-
-        ItemMainSettingSingleTablet(
-            containerColor = color998DF9,
-            image = R.drawable.icon_best_wht,
-            title = "웹툰 베스트 리스트",
-            body = "웹툰 플랫폼 베스트 리스트 확인",
-            setter = setMenu,
-            getter = getMenu,
-            onClick = { onClick() },
-            value = "웹툰 베스트 리스트",
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = colorEA927C,
-            image = R.drawable.icon_json_wht,
-            title = "웹툰 JSON 투데이",
-            body = "웹툰 플랫폼 JSON 베스트 투데이",
-            setter = setMenu,
-            getter = getMenu,
-            onClick = { onClick() },
-            value = "웹툰 JSON 투데이",
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = colorABD436,
-            image = R.drawable.icon_json_wht,
-            title = "웹툰 JSON 주간",
-            body = "웹툰 플랫폼 JSON 베스트 주간",
-            setter = setMenu,
-            getter = getMenu,
-            onClick = { onClick() },
-            value = "웹툰 JSON 주간",
-        )
-        ItemMainSettingSingleTablet(
-            containerColor = colorF17FA0,
-            image = R.drawable.icon_json_wht,
-            title = "웹툰 JSON 월간",
-            body = "웹툰 플랫폼 JSON 베스트 월간",
-            setter = setMenu,
-            getter = getMenu,
-            onClick = { onClick() },
-            value = "웹툰 JSON 월간",
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = color21C2EC,
-            image = R.drawable.icon_json_wht,
-            title = "웹툰 JSON 주간 트로피",
-            body = "웹툰 플랫폼 JSON 주간 트로피",
-            setter = setMenu,
-            getter = getMenu,
-            onClick = { onClick() },
-            value = "웹툰 JSON 주간 트로피",
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = color31C3AE,
-            image = R.drawable.icon_json_wht,
-            title = "웹툰 JSON 월간 트로피",
-            body = "장르별 월간 JSON 확인",
-            setter = setMenu,
-            getter = getMenu,
-            onClick = { onClick() },
-            value = "웹툰 JSON 월간 트로피",
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = color7C81FF,
-            image = R.drawable.icon_trophy_wht,
-            title = "웹툰 트로피 주간 토탈",
-            body = "장르별 주간 트로피 리스트 확인",
-            setter = setMenu,
-            getter = getMenu,
-            onClick = { onClick() },
-            value = "웹툰 트로피 주간 토탈",
-        )
-
-        ItemMainSettingSingleTablet(
-            containerColor = color64C157,
-            image = R.drawable.icon_trophy_wht,
-            title = "웹툰 트로피 월간 토탈",
-            body = "시간별 트로피 최신화 현황",
-            setter = setMenu,
-            getter = getMenu,
-            onClick = { onClick() },
-            value = "웹툰 트로피 월간 토탈",
         )
 
         TabletBorderLine()

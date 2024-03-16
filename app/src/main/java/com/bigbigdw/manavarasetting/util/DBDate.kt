@@ -75,7 +75,12 @@ object DBDate {
     fun month(): String {
         val currentDate = LocalDate.now()
         val currentMonth = currentDate.monthValue
-        return currentMonth.toString()
+
+        return if(currentMonth < 10){
+            "0$currentMonth"
+        } else {
+            currentMonth.toString()
+        }
     }
 
     fun getWeekDates(year: Int, month: Int, weekNumber: Int): List<LocalDate> {

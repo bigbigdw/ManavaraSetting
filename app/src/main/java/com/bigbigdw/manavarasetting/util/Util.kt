@@ -265,6 +265,9 @@ fun saveBook(platform: String, type: String, child : String = "BOOK") {
     mRootRef.addListenerForSingleValueEvent(object :
         ValueEventListener {
         override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+            Log.d("HIHI", "TEST")
+
             if (dataSnapshot.exists()) {
 
                 val jsonArray = JsonObject()
@@ -291,6 +294,8 @@ fun saveBook(platform: String, type: String, child : String = "BOOK") {
                     e.printStackTrace()
                 }
 
+            } else {
+                Log.d("HIHI", "dataSnapshot.exists() == NULL")
             }
         }
 
