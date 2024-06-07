@@ -1,6 +1,8 @@
 # Manavara 관리 어플리케이션 소
 
-<p dir="auto"><a target="_blank" rel="noopener noreferrer" href="https://github.com/bigbigdw/ManavaraSetting/assets/22631075/0cb1ec6c-09c7-4878-8d8c-1483b592bde5.png"><img src="https://user-images.githubusercontent.com/22631075/250290611-6d656e17-8e66-447e-8ae5-a50ad0e64312.png" alt="모아바라_기술보고서-01" style="max-width: 100%;"></a><br>
+<p dir="auto">
+  <a target="_blank" rel="noopener noreferrer" href="https://github.com/bigbigdw/ManavaraSetting/assets/22631075/0cb1ec6c-09c7-4878-8d8c-1483b592bde5.png">
+    <img src="https://github.com/bigbigdw/ManavaraSetting/assets/22631075/92b5bea3-7d3d-4212-8581-59ef9c1b3618" alt="모아바라_기술보고서-01" style="max-width: 100%;"></a><br>
 <a target="_blank" rel="noopener noreferrer" href="https://user-images.githubusercontent.com/22631075/250290613-f1b6a4c7-1b2b-45f2-a69c-a9d5bd5abad0.png"><img src="https://user-images.githubusercontent.com/22631075/250290613-f1b6a4c7-1b2b-45f2-a69c-a9d5bd5abad0.png" alt="모아바라_기술보고서-02" style="max-width: 100%;"></a><br>
 <a target="_blank" rel="noopener noreferrer" href="https://user-images.githubusercontent.com/22631075/250290623-b9358603-eabd-4362-a294-222ba3a342e4.png"><img src="https://user-images.githubusercontent.com/22631075/250290623-b9358603-eabd-4362-a294-222ba3a342e4.png" alt="모아바라_기술보고서-03" style="max-width: 100%;"></a><br>
 <a target="_blank" rel="noopener noreferrer" href="https://user-images.githubusercontent.com/22631075/250290627-da74ea99-d0e4-43b4-bf3a-005f162cb544.png"><img src="https://user-images.githubusercontent.com/22631075/250290627-da74ea99-d0e4-43b4-bf3a-005f162cb544.png" alt="모아바라_기술보고서-04" style="max-width: 100%;"></a><br>
