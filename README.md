@@ -1,4 +1,4 @@
-# Manavara 관리 어플리케이션 소
+# Manavara 관리 어플리케이션 소개
 
 <p dir="auto">
   <a target="_blank" rel="noopener noreferrer" href="https://github.com/bigbigdw/ManavaraSetting/assets/22631075/0cb1ec6c-09c7-4878-8d8c-1483b592bde5.png">
