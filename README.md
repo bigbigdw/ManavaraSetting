@@ -1,21 +1,21 @@
-# Manavara 관리 어플리케이션 소개
+# Manavara 관리 어플리케이션
 
 <p dir="auto">
-  <a target="_blank" rel="noopener noreferrer" href="https://github.com/bigbigdw/ManavaraSetting/assets/22631075/0cb1ec6c-09c7-4878-8d8c-1483b592bde5.png">
-    <img src="https://github.com/bigbigdw/ManavaraSetting/assets/22631075/92b5bea3-7d3d-4212-8581-59ef9c1b3618" alt="모아바라_기술보고서-01" style="max-width: 100%;"></a><br>
-<a target="_blank" rel="noopener noreferrer" href="https://user-images.githubusercontent.com/22631075/250290613-f1b6a4c7-1b2b-45f2-a69c-a9d5bd5abad0.png"><img src="https://user-images.githubusercontent.com/22631075/250290613-f1b6a4c7-1b2b-45f2-a69c-a9d5bd5abad0.png" alt="모아바라_기술보고서-02" style="max-width: 100%;"></a><br>
-<a target="_blank" rel="noopener noreferrer" href="https://user-images.githubusercontent.com/22631075/250290623-b9358603-eabd-4362-a294-222ba3a342e4.png"><img src="https://user-images.githubusercontent.com/22631075/250290623-b9358603-eabd-4362-a294-222ba3a342e4.png" alt="모아바라_기술보고서-03" style="max-width: 100%;"></a><br>
-<a target="_blank" rel="noopener noreferrer" href="https://user-images.githubusercontent.com/22631075/250290627-da74ea99-d0e4-43b4-bf3a-005f162cb544.png"><img src="https://user-images.githubusercontent.com/22631075/250290627-da74ea99-d0e4-43b4-bf3a-005f162cb544.png" alt="모아바라_기술보고서-04" style="max-width: 100%;"></a><br>
-<a target="_blank" rel="noopener noreferrer" href="https://user-images.githubusercontent.com/22631075/250290630-9361cea3-e74b-4757-b017-db9a72c59af6.png"><img src="https://user-images.githubusercontent.com/22631075/250290630-9361cea3-e74b-4757-b017-db9a72c59af6.png" alt="모아바라_기술보고서-05" style="max-width: 100%;"></a><br>
-<a target="_blank" rel="noopener noreferrer" href="https://user-images.githubusercontent.com/22631075/250290633-679a6c02-f4b4-486e-a005-e50c8cf25e57.png"><img src="https://user-images.githubusercontent.com/22631075/250290633-679a6c02-f4b4-486e-a005-e50c8cf25e57.png" alt="모아바라_기술보고서-06" style="max-width: 100%;"></a><br>
-<a target="_blank" rel="noopener noreferrer" href="https://user-images.githubusercontent.com/22631075/250290637-1c24d0cf-9f93-4627-80e7-6468f79de23d.png"><img src="https://user-images.githubusercontent.com/22631075/250290637-1c24d0cf-9f93-4627-80e7-6468f79de23d.png" alt="모아바라_기술보고서-07" style="max-width: 100%;"></a><br>
-<a target="_blank" rel="noopener noreferrer" href="https://user-images.githubusercontent.com/22631075/250290639-71209dcc-8eef-43fa-8dfb-b4753c6582bd.png"><img src="https://user-images.githubusercontent.com/22631075/250290639-71209dcc-8eef-43fa-8dfb-b4753c6582bd.png" alt="모아바라_기술보고서-08" style="max-width: 100%;"></a><br>
-<a target="_blank" rel="noopener noreferrer" href="https://user-images.githubusercontent.com/22631075/250290645-22456213-7af0-4423-860a-ed2c434578b0.png"><img src="https://user-images.githubusercontent.com/22631075/250290645-22456213-7af0-4423-860a-ed2c434578b0.png" alt="모아바라_기술보고서-09" style="max-width: 100%;"></a><br>
-<a target="_blank" rel="noopener noreferrer" href="https://user-images.githubusercontent.com/22631075/250290652-2ef419f7-719b-4b41-9cab-c35691bbea25.png"><img src="https://user-images.githubusercontent.com/22631075/250290652-2ef419f7-719b-4b41-9cab-c35691bbea25.png" alt="모아바라_기술보고서-10" style="max-width: 100%;"></a><br>
-<a target="_blank" rel="noopener noreferrer" href="https://user-images.githubusercontent.com/22631075/250290666-33f6a061-4517-424e-8160-27a299b22863.png"><img src="https://user-images.githubusercontent.com/22631075/250290666-33f6a061-4517-424e-8160-27a299b22863.png" alt="모아바라_기술보고서-11" style="max-width: 100%;"></a><br>
-<a target="_blank" rel="noopener noreferrer" href="https://user-images.githubusercontent.com/22631075/250290678-f5a30035-9a3c-44f3-846c-8fd2b9b7c2ab.png"><img src="https://user-images.githubusercontent.com/22631075/250290678-f5a30035-9a3c-44f3-846c-8fd2b9b7c2ab.png" alt="모아바라_기술보고서-12" style="max-width: 100%;"></a><br>
-<a target="_blank" rel="noopener noreferrer" href="https://user-images.githubusercontent.com/22631075/250290692-7ad577e9-4c45-4c6f-ac41-2f9644eff350.png"><img src="https://user-images.githubusercontent.com/22631075/250290692-7ad577e9-4c45-4c6f-ac41-2f9644eff350.png" alt="모아바라_기술보고서-13" style="max-width: 100%;"></a><br>
-<a target="_blank" rel="noopener noreferrer" href="https://user-images.githubusercontent.com/22631075/250290698-a91ebc6d-86c3-4867-9d7d-8b9272cc9874.png"><img src="https://user-images.githubusercontent.com/22631075/250290698-a91ebc6d-86c3-4867-9d7d-8b9272cc9874.png" alt="모아바라_기술보고서-14" style="max-width: 100%;"></a><br>
-<a target="_blank" rel="noopener noreferrer" href="https://user-images.githubusercontent.com/22631075/250290703-5402f7f2-e541-4b66-a9f9-367aced6344d.png"><img src="https://user-images.githubusercontent.com/22631075/250290703-5402f7f2-e541-4b66-a9f9-367aced6344d.png" alt="모아바라_기술보고서-15" style="max-width: 100%;"></a><br>
-<a target="_blank" rel="noopener noreferrer" href="https://user-images.githubusercontent.com/22631075/250290710-b8ea925a-5194-4fe5-b563-1755743bd92a.png"><img src="https://user-images.githubusercontent.com/22631075/250290710-b8ea925a-5194-4fe5-b563-1755743bd92a.png" alt="모아바라_기술보고서-16" style="max-width: 100%;"></a><br>
-<a target="_blank" rel="noopener noreferrer" href="https://user-images.githubusercontent.com/22631075/250290717-1d92d508-54fc-451e-885a-9dc7e9f664ca.png"><img src="https://user-images.githubusercontent.com/22631075/250290717-1d92d508-54fc-451e-885a-9dc7e9f664ca.png" alt="모아바라_기술보고서-17" style="max-width: 100%;"></a></p>
+  <img src="https://github.com/bigbigdw/ManavaraSetting/assets/22631075/1f832e3e-00a7-4727-9a26-f79d578d8cb6.png" alt="" style="max-width: 100%;"><br>
+  <img src="https://github.com/bigbigdw/ManavaraSetting/assets/22631075/c603af86-5869-4d5f-8233-7be6cfc5a4b4.png" alt="" style="max-width: 100%;"><br>
+  <img src="https://github.com/bigbigdw/ManavaraSetting/assets/22631075/858cd339-c89e-4d59-ba9b-9002b58af6c.png" alt="" style="max-width: 100%;"><br>
+  <img src="https://github.com/bigbigdw/ManavaraSetting/assets/22631075/70c646c7-a526-43b8-b8a7-ddad0443526e.png" alt="" style="max-width: 100%;"><br>
+  <img src="https://github.com/bigbigdw/ManavaraSetting/assets/22631075/ee4ddf80-483e-445a-9966-f9f98609b462.png" alt="" style="max-width: 100%;"><br>
+  <img src="https://github.com/bigbigdw/ManavaraSetting/assets/22631075/d354165c-c4e8-4f7b-a579-1192d4394bc5.png" alt="" style="max-width: 100%;"><br>
+  <img src="https://github.com/bigbigdw/ManavaraSetting/assets/22631075/8f3dc328-45f3-4f92-8b14-b80d8134e70a.png" alt="" style="max-width: 100%;"><br>
+  <img src="https://github.com/bigbigdw/ManavaraSetting/assets/22631075/c9ddd157-d488-44fd-b181-5b3933c03a72.png" alt="" style="max-width: 100%;"><br>
+  <img src="https://github.com/bigbigdw/ManavaraSetting/assets/22631075/604f3c8c-9300-4027-b1a5-f56af5ada393.png" alt="" style="max-width: 100%;"><br>
+  <img src="https://github.com/bigbigdw/ManavaraSetting/assets/22631075/d4c2ca47-87b3-46b2-b2b0-5aebd2f920c7.png" alt="" style="max-width: 100%;"><br>
+  <img src="https://github.com/bigbigdw/ManavaraSetting/assets/22631075/024fb9df-cf16-480c-b867-0e7a216faaed.png" alt="" style="max-width: 100%;"><br>
+  <img src="https://github.com/bigbigdw/ManavaraSetting/assets/22631075/a2287c44-13b9-44a6-8fb2-4888920feee5.png" alt="" style="max-width: 100%;"><br>
+  <img src="https://github.com/bigbigdw/ManavaraSetting/assets/22631075/a0d0287e-24a4-4d27-8d1d-4cf90836ff21.png" alt="" style="max-width: 100%;"><br>
+  <img src="https://github.com/bigbigdw/ManavaraSetting/assets/22631075/8a48fef4-b41c-4795-9954-9ba0f9975b34.png" alt="" style="max-width: 100%;"><br>
+  <img src="https://github.com/bigbigdw/ManavaraSetting/assets/22631075/f2269077-7d20-46f4-9fc1-17c342f80bea.png" alt="" style="max-width: 100%;"><br>
+  <img src="https://github.com/bigbigdw/ManavaraSetting/assets/22631075/7cd90ee9-d8a9-4c5c-af20-c2c698852720.png" alt="" style="max-width: 100%;"><br>
+  <img src="https://github.com/bigbigdw/ManavaraSetting/assets/22631075/22c4b1d9-c696-4758-9289-bfa2565e1b39.png" alt="" style="max-width: 100%;"><br>
+</p>
